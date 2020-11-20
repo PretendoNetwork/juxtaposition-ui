@@ -1,0 +1,20 @@
+{
+  "name": "juxt-web",
+  "version": "1.0.0",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.17.1",
+    "fs-extra": "^9.0.1",
+    "memory-cache": "^0.2.0",
+    "moment": "^2.29.1",
+    "mongoose": "^5.10.14",
+    "morgan": "^1.10.0",
+    "xmlbuilder": "^15.1.1",
+    "xmlbuilder2": "^2.4.0"
+  },
+  "devDependencies": {
+    "ejs": "^3.1.5",
+    "express-subdomain": "^1.0.5",
+    "object-to-xml": "^2.0.0"
+  }
+}

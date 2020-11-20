@@ -1,0 +1,14 @@
+{
+    "http": {
+        "port": 80
+    },
+    "secret": "[Database Secret Key]",
+    "mongoose": {
+        "uri": "mongodb://localhost:27017",
+        "database": "[Database Name]",
+        "options": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true
+        }
+    }
+}

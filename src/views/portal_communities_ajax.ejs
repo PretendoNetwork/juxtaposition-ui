@@ -1,0 +1,52 @@
+<h1 class="page-header">Communities</h1>
+<div class="search-container">
+    <form action="/action_page.php">
+        <img id="search-icon" src="/icons/Icon-feather-search.svg"></img>
+        <input id="search-bar" type="text" placeholder="Search communities..." name="search">
+    </form>
+</div>
+<div id="popular" class="communities-wrapper">
+    <h1 class="communities-header">Popular Places</h1>
+    <table>
+        <tbody>
+        <tr>
+            <% for(var i = 0; i < popularCommunities.length; i++) {%>
+            <td>
+                <div class="community-list-wrapper" onclick="loadCommunityPage('<%= popularCommunities[i].id %>')">
+                    <img class="community-list-icon" src="<%= popularCommunities[i].browser_icon %>">
+                    <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
+                    <h4 class="community-list-followers"><%= popularCommunities[i].followers %> followers</h4>
+                </div>
+            </td>
+            <% if( (i + 1) % 3 === 0) { %>
+        </tr>
+        <tr>
+            <% } %>
+            <% } %>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="new" class="communities-wrapper">
+    <h1 class="communities-header">New communities</h1>
+    <table>
+        <tbody>
+        <tr>
+            <% for(var j = 0; j < newCommunities.length; j++) {%>
+            <td>
+                <div class="community-list-wrapper" onclick="loadCommunityPage('<%= newCommunities[j].id %>')">
+                    <img class="community-list-icon" src="<%= newCommunities[j].browser_icon %>">
+                    <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
+                    <h4 class="community-list-followers"><%= newCommunities[j].followers %> followers</h4>
+                </div>
+            </td>
+            <% if( (j + 1) % 3 === 0) { %>
+        </tr>
+        <tr>
+            <% } %>
+            <% } %>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<img src="" onerror="wiiuBrowser.showLoadingIcon(!1)">

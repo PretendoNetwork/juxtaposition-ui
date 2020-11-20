@@ -1,0 +1,85 @@
+<table class="community-page-posts-header">
+    <tbody>
+    <tr>
+        <td>
+            <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active">Recent posts</h4>
+        </td>
+        <td>
+            <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab">Popular posts</h4>
+        </td>
+        <td>
+            <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab">Verified posts</h4>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<% newPosts.forEach(function(post) { %>
+<div class="post-user-info-wrapper">
+    <%if(post.verified) {%>
+        <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>">
+        <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+    <%} else {%>
+        <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>">
+        <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+    <%}%>
+    <h2 class="community-page-post-username"><%= post.screen_name %></h2>
+    <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
+
+        <div class="community-page-post-yeah-button-wrapper">
+            <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+        </div>
+        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+</div>
+<%if(post.screenshot !== '' && post.painting === '' && post.url === '' && post.body === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Screenshot Only:</p>
+        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+    </div>
+<% } else if(post.painting !== '' && post.screenshot === '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Painting Only:</p>
+        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+    </div>
+<% } else if(post.url !== '' && post.screenshot === '' && post.painting === '' && post.body === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Video Only:</p>
+        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+<% } else if(post.body !== '' && post.screenshot === '' && post.painting === '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Text Only:</p>
+        <h3><%= post.body %></h3>
+    </div>
+<% } else if(post.screenshot !== '' && post.body !== '' && post.painting === '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Screenshot and Body:</p>
+        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+        <div class="community-page-post-text-overlay">
+            <h3><%= post.body %></h3>
+        </div>
+    </div>
+<% } else if(post.screenshot !== '' && post.painting !== '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Screenshot and Painting:</p>
+        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+    </div>
+<% } else if(post.url !== '' && post.body !== '' && post.screenshot === '' && post.painting === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Video and Body:</p>
+        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="community-page-post-text-overlay">
+            <h3><%= post.body %></h3>
+        </div>
+    </div>
+<% } else if(post.url !== '' && post.painting !== '' && post.screenshot === '' && post.body === '') {%>
+    <div class="community-page-post-wrapper">
+        <p>Video and Painting:</p>
+        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+    </div>
+<%}%>
+<br>
+<br>
+<% }); %>
+<img src="" onerror="wiiuBrowser.showLoadingIcon(!1)">

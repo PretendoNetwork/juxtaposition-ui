@@ -1,0 +1,74 @@
+<div class="top-screen">
+    <div class="header-description">
+        <p>
+            Check out the communities for the games that you play or games that you're curious about!
+        </p>
+    </div>
+    <div id="headers-communities-icon" class="header-icon"></div>
+    <h2 class="header-title">Communities</h2>
+</div>
+<div class="bottom-screen">
+    <div class="search-container">
+        <div id="search-icon"></div>
+        <input id="search-bar" type="text" placeholder="Search communities..." name="search" onclick="searchCommunities(this)" readonly>
+    </div>
+    <div class="communities-wrapper" id="popular-communities">
+        <h1 class="communities-header">Popular Places</h1>
+        <table>
+            <tbody>
+                <% for(var i = 0; i < popularCommunities.length; i++) {%>
+                    <% if(i === popularCommunities.length - 1) { %>
+                        <tr>
+                            <td>
+                                <div class="community-wrapper bottom" id="<%= popularCommunities[i].id %>">
+                                    <img class="community-icon bottom" src="<%= popularCommunities[i].browser_icon %>">
+                                    <h2 class="community-title"><%= popularCommunities[i].name %></h2>
+                                    <h4><%= popularCommunities[i].followers %> followers</h4>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } else { %>
+                    <tr>
+                        <td>
+                            <div class="community-wrapper" id="<%= popularCommunities[i].id %>">
+                                <img class="community-icon" src="<%= popularCommunities[i].browser_icon %>">
+                                <h2 class="community-title"><%= popularCommunities[i].name %></h2>
+                                <h4><%= popularCommunities[i].followers %> followers</h4>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }} %>
+            </tbody>
+        </table>
+    </div>
+    <div class="communities-wrapper" id="new-communities">
+        <h1 class="communities-header">New Communities</h1>
+        <table>
+            <tbody>
+            <% for(var j = 0; j < newCommunities.length; j++) {%>
+                <% if(j === newCommunities.length - 1) { %>
+                    <tr>
+                        <td>
+                            <div class="community-wrapper bottom" id="<%= popularCommunities[i].id %>">
+                                <img class="community-icon bottom" src="<%= newCommunities[j].browser_icon %>">
+                                <h2 class="community-title"><%= newCommunities[j].name %></h2>
+                                <h4><%= newCommunities[j].followers %> followers</h4>
+                            </div>
+                        </td>
+                    </tr>
+                <% } else { %>
+                    <tr>
+                        <td>
+                            <div class="community-wrapper" id="<%= popularCommunities[i].id %>">
+                                <img class="community-icon" src="<%= newCommunities[j].browser_icon %>">
+                                <h2 class="community-title"><%= newCommunities[j].name %></h2>
+                                <h4><%= newCommunities[j].followers %> followers</h4>
+                            </div>
+                        </td>
+                    </tr>
+            <% }} %>
+            </tbody>
+        </table>
+    </div>
+    <div class="toolbar-padding"></div>
+</div>

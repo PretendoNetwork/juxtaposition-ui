@@ -1,0 +1,12 @@
+<html lang="en">
+<body>
+    <h2>Testing dynamic stuff</h2>
+    <% listnames.forEach(function(person) { %>
+        <% if(person.alive) { %>
+            <p><%= person.name %></p>
+            <p><%= person.age %></p>
+            <br>
+        <% } %>
+    <% }); %>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/juxt.js"></script>
+</head>
+<body>
+<menu id="nav-bar" class="">
+    <li id="nav-bar-profile" class="" onclick="loadTab('nav-bar-profile')"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" class="" onclick="loadTab('nav-bar-activity-feed')"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" class="selected" onclick="loadTab('nav-bar-communities')"><a>Communities</a></li>
+    <li id="nav-bar-messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" class="" onclick="loadTab('nav-bar-news')"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
+    <li id="nav-bar-back" class="none"><a href="">Back</a></li>
+</menu>
+<div id="main">
+    <div class="community-page-header" style="background-image: <%= community.WiiU_browser_header %>"></div>
+    <div class="community-page-header-overlay"></div>
+    <div class="community-page-back-button" onclick="loadTab('nav-bar-communities')"></div>
+    <div class="community-page-info-container">
+        <div class="community-page-follow-button-wrapper" onclick="window.location.reload(false)"></div>
+        <img class="community-page-info-icon" src="<%= community.browser_icon %>">
+        <h2 class="community-page-title"><%= community.name %></h2>
+        <h4 class="community-page-description"><%= community.description %></h4>
+        <div class="community-page-margin-line"></div>
+        <table class="community-page-table-wrapper">
+            <tbody>
+            <tr>
+                <td>
+                    <div class="community-page-shaded-info-container">
+                        <h4 class="community-page-table-label">Followers</h4>
+                        <h4 class="community-page-table-text"><%= community.followers %></h4>
+                    </div>
+                </td>
+                <td>
+                    <div class="community-page-shaded-info-container">
+                        <h4 class="community-page-table-label">Posts</h4>
+                        <h4 class="community-page-table-text"><%=totalNumPosts%></h4>
+                    </div>
+                </td>
+                <td>
+                    <div class="community-page-shaded-info-container" style="width: 500px;">
+                        <h4 class="community-page-table-label">Tags</h4>
+                        <h4 class="community-page-table-text">N/A</h4>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="community-page-posts-wrapper">
+        <table class="community-page-posts-header">
+            <tbody>
+                <tr>
+                    <td>
+                        <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active">Recent posts</h4>
+                    </td>
+                    <td>
+                        <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab">Popular posts</h4>
+                    </td>
+                    <td>
+                        <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab">Verified posts</h4>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <% newPosts.forEach(function(post) { %>
+        <div class="post-user-info-wrapper">
+            <%if(post.verified) {%>
+                <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>">
+                <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+            <%} else {%>
+                <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>">
+                <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+            <%}%>
+            <h2 class="community-page-post-username"><%= post.screen_name %></h2>
+            <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
+
+                <div class="community-page-post-yeah-button-wrapper">
+                    <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+                </div>
+                <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+        </div>
+        <%if(post.screenshot !== '' && post.painting === '' && post.url === '' && post.body === '') {%>
+            <div class="community-page-post-wrapper">
+                <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+            </div>
+        <% } else if(post.painting !== '' && post.screenshot === '' && post.url === '') {%>
+            <div class="community-page-post-wrapper">
+                <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+            </div>
+        <% } else if(post.url !== '' && post.screenshot === '' && post.painting === '' && post.body === '') {%>
+            <div class="community-page-post-wrapper">
+                <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        <% } else if(post.body !== '' && post.screenshot === '' && post.painting === '' && post.url === '') {%>
+            <div class="community-page-post-wrapper">
+                <h3><%= post.body %></h3>
+            </div>
+        <% } else if(post.screenshot !== '' && post.body !== '' && post.painting === '' && post.url === '') {%>
+            <div class="community-page-post-wrapper">
+                <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                <div class="community-page-post-text-overlay">
+                    <h3><%= post.body %></h3>
+                </div>
+            </div>
+        <% } else if(post.screenshot !== '' && post.painting !== '' && post.url === '') {%>
+            <div class="community-page-post-wrapper">
+                <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+            </div>
+        <% } else if(post.url !== '' && post.body !== '' && post.screenshot === '' && post.painting === '') {%>
+            <div class="community-page-post-wrapper">
+                <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <div class="community-page-post-text-overlay">
+                    <h3><%= post.body %></h3>
+                </div>
+            </div>
+        <% } else if(post.url !== '' && post.painting !== '' && post.screenshot === '' && post.body === '') {%>
+            <div class="community-page-post-wrapper">
+                <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+            </div>
+        <%}%>
+        <br>
+        <br>
+        <% }); %>
+     </div>
+</div>
+<br>
+<body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1)">
+</body>
+</html>
