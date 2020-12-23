@@ -19,4 +19,12 @@ router.get('/icons/mario-kart.jpg', function (req, res) {
     res.sendFile('icons/mario-kart.jpg', {root: path.join(__dirname, '../../../../webfiles/portal/')});
 });
 
+router.get('/fonts/Poppins-Light.woff', function (req, res) {
+    res.sendFile('fonts/Poppins-Light.woff', {root: path.join(__dirname, '../../../../webfiles/portal/')});
+});
+
+router.get('/fonts/Poppins-Light.ttf', function (req, res) {
+    res.sendFile('fonts/Poppins-Light.ttf', {root: path.join(__dirname, '../../../../webfiles/portal/')});
+});
+
 module.exports = router;

@@ -1,0 +1,222 @@
+<div id="windowOverlay" class="overlay" style="margin-bottom: 0">
+    <div class="overlay-content">
+        <div id="post-window" class="post-wrapper">
+            <!--Start of Main Post-->
+            <form action="/users/me" method="post" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td class="post-close-button-wrapper">
+                            <div class="post-close-button" onclick="hideOverlay()" ></div>
+                        </td>
+                        <td>
+                            <input type="submit" value="Save" class="submit-button" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h1 class="communities-header" style="padding-left: 75px; padding-top: 10px">Profile Settings</h1>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td style="padding-left: 75px;">
+                            <label class="checkbox-container">Show Country on Profile
+                                <input type="checkbox" id="country" name="country" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.country_visibility){%>checked="checked"<%}%>>
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 75px;">
+                            <label class="checkbox-container">Show Birthday on Profile
+                                <input type="checkbox" id="birthday" name="birthday" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.birthday_visibility){%>checked="checked"<%}%>>
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 75px;">
+                            <label class="checkbox-container">Show Game Experience on Profile
+                                <input type="checkbox" id="experience" name="experience" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.game_skill_visibility){%>checked="checked"<%}%>>
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 75px;">
+                            <label class="checkbox-container">Show Comment on Profile
+                                <input type="checkbox" id="commentShow" name="commentShow" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.profile_comment_visibility){%>checked="checked"<%}%>>
+                                <span class="checkmark"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="padding-left: 75px;">
+                            <label for="comment" style="font-size: xx-large">Profile Comment</label>
+                            <textarea id="comment" name="comment" maxlength="150" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Profile comment cannot contain explicit language');}"><%= user.profile_comment %></textarea>
+                        </td>
+                        <br>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="community-page-header" style="background: #673DB6"></div>
+<div class="user-page-back-button" onclick="window.history.back()">
+    <p class="user-page-back-button-text">Go back</p>
+</div>
+<div class="community-page-info-container">
+    <div class="user-page-follow-button-wrapper">
+        <p class="user-page-follow-button-text" onclick="showOverlay()">User Settings</p>
+    </div>
+    <img class="community-page-info-icon" src="<%= user.pfp_uri %>">
+    <h2 class="community-page-title"><%= user.user_id %></h2>
+    <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%>Private<%}%></h4>
+    <div class="community-page-margin-line"></div>
+    <table class="community-page-table-wrapper">
+        <tbody>
+        <tr>
+            <td>
+                <div class="community-page-shaded-info-container">
+                    <h4 class="community-page-table-label">Country</h4>
+                    <h4 class="community-page-table-text"><%if(user.country_visibility){%>N/A<%}else {%>Private<%}%></h4>
+                </div>
+            </td>
+            <td>
+                <div class="community-page-shaded-info-container">
+                    <h4 class="community-page-table-label">Birthday</h4>
+                    <h4 class="community-page-table-text"><%if(user.birthday_visibility){%>N/A<%}else {%>Private<%}%></h4>
+                </div>
+            </td>
+            <td>
+                <div class="community-page-shaded-info-container">
+                    <h4 class="community-page-table-label">Game experience</h4>
+                    <h4 class="community-page-table-text">
+                        <%if(user.game_skill_visibility){%>
+                            <%if(user.game_skill === 0) {%>
+                                Beginner
+                            <%} else if(user.game_skill === 1) {%>
+                                Intermediate
+                            <%} else if(user.game_skill === 2) {%>
+                                Expert
+                            <%} else {%>
+                                N/A
+                            <%}%>
+                        <%}else {%>
+                            Private
+                        <%}%>
+                    </h4>
+                </div>
+            </td>
+            <td>
+                <div class="community-page-shaded-info-container">
+                    <h4 class="community-page-table-label">Yeahs</h4>
+                    <h4 class="community-page-table-text">0</h4>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="user-page-tab-table">
+        <tbody>
+        <tr>
+            <td onclick="switchUserPageTabs(0)">
+                <div class="user-page-tab left selected" id="user-page-posts-tab">
+                    <%=numPosts%> Posts
+                </div>
+                <div class="user-page-tab-triangle selected" id="user-page-posts-triangle"></div>
+            </td>
+            <td onclick="switchUserPageTabs(1)">
+                <div class="user-page-tab" id="user-page-friends-tab">
+                    0 Friends
+                </div>
+                <div class="user-page-tab-triangle" id="user-page-friends-triangle"></div>
+            </td>
+            <td onclick="switchUserPageTabs(2)">
+                <div class="user-page-tab" id="user-page-following-tab">
+                    <%= user.following %> Following
+                </div>
+                <div class="user-page-tab-triangle" id="user-page-following-triangle"></div>
+            </td>
+            <td onclick="switchUserPageTabs(3)">
+                <div class="user-page-tab right" id="user-page-followers-tab">
+                    <%= user.followers %> Followers
+                </div>
+                <div class="user-page-tab-triangle" id="user-page-followers-triangle"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div class="community-page-posts-wrapper" <% if(numPosts === 0) {%>style="height: 110px"<%}%>>
+    <% if(numPosts === 0) {%>
+        <p style="font-size: xx-large; margin-left: 443px;">No Posts</p>
+    <%} else { %>
+        <button id="load-more-posts-button" onclick="loadUserPosts()">Load More Posts</button>
+        <% newPosts.forEach(function(post) { %>
+            <div class="post-user-info-wrapper" id="<%= post.id %>">
+                <%if(post.verified) {%>
+                    <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>">
+                    <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+                <%} else {%>
+                    <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>">
+                    <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+                <%}%>
+                <h2 class="community-page-post-username"><%= post.screen_name %></h2>
+                <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
+
+                <div class="community-page-post-yeah-button-wrapper">
+                    <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+                </div>
+                <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+            </div>
+            <%if(post.screenshot !== '' && post.painting === '' && post.url === '' && post.body === '') {%>
+                <div class="community-page-post-wrapper">
+                    <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                </div>
+            <% } else if(post.painting !== '' && post.screenshot === '' && post.url === '') {%>
+                <div class="community-page-post-wrapper">
+                    <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+                </div>
+            <% } else if(post.url !== '' && post.screenshot === '' && post.painting === '' && post.body === '') {%>
+                <div class="community-page-post-wrapper">
+                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            <% } else if(post.body !== '' && post.screenshot === '' && post.painting === '' && post.url === '') {%>
+                <div class="community-page-post-wrapper">
+                    <h3><%= post.body %></h3>
+                </div>
+            <% } else if(post.screenshot !== '' && post.body !== '' && post.painting === '' && post.url === '') {%>
+                <div class="community-page-post-wrapper">
+                    <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                    <div class="community-page-post-text-overlay">
+                        <h3><%= post.body %></h3>
+                    </div>
+                </div>
+            <% } else if(post.screenshot !== '' && post.painting !== '' && post.url === '') {%>
+                <div class="community-page-post-wrapper">
+                    <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                    <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+                </div>
+            <% } else if(post.url !== '' && post.body !== '' && post.screenshot === '' && post.painting === '') {%>
+                <div class="community-page-post-wrapper">
+                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="community-page-post-text-overlay">
+                        <h3><%= post.body %></h3>
+                    </div>
+                </div>
+            <% } else if(post.url !== '' && post.painting !== '' && post.screenshot === '' && post.body === '') {%>
+                <div class="community-page-post-wrapper">
+                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+                </div>
+            <%}%>
+        <% }); %>
+    <%}%>
+</div>
+
+<br>
+<img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">

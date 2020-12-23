@@ -1,0 +1,59 @@
+<% newPosts.forEach(function(post) { %>
+<div class="post-user-info-wrapper" id="<%= post.id %>">
+    <%if(post.verified) {%>
+        <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>">
+        <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+    <%} else {%>
+        <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>">
+        <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+    <%}%>
+    <h2 class="community-page-post-username"><%= post.screen_name %></h2>
+    <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
+
+    <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
+        <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+    </div>
+    <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+</div>
+<%if(post.screenshot !== '' && post.painting === '' && post.url === '' && post.body === '') {%>
+    <div class="community-page-post-wrapper">
+        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+    </div>
+<% } else if(post.painting !== '' && post.screenshot === '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+    </div>
+<% } else if(post.url !== '' && post.screenshot === '' && post.painting === '' && post.body === '') {%>
+    <div class="community-page-post-wrapper">
+        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+<% } else if(post.body !== '' && post.screenshot === '' && post.painting === '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <h3><%= post.body %></h3>
+    </div>
+<% } else if(post.screenshot !== '' && post.body !== '' && post.painting === '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+        <div class="community-page-post-text-overlay">
+            <h3><%= post.body %></h3>
+        </div>
+    </div>
+<% } else if(post.screenshot !== '' && post.painting !== '' && post.url === '') {%>
+    <div class="community-page-post-wrapper">
+        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+    </div>
+<% } else if(post.url !== '' && post.body !== '' && post.screenshot === '' && post.painting === '') {%>
+    <div class="community-page-post-wrapper">
+        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="community-page-post-text-overlay">
+            <h3><%= post.body %></h3>
+        </div>
+    </div>
+<% } else if(post.url !== '' && post.painting !== '' && post.screenshot === '' && post.body === '') {%>
+    <div class="community-page-post-wrapper">
+        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+    </div>
+<%}%>
+<% }); %>

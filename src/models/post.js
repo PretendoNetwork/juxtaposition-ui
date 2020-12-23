@@ -19,7 +19,7 @@ const PostSchema = new Schema({
     },
     community_id: String,
     country_id: Number,
-    created_at: String,
+    created_at: Date,
     feeling_id: Number,
     id: Number,
     is_autopost: {

@@ -164,6 +164,7 @@ h4 {
     width: 50px;
     height: 50px;
     border-radius: 10px;
+    margin-top: 5px;
     margin-right: 10px;
     margin-left: 5px;
     float: left;
@@ -465,4 +466,126 @@ h4 {
     white-space: nowrap;
     width: 500px;
     height: 65px;
+}
+
+/*First run page*/
+.about-wrapper {
+    display: none;
+    text-align: center;
+    width: 350px;
+    height: 640px;
+    /*margin: 40px 190px;*/
+    /*background-color: rgba(255,255,255,1);
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;*/
+}
+
+.about-header {
+    /*margin-top: -420px;
+    margin-left: 175px;*/
+    text-align: center;
+    font-size: 20px;
+    padding-top: 180px;
+}
+
+.about-body {
+    font-size: 15px;
+    position: absolute;
+    text-align: center;
+    margin-top: 15px;
+    margin-left: 50px;
+    margin-right: 50px;
+    max-width: 800px;
+}
+
+.about-button {
+    position: absolute;
+    height: 37px;
+    width: 100px;
+    margin-top: 175px;
+    background: #673DB6;
+    color: white;
+    font-size: large;
+    border-width: 0;
+    border-radius: 10px;
+}
+
+/*Community and User Page*/
+.community-page-info-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+}
+
+.user-page-tab-table {
+    position: relative;
+    margin-top: 35px;
+    margin-bottom: -10px;
+    margin-left: -15px;
+    background: white;
+    width: 1035px;
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
+}
+
+.user-page-tab {
+    width: 260px;
+    text-align: center;
+    color: black;
+    background-color: white;
+    cursor: pointer;
+    font-size: x-large;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin: -3px;
+}
+
+.user-page-tab.selected {
+    color: white;
+    background-color: #673DB6;
+}
+
+.user-page-tab.left {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.user-page-tab.right {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.user-page-tab-triangle {
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 35px solid #673DB6;
+    border-bottom: 20px solid transparent;
+    display: none;
+    position: absolute;
+    margin-top: -15px;
+    margin-left: 100px;
+}
+
+.user-page-tab-triangle.selected {
+    display: inline-block;
+}
+
+.community-page-table-wrapper {
+    border-top: #D6D2D2;
+    border-width: 5px;
+    position: absolute;
+    padding-top: 115px;
+    margin-left: 17px;
+    line-height: 20px;
+}
+
+.community-page-table-label {
+    color: #673DB6;
+    padding-left: 15px;
+}
+
+.community-page-table-text {
+    color: black;
+    padding-left: 15px;
+    margin-top: -15px
 }

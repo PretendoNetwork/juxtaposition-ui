@@ -8,6 +8,7 @@ const  UserSchema = new Schema({
     country: String,
     pfp_uri: String,
     mii: String,
+    mii_face_url: String,
     /**
      * Account Status
      * 0 - Fine
@@ -24,49 +25,65 @@ const  UserSchema = new Schema({
         type: Boolean,
         default: false
     },
-    favorite_communities: {
-        type: [String],
-        default: undefined
-    },
     profile_comment: {
         type: String,
         default: undefined
     },
-    /**
-     * Game Skill Level
-     * 1 - Beginner
-     * 2 - Intermediate
-     * 3 - Expert
-     */
     game_skill: {
         type: Number,
         default: 0
     },
-    /**
-     * Profile Visibility settings
-     * 1 - Everyone
-     * 2 - Friends Only
-     * 3 - Private
-     */
     game_skill_visibility: {
-        type: Number,
-        default: 1
+        type: Boolean,
+        default: true
     },
     profile_comment_visibility: {
-        type: Number,
-        default: 1
+        type: Boolean,
+        default: true
     },
     birthday_visibility: {
-        type: Number,
-        default: 3
+        type: Boolean,
+        default: false
     },
     relationship_visibility: {
-        type: Number,
-        default: 2
+        type: Boolean,
+        default: false
+    },
+    country_visibility: {
+        type: Boolean,
+        default: false
     },
     profile_favorite_community_visibility: {
+        type: Boolean,
+        default: true
+    },
+    notifications: {
+        type: Boolean,
+        default: false
+    },
+    likes: {
+        type: [Number],
+        default: [0]
+    },
+    followed_communities: {
+        type: [Number],
+        default: [0]
+    },
+    followed_users: {
+        type: [Number],
+        default: [0]
+    },
+    following_users: {
+        type: [Number],
+        default: [0]
+    },
+    followers: {
         type: Number,
-        default: 1
+        default: 0
+    },
+    following: {
+        type: Number,
+        default: 0
     }
 
 });
@@ -141,6 +158,97 @@ UserSchema.methods.getFavoriteCommunityVisibility = async function() {
 
 UserSchema.methods.setFavoriteCommunityVisibility = async function(favoriteCommunityVisibility) {
     this.set('profile_favorite_community_visibility', favoriteCommunityVisibility);
+    await this.save();
+};
+
+UserSchema.methods.getCountryVisibility = async function() {
+    return this.get('country_visibility');
+};
+
+UserSchema.methods.setCountryVisibility = async function(countryVisibility) {
+    this.set('country_visibility', countryVisibility);
+    await this.save();
+};
+
+UserSchema.methods.addToLikes = async function(postID) {
+    const likes = this.get('likes');
+    likes.addToSet(postID);
+    await this.save();
+}
+
+UserSchema.methods.removeFromLike = async function(postID) {
+    const likes = this.get('likes');
+    likes.pull(postID);
+    await this.save();
+}
+
+UserSchema.methods.addToCommunities = async function(postID) {
+    const communities = this.get('followed_communities');
+    communities.addToSet(postID);
+    await this.upFollowing();
+    await this.save();
+}
+
+UserSchema.methods.removeFromCommunities = async function(postID) {
+    const communities = this.get('followed_communities');
+    communities.pull(postID);
+    await this.downFollowing();
+    await this.save();
+}
+
+UserSchema.methods.addToUsers = async function(postID) {
+    const users = this.get('followed_users');
+    users.addToSet(postID);
+    await this.upFollowing();
+    await this.save();
+}
+
+UserSchema.methods.removeFromUsers = async function(postID) {
+    const users = this.get('followed_users');
+    users.pull(postID);
+    await this.downFollowing();
+    await this.save();
+}
+
+UserSchema.methods.addToFollowers = async function(postID) {
+    const users = this.get('following_users');
+    users.addToSet(postID);
+    await this.upFollower();
+    await this.save();
+}
+
+UserSchema.methods.removeFromFollowers = async function(postID) {
+    const users = this.get('following_users');
+    users.pull(postID);
+    await this.downFollower();
+    await this.save();
+}
+
+UserSchema.methods.upFollower = async function() {
+    const followers = this.get('followers');
+    this.set('followers', followers + 1);
+
+    await this.save();
+};
+
+UserSchema.methods.downFollower = async function() {
+    const followers = this.get('followers');
+    this.set('followers', followers - 1);
+
+    await this.save();
+};
+
+UserSchema.methods.upFollowing = async function() {
+    const following = this.get('following');
+    this.set('following', following + 1);
+
+    await this.save();
+};
+
+UserSchema.methods.downFollowing = async function() {
+    const following = this.get('following');
+    this.set('following', following - 1);
+
     await this.save();
 };
 

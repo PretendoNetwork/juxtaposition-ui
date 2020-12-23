@@ -56,6 +56,20 @@ CommunitySchema.methods.downEmpathy = async function() {
     await this.save();
 };
 
+CommunitySchema.methods.upFollower = async function() {
+    const followers = this.get('followers');
+    this.set('followers', followers + 1);
+
+    await this.save();
+};
+
+CommunitySchema.methods.downFollower = async function() {
+    const followers = this.get('followers');
+    this.set('followers', followers - 1);
+
+    await this.save();
+};
+
 const COMMUNITY = model('COMMUNITY', CommunitySchema);
 
 module.exports = {

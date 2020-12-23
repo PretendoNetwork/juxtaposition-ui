@@ -2,10 +2,13 @@
     "http": {
         "port": 80
     },
-    "secret": "[Database Secret Key]",
+    "account_server_domain": "",
+    "account_server_secret": "",
+    "X-Nintendo-Client-ID": "",
+    "X-Nintendo-Client-Secret": "",
     "mongoose": {
         "uri": "mongodb://localhost:27017",
-        "database": "[Database Name]",
+        "database": "Miiverse",
         "options": {
             "useNewUrlParser": true,
             "useUnifiedTopology": true

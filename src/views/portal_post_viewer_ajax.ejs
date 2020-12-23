@@ -1,0 +1,65 @@
+<div id="showPost" class="overlay">
+    <div class="overlay-content">
+        <div id="post-window" class="post-wrapper">
+            <div id="reply-banner-wrapper">
+                <div id="reply-banner-upload-menu">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td>TV Screenshot</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>DRC Screenshot</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Drawing</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="reply-banner-upload-button" onclick="wiiuSound.playSoundByName('SE_OLV_OK', 1);replyBannerMenu()"></div>
+                <div id="reply-banner-submit-button"></div>
+            </div>
+            <table>
+                <tbody>
+                <!--Start of Main Post-->
+                <tr>
+                    <td class="post-close-button-wrapper">
+                        <div class="post-close-button" onclick="hidePost()"></div>
+                    </td>
+                    <td>
+
+                    </td>
+                    <td class="post-reply-button-wrapper">
+                        <div class="post-reply-button" onclick="replyBanner()"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="post-user-info-wrapper">
+                            <img class="verified" id="post-user-icon" src="/icons/mario-kart.jpg">
+                            <span class="verified-user-badge" style="/**display: none;**/"></span>
+                            <h2 id="post-username">Jemma</h2>
+                            <h4 id="post-time-stamp">Today at 14:23 - Mario Community</h4>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="post-yeah-button-wrapper">
+                            <div class="post-yeah-button" onclick="yeah(this.parentNode)"></div>
+                        </div>
+                        <div id="post-yeah-count">0 Yeahs</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <img id="painting" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAB4CAYAAACDziveAAADIklEQVR4Ae3BgW4jVxIEwayG/v+XyyYO77A2bBwlDfc46oxI/4QkLTRI0lKDJC01SNJSgyQtNUjSUoMkLTVI0lKDJC01SNJSgyQtNUjSUoMkLTVI0lKDJC01SNJSgyQtNUjSUoMkLTVI0lKDJC01SNJSw8WSIEl3MFwoCQ9JkKR3N0jSUsMPkARJ+qzh5pLwkIQkSNKzhptry6+SIEnPGH6AtmyXhCRIet6g20vCkQRJzxl0e22R9HmDJC31gb4kCX/XFkn3MejTkvBPkiDpPgZ9ShL+TVsk3ccHP0ASjra8UluS0BZJ9zbo09oi6f4GSVpqkKSlBt1eEo62SHrOIElLDZK01KBbS8LRFknPG24uCUdbJOlZgyQtNei2knC0RdLnDJK01CBJSw26pSQcbZH0eYMkLTXcWBKOtkjSZwy6nSQcbZH0NYMkLfXBb5SEZ7Tlf0nC0RZJ+qwPXigJX5GEh7bor5JwtEXS1w0vkoTvSkISJOkVPviN2vKMJPwqCW3ZLglHWyR9zwcv1JavaMtDEh7a8qskHG2RpK/44CJJONpyhbboP5JwtEXS9w2StNRwM0k42vJKSXgHSTjaIukag/5REh6SIOlnGiRpqeFGknC05VWScLTl/ykJR1skXWeQpKUGva0kHG2RdK1Bf5GEoy2Sfq7hJpJwtGWDtjy0RdL1Br21tkh6jUGSlhr0X0k42iLpZxtuIAlHWyTpCsMFknC05Y6ScLRF0s83SNJSg0jC0RZJOwxvLglHWyTpKsNySTjaImmPQZKWGhZLwtEWSbsMkrTU8MaScLTlSkk42iJpn0GSlhqWastDWyTtNLyxtjy05RXaImmv4ZuScLTlam2RpFcYJGmpQW8tCZJeY9DbSsJDEiRdb5CkpQa9pSQcbZF0vUGSlhokaalBb6ktRxIkXW+QpKWGb2rLQ1t0rbY8tEXS9dI/IUkLDZK01CBJSw2StNQgSUsNkrTUIElLDZK01CBJSw2StNQgSUsNkrTUIElLDZK01CBJSw2StNQgSUsNkrTUIElLDZK01CBJSw2StNQgSUsNkrTUIElL/QEnbcj+L2WT+gAAAABJRU5ErkJggg==">
+                    </td>
+                </tr>
+                <!--End of Main Post-->
+            </table>
+        </div>
+    </div>
+</div>

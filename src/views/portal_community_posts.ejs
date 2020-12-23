@@ -25,7 +25,7 @@
     <h2 class="community-page-post-username"><%= post.screen_name %></h2>
     <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
 
-        <div class="community-page-post-yeah-button-wrapper">
+        <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
             <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
         </div>
         <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>

@@ -75,7 +75,7 @@ async function getCommunityByID(community_id) {
     });
 }
 
-async function getNumberPostsByCommunity(community) {
+async function getTotalPostsByCommunity(community) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id
@@ -92,13 +92,19 @@ async function getPostByID(postID) {
 
 async function getPostsByUserID(userID) {
     verifyConnected();
-
     return POST.find({
         pid: userID
     });
 }
 
-async function getNumberPostsByUserID(userID) {
+async function getNumberUserPostsByID(userID, number) {
+    verifyConnected();
+    return POST.find({
+        pid: userID
+    }).sort({ created_at: -1}).limit(number);
+}
+
+async function getTotalPostsByUserID(userID) {
     verifyConnected();
     return POST.find({
         pid: userID
@@ -133,6 +139,14 @@ async function getNewPostsByCommunity(community, numberOfPosts) {
     }).sort({ created_at: -1 }).limit(numberOfPosts);
 }
 
+async function getUserPostsAfterTimestamp(post, numberOfPosts) {
+    verifyConnected();
+    return POST.find({
+        pid: post.pid,
+        created_at: { $lt: post.created_at }
+    }).limit(numberOfPosts);
+}
+
 async function getDiscoveryHosts() {
     verifyConnected();
     return ENDPOINT.findOne({
@@ -162,14 +176,16 @@ module.exports = {
     getNewCommunities,
     getCommunityByTitleID,
     getCommunityByID,
-    getNumberPostsByCommunity,
+    getTotalPostsByCommunity,
     getDiscoveryHosts,
     getPostsByCommunity,
     getHotPostsByCommunity,
     getNewPostsByCommunity,
     getPostsByCommunityKey,
     getPostsByUserID,
-    getNumberPostsByUserID,
+    getNumberUserPostsByID,
+    getTotalPostsByUserID,
     getPostByID,
     getUserByPID,
+    getUserPostsAfterTimestamp,
 };

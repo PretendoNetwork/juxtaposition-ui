@@ -1,29 +1,85 @@
 var scrollPosition;
 var screenName = 'PNID_Wii_U_Test';
-var updateCheck = setInterval(checkForUpdates, 30000);
-var blankMemo = 'Qk0AEwAAAAAAAD4AAAAoAAAAQAEAAHgAAAABAAEAAAAAAMISAAASCwAAEgsAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+//var updateCheck = setInterval(checkForUpdates, 30000);
+{
+    var blankMemo = 'Qk0AEwAAAAAAAD4AAAAoAAAAQAEAAHgAAAABAAEAAAAAAMISAAASCwAAEgsAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
+}
+
+function handleBackFunctionality() {
+    var oldURL = window.location.pathname;
+    var xhttp = new XMLHttpRequest();
+    //alert(oldURL);
+    if(oldURL.indexOf('users') !== -1)
+    {
+        wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+        wiiuBrowser.showLoadingIcon(true);
+        loadUserProfile(oldURL.replace('/users/', ''));
+        wiiuBrowser.showLoadingIcon(false);
+    }
+    else if(oldURL === '/communities' || oldURL === '/titles/show')
+    {
+        wiiuBrowser.showLoadingIcon(true);
+        document.getElementById('nav-bar-profile').classList.remove('selected')
+        document.getElementById('nav-bar-communities').classList.add('selected')
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                document.getElementById("main").innerHTML = this.responseText;
+                wiiuBrowser.showLoadingIcon(false);
+            }
+        };
+        xhttp.open("GET", "/communities?ajax=true", true);
+        xhttp.send();
+    }
+    else if(oldURL.indexOf('/communities/') !== -1)
+    {
+        wiiuBrowser.showLoadingIcon(true);
+        var communityID = oldURL.replace('/communities/', '');
+        wiiuBrowser.showLoadingIcon(!0)
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                document.getElementById("main").innerHTML = this.responseText;
+                wiiuBrowser.showLoadingIcon(false);
+            }
+        };
+        xhttp.open("GET", "/communities/" + communityID + '?ajax=true', true);
+        xhttp.send();
+
+        wiiuBrowser.showLoadingIcon(!1);
+    }
+    else
+    {
+        wiiuErrorViewer.openByCodeAndMessage(0000000, "Unknown Networking Error. Please send code to Jemma on Discord with what you were doing");
+    }
+}
+
+window.onpopstate = handleBackFunctionality;
 
 function stopLoading() {
     if (typeof wiiuBrowser !== 'undefined'
         && typeof wiiuBrowser.endStartUp !== 'undefined') {
         wiiuBrowser.endStartUp();
-        wiiuSound.playSoundByName("BGM_OLV_MAIN", 3);
     }
 }
 function exit() {
     wiiuSound.playSoundByName("SE_WAVE_EXIT", 1);
     wiiuBrowser.closeApplication();
 }
-function loadTab(elementID) {
+function loadTab(element) {
+        if(element.getAttribute('data-url') === 'activity-feed' || element.getAttribute('data-url') === 'news')
+    {
+        alert('Not Implemented. Check back soon!');
+        return;
+    }
+    var elementID = element.id;
     wiiuBrowser.showLoadingIcon(!0)
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             document.getElementById("main").innerHTML = this.responseText;
-            history.pushState({}, elementID.replace('nav-bar-', ''), '/' + elementID.replace('nav-bar-', ''));
+            history.pushState({}, element.getAttribute('data-url'), '/' + element.getAttribute('data-url'));
         }
     };
-    xhttp.open("GET", "/" + elementID.replace('nav-bar-', '') + '?ajax=true', true);
+    xhttp.open("GET", "/" + element.getAttribute('data-url') + '?ajax=true', true);
     xhttp.send();
 
     document.getElementById('nav-bar-profile').classList.remove('selected')
@@ -49,10 +105,11 @@ function loadCommunityPage(communityID) {
     xhttp.send();
 
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
-    wiiuBrowser.showLoadingIcon(!1)
+    wiiuBrowser.showLoadingIcon(!1);
 }
 function loadMessagesTab() {
-    wiiuBrowser.showLoadingIcon(!0)
+    alert('Not Implemented. Check back soon!');
+    /*wiiuBrowser.showLoadingIcon(!0)
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -72,85 +129,185 @@ function loadMessagesTab() {
     document.getElementById('nav-bar-messages').classList.add('selected')
 
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
-    wiiuBrowser.showLoadingIcon(!1)
+    wiiuBrowser.showLoadingIcon(!1)*/
 }
-function showPost() {
-    wiiuBrowser.showLoadingIcon(!0)
+function showOverlay() {
     wiiuSound.playSoundByName('SE_OLV_OK', 1)
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            var postObj = JSON.parse(this.responseText);
-            console.log(postObj);
-            document.getElementById("post-username").innerHTML = postObj.screen_name;
-            document.getElementById("post-time-stamp").innerHTML = (postObj.created_at.substring(0, postObj.created_at.indexOf(" ")) + ': ' +postObj.title_id);
-            document.getElementById("post-yeah-count").innerHTML = postObj.empathy_count + " Yeahs";
-            if(postObj.painting_uri !== "") {
-                document.getElementById("painting").src = postObj.painting_uri;
-            }
-            document.getElementById('myNav').style.display = 'block';
-            document.getElementById('nav-bar').style.display = 'none';
-            document.getElementById('title').style.display = 'none';
-            document.getElementById('content').style.display = 'none';
-            document.getElementById('main').style.marginLeft = '14vh';
-            document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";
-            wiiuBrowser.showLoadingIcon(!1)
-        }
-    };
-    xhttp.open("GET", "/post.json", true);
-    xhttp.send();
+    wiiuSound.playSoundByName('BGM_OLV_SETTING', 3)
+    document.getElementById('windowOverlay').style.display = 'block';
+    document.getElementById('nav-bar').style.display = 'none';
+    document.getElementsByClassName('community-page-header')[0].style.display = 'none';
+    document.getElementsByClassName('user-page-back-button')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-info-container')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = 'none';
+    document.getElementsByClassName('user-page-tab-table')[0].style.display = 'none';
+    document.getElementById('main').style.marginLeft = '14vh';
+    document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";
 }
-function hidePost() {
-    document.getElementById('myNav').style.display = 'none';
+function hideOverlay() {
+    wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
+    document.getElementById('windowOverlay').style.display = 'none';
     document.getElementById('nav-bar').style.display = 'block';
-    document.getElementById('title').style.display = 'block';
-    document.getElementById('content').style.display = 'block';
-    document.getElementById('main').style.marginLeft = '26.5vh';
+    document.getElementsByClassName('community-page-header')[0].style.display = '';
+    document.getElementsByClassName('user-page-back-button')[0].style.display = '';
+    document.getElementsByClassName('community-page-info-container')[0].style.display = '';
+    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = '';
+    document.getElementsByClassName('user-page-tab-table')[0].style.display = '';
+    document.getElementById('main').style.marginLeft = '225px';
+    document.body.style.backgroundColor = "rgba(232,236,236,1)";
+    wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
+}
+function showNewPostScreen() {
+    wiiuSound.playSoundByName('SE_OLV_OK', 1)
+    wiiuSound.playSoundByName('BGM_OLV_SETTING', 3)
+    document.getElementById('windowOverlay').style.display = 'block';
+    document.getElementById('nav-bar').style.display = 'none';
+    document.getElementsByClassName('community-page-header')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-back-button')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-info-container')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-header-overlay')[0].style.display = 'none';
+    document.getElementById('community-new-post-wrapper').style.display = 'none';
+    document.getElementById('main').style.marginLeft = '14vh';
+    document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";
+}
+function hideNewPostScreen() {
+    wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
+    document.getElementById('windowOverlay').style.display = 'none';
+    document.getElementById('nav-bar').style.display = 'block';
+    document.getElementsByClassName('community-page-header')[0].style.display = '';
+    document.getElementsByClassName('community-page-back-button')[0].style.display = '';
+    document.getElementsByClassName('community-page-info-container')[0].style.display = '';
+    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = '';
+    document.getElementsByClassName('community-page-header-overlay')[0].style.display = '';
+    document.getElementById('community-new-post-wrapper').style.display = '';
+    document.getElementById('main').style.marginLeft = '225px';
     document.body.style.backgroundColor = "rgba(232,236,236,1)";
     wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
 }
 function yeah(postNode, postID) {
+    var yeahCountElement = document.getElementById('yeah-' + postID);
+    var yeahcount = yeahCountElement.innerHTML.replace(' Yeahs', '');
     if (postNode.classList.contains("selected")) {
         postNode.classList.remove("selected");
-        var yeahCountElement = document.getElementById('yeah-' + postID);
-        var yeahcount = yeahCountElement.innerHTML.replace(' Yeahs', '');
+        var params = "postID=" + postID + "&type=down";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/post/empathy', true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(params);
+
         yeahCountElement.innerHTML = --yeahcount + ' Yeahs';
         wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
     }
     else {
         postNode.classList.add("selected");
-        var yeahCountElement = document.getElementById('yeah-' + postID);
-        var yeahcount = yeahCountElement.innerHTML.replace(' Yeahs', '');
-        yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
-        wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+
+        var params = "postID=" + postID + "&type=up";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/post/empathy', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+            }
+            if (this.readyState === 4 && this.status === 423) {
+                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+            }
+        }
+
+
+        xhttp.send(params);
+
+
     }
 }
-function replyBanner() {
-    var banner = document.getElementById('reply-banner-wrapper');
-    var uploadButton = document.getElementById('reply-banner-upload-button');
-    var submitButton = document.getElementById('reply-banner-submit-button');
-    if(banner.classList.contains('open')) {
-        uploadButton.classList.remove('open');
-        submitButton.classList.remove('open');
-        banner.classList.remove('open');
-        wiiuSound.playSoundByName("SE_OLV_CANCEL", 1);
+function followCommunity(community) {
+    var communityWrapper = document.getElementsByClassName('community-page-follow-button-wrapper')[0];
+    var followers = document.getElementsByClassName('community-page-table-text')[0];
+    if (communityWrapper.classList.contains("selected")) {
+        communityWrapper.classList.remove("selected");
+        community.style.color = '#1F8A42';
+        var params = "communityID=" + community.id + "&type=false";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/communities/follow', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+        followers.innerHTML = --followers.innerHTML;
+        community.innerHTML = 'Follow Community';
+        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
     }
     else {
-        uploadButton.classList.add('open');
-        submitButton.classList.add('open');
-        banner.classList.add('open');
-        wiiuSound.playSoundByName("SE_OLV_OK", 1);
+        var params = "communityID=" + community.id + "&type=true";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/communities/follow', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                communityWrapper.classList.add("selected");
+                community.style.color = '#FFFFFF';
+                community.innerHTML = 'Following';
+                followers.innerHTML = ++followers.innerHTML;
+                wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+            }
+            if (this.readyState === 4 && this.status === 423) {
+                wiiuErrorViewer.openByCodeAndMessage(5980002, "An error has occurred.\n\nPlease try again later.\n\nIf the problem persists, please make a note of the error code and visit invite.gg/pretendo")
+                wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+            }
+        }
+
+
+        xhttp.send(params);
+
+
     }
 }
-function replyBannerMenu() {
-    var menu = document.getElementById('reply-banner-upload-menu');
-    if(menu.classList.contains('open')) {
-        menu.classList.remove('open');
-        wiiuSound.playSoundByName("SE_OLV_CANCEL", 1);
+function followUser(user) {
+    //user-page-followers-tab
+    var userWrapper = document.getElementsByClassName('user-page-follow-button-wrapper')[0];
+    var followersElement = document.getElementById('user-page-followers-tab');
+    var followers = followersElement.innerHTML.replace(' Followers', '');
+    if (userWrapper.classList.contains("selected")) {
+        userWrapper.classList.remove("selected");
+        user.style.color = '#673DB6';
+        var params = "userID=" + user.id + "&type=false";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/users/follow', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+
+        user.innerHTML = 'Follow User';
+        followersElement.innerText = --followers + ' Followers'
+        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
     }
     else {
-        menu.classList.add('open');
-        wiiuSound.playSoundByName("SE_OLV_OK", 1);
+        userWrapper.classList.add("selected");
+        user.style.color = '#FFFFFF';
+
+        var params = "userID=" + user.id + "&type=true";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/users/follow', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                user.innerHTML = 'Following';
+                followersElement.innerText = ++followers + ' Followers'
+                wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+            }
+            if (this.readyState === 4 && (this.status === 423 || this.status === 404)) {
+                userWrapper.classList.remove("selected");
+                wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+            }
+        }
+
+
+        xhttp.send(params);
+
+
     }
 }
 function loadMessages() {
@@ -340,9 +497,74 @@ function loadPosts(type) {
         case 2:
             document.getElementById("verified-tab").classList.add('active');
             break;
+    }
+    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+}
+function loadUserPosts() {
+    wiiuBrowser.showLoadingIcon(!0);
+    var id = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+        }
+        else if(this.readyState === 4 && this.status === 204)
+        {
+            document.getElementById('load-more-posts-button').style.display = 'none';
+        }
+    };
+    xhttp.open("GET", "/users/loadPosts" + '?postID=' + id, true);
+    xhttp.send();
+
+    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+    wiiuBrowser.showLoadingIcon(!1);
+}
+function loadUserProfile(pid) {
+    wiiuBrowser.showLoadingIcon(!0)
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById("main").innerHTML = this.responseText;
+            history.pushState({}, 'User Page', '/users/show?pid=' + pid);
+        }
+    };
+    xhttp.open("GET", "/users/show?pid=" + pid + "&ajax=true", true);
+    xhttp.send();
+
+    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+}
+function switchUserPageTabs(type) {
+    document.getElementById('user-page-posts-tab').classList.remove('selected');
+    document.getElementById('user-page-friends-tab').classList.remove('selected');
+    document.getElementById('user-page-following-tab').classList.remove('selected');
+    document.getElementById('user-page-followers-tab').classList.remove('selected');
+
+    document.getElementById('user-page-posts-triangle').classList.remove('selected');
+    document.getElementById('user-page-friends-triangle').classList.remove('selected');
+    document.getElementById('user-page-following-triangle').classList.remove('selected');
+    document.getElementById('user-page-followers-triangle').classList.remove('selected');
+    switch (type) {
+        case 0:
+            document.getElementById("user-page-posts-tab").classList.add('selected');
+            document.getElementById("user-page-posts-triangle").classList.add('selected');
+            break;
+        case 1:
+            document.getElementById("user-page-friends-tab").classList.add('selected');
+            document.getElementById("user-page-friends-triangle").classList.add('selected');
+            break;
+        case 2:
+            document.getElementById("user-page-following-tab").classList.add('selected');
+            document.getElementById("user-page-following-triangle").classList.add('selected');
+            break;
+        case 3:
+            document.getElementById("user-page-followers-tab").classList.add('selected');
+            document.getElementById("user-page-followers-triangle").classList.add('selected');
+            break;
 
     }
+    wiiuSound.playSoundByName("SE_OLV_OK", 1);
 }
+
 checkForUpdates();
 function checkForUpdates() {
     var xhttp = new XMLHttpRequest();

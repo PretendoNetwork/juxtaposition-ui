@@ -2,25 +2,41 @@
 <head>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
     <script src="/js/juxt.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-279PNEDGEE');
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-T9NZ7BK');</script>
+    <!-- End Google Tag Manager -->
+    </script>
 </head>
 <body>
 <menu id="nav-bar" class="">
-    <li id="nav-bar-profile" class="" onclick="loadTab('nav-bar-profile')"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" class="" onclick="loadTab('nav-bar-activity-feed')"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" class="selected" onclick="loadTab('nav-bar-communities')"><a>Communities</a></li>
-    <li id="nav-bar-messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" class="" onclick="loadTab('nav-bar-news')"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-profile" data-url="users/me" class="" onclick="loadTab(this)"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" data-url="activity-feed" class="" onclick="loadTab(this)"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" data-url="communities" class="selected" onclick="loadTab(this)"><a>Communities</a></li>
+    <li id="nav-bar-messages" data-url="messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-url="news" class="" onclick="loadTab(this)"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
     <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
-    <li id="nav-bar-back" class="none"><a href="">Back</a></li>
 </menu>
 <div id="main">
     <h1 class="page-header">Communities</h1>
-    <div class="search-container">
-        <form action="/action_page.php">
+    <!--<div class="search-container">
+        <form action="/">
             <img id="search-icon" src="/icons/Icon-feather-search.svg"></img>
             <input id="search-bar" type="text" placeholder="Search communities..." name="search">
         </form>
-    </div>
+    </div>-->
     <div id="popular" class="communities-wrapper">
         <h1 class="communities-header">Popular Places</h1>
         <table>
@@ -67,6 +83,6 @@
     </div>
 
 </div>
-<body onload="stopLoading()">
+<body onload="stopLoading();wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
 </body>
 </html>
