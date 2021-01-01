@@ -48,7 +48,10 @@ async function getTopicByCommunityID(communityID) {
 
 async function getCommunities(numberOfCommunities) {
     verifyConnected();
-    return COMMUNITY.find({}).limit(numberOfCommunities);
+    if(numberOfCommunities === -1)
+        return COMMUNITY.find({});
+    else
+        return COMMUNITY.find({}).limit(numberOfCommunities);
 }
 
 async function getMostPopularCommunities(numberOfCommunities) {
@@ -71,7 +74,7 @@ async function getCommunityByTitleID(title_id) {
 async function getCommunityByID(community_id) {
     verifyConnected();
     return COMMUNITY.findOne({
-        id: community_id
+        community_id: community_id
     });
 }
 
@@ -154,6 +157,14 @@ async function getDiscoveryHosts() {
     });
 }
 
+async function getUsers(numberOfUsers) {
+    verifyConnected();
+    if(numberOfUsers === -1)
+        return USER.find({});
+    else
+        return USER.find({}).limit(numberOfUsers);
+}
+
 async function getUserByPID(PID) {
     verifyConnected();
 
@@ -162,11 +173,17 @@ async function getUserByPID(PID) {
     });
 }
 
+async function getUserByUsername(user_id) {
+    verifyConnected();
+
+    return USER.findOne({
+        user_id: new RegExp(`^${user_id}$`, 'i')
+    });
+}
+
 async function getServerConfig() {
     verifyConnected();
-    return ENDPOINT.findOne({
-        type: "config"
-    });
+    return ENDPOINT.findOne();
 }
 
 module.exports = {
@@ -186,6 +203,9 @@ module.exports = {
     getNumberUserPostsByID,
     getTotalPostsByUserID,
     getPostByID,
+    getUsers,
     getUserByPID,
+    getUserByUsername,
     getUserPostsAfterTimestamp,
+    getServerConfig
 };

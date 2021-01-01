@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Juxt Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create a column layout with Flexbox */
+        .row {
+            display: flex;
+        }
+
+        /* Left column (menu) */
+        .left {
+            flex: 35%;
+            padding: 15px 0;
+        }
+
+        .left h2 {
+            padding-left: 8px;
+        }
+
+        /* Right column (page content) */
+        .right {
+            flex: 65%;
+            padding: 15px;
+        }
+
+        /* Style the search box */
+        #mySearch {
+            width: 100%;
+            font-size: 18px;
+            padding: 11px;
+            border: 1px solid #ddd;
+        }
+
+        /* Style the navigation menu inside the left column */
+        #myMenu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #myMenu li a {
+            padding: 12px;
+            text-decoration: none;
+            color: black;
+            display: block
+        }
+
+        #myMenu li a:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="display: inline-block">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="<%= user.pfp_uri %>">
+
+<div class="row">
+    <div class="left" style="background-color:#bbb;max-width: 10%;">
+        <ul id="myMenu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/communities">Communities</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/discovery">Discovery</a></li>
+        </ul>
+    </div>
+
+    <div class="right" style="background-color:#ddd;">
+        <h2>Update <%=community.name%></h2>
+        <form action="/v1/communities/<%= community.community_id %>/update" enctype="multipart/form-data" target="formSubmitFrame" method="post">
+            <label for="name">Community Name:</label><br>
+            <input type="text" id="name" name="name" value="<%=community.name%>"><br>
+
+            <label for="description">Description:</label><br>
+            <input type="text" id="description" name="description" value="<%=community.description%>"><br>
+
+            <label for="title_ids">Title ID 1:</label><br>
+            <input type="text" id="title_ids" name="title_ids[]" value="<%=community.title_ids[0]%>"><br>
+
+            <label for="title_ids">Title ID 2:</label><br>
+            <input type="text" id="title_ids" name="title_ids[]" value="<%=community.title_ids[1]%>"><br>
+
+            <label for="title_ids">Title ID 3:</label><br>
+            <input type="text" id="title_ids" name="title_ids[]" value="<%=community.title_ids[2]%>"><br>
+
+            <label for="icon">System Icon (B64 TGA):</label><br>
+            <input type="text" id="icon" name="icon" value="<%=community.icon%>"><br><br>
+
+            Browser Icon (512px x 512px)<br>
+            <input type="file" id="browserIcon" accept="image/png" name="browserIcon"><br>
+            <img src="<%=community.browser_icon%>" height="150px"><br>
+
+            3DS Browser Banner<br>
+            <input type="file" id="CTRbrowserHeader" accept="image/png" name="CTRbrowserHeader"><br>
+            <img src="<%=community.CTR_browser_header%>" height="150px"><br>
+
+            Wii U Browser Banner (1498px x 328px)<br>
+            <input type="file" id="WiiUbrowserHeader" accept="image/png" name="WiiUbrowserHeader"><br>
+            <img src="<%=community.WiiU_browser_header%>" height="150px"><br>
+
+            Is Recommended?
+            <input type="radio" id="isRecomended" name="is_recommended" value="1" <%if(community.is_recommended === 1) {%> checked <%}%>>
+            <label for="isRecomended">True</label>
+            <input type="radio" id="isNotRecomended" name="is_recommended" value="0" <%if(community.is_recommended === 0) {%> checked <%}%>>
+            <label for="isNotRecomended">False</label><br>
+
+            Has Shop Page?
+            <input type="radio" id="hasShopPage" name="has_shop_page" value="1" <%if(community.has_shop_page === 1) {%> checked <%}%>>
+            <label for="hasShopPage">True</label>
+            <input type="radio" id="noShopPage" name="has_shop_page" value="0" <%if(community.has_shop_page === 0) {%> checked <%}%>>
+            <label for="noShopPage">False</label><br>
+
+            Platform
+            <input type="radio" id="WiiU" name="platform_id" value="0" <%if(community.platform_id === 0) {%> checked <%}%>>
+            <label for="platform_id">Wii U</label>
+            <input type="radio" id="3DS" name="platform_id" value="1" <%if(community.platform_id === 1) {%> checked <%}%>>
+            <label for="platform_id">3DS</label>
+            <input type="radio" id="Both" name="platform_id" value="2" <%if(community.platform_id === 2) {%> checked <%}%>>
+            <label for="platform_id">Both</label><br>
+
+            <input type="submit" value="Submit">
+            <iframe name="formSubmitFrame"></iframe>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

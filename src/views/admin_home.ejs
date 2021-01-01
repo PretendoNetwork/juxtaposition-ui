@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Juxt Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create a column layout with Flexbox */
+        .row {
+            display: flex;
+        }
+
+        /* Left column (menu) */
+        .left {
+            flex: 35%;
+            padding: 15px 0;
+        }
+
+        .left h2 {
+            padding-left: 8px;
+        }
+
+        /* Right column (page content) */
+        .right {
+            flex: 65%;
+            padding: 15px;
+        }
+
+        /* Style the search box */
+        #mySearch {
+            width: 100%;
+            font-size: 18px;
+            padding: 11px;
+            border: 1px solid #ddd;
+        }
+
+        /* Style the navigation menu inside the left column */
+        #myMenu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #myMenu li a {
+            padding: 12px;
+            text-decoration: none;
+            color: black;
+            display: block
+        }
+
+        #myMenu li a:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="display: inline-block">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="<%= user.pfp_uri %>">
+
+<div class="row">
+    <div class="left" style="background-color:#bbb;max-width: 10%;">
+        <ul id="myMenu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/communities">Communities</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/discovery">Discovery</a></li>
+        </ul>
+    </div>
+
+    <div class="right" style="background-color:#ddd;">
+        <h2>Home</h2>
+        <p>This is a temporary admin panel for Juxt that will likely be used throughout the beta, or at least until the main Pretendo Network Admin Panel is done lol.</p>
+        <p>If you can see this and your not a developer. Please tell Jemma how on earth you pulled it off, cause we kinda need this website to be secure :p</p>
+    </div>
+</div>
+
+</body>
+</html>

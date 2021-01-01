@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Juxt Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create a column layout with Flexbox */
+        .row {
+            display: flex;
+        }
+
+        /* Left column (menu) */
+        .left {
+            flex: 35%;
+            padding: 15px 0;
+        }
+
+        .left h2 {
+            padding-left: 8px;
+        }
+
+        /* Right column (page content) */
+        .right {
+            flex: 65%;
+            padding: 15px;
+        }
+
+        /* Style the search box */
+        #mySearch {
+            width: 100%;
+            font-size: 18px;
+            padding: 11px;
+            border: 1px solid #ddd;
+        }
+
+        /* Style the navigation menu inside the left column */
+        #myMenu {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #myMenu li a {
+            padding: 12px;
+            text-decoration: none;
+            color: black;
+            display: block
+        }
+
+        #myMenu li a:hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<h2 style="display: inline-block">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="<%= user.pfp_uri %>">
+
+<div class="row">
+    <div class="left" style="background-color:#bbb;max-width: 10%;">
+        <ul id="myMenu">
+            <li><a href="/">Home</a></li>
+            <li><a href="/communities">Communities</a></li>
+            <li><a href="/posts">Posts</a></li>
+            <li><a href="/users">Users</a></li>
+            <li><a href="/discovery">Discovery</a></li>
+        </ul>
+    </div>
+
+    <div class="right" style="background-color:#ddd;">
+        <h2>Communities</h2>
+        <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search..">
+        <div id="txtHint">Communities should be listed here. If not, that fucking blows</div>
+    </div>
+</div>
+<script>
+    /**
+     * Fetches table from MongoDB and
+     * displays in on the main page
+     */
+    function generate_table() {
+        var xhttp;
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                var data = JSON.parse(this.responseText);
+                let header = '<style>\n' +
+                    '        table {\n' +
+                    '            font-family: arial, sans-serif;\n' +
+                    '            border-collapse: collapse;\n' +
+                    '            width: 60%%;\n' +
+                    '        }\n' +
+                    '\n' +
+                    '        th {\n' +
+                    '            cursor: pointer;\n' +
+                    '        }\n' +
+                    '\n' +
+                    '        th, td {\n' +
+                    '            text-align: left;\n' +
+                    '            padding: 16px;\n' +
+                    '        }\n' +
+                    '\n' +
+                    '        tr {\n' +
+                    '            border: black;\n' +
+                    '            border-width: 2px;\n' +
+                    '            border-style: groove;\n' +
+                    '        }\n' +
+                    '    </style>';
+                let body;
+                body = '<table id="adddrop"><tbody id="search-list"><tr>' +
+                    '<th>Icon</th>' +
+                    '<th onClick="sortTable(0)">Name</th>' +
+                    '<th onClick="sortTable(1)">Created At</th>' +
+                    '<th onClick="sortTable(1)">Account Status</th>' +
+                    '<th onClick="sortTable(2)">Followers</th>' +
+                    '</tr>';
+                for(let i = 0; i < data.length; i++) {
+
+                    body +=
+                        '<tr id="' + data[i].pid + '" onclick="alert(this.id)">' +
+                        '<td><img style="width: 80px " src="' + data[i].pfp_uri + '"></img></td>' +
+                        '<td><a>' + data[i].user_id + '</a></td>' +
+                        '<td>' + data[i].created_at + '</td>' +
+                        '<td>' + data[i].account_status + '</td>' +
+                        '<td>' + data[i].followers + '</td></tr>';
+                }
+                body += '</tbody></table>';
+                document.getElementById("txtHint").innerHTML = header + '</head><body>' + body;
+            }
+        };
+        xhttp.open("GET", "/v1/users/all", true);
+        xhttp.send();
+    }
+    /**
+     * Deletes entry from MongoDB
+     * @param id
+     */
+    function deleteScout(id) {
+        var xhttp;
+        var e = document.getElementById("addDrop");
+        var period = e.options[e.selectedIndex].value;
+        xhttp = new XMLHttpRequest();
+        xhttp.open("GET", "/remove?p=" + period + "&id=" + id, true);
+        xhttp.send();
+        removeRow((id + "_row"));
+    }
+    /**
+     * Removes row from table
+     * @param id
+     */
+    function removeRow(id) {
+        var row = document.getElementById(id);
+        row.parentNode.removeChild(row);
+    }
+    /**
+     * Sorts table by selected column
+     * @param n
+     */
+    function sortTable(n) {
+        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("adddrop");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir === "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir === "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount ++;
+            } else {
+                if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+    generate_table();
+</script>
+<script>
+    function myFunction() {
+        var input, filter, ul, tr, a, i;
+        input = document.getElementById("mySearch");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("search-list");
+        tr = ul.getElementsByTagName("tr");
+        for (i = 1; i < tr.length; i++) {
+            a = tr[i].getElementsByTagName("a")[0];
+            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
