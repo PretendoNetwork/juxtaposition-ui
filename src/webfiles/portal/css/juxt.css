@@ -968,7 +968,6 @@ h4 {
 .community-page-posts-wrapper {
     position: relative;
     z-index: 3;
-    width: 1035px;
     background-color: rgba(255,255,255,1);
     border: 1.5px solid #d6d2d2;
     border-radius: 10px;

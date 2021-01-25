@@ -39,7 +39,7 @@
 <div class="community-page-header" style="background-image: url('<%= community.WiiU_browser_header %>')"></div>
 <div class="community-page-header-overlay"></div>
 <div class="community-page-back-button" onclick="window.history.back()"></div>
-<div id="community-new-post-wrapper">
+<div id="community-new-post-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
     <div class="new-post-button-text" onclick="showNewPostScreen()">
         + New Post
     </div>
@@ -50,7 +50,7 @@
             <p class="community-page-follow-button-text" id="<%= community.id %>" onclick="followCommunity(this)" style="color: #FFFFFF">Following</p>
         </div>
     <%} else {%>
-        <div class="community-page-follow-button-wrapper">
+        <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
             <p class="community-page-follow-button-text" id="<%= community.id %>" onclick="followCommunity(this)">Follow Community</p>
         </div>
     <%}%>
@@ -111,8 +111,8 @@
         <h2 class="community-page-post-username" onclick="loadUserProfile(<%=post.pid%>)"><%= post.screen_name %></h2>
         <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
 
-            <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-                <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+            <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>" >
+                <div class="community-page-post-yeah-button" <%if(user.pid !== 1000000000) {%> onclick="yeah(this.parentNode, <%= post.id %>)" <%}%>></div>
             </div>
             <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
     </div>

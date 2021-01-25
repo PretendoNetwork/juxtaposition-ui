@@ -3,128 +3,137 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Juxt Admin Panel</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        /* Create a column layout with Flexbox */
-        .row {
-            display: flex;
-        }
-
-        /* Left column (menu) */
-        .left {
-            flex: 35%;
-            padding: 15px 0;
-        }
-
-        .left h2 {
-            padding-left: 8px;
-        }
-
-        /* Right column (page content) */
-        .right {
-            flex: 65%;
-            padding: 15px;
-        }
-
-        /* Style the search box */
-        #mySearch {
-            width: 100%;
-            font-size: 18px;
-            padding: 11px;
-            border: 1px solid #ddd;
-        }
-
-        /* Style the navigation menu inside the left column */
-        #myMenu {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        #myMenu li a {
-            padding: 12px;
-            text-decoration: none;
-            color: black;
-            display: block
-        }
-
-        #myMenu li a:hover {
-            background-color: #eee;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
 </head>
 <body>
 
-<h2 style="display: inline-block">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="<%= user.pfp_uri %>">
+<h2 style="display: inline-block; margin-left: 20px">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="<%= user.pfp_uri %>">
 
 <div class="row">
     <div class="left" style="background-color:#bbb;max-width: 10%;">
         <ul id="myMenu">
             <li><a href="/">Home</a></li>
             <li><a href="/communities">Communities</a></li>
-            <li><a href="/posts">Posts</a></li>
+            <li><a href="/audit">Audit Log</a></li>
             <li><a href="/users">Users</a></li>
             <li><a href="/discovery">Discovery</a></li>
         </ul>
     </div>
 
     <div class="right" style="background-color:#ddd;">
-        <h2>Create New Community</h2>
+        <h2>New Community</h2>
         <form action="/v1/communities/new" target="formSubmitFrame" enctype="multipart/form-data" method="post">
-            <label for="name">Community Name:</label><br>
-            <input type="text" id="name" name="name" required><br>
+            <div class="form-section">
+                <div class="section-info">
+                    <h2>Meta information</h2>
+                    <p>Update the name, description, system icon, and title ID's of the community</p>
+                </div>
+                <div class="section-inputs">
+                    <div class="input-div">
+                        <label for="name">Community Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
 
-            <label for="description">Description:</label><br>
-            <input type="text" id="description" name="description" required><br>
+                    <div class="input-div">
+                        <label for="description">Description:</label>
+                        <textarea type="text" id="description" name="description" required></textarea>
+                    </div>
 
-            <label for="title_ids">Title ID 1:</label><br>
-            <input type="text" id="title_ids" name="title_ids[]" required><br>
+                    <div class="input-grid">
+                        <div class="input-div">
+                            <label for="title_ids">Title ID 1:</label>
+                            <input type="text" id="title_ids" name="title_ids[]" required>
+                        </div>
 
-            <label for="title_ids">Title ID 2:</label><br>
-            <input type="text" id="title_ids" name="title_ids[]"><br>
+                        <div class="input-div">
+                            <label for="title_ids">Title ID 2:</label>
+                            <input type="text" id="title_ids" name="title_ids[]">
+                        </div>
 
-            <label for="title_ids">Title ID 3:</label><br>
-            <input type="text" id="title_ids" name="title_ids[]"><br>
+                        <div class="input-div">
+                            <label for="title_ids">Title ID 3:</label>
+                            <input type="text" id="title_ids" name="title_ids[]">
+                        </div>
 
-            <label for="icon">System Icon (B64 TGA):</label><br>
-            <input type="text" id="icon" name="icon" required><br>
+                        <div class="input-div">
+                            <label for="icon">System Icon (B64 TGA):</label>
+                            <input type="text" id="icon" name="icon" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            Browser Icon (512px x 512px)<br>
-            <input type="file" id="browserIcon" accept="image/png" name="browserIcon" required><br>
+            <div class="form-section">
+                <div class="section-info">
+                    <h2>Browser Icons and Meta Data</h2>
+                    <p>Update the browser icons for the Miiverse Applets, as well as setting the platform, and other settings</p>
+                </div>
+                <div class="section-inputs">
+                    <div class="input-div choices-inputs do-input-cols">
+                        <div>
+                            Browser Icon (512px x 512px)
+                            <input type="file" id="browserIcon" accept="image/png" name="browserIcon" required>
+                        </div>
+                    </div>
 
-            3DS Browser Banner<br>
-            <input type="file" id="CTRbrowserHeader" accept="image/png" name="CTRbrowserHeader" required><br>
-            Wii U Browser Banner (1498px x 328px)<br>
-            <input type="file" id="WiiUbrowserHeader" accept="image/png" name="WiiUbrowserHeader" required><br>
-            Is Recommended?
-            <input type="radio" id="isRecomended" name="is_recommended" value="1" required>
-            <label for="isRecomended">True</label>
-            <input type="radio" id="isNotRecomended" name="is_recommended" value="0" required>
-            <label for="isNotRecomended">False</label><br>
+                    <hr>
 
-            Has Shop Page?
-            <input type="radio" id="hasShopPage" name="has_shop_page" value="1" required>
-            <label for="hasShopPage">True</label>
-            <input type="radio" id="noShopPage" name="has_shop_page" value="0" required>
-            <label for="noShopPage">False</label><br>
+                    <div class="input-div choices-inputs do-input-cols">
+                        <div>
+                            3DS Browser Banner
+                            <input type="file" id="CTRbrowserHeader" accept="image/png" name="CTRbrowserHeader" required>
+                        </div>
+                    </div>
 
-            Platform
-            <input type="radio" id="WiiU" name="platform_ID" value="0" required>
-            <label for="platform_ID">Wii U</label>
-            <input type="radio" id="3DS" name="platform_ID" value="1" required>
-            <label for="platform_ID">3DS</label>
-            <input type="radio" id="Both" name="platform_ID" value="2" required>
-            <label for="platform_ID">Both</label><br>
+                    <hr>
 
-            <input type="submit" value="Submit">
-            <iframe name="formSubmitFrame"></iframe>
+                    <div class="input-div choices-inputs">
+                        Wii U Browser Banner (1498px x 328px)
+                        <input type="file" id="WiiUbrowserHeader" accept="image/png" name="WiiUbrowserHeader" required>
+                    </div>
+
+                    <hr>
+
+                    <div class="input-div choices-inputs">
+                        Is Recommended?
+                        <input type="radio" id="isRecomended" name="is_recommended" value="1" required>
+                        <label for="isRecomended">True</label>
+                        <input type="radio" id="isNotRecomended" name="is_recommended" value="0" required>
+                        <label for="isNotRecomended">False</label>
+                    </div>
+
+                    <div class="input-div choices-inputs">
+                        Has Shop Page?
+                        <input type="radio" id="hasShopPage" name="has_shop_page" value="1" required>
+                        <label for="hasShopPage">True</label>
+                        <input type="radio" id="noShopPage" name="has_shop_page" value="0" required>
+                        <label for="noShopPage">False</label>
+                    </div>
+
+                    <div class="input-div choices-inputs">
+                        Platform
+                        <input type="radio" id="WiiU" name="platform_id" value="0" required>
+                        <label for="platform_id">Wii U</label>
+                        <input type="radio" id="3DS" name="platform_id" value="1" required>
+                        <label for="platform_id">3DS</label>
+                        <input type="radio" id="Both" name="platform_id" value="2" required>
+                        <label for="platform_id">Both</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-info">
+                    <h2>Submit Community</h2>
+                    <p></p>
+                </div>
+                <div class="section-inputs">
+                    <div>
+                        <button type="submit" class="btn">Submit</button>
+                    </div>
+                    <iframe name="formSubmitFrame"></iframe>
+                </div>
+            </div>
         </form>
     </div>
 </div>

@@ -78,6 +78,43 @@ router.get('/communities/:communityID', function (req, res) {
     });
 });
 
+router.get('/communities/:communityID/delete', function (req, res) {
+    database.connect().then(async e => {
+        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let user = await database.getUserByPID(pid);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+                throw new Error('Invalid credentials supplied');
+
+            let community = await database.getCommunityByID(req.params.communityID);
+            community.delete().then(err => function () {
+                res.send(err);
+            });
+        }
+        else
+            throw new Error('Invalid account ID or password');
+
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
 router.post('/communities/:communityID/update', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), function (req, res) {
     database.connect().then(async e => {
         //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);

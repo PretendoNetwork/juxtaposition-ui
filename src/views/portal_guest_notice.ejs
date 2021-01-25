@@ -71,8 +71,27 @@
     <button class="about-button" style="margin-left: 50px" onclick="exit()">Exit</button>
     <button class="about-button" style="margin-left: 625px;"
             onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
-                         document.getElementById('ready').style.display = 'block';
+                         document.getElementById('google-analytics').style.display = 'block';
                          document.getElementById('welcome').style.display = 'none';">Next</button>
+</div>
+
+<div id="google-analytics" class="about-wrapper">
+    <h1 class="about-header">Google Analytics</h1>
+    <div class="about-body">
+        <p>
+            Juxtaposition uses Google Analytics in order to track how users are using our service. The data collected
+            includes but is not limited to time of visit, pages visited, and time spent on the site. This data is
+            not attached to you in any way, and is not used for advertisements by us or Google.
+        </p>
+    </div>
+    <button class="about-button" style="margin-left: 50px;"
+            onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+                         document.getElementById('welcome').style.display = 'block';
+                         document.getElementById('google-analytics').style.display = 'none';">Back</button>
+    <button class="about-button" style="margin-left: 625px;"
+            onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+                         document.getElementById('ready').style.display = 'block'
+                         document.getElementById('google-analytics').style.display = 'none'">Next</button>
 </div>
 
 <div id="ready" class="about-wrapper">
@@ -87,16 +106,6 @@
     </div>
     <button class="about-button" style="margin-left: 320px; width: 250px"
             onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);window.location.replace('/communities')">I Understand</button>
-    <!--<button class="about-button" style="margin-left: 50px;"
-            onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
-                         document.getElementById('game-experience').style.display = 'block';
-                         document.getElementById('ready').style.display = 'none';">Back</button>
-    <button class="about-button" style="margin-left: 625px;"
-            onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
-                         document.getElementById('have-fun').style.display = 'block'
-                         document.getElementById('ready').style.display = 'none';
-                         wiiuSound.playSoundByName('JGL_OLV_INIT_END', 3);
-                         submit()">Next</button>-->
 </div>
 
 <body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3);">

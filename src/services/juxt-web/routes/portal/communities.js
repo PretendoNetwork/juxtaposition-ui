@@ -44,18 +44,16 @@ router.get('/', function (req, res) {
     });
 });
 
-router.get('/*/new', function (req, res) {
+router.get('/:communityID/new', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
-    let community_id = req.originalUrl.replace('/communities/', '').replace('/new','').trim();
     var isAJAX = ((req.query.ajax+'').toLowerCase() === 'true')
-    if(isAJAX)
-        community_id = community_id.substring(0, community_id.indexOf('?'));
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
-        let community = await database.getCommunityByID(community_id.substring(0, community_id));
+        console.log(req.params.communityID)
+        let community = await database.getCommunityByID(req.params.communityID.toString());
         let newPosts = await database.getNewPostsByCommunity(community, 100);
         let totalNumPosts = await database.getTotalPostsByCommunity(community);
         if(isAJAX) {

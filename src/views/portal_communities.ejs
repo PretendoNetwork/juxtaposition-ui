@@ -44,7 +44,7 @@
             <tr>
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>
                     <td>
-                        <div class="community-list-wrapper" onclick="loadCommunityPage('<%= popularCommunities[i].id %>')">
+                        <div class="community-list-wrapper" onclick="loadCommunityPage('<%= popularCommunities[i].community_id %>')">
                             <img class="community-list-icon" src="<%= popularCommunities[i].browser_icon %>">
                             <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                             <h4 class="community-list-followers"><%= popularCommunities[i].followers %> followers</h4>
@@ -66,7 +66,7 @@
             <tr>
                 <% for(var j = 0; j < newCommunities.length; j++) {%>
                     <td>
-                        <div class="community-list-wrapper" onclick="loadCommunityPage('<%= newCommunities[j].id %>')">
+                        <div class="community-list-wrapper" onclick="loadCommunityPage('<%= newCommunities[j].community_id %>')">
                             <img class="community-list-icon" src="<%= newCommunities[j].browser_icon %>">
                             <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
                             <h4 class="community-list-followers"><%= newCommunities[j].followers %> followers</h4>

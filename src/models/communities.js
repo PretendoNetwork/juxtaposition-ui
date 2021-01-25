@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 const  CommunitySchema = new Schema({
     created_at: {
       type: Date,
+        default: new Date(),
     },
     empathy_count: {
         type: Number,
