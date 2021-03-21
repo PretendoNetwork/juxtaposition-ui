@@ -19,10 +19,11 @@ database.connect().then(async e => {
     let communities = await database.getCommunities();
     if(communities !== null) {
         for(let i = 0; i < communities.length; i++ ) {
-            for(let j = 0; j < communities[i].title_id.length; j++) {
-                communityMap.set(communities[i].title_id[j], communities[i].name);
+            if(communities[i].title_id !== null) {
+                for(let j = 0; j < communities[i].title_id.length; j++) {
+                    communityMap.set(communities[i].title_id[j], communities[i].name);
+                }
             }
-
         }
     }
     logger.success('Created community index')

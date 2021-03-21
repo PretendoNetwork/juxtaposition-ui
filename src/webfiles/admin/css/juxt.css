@@ -1,0 +1,477 @@
+
+/* Themes */
+:root {
+
+    --pretendo: #673db6;
+
+    --body: #eee;
+    --content: white;
+
+    --text: #191919;
+    --text-secondary: #4c4c4c;
+
+    --hover: #eee;
+    --shadow: rgba(0, 0, 0, 0.15);
+    --border: #d3d3d3;
+    --input-bg: #f5f5f5;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --body: #1f1f1f;
+        --content: #1b1b1b;
+
+        --text: white;
+        --text-secondary: #8f8e8e;
+
+        --hover: rgba(255, 255, 255, 0.1);
+        --shadow: rgba(255, 255, 255, 0.05);
+        --border: rgba(255, 255, 255, 0.1);
+        --input-bg: #191919;
+    }
+}
+
+/* Basic styles */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--body);
+    color: var(--text);
+    margin: 0;
+    border-top: 5px solid var(--pretendo);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Create a column layout with Flexbox */
+.row {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    grid-gap: 20px;
+    max-width: 1300px;
+    width: calc(100% - 40px);
+    margin: 30px auto;
+}
+.row > .left {
+    display: inline-table;
+    position: sticky;
+}
+.row > .left, .row > .right {
+    background: var(--content) !important;
+    width: 100%;
+    max-width: 100% !important;
+    border-radius: 6px;
+    box-shadow: 0 3px 5px var(--shadow);
+    padding: 20px;
+}
+
+/* Form styles */
+.form-section {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-gap: 20px;
+    padding: 30px 0;
+}
+.form-section + .form-section {
+    border-top: 1px solid var(--border);
+}
+.section-inputs {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-gap: 10px;
+}
+.section-inputs .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+}
+.form-section .section-inputs img {
+    max-width: 100%;
+    border-radius: 4px;
+}
+.form-section .section-inputs input, .form-section .section-inputs textarea {
+    background: var(--input-bg);
+}
+.form-section .section-inputs textarea {
+    min-height: 80px;
+    height: 100px;
+    resize: vertical;
+    max-height: 300px;
+}
+.form-section .section-inputs .do-input-cols {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    grid-gap: 10px;
+    align-items: center;
+}
+.form-section .section-inputs hr {
+    border: 0;
+    margin: 30px;
+    width: calc(100% - 60px);
+    height: 1px;
+    background: var(--border)
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 16px;
+    display: inline-block;
+    border-radius: 6px;
+    font-size: 1rem;
+    text-transform: uppercase;
+    background: var(--pretendo);
+    border: 0;
+    font-weight: bold;
+}
+
+/* Style the search box */
+#mySearch {
+    width: 100%;
+    font-size: 18px;
+    padding: 11px;
+    border: 1px solid #ddd;
+}
+
+/* Style the navigation menu inside the left column */
+#myMenu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+#myMenu li a {
+    display: block;
+    color: var(--text);
+    text-decoration: none;
+    padding: 10px;
+    margin: 0 -10px;
+    border-radius: 6px;
+}
+
+#myMenu li a:hover {
+    background-color: var(--hover);
+}
+
+/* Style inputs */
+[type="text"] {
+    font-family: Arial;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    color: var(--text);
+}
+
+/* Full-width input fields */
+.modal input[type=text], .modal input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    user-select: none;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.container {
+    padding: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Add Zoom Animation */
+.animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s;
+    max-width: 35%;
+}
+
+@-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)}
+    to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
+
+/* Community and User Page Styles */
+.community-page-info-icon {
+    width: 100px;
+}
+
+/*community page*/
+
+.community-page-header-overlay {
+    z-index: 2;
+    position: absolute;
+    background-color: rgba(41, 200, 83, 0.75);
+    margin-left: -45px;
+    margin-top: -330px;
+    min-height: 242px;
+    width: 86%;
+}
+
+.community-page-header {
+    z-index: 1;
+    background-size: 100%;
+    margin-left: -45px;
+    min-height: 328px;
+    background-repeat: no-repeat !important;
+}
+
+.community-page-info-container {
+    z-index: 3;
+    min-height: 255px;
+    background-color: rgba(255,255,255,1);
+    border: 1.5px solid #00000000;
+    border-radius: 10px;
+    margin-left: -15px;
+    margin-bottom: 15px;
+}
+
+.community-page-table-wrapper {
+    border-top: #D6D2D2;
+    border-width: 5px;
+    position: absolute;
+    padding-top: 25px;
+    margin-left: 17px;
+    line-height: 20px;
+}
+
+.community-page-table-label {
+    color: #673DB6;
+    padding-left: 15px;
+    font-size: larger;
+    margin-top: 15px;
+}
+
+.community-page-table-text {
+    color: black;
+    padding-left: 15px;
+    margin-top: -15px;
+    font-size: large;
+}
+
+.community-page-margin-line {
+    border-top: 2px solid #D6D2D2;
+    width: 760px;
+    height: 5px;
+    position: absolute;
+    z-index: 5;
+    margin-left: 20px;
+}
+
+.community-page-shaded-info-container {
+    z-index: 3;
+    width: 240px;
+    height: 85px;
+    background-color: rgb(233, 233, 233);
+    border: 1.5px solid #e9e9e9;
+    border-radius: 10px;
+}
+
+.community-page-info-icon {
+    width: 150px;
+    border-radius: 10px;
+    margin: 20px;
+    float: left;
+}
+
+.community-page-title {
+    margin-bottom: 0;
+}
+
+.community-page-description {
+    width: 550px;
+    line-height: 20px;
+}
+
+.community-page-posts-wrapper {
+    position: relative;
+    z-index: 3;
+    background-color: rgba(255,255,255,1);
+    border: 1.5px solid #00000000;
+    border-radius: 10px;
+    margin-top: 125px;
+    margin-left: 5px;
+}
+
+.community-page-posts-header {
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.community-page-posts-header-tab {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 21px;
+    cursor: pointer;
+}
+.community-page-posts-header-tab.active {
+    color: #673DB6;
+}
+
+.community-page-post-wrapper {
+    padding-top: 25px;
+    margin-left: 0;
+    margin-bottom: 90px;
+    width: 760px;
+
+}
+
+.community-page-post-screenshot {
+    width: 760px;
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
+}
+
+.community-page-post-painting {
+    width: 760px;
+    height: 285px;
+}
+
+.community-page-post-yeah-button-wrapper {
+    padding-bottom: 150px;
+    margin-left: 380px;
+    margin-top: -160px;
+    background-repeat: no-repeat !important;
+    background: url('data:image/png;base64,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')
+    310px 65px;
+}
+
+.community-page-post-yeah-button {
+    cursor: pointer;
+    position: absolute;
+    margin-left: 310px;
+    height: 60px;
+    width: 66px;
+    margin-top: 65px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.community-page-post-yeah-count {
+    color: #673DB6;
+    margin-left: 435px;
+    margin-bottom: 0;
+    margin-top: -65px;
+    font-weight: bold;
+    font-size: large;
+    position: absolute;
+    text-align: right;
+    height: 33px;
+    width: 250px;
+
+}
+
+.community-page-post-user-info-wrapper {
+    background-color: rgba(255,255,255,1);
+    margin-bottom: 15px;
+    margin-left: 80px;
+    min-width: 520px;
+}
+
+.community-page-post-user-icon {
+    width: 90px;
+    border-radius: 10px;
+    margin-right: 15px;
+    float: left;
+}
+.community-page-post-user-icon.verified{
+    width: 90px;
+    margin-right: 15px;
+    float: left;
+    border: 5px solid #673DB6;
+    border-radius: 10px;
+}
+
+.community-page-verified-user-badge {
+    position: absolute;
+    min-width: 28px;
+    height: 28px;
+    margin-left: -28px;
+    margin-top: -14px;
+    padding: 6px 6px 4px 5px;
+    border: 3px solid #673DB6;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAALCAYAAABPhbxiAAAABHNCSVQICAgIfAhkiAAAAI5JREFUKFOV0lERgzAQRdH7FBQpSKgTpgrQgIPioE7AAg4qAQfLLE0YyBBC+cgH2TObt4n44zOzCmiBXnddQANQA90tmKAJeBbhKZJmhY1GUp8eO4e8zuE7BP5IekV8hSL0sCPwAFZcQiv0xcwOOEzO//0GIc1pjG04Cfa6LNo67nLFzt9cp1hbvI7cA1kA5mlGowbMjrkAAAAASUVORK5CYII=');
+    background-color: #673DB6;
+    background-position: 4px 6px;
+    background-size: 65%;
+    background-repeat: no-repeat !important;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 18px;
+    -webkit-border-radius: 20px;
+}
+
+.community-page-post-username {
+    padding-top: 15px;
+    margin-bottom: 0;
+}
+
+.community-page-post-text-overlay {
+    position: relative;
+    z-index: 5;
+    width: 730px;
+    min-height: 50px;
+    background-color: rgba(255,255,255,0.95);
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
+    margin-top: -80px;
+    margin-left: 13px;
+}
+
+h3 {
+    padding-left: 20px;
+}
+
+iframe {
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
+}
