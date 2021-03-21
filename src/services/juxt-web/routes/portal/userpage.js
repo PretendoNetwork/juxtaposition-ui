@@ -2,8 +2,8 @@ var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../authentication');
-const ejs = require('ejs');
 var multer  = require('multer');
+var moment = require('moment');
 var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
 
@@ -19,9 +19,12 @@ router.get('/me', function (req, res) {
         let user = await database.getUserByPID(pid);
         let newPosts = await database.getNumberUserPostsByID(pid, 1);
         let numPosts = await database.getTotalPostsByUserID(pid);
+        let communityMap = await util.data.getCommunityHash();
         if(isAJAX) {
             res.render('portal_me_page_ajax.ejs', {
                 // EJS variable and server-side variable
+                communityMap: communityMap,
+                moment: moment,
                 user: user,
                 newPosts: newPosts,
                 numPosts: numPosts
@@ -30,6 +33,8 @@ router.get('/me', function (req, res) {
         else {
             res.render('portal_me_page.ejs', {
                 // EJS variable and server-side variable
+                communityMap: communityMap,
+                moment: moment,
                 user: user,
                 newPosts: newPosts,
                 numPosts: numPosts
@@ -107,11 +112,16 @@ router.get('/show', function (req, res) {
         let parentUser = await database.getUserByPID(pid);
 
         let user = await database.getUserByPID(userID);
-        let newPosts = await database.getNumberUserPostsByID(user.pid, 1);
+        if(user === null)
+            res.sendStatus(404);
+        let newPosts = await database.getNumberUserPostsByID(user.pid, 10);
         let numPosts = await database.getTotalPostsByUserID(user.pid);
+        let communityMap = await util.data.getCommunityHash();
         if(isAJAX) {
             res.render('portal_user_page_ajax.ejs', {
                 // EJS variable and server-side variable
+                communityMap: communityMap,
+                moment: moment,
                 user: user,
                 newPosts: newPosts,
                 numPosts: numPosts,
@@ -121,9 +131,12 @@ router.get('/show', function (req, res) {
         else {
             res.render('portal_user_page.ejs', {
                 // EJS variable and server-side variable
+                communityMap: communityMap,
+                moment: moment,
                 user: user,
                 newPosts: newPosts,
-                numPosts: numPosts
+                numPosts: numPosts,
+                parentUser: parentUser
             });
         }
     }).catch(error => {
@@ -151,14 +164,15 @@ router.get('/loadPosts', function (req, res) {
         if(pid === null)
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
-        let newPosts = await database.getUserPostsAfterTimestamp(post, 1);
-        let numPosts = await database.getNumberUserPostsByID(pid);
+        let newPosts = await database.getUserPostsAfterTimestamp(post, 5);
+        let communityMap = await util.data.getCommunityHash();
         if(newPosts.length > 0)
         {
-            res.render('portal_user_page_posts_ajax.ejs', {
+            res.render('portal_more_posts_ajax.ejs', {
+                communityMap: communityMap,
+                moment: moment,
                 user: user,
                 newPosts: newPosts,
-                numPosts: numPosts
             });
         }
         else

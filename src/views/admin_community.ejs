@@ -80,47 +80,26 @@
                 </div>
                 <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
             </div>
-            <%if(post.screenshot !== '' && post.painting === '' && post.url === '' && post.body === '') {%>
-                <div class="community-page-post-wrapper">
-                    <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-                </div>
-            <% } else if(post.painting !== '' && post.screenshot === '' && post.url === '') {%>
-                <div class="community-page-post-wrapper">
-                    <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-                </div>
-            <% } else if(post.url !== '' && post.screenshot === '' && post.painting === '' && post.body === '') {%>
-                <div class="community-page-post-wrapper">
-                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            <% } else if(post.body !== '' && post.screenshot === '' && post.painting === '' && post.url === '') {%>
-                <div class="community-page-post-wrapper">
+            <div class="community-page-post-wrapper">
+                <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
                     <h3><%= post.body %></h3>
-                </div>
-            <% } else if(post.screenshot !== '' && post.body !== '' && post.painting === '' && post.url === '') {%>
-                <div class="community-page-post-wrapper">
-                    <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-                    <div class="community-page-post-text-overlay">
-                        <h3><%= post.body %></h3>
-                    </div>
-                </div>
-            <% } else if(post.screenshot !== '' && post.painting !== '' && post.url === '') {%>
-                <div class="community-page-post-wrapper">
-                    <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-                    <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-                </div>
-            <% } else if(post.url !== '' && post.body !== '' && post.screenshot === '' && post.painting === '') {%>
-                <div class="community-page-post-wrapper">
-                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <div class="community-page-post-text-overlay">
-                        <h3><%= post.body %></h3>
-                    </div>
-                </div>
-            <% } else if(post.url !== '' && post.painting !== '' && post.screenshot === '' && post.body === '') {%>
-                <div class="community-page-post-wrapper">
-                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-                </div>
-            <%}%>
+                <%} else { %>
+                    <% if(post.screenshot !== '') { %>
+                        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                    <%}%>
+                    <% if(post.painting !== '') { %>
+                        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+                    <%}%>
+                    <% if(post.url) { %>
+                        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <%}%>
+                    <% if(post.body) { %>
+                        <div class="community-page-post-text-overlay">
+                            <h3><%= post.body %></h3>
+                        </div>
+                    <%}%>
+                <%}%>
+            </div>
             <br>
             <br>
             <% }); %>

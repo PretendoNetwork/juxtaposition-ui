@@ -21,7 +21,7 @@ const PostSchema = new Schema({
     country_id: Number,
     created_at: Date,
     feeling_id: Number,
-    id: Number,
+    id: String,
     is_autopost: {
       type: Number,
       default: 0

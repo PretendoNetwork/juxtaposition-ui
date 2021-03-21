@@ -2,14 +2,33 @@ const crypto = require('crypto');
 const NodeRSA = require('node-rsa');
 const fs = require('fs-extra');
 const database = require('./database');
+const logger = require('./logger');
 const config = require('./config.json');
 const xmlParser = require('xml2json');
 const request = require("request");
 const moment = require('moment');
 const { USER } = require('./models/user');
+var HashMap = require('hashmap');
 let TGA = require('tga');
 let pako = require('pako');
 let PNG = require('pngjs').PNG;
+
+let communityMap = new HashMap();
+
+database.connect().then(async e => {
+    let communities = await database.getCommunities();
+    if(communities !== null) {
+        for(let i = 0; i < communities.length; i++ ) {
+            for(let j = 0; j < communities[i].title_id.length; j++) {
+                communityMap.set(communities[i].title_id[j], communities[i].name);
+            }
+
+        }
+    }
+    logger.success('Created community index')
+}).catch(error => {
+    logger.error(error);
+});
 
 let methods = {
     create_user: function(pid, experience, notifications) {
@@ -25,8 +44,6 @@ let methods = {
                     }, function (error, response, body) {
                         if (!error && response.statusCode === 200) {
                             let xml = xmlParser.toJson(body, {object: true});
-                            //console.log(xml);
-                            //console.log(xml.miis.mii.images.image[0].cached_url);
                             const newUsr = {
                                 pid: pid,
                                 created_at: moment().format('YYYY-MM-DD HH:mm:SS'),
@@ -40,7 +57,6 @@ let methods = {
                                 official: false
                             };
                             const newUsrObj = new USER(newUsr);
-                            //console.log(newUsrObj);
                             newUsrObj.save();
                             resolve(newUsr);
                         }
@@ -211,5 +227,8 @@ let methods = {
 
         return hashed;
     },
+    getCommunityHash: function() {
+        return communityMap;
+    }
 };
 exports.data = methods;

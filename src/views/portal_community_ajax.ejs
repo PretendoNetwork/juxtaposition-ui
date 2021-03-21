@@ -1,34 +1,98 @@
 <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
-    <div class="overlay-content">
+    <div class="overlay-content" style="position: fixed">
         <div id="post-window" class="post-wrapper">
             <!--Start of Main Post-->
-            <form action="/users/me" method="post" enctype="multipart/form-data">
+            <form class="post-emotion-radio" action="/posts/new" method="post" enctype="multipart/form-data">
                 <table>
                     <tr>
                         <td colspan="2">
-                            <h1 class="communities-header" style="padding-left: 75px; padding-top: 10px">Post to <%= community.name %></h1>
+                            <h1 class="communities-header" style="padding-left: 50px; padding-top: 10px">Post to <%= community.name %></h1>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <div class="post-type-button-text">T</div>
+                            <img class="post-user-icon" src="<%= user.pfp_uri %>">
+                            <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
+                            <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
+                            <input type="hidden" id="_post_type" name="_post_type" value="body">
                         </td>
-                        <td style="padding-left: 75px;" rowspan="2">
-                            <textarea id="comment" name="comment" placeholder="Tap here to make a post." style="margin-bottom: 0; height: 200px" maxlength="300" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Prost cannot contain explicit language');}"></textarea>
+                        <td>
+                            <div class="post-emotions-wrapper">
+                                <label for="post-emotion-0">
+                                    <input type="radio" name="emotion" id="post-emotion-0" value="0" checked>
+                                    <span class="post-emotion-0"></span>
+                                </label>
+                                <label for="post-emotion-1">
+                                    <input type="radio" name="emotion" id="post-emotion-1" value="1">
+                                    <span class="post-emotion-1"></span>
+                                </label>
+                                <label for="post-emotion-2">
+                                    <input type="radio" name="emotion" id="post-emotion-2" value="2">
+                                    <span class="post-emotion-2"></span>
+                                </label>
+                                <label for="post-emotion-3">
+                                    <input type="radio" name="emotion" id="post-emotion-3" value="3">
+                                    <span class="post-emotion-3"></span>
+                                </label>
+                                <label for="post-emotion-4">
+                                    <input type="radio" name="emotion" id="post-emotion-4" value="4">
+                                    <span class="post-emotion-4"></span>
+                                </label>
+                                <label for="post-emotion-5">
+                                    <input type="radio" name="emotion" id="post-emotion-5" value="5">
+                                    <span class="post-emotion-5"></span>
+                                </label>
+                            </div>
+                            <div class="post-emotions-arrow-left"></div>
+                        </td>
+                        <td>
+                        <td>
+                            <div class="post-screenshot-picker" onclick="loadScreenshots()">
+                                <div class="post-screenshot-picker-icon"></div>
+                                <div class="post-screenshot-picker-dropdown">
+                                    <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true);"></div>
+                                    <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false);"></div>
+                                    <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
+                                    <input type="hidden" id="screenshot-value" name="screenshot" value="">
+                                </div>
+                            </div>
+                        </td>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
+                        </td>
+                        <td rowspan="2" id="post-text-input">
+                            <textarea class="post-textarea" id="comment" name="body" placeholder="Tap here to make a post." rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Prost cannot contain explicit language');}"></textarea>
+                        </td>
+                        <td rowspan="2" id="post-painting-input" style="display: none;">
+                            <div class="post-memo">
+                                <img class="post-memo-preview" id="memo" width="640px" height="240px" src="" style="display: none;" onclick="newPainting(false)">
+                                <input type="hidden" id="memo-value" name="painting" value="">
+                            </div>
                         </td>
                         <br>
                     </tr>
                     <tr>
                         <td>
-                            <div class="post-type-button-painting">P</div>
+                            <div class="post-type-button-painting" onclick="swapPostType(1);newPainting(false)"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <label class="checkbox-container checkbox-post">Spoilers
+                                <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);">
+                                <span class="checkmark"></span>
+                            </label>
                         </td>
                     </tr>
                     <tr>
                         <td class="post-close-button-wrapper" colspan="2">
-                            <div class="post-close-button" onclick="hideNewPostScreen()" ></div>
+                            <div class="post-close-button" onclick="hideNewPostScreen();wiiuMemo.reset();" ></div>
                         </td>
                         <td>
-                            <input type="submit" value="Submit" class="submit-button" style="margin-left: -124px;" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
+                            <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
                         </td>
                     </tr>
                 </table>
@@ -47,11 +111,11 @@
 <div class="community-page-info-container">
     <%if(user.followed_communities.indexOf(community.id) !== -1){ %>
         <div class="community-page-follow-button-wrapper selected">
-            <p class="community-page-follow-button-text" id="<%= community.id %>" onclick="followCommunity(this)" style="color: #FFFFFF">Following</p>
+            <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF">Following</p>
         </div>
     <%} else {%>
         <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
-            <p class="community-page-follow-button-text" id="<%= community.id %>" onclick="followCommunity(this)">Follow Community</p>
+            <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)">Follow Community</p>
         </div>
     <%}%>
     <img class="community-page-info-icon" src="<%= community.browser_icon %>">
@@ -99,67 +163,51 @@
         </tr>
         </tbody>
     </table>
-    <% newPosts.forEach(function(post) { %>
-    <div class="post-user-info-wrapper">
-        <%if(post.verified) {%>
-            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
-            <span class="community-page-verified-user-badge community-page-verified" style=""></span>
-        <%} else {%>
-            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
-            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
-        <%}%>
-        <h2 class="community-page-post-username" onclick="loadUserProfile(<%=post.pid%>)"><%= post.screen_name %></h2>
-        <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
+    <div id="community-posts-inner-body">
+        <% if(totalNumPosts === 0) {%>
+            <p>No Posts</p>
+        <%} else { %>
+            <button id="load-more-posts-button" onclick="loadCommunityPosts()">Load More Posts</button>
+            <% newPosts.forEach(function(post) { %>
+                <div class="post-user-info-wrapper" id="<%= post.id %>">
+                    <%if(post.verified) {%>
+                        <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>">
+                        <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+                    <%} else {%>
+                        <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%= post.pid %>)">
+                        <span class="community-page-verified-user-badge community-page-verified" style="display: none;" onclick="loadUserProfile(<%= post.pid %>)"></span>
+                    <%}%>
+                    <h2 class="community-page-post-username" onclick="loadUserProfile(<%= post.pid %>)"><%= post.screen_name %></h2>
+                    <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <%= community.name %></h4>
 
-            <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>" >
-                <div class="community-page-post-yeah-button" <%if(user.pid !== 1000000000) {%> onclick="yeah(this.parentNode, <%= post.id %>)" <%}%>></div>
-            </div>
-            <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                    <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
+                        <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+                    </div>
+                    <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                </div>
+                <div class="community-page-post-wrapper">
+                    <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
+                        <h3><%= post.body %></h3>
+                    <%} else { %>
+                        <% if(post.screenshot !== '') { %>
+                            <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                        <%}%>
+                        <% if(post.painting !== '') { %>
+                            <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+                        <%}%>
+                        <% if(post.url) { %>
+                            <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <%}%>
+                        <% if(post.body) { %>
+                            <div class="community-page-post-text-overlay">
+                                <h3><%= post.body %></h3>
+                            </div>
+                        <%}%>
+                    <%}%>
+                </div>
+            <% }); %>
+        <%}%>
     </div>
-    <%if(post.screenshot !== '' && post.painting === '' && post.url === '' && post.body === '') {%>
-        <div class="community-page-post-wrapper">
-            <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-        </div>
-    <% } else if(post.painting !== '' && post.screenshot === '' && post.url === '') {%>
-        <div class="community-page-post-wrapper">
-            <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-        </div>
-    <% } else if(post.url !== '' && post.screenshot === '' && post.painting === '' && post.body === '') {%>
-        <div class="community-page-post-wrapper">
-            <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-    <% } else if(post.body !== '' && post.screenshot === '' && post.painting === '' && post.url === '') {%>
-        <div class="community-page-post-wrapper">
-            <h3><%= post.body %></h3>
-        </div>
-    <% } else if(post.screenshot !== '' && post.body !== '' && post.painting === '' && post.url === '') {%>
-        <div class="community-page-post-wrapper">
-            <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-            <div class="community-page-post-text-overlay">
-                <h3><%= post.body %></h3>
-            </div>
-        </div>
-    <% } else if(post.screenshot !== '' && post.painting !== '' && post.url === '') {%>
-        <div class="community-page-post-wrapper">
-            <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-            <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-        </div>
-    <% } else if(post.url !== '' && post.body !== '' && post.screenshot === '' && post.painting === '') {%>
-        <div class="community-page-post-wrapper">
-            <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <div class="community-page-post-text-overlay">
-                <h3><%= post.body %></h3>
-            </div>
-        </div>
-    <% } else if(post.url !== '' && post.painting !== '' && post.screenshot === '' && post.body === '') {%>
-        <div class="community-page-post-wrapper">
-            <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-        </div>
-    <%}%>
-    <br>
-    <br>
-    <% }); %>
 </div>
 <br>
 <img src="" onerror="wiiuBrowser.showLoadingIcon(!1)">

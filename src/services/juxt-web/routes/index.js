@@ -4,6 +4,7 @@ module.exports = {
 	PORTAL_COMMUNITIES: require('./portal/communities'),
 	PORTAL_USER: require('./portal/userpage'),
 	PORTAL_POST: require('./portal/posts'),
+	PORTAL_FEED: require('./portal/feed'),
 	CTR_SHOW: require('./ctr/show'),
 	CTR_WEB: require('./ctr/web'),
 	CTR_COMMUNITIES: require('./ctr/communities'),

@@ -27,7 +27,8 @@ router.use(subdomain('web_api.olv', admin));
 portal.use('/titles/show', routes.PORTAL_SHOW);
 portal.use('/communities', routes.PORTAL_COMMUNITIES);
 portal.use('/users', routes.PORTAL_USER);
-portal.use('/post', routes.PORTAL_POST);
+portal.use('/posts', routes.PORTAL_POST);
+portal.use('/activity-feed', routes.PORTAL_FEED);
 portal.use('/', routes.PORTAL_WEB);
 
 ctr.use('/titles/show', routes.CTR_SHOW);

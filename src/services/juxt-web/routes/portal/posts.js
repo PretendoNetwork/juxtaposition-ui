@@ -3,11 +3,9 @@ var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../authentication');
 const { POST } = require('../../../../models/post');
-const ejs = require('ejs');
 var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
 const snowflake = require('node-snowflake').Snowflake;
-const moment = require('moment');
 var router = express.Router();
 
 router.post('/empathy', function (req, res) {
@@ -54,7 +52,6 @@ router.post('/new', upload.none(), async function (req, res, next) {
     {
         let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
-        //console.log(pid);
         if(pid === null)
         {
             throw new Error('The User token was not valid');
@@ -62,7 +59,8 @@ router.post('/new', upload.none(), async function (req, res, next) {
         else
         {
             let usrObj = await database.getUserByPID(pid);
-            const creationDate = moment().format('YYYY-MM-DD HH:MM:SS');
+            //let community_id = req.body.olive_title_id.substring(0, req.body.olive_title_id.indexOf(','));
+            let community = await database.getCommunityByID(req.body.olive_community_id);
             let appData = "";
             if (req.body.app_data) {
                 appData = req.body.app_data.replace(/\0/g, "").trim();
@@ -80,19 +78,16 @@ router.post('/new', upload.none(), async function (req, res, next) {
                 screenshot = req.body.screenshot.replace(/\0/g, "").trim();
             }
             const document = {
-                title_id: paramPackData.title_id,
+                title_id: community.title_id[0],
                 screen_name: usrObj.user_id,
                 body: req.body.body,
                 app_data: appData,
                 painting: painting,
                 painting_uri: paintingURI,
                 screenshot: screenshot,
-                url: req.body.url,
-                search_key: req.body.search_key,
-                topic_tag: req.body.topic_tag,
                 community_id: req.body.community_id,
                 country_id: paramPackData.country_id,
-                created_at: creationDate,
+                created_at: new Date(),
                 feeling_id: req.body.feeling_id,
                 id: snowflake.nextId(),
                 is_autopost: req.body.is_autopost,
@@ -107,7 +102,7 @@ router.post('/new', upload.none(), async function (req, res, next) {
             };
             const newPost = new POST(document);
             newPost.save();
-            res.sendStatus(200);
+            res.redirect('/communities/' + community.community_id + '/new');
         }
     }
     catch (e)

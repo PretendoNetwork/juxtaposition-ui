@@ -120,6 +120,29 @@ async function getHotPostsByCommunity(community, numberOfPosts) {
         title_id: community.title_id
     }).sort({empathy_count: -1}).limit(numberOfPosts);
 }
+
+async function getNumberNewCommunityPostsByID(community, number) {
+    verifyConnected();
+    return POST.find({
+        title_id: community.title_id
+    }).sort({ created_at: -1}).limit(number);
+}
+
+async function getNumberPopularCommunityPostsByID(community, number) {
+    verifyConnected();
+    return POST.find({
+        title_id: community.title_id
+    }).sort({ empathy_count: -1}).limit(number);
+}
+
+async function getNumberVerifiedCommunityPostsByID(community, number) {
+    verifyConnected();
+    return POST.find({
+        title_id: community.title_id,
+        verified: true
+    }).sort({ created_at: -1}).limit(number);
+}
+
 async function getPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
@@ -138,14 +161,24 @@ async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
 async function getNewPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
-        title_id: community.title_ids
+        title_id: community.title_id
     }).sort({ created_at: -1 }).limit(numberOfPosts);
 }
+
+
 
 async function getUserPostsAfterTimestamp(post, numberOfPosts) {
     verifyConnected();
     return POST.find({
         pid: post.pid,
+        created_at: { $lt: post.created_at }
+    }).limit(numberOfPosts);
+}
+
+async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
+    verifyConnected();
+    return POST.find({
+        title_id: post.title_id,
         created_at: { $lt: post.created_at }
     }).limit(numberOfPosts);
 }
@@ -197,6 +230,9 @@ module.exports = {
     getDiscoveryHosts,
     getPostsByCommunity,
     getHotPostsByCommunity,
+    getNumberNewCommunityPostsByID,
+    getNumberPopularCommunityPostsByID,
+    getNumberVerifiedCommunityPostsByID,
     getNewPostsByCommunity,
     getPostsByCommunityKey,
     getPostsByUserID,
@@ -207,5 +243,6 @@ module.exports = {
     getUserByPID,
     getUserByUsername,
     getUserPostsAfterTimestamp,
+    getCommunityPostsAfterTimestamp,
     getServerConfig
 };
