@@ -150,9 +150,18 @@
     function deleteCommunity() {
         var confirm = prompt('Type the name of the community in to confirm you want to delete it.');
         if (confirm === '<%=community.name%>') {
-
-            alert('Community has been deleted.');
-
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    alert('Community has been deleted');
+                    window.location.replace("/communities");
+                }
+                else if (this.readyState === 4){
+                    alert("Unable to delete community.")
+                }
+            };
+            xhttp.open("POST", "/v1/communities/<%=community.community_id%>/delete", true);
+            xhttp.send();
         }
     }
 </script>

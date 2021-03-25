@@ -427,7 +427,6 @@ router.post('/login', upload.none(), function (req, res) {
             if(config.authorized_PNIDs.indexOf(user.pid) === -1)
                 throw new Error('User is not authorized to access the application');
             let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
-            console.log(password_hash)
             await request.post({
                 url: "http://" + config.account_server_domain + "/v1/api/oauth20/access_token/generate",
                 headers: {

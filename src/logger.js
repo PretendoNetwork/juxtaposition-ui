@@ -9,7 +9,8 @@ const streams = {
 	success: fs.createWriteStream(`${root}/logs/success.log`),
 	error: fs.createWriteStream(`${root}/logs/error.log`),
 	warn: fs.createWriteStream(`${root}/logs/warn.log`),
-	info: fs.createWriteStream(`${root}/logs/info.log`)
+	info: fs.createWriteStream(`${root}/logs/info.log`),
+	audit: fs.createWriteStream(`${root}/logs/audit.log`),
 };
 
 function success(input) {
@@ -44,9 +45,18 @@ function info(input) {
 	console.log(`${input}`.cyan.bold);
 }
 
+function audit(input) {
+	const time = new Date();
+	input = `[${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}] [Audit]: ${input}`;
+	streams.audit.write(`${input}\n`);
+
+	console.log(`${input}`.white.bold);
+}
+
 module.exports = {
 	success,
 	error,
 	warn,
-	info
+	info,
+	audit
 };

@@ -1,5 +1,6 @@
 var express = require('express');
 const database = require('../../../../database');
+const logger = require('../../../../logger');
 const util = require('../../../../authentication');
 const config = require('../../../../config.json');
 const { COMMUNITY } = require('../../../../models/communities');
@@ -46,7 +47,6 @@ router.get('/communities/all', function (req, res) {
 
 router.get('/communities/:communityID', function (req, res) {
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
             throw new Error('No service token supplied');
 
@@ -78,9 +78,8 @@ router.get('/communities/:communityID', function (req, res) {
     });
 });
 
-router.get('/communities/:communityID/delete', function (req, res) {
+router.post('/communities/:communityID/delete', function (req, res) {
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
             throw new Error('No service token supplied');
 
@@ -93,13 +92,19 @@ router.get('/communities/:communityID/delete', function (req, res) {
 
         if(user !== null)
         {
-            if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to delete a community and is not authorized');
                 throw new Error('Invalid credentials supplied');
+            }
 
             let community = await database.getCommunityByID(req.params.communityID);
-            community.delete().then(err => function () {
-                res.send(err);
-            });
+            if(community !== null) {
+                community.delete().then(err => function () {
+                    res.send(err);
+                });
+                res.sendStatus(200);
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] deleted community ' + community.name);
+            }
         }
         else
             throw new Error('Invalid account ID or password');
@@ -117,7 +122,6 @@ router.get('/communities/:communityID/delete', function (req, res) {
 
 router.post('/communities/:communityID/update', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), function (req, res) {
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
             throw new Error('No service token supplied');
 
@@ -130,8 +134,10 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
 
         if(user !== null)
         {
-            if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to update a community and is not authorized');
                 throw new Error('Invalid credentials supplied');
+            }
 
             const community = await database.getCommunityByID(req.params.communityID);
             const files = JSON.parse(JSON.stringify(req.files));
@@ -171,6 +177,7 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
 
             community.save();
             res.sendStatus(200);
+            logger.audit('[' + user.user_id + ' - ' + user.pid + '] updated community ' + community.name);
         }
         else
             throw new Error('Invalid account ID or password');
@@ -188,7 +195,6 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
 
 router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), function (req, res) {
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
             throw new Error('No service token supplied');
 
@@ -201,8 +207,11 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
 
         if(user !== null)
         {
-            if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
                 throw new Error('Invalid credentials supplied');
+            }
+
             JSON.parse(JSON.stringify(req.files));
             const document = {
                 empathy_count: 0,
@@ -224,6 +233,7 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
             const newCommunity = new COMMUNITY(document);
             newCommunity.save();
             res.sendStatus(200);
+            logger.audit('[' + user.user_id + ' - ' + user.pid + '] created community ' + newCommunity.name);
         }
         else
             throw new Error('Invalid account ID or password');
