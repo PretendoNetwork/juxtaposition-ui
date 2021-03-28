@@ -59,7 +59,9 @@ router.post('/new', upload.none(), async function (req, res, next) {
         else
         {
             let usrObj = await database.getUserByPID(pid);
-            //let community_id = req.body.olive_title_id.substring(0, req.body.olive_title_id.indexOf(','));
+            if(usrObj.account_status !== 0) {
+                throw new Error('User not allowed to post')
+            }
             let community = await database.getCommunityByID(req.body.olive_community_id);
             let appData = "";
             if (req.body.app_data) {

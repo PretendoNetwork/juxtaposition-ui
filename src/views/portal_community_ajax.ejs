@@ -103,7 +103,7 @@
 <div class="community-page-header" style="background-image: url('<%= community.WiiU_browser_header %>')"></div>
 <div class="community-page-header-overlay"></div>
 <div class="community-page-back-button" onclick="window.history.back()"></div>
-<div id="community-new-post-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
+<div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
     <div class="new-post-button-text" onclick="showNewPostScreen()">
         + New Post
     </div>

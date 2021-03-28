@@ -70,7 +70,7 @@
                 for(let i = 0; i < data.length; i++) {
 
                     body +=
-                        '<tr id="' + data[i].pid + '" onclick="alert(this.id)">' +
+                        '<tr id="' + data[i].pid + '" onclick="location.assign(\'/users/\' + this.id)">' +
                         '<td><img style="width: 80px " src="' + data[i].pfp_uri + '"></img></td>' +
                         '<td><a>' + data[i].user_id + '</a></td>' +
                         '<td>' + data[i].created_at + '</td>' +

@@ -1,11 +1,12 @@
 var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
+const logger = require('../../../../logger');
 const util = require('../../../../authentication');
 const config = require('../../../../config.json');
 const request = require("request");
 var path = require('path');
-const ejs = require('ejs');
+var moment = require('moment');
 var multer  = require('multer');
 var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
@@ -143,8 +144,6 @@ router.get('/communities', upload.none(), function (req, res) {
 router.get('/audit', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
@@ -152,7 +151,6 @@ router.get('/audit', upload.none(), function (req, res) {
         }
 
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -222,48 +220,6 @@ router.get('/communities/new', upload.none(), function (req, res) {
 
 });
 
-router.get('/communities/:communityID/edit', upload.none(), function (req, res) {
-
-    database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
-        if(req.cookies.token === null)
-        {
-            res.redirect('/login');
-            return;
-        }
-
-        let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
-        if(pid === null)
-        {
-            res.redirect('/login');
-            return;
-        }
-        let user = await database.getUserByPID(pid);
-        let community = await database.getCommunityByID(req.params.communityID.toString());
-        res.render('admin_edit_community.ejs', {
-            user: user,
-            community: community,
-        });
-
-    }).catch(error => {
-        console.log(error);
-        res.set("Content-Type", "application/xml");
-        res.statusCode = 400;
-        response = {
-            result: {
-                has_error: 1,
-                version: 1,
-                code: 400,
-                error_code: 15,
-                message: "SERVER_ERROR"
-            }
-        };
-        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
-    });
-
-});
-
 router.get('/communities/:communityID', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
@@ -311,6 +267,48 @@ router.get('/communities/:communityID', upload.none(), function (req, res) {
 
 });
 
+router.get('/communities/:communityID/edit', upload.none(), function (req, res) {
+
+    database.connect().then(async e => {
+        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
+        if(req.cookies.token === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+        //console.log(req.headers["x-nintendo-servicetoken"]);
+        if(pid === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let user = await database.getUserByPID(pid);
+        let community = await database.getCommunityByID(req.params.communityID.toString());
+        res.render('admin_edit_community.ejs', {
+            user: user,
+            community: community,
+        });
+
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+
+});
+
 router.get('/users', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
@@ -332,6 +330,104 @@ router.get('/users', upload.none(), function (req, res) {
         let user = await database.getUserByPID(pid);
         res.render('admin_users.ejs', {
             user: user,
+        });
+
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+
+});
+
+router.get('/users/:userID', upload.none(), function (req, res) {
+
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+        if(pid === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let user = await database.getUserByPID(req.params.userID);
+        let parentUser =  await database.getUserByPID(pid)
+        if(user === null)
+            res.sendStatus(404);
+        let newPosts = await database.getNumberUserPostsByID(req.params.userID, 50);
+        let numPosts = await database.getTotalPostsByUserID(req.params.userID);
+        let communityMap = await util.data.getCommunityHash();
+
+        res.render('admin_user.ejs', {
+            communityMap: communityMap,
+            moment: moment,
+            parentUser: parentUser,
+            user: user,
+            newPosts: newPosts,
+            numPosts: numPosts,
+        });
+
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+
+});
+
+router.get('/users/:userID/edit', upload.none(), function (req, res) {
+
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+        if(pid === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let user = await database.getUserByPID(req.params.userID);
+        let parentUser =  await database.getUserByPID(pid)
+        if(user === null)
+            res.sendStatus(404);
+        let newPosts = await database.getNumberUserPostsByID(req.params.userID, 50);
+        let numPosts = await database.getTotalPostsByUserID(req.params.userID);
+
+        res.render('admin_edit_user.ejs', {
+            moment: moment,
+            parentUser: parentUser,
+            user: user,
+            newPosts: newPosts,
+            numPosts: numPosts,
         });
 
     }).catch(error => {
@@ -424,8 +520,11 @@ router.post('/login', upload.none(), function (req, res) {
         let password = req.body.password;
         if(user !== null && password !== null)
         {
-            if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] is not authorized to access the application');
                 throw new Error('User is not authorized to access the application');
+            }
+
             let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
             await request.post({
                 url: "http://" + config.account_server_domain + "/v1/api/oauth20/access_token/generate",
@@ -442,6 +541,7 @@ router.post('/login', upload.none(), function (req, res) {
                 }
             }, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
+                    logger.audit('[' + user.user_id + ' - ' + user.pid + '] signed into the application');
                     res.send(body);
                 }
                 else

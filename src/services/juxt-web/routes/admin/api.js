@@ -319,4 +319,119 @@ router.get('/users/all', function (req, res) {
     });
 });
 
+router.get('/users/:userID', function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let user = await database.getUserByPID(pid);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+                throw new Error('Invalid credentials supplied');
+
+            res.send(await database.getUserByPID(req.params.userID))
+        }
+        else
+            throw new Error('Invalid account ID or password');
+
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
+router.post('/users/:userID/update', upload.none(), function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let parentUser = await database.getUserByPID(pid);
+        let user = await database.getUserByPID(req.params.userID);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(parentUser.pid) === -1)
+                throw new Error('Invalid credentials supplied');
+            user.account_status = req.body.account_status;
+            user.ban_reason =  req.body.ban_reason;
+            user.ban_lift_date = moment(req.body.ban_date);
+            user.save();
+            res.sendStatus(200);
+            logger.audit('[' + parentUser.user_id + ' - ' + parentUser.pid + '] banned ' + user.user_id + ' until ' + user.ban_lift_date + ' for ' + user.ban_reason);
+        }
+        else
+            throw new Error('Invalid account ID or password');
+
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
+router.post('/posts/:postID/delete', function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let user = await database.getUserByPID(pid);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to delete a community and is not authorized');
+                throw new Error('Invalid credentials supplied');
+            }
+
+            let post = await database.getPostByID(req.params.postID);
+            if(post !== null) {
+                post.delete().then(err => function () {
+                    res.send(err);
+                });
+                res.sendStatus(200);
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] deleted post by ' + post.screen_name);
+            }
+            else
+                res.sendStatus(404)
+        }
+        else
+            throw new Error('Invalid account ID or password');
+
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
 module.exports = router;

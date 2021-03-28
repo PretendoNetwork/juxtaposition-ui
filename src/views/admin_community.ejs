@@ -64,48 +64,99 @@
         </div>
         <div class="community-page-posts-wrapper">
             <% newPosts.forEach(function(post) { %>
-            <div class="post-user-info-wrapper">
-                <%if(post.verified) {%>
-                    <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
-                    <span class="community-page-verified-user-badge community-page-verified" style=""></span>
-                <%} else {%>
-                    <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
-                    <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
-                <%}%>
-                <h2 class="community-page-post-username" onclick="loadUserProfile(<%=post.pid%>)"><%= post.screen_name %></h2>
-                <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
+                <div id="<%= post.id %>">
+                    <div class="post-user-info-wrapper">
+                        <%if(post.verified) {%>
+                            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
+                            <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+                        <%} else {%>
+                            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
+                            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+                        <%}%>
+                        <h2 class="community-page-post-username" onclick="loadUserProfile(<%=post.pid%>)"><%= post.screen_name %></h2>
+                        <h4 class="community-page-post-time-stamp"><%= post.created_at %></h4>
 
-                <div class="community-page-post-yeah-button-wrapper">
-                    <div class="community-page-post-yeah-button"></div>
-                </div>
-                <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
-            </div>
-            <div class="community-page-post-wrapper">
-                <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
-                    <h3><%= post.body %></h3>
-                <%} else { %>
-                    <% if(post.screenshot !== '') { %>
-                        <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-                    <%}%>
-                    <% if(post.painting !== '') { %>
-                        <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-                    <%}%>
-                    <% if(post.url) { %>
-                        <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    <%}%>
-                    <% if(post.body) { %>
-                        <div class="community-page-post-text-overlay">
-                            <h3><%= post.body %></h3>
+                        <div class="community-page-post-yeah-button-wrapper">
+                            <div class="community-page-post-yeah-button" onclick="deletePost(event, '<%= post.id %>')"></div>
                         </div>
-                    <%}%>
-                <%}%>
-            </div>
-            <br>
-            <br>
+                        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                    </div>
+                    <div class="community-page-post-wrapper">
+                        <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
+                            <h3><%= post.body %></h3>
+                        <%} else { %>
+                            <% if(post.screenshot !== '') { %>
+                                <img class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                            <%}%>
+                            <% if(post.painting !== '') { %>
+                                <img class="community-page-post-painting" src="<%= post.painting_uri %>">
+                            <%}%>
+                            <% if(post.url) { %>
+                                <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <%}%>
+                            <% if(post.body) { %>
+                                <div class="community-page-post-text-overlay">
+                                    <h3><%= post.body %></h3>
+                                </div>
+                            <%}%>
+                        <%}%>
+                    </div>
+                </div>
             <% }); %>
         </div>
     </div>
 </div>
+<script>
+    function deletePost(event, postID) {
+        if (event.shiftKey) {
+            var post = document.getElementById(postID);
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    post.style.display = 'none';
+                }
+                else if (this.readyState === 4){
+                    alert('Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+                }
+            };
+            xhttp.open("POST", "/v1/posts/" + postID + '/delete', true);
+            xhttp.send();
+        } else {
+            if(confirm('Delete post?')) {
+                var post = document.getElementById(postID);
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState === 4 && this.status === 200) {
+                        post.style.display = 'none';
+                    }
+                    else if (this.readyState === 4){
+                        alert('Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+                    }
+                };
+                xhttp.open("POST", "/v1/posts/" + postID + '/delete', true);
+                xhttp.send();
+            }
+        }
+    }
 
+    function loadUserPosts() {
+        var id = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+            }
+            else if(this.readyState === 4 && this.status === 204)
+            {
+                document.getElementById('load-more-posts-button').style.display = 'none';
+            }
+            else if (this.readyState === 4){
+                alert('Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+            }
+        };
+        xhttp.open("GET", "/users/loadPosts" + '?postID=' + id, true);
+        xhttp.send();
+    }
+</script>
 </body>
 </html>

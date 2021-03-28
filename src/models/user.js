@@ -21,6 +21,7 @@ const  UserSchema = new Schema({
         default: 0
     },
     ban_lift_date: Date,
+    ban_reason: String,
     official: {
         type: Boolean,
         default: false
