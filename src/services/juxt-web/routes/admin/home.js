@@ -17,16 +17,12 @@ router.use(cookieParser());
 router.get('/', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -62,16 +58,12 @@ router.get('/css/juxt.css', function (req, res) {
 router.get('/discovery', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -103,16 +95,12 @@ router.get('/discovery', upload.none(), function (req, res) {
 router.get('/communities', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -182,16 +170,12 @@ router.get('/audit', upload.none(), function (req, res) {
 router.get('/communities/new', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -223,15 +207,12 @@ router.get('/communities/new', upload.none(), function (req, res) {
 router.get('/communities/:communityID', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -270,15 +251,12 @@ router.get('/communities/:communityID', upload.none(), function (req, res) {
 router.get('/communities/:communityID/edit', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -312,16 +290,12 @@ router.get('/communities/:communityID/edit', upload.none(), function (req, res) 
 router.get('/users', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.redirect('/login');
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.redirect('/login');
@@ -451,16 +425,12 @@ router.get('/users/:userID/edit', upload.none(), function (req, res) {
 router.get('/login', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
         {
             res.render('admin_login.ejs', {});
             return;
         }
-
         let pid = util.data.processServiceToken(req.cookies.token);
-        //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
             res.render('admin/admin_login.ejs', {});

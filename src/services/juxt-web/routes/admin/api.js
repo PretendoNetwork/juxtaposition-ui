@@ -13,7 +13,6 @@ var upload = multer({ storage: storage });
 
 router.get('/communities/all', function (req, res) {
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
             throw new Error('No service token supplied');
 
@@ -251,7 +250,6 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
 
 router.post('/discovery/update', upload.none(), function (req, res) {
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
             throw new Error('No service token supplied');
 
@@ -287,7 +285,6 @@ router.post('/discovery/update', upload.none(), function (req, res) {
 
 router.get('/users/all', function (req, res) {
     database.connect().then(async e => {
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         if(req.cookies.token === null)
             throw new Error('No service token supplied');
 
