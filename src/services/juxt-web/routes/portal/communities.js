@@ -14,14 +14,14 @@ router.get('/', function (req, res) {
         let popularCommunities = await database.getMostPopularCommunities(9);
         let newCommunities = await database.getNewCommunities(6);
         if(isAJAX) {
-            res.render('portal_communities_ajax.ejs', {
+            res.render('portal/portal_communities_ajax.ejs', {
                 // EJS variable and server-side variable
                 popularCommunities: popularCommunities,
                 newCommunities: newCommunities
             });
         }
         else {
-            res.render('portal_communities.ejs', {
+            res.render('portal/portal_communities.ejs', {
                 // EJS variable and server-side variable
                 popularCommunities: popularCommunities,
                 newCommunities: newCommunities
@@ -58,7 +58,7 @@ router.get('/:communityID/new', function (req, res) {
         let totalNumPosts = await database.getTotalPostsByCommunity(community);
 
         if(isAJAX) {
-            res.render('portal_community_ajax.ejs', {
+            res.render('portal/portal_community_ajax.ejs', {
                 // EJS variable and server-side variable
                 moment: moment,
                 community: community,
@@ -68,7 +68,7 @@ router.get('/:communityID/new', function (req, res) {
             });
         }
         else {
-            res.render('portal_community.ejs', {
+            res.render('portal/portal_community.ejs', {
                 // EJS variable and server-side variable
                 moment: moment,
                 community: community,
@@ -123,7 +123,7 @@ router.get('/:communityID/:type/loadPosts', function (req, res) {
 
         if(posts.length > 0)
         {
-            res.render('portal_more_posts_ajax.ejs', {
+            res.render('portal/portal_more_posts_ajax.ejs', {
                 communityMap: communityMap,
                 moment: moment,
                 database: database,

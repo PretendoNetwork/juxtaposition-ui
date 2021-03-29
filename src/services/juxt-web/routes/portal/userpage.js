@@ -21,7 +21,7 @@ router.get('/me', function (req, res) {
         let numPosts = await database.getTotalPostsByUserID(pid);
         let communityMap = await util.data.getCommunityHash();
         if(isAJAX) {
-            res.render('portal_me_page_ajax.ejs', {
+            res.render('portal/portal_me_page_ajax.ejs', {
                 // EJS variable and server-side variable
                 communityMap: communityMap,
                 moment: moment,
@@ -31,7 +31,7 @@ router.get('/me', function (req, res) {
             });
         }
         else {
-            res.render('portal_me_page.ejs', {
+            res.render('portal/portal_me_page.ejs', {
                 // EJS variable and server-side variable
                 communityMap: communityMap,
                 moment: moment,
@@ -118,7 +118,7 @@ router.get('/show', function (req, res) {
         let numPosts = await database.getTotalPostsByUserID(user.pid);
         let communityMap = await util.data.getCommunityHash();
         if(isAJAX) {
-            res.render('portal_user_page_ajax.ejs', {
+            res.render('portal/portal_user_page_ajax.ejs', {
                 // EJS variable and server-side variable
                 communityMap: communityMap,
                 moment: moment,
@@ -129,7 +129,7 @@ router.get('/show', function (req, res) {
             });
         }
         else {
-            res.render('portal_user_page.ejs', {
+            res.render('portal/portal_user_page.ejs', {
                 // EJS variable and server-side variable
                 communityMap: communityMap,
                 moment: moment,
@@ -168,7 +168,7 @@ router.get('/loadPosts', function (req, res) {
         let communityMap = await util.data.getCommunityHash();
         if(newPosts.length > 0)
         {
-            res.render('portal_more_posts_ajax.ejs', {
+            res.render('portal/portal_more_posts_ajax.ejs', {
                 communityMap: communityMap,
                 moment: moment,
                 user: user,

@@ -23,7 +23,7 @@ router.get('/loadPosts', function (req, res) {
         let communityMap = await util.data.getCommunityHash();
         if(newPosts.length > 0)
         {
-            res.render('portal_more_posts_ajax.ejs', {
+            res.render('portal/portal_more_posts_ajax.ejs', {
                 communityMap: communityMap,
                 moment: moment,
                 user: user,
@@ -38,45 +38,6 @@ router.get('/loadPosts', function (req, res) {
         console.log(error);
         res.set("Content-Type", "application/xml");
         res.statusCode = 400;
-        response = {
-            result: {
-                has_error: 1,
-                version: 1,
-                code: 400,
-                error_code: 15,
-                message: "SERVER_ERROR"
-            }
-        };
-        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
-    });
-});
-
-router.post('/follow', upload.none(), function (req, res) {
-    database.connect().then(async e => {
-        let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
-        let userToFollow = await database.getUserByPID(req.body.userID);
-        if(pid === null)
-            pid = 1000000000;
-        let user = await database.getUserByPID(pid);
-        if(req.body.type === 'true' && user !== null && user.followed_users.indexOf(userToFollow.pid) === -1)
-        {
-            userToFollow.addToFollowers(user.pid);
-            user.addToUsers(userToFollow.pid);
-            res.sendStatus(200);
-        }
-        else if(req.body.type === 'false' && user !== null  && user.followed_users.indexOf(userToFollow.pid) !== -1)
-        {
-            userToFollow.removeFromFollowers(user.pid);
-            user.removeFromUsers(userToFollow.pid);
-            res.sendStatus(200);
-        }
-        else
-            res.sendStatus(423);
-
-    }).catch(error => {
-        console.log(error);
-        res.set("Content-Type", "application/xml");
-        res.statusCode = 423;
         response = {
             result: {
                 has_error: 1,

@@ -13,14 +13,14 @@ router.get('/', function (req, res) {
         let popularCommunities = await database.getMostPopularCommunities(6);
         let newCommunities = await database.getNewCommunities(3);
         if(isAJAX) {
-            res.render('ctr_communities_ajax.ejs', {
+            res.render('ctr/ctr_communities_ajax.ejs', {
                 // EJS variable and server-side variable
                 popularCommunities: popularCommunities,
                 newCommunities: newCommunities
             });
         }
         else {
-            res.render('ctr_communities.ejs', {
+            res.render('ctr/ctr_communities.ejs', {
                 // EJS variable and server-side variable
                 popularCommunities: popularCommunities,
                 newCommunities: newCommunities
@@ -54,7 +54,7 @@ router.get('/*/new', function (req, res) {
         let newPosts = await database.getNewPostsByCommunity(community, 100);
         let totalNumPosts = await database.getNumberPostsByCommunity(community);
         if(isAJAX) {
-            res.render('ctr_community_ajax.ejs', {
+            res.render('ctr/ctr_community_ajax.ejs', {
                 // EJS variable and server-side variable
                 community: community,
                 newPosts: newPosts,
@@ -62,7 +62,7 @@ router.get('/*/new', function (req, res) {
             });
         }
         else {
-            res.render('ctr_community.ejs', {
+            res.render('ctr/ctr_community.ejs', {
                 // EJS variable and server-side variable
                 community: community,
                 newPosts: newPosts,

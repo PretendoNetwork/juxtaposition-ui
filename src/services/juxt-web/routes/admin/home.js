@@ -33,7 +33,7 @@ router.get('/', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
-        res.render('admin_home.ejs', {
+        res.render('admin/admin_home.ejs', {
             user: user,
         });
 
@@ -78,7 +78,7 @@ router.get('/discovery', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
-        res.render('admin_discovery.ejs', {
+        res.render('admin/admin_discovery.ejs', {
             user: user,
         });
 
@@ -119,7 +119,7 @@ router.get('/communities', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
-        res.render('admin_communities.ejs', {
+        res.render('admin/admin_communities.ejs', {
             user: user,
         });
 
@@ -157,7 +157,7 @@ router.get('/audit', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
-        res.render('admin_audit.ejs', {
+        res.render('admin/admin_audit.ejs', {
             user: user,
         });
 
@@ -198,7 +198,7 @@ router.get('/communities/new', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
-        res.render('admin_new_community.ejs', {
+        res.render('admin/admin_new_community.ejs', {
             user: user,
         });
 
@@ -242,7 +242,7 @@ router.get('/communities/:communityID', upload.none(), function (req, res) {
         let newPosts = await database.getNewPostsByCommunity(community, 100);
         let totalNumPosts = await database.getTotalPostsByCommunity(community);
 
-        res.render('admin_community.ejs', {
+        res.render('admin/admin_community.ejs', {
             community: community,
             newPosts: newPosts,
             totalNumPosts: totalNumPosts,
@@ -286,7 +286,7 @@ router.get('/communities/:communityID/edit', upload.none(), function (req, res) 
         }
         let user = await database.getUserByPID(pid);
         let community = await database.getCommunityByID(req.params.communityID.toString());
-        res.render('admin_edit_community.ejs', {
+        res.render('admin/admin_edit_community.ejs', {
             user: user,
             community: community,
         });
@@ -328,7 +328,7 @@ router.get('/users', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
-        res.render('admin_users.ejs', {
+        res.render('admin/admin_users.ejs', {
             user: user,
         });
 
@@ -373,7 +373,7 @@ router.get('/users/:userID', upload.none(), function (req, res) {
         let numPosts = await database.getTotalPostsByUserID(req.params.userID);
         let communityMap = await util.data.getCommunityHash();
 
-        res.render('admin_user.ejs', {
+        res.render('admin/admin_user.ejs', {
             communityMap: communityMap,
             moment: moment,
             parentUser: parentUser,
@@ -422,7 +422,7 @@ router.get('/users/:userID/edit', upload.none(), function (req, res) {
         let newPosts = await database.getNumberUserPostsByID(req.params.userID, 50);
         let numPosts = await database.getTotalPostsByUserID(req.params.userID);
 
-        res.render('admin_edit_user.ejs', {
+        res.render('admin/admin_edit_user.ejs', {
             moment: moment,
             parentUser: parentUser,
             user: user,
@@ -463,7 +463,7 @@ router.get('/login', upload.none(), function (req, res) {
         //console.log(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
         {
-            res.render('admin_login.ejs', {});
+            res.render('admin/admin_login.ejs', {});
             return;
         }
         let user = await database.getUserByPID(pid);
