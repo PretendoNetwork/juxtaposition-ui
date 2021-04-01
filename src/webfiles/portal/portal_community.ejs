@@ -192,7 +192,7 @@
         </table>
         <div id="community-posts-inner-body">
             <% if(totalNumPosts === 0) {%>
-                <p>No Posts</p>
+                <p class="no-posts-text">No Posts</p>
             <%} else { %>
                 <button id="load-more-posts-button" onclick="loadCommunityPosts()">Load More Posts</button>
                 <% newPosts.forEach(function(post) { %>

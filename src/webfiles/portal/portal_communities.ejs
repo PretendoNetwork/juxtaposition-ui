@@ -38,7 +38,18 @@
         </form>
     </div>-->
     <div id="popular" class="communities-wrapper">
-        <h1 class="communities-header">Popular Places</h1>
+        <table style="padding-top: 20px">
+            <tbody>
+                <tr>
+                    <td>
+                        <h1 class="communities-header">Popular Places</h1>
+                    </td>
+                    <td>
+                        <button class="outlined-button" style="margin-left: 575px; margin-top: -20px" onclick="loadCommunityPage('all')">Show All</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table>
             <tbody>
             <tr>
@@ -82,6 +93,6 @@
         </table>
     </div>
 </div>
-<body onload="stopLoading()">
+<body onload="stopLoading();wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
 </body>
 </html>

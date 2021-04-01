@@ -48,7 +48,7 @@ router.get('/', function (req, res) {
             {
                 let popularCommunities = await database.getMostPopularCommunities(9);
                 let newCommunities = await database.getNewCommunities(6);
-                res.render('portal/portal_show.ejs', {
+                res.render('portal/portal_communities.ejs', {
                     popularCommunities: popularCommunities,
                     newCommunities: newCommunities
                 });

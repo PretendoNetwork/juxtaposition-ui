@@ -62,7 +62,7 @@ function exit() {
     wiiuBrowser.closeApplication();
 }
 function loadTab(element) {
-        if(/*element.getAttribute('data-url') === 'activity-feed' || */element.getAttribute('data-url') === 'news')
+        if(element.getAttribute('data-url') === 'activity-feed' || element.getAttribute('data-url') === 'news')
     {
         alert('Not Implemented. Check back soon!');
         return;
@@ -98,13 +98,13 @@ function loadCommunityPage(communityID) {
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             document.getElementById("main").innerHTML = this.responseText;
-            history.pushState({}, 'Community', '/communities/' + communityID + '/new');
+            history.pushState({}, 'Community', '/communities/' + communityID);
         }
         else if (this.readyState === 4){
             wiiuErrorViewer.openByCodeAndMessage(5981000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
         }
     };
-    xhttp.open("GET", "/communities/" + communityID + "/new" + '?ajax=true', true);
+    xhttp.open("GET", "/communities/" + communityID + '?ajax=true', true);
     xhttp.send();
 
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
@@ -516,7 +516,7 @@ function loadPosts(type) {
         }
         else if(this.readyState === 4 && this.status === 204)
         {
-            document.getElementById('community-posts-inner-body').innerHTML = '<p>No Posts</p>';
+            document.getElementById('community-posts-inner-body').innerHTML = '<p class="no-posts-text">No Posts</p>';
             wiiuBrowser.showLoadingIcon(false);
         }
         else if (this.readyState === 4){

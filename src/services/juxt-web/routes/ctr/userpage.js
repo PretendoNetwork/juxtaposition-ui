@@ -18,7 +18,7 @@ router.get('/me', function (req, res) {
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
         let newPosts = await database.getPostsByUserID(pid);
-        let numPosts = await database.getNumberPostsByUserID(pid);
+        let numPosts = await database.getNumberUserPostsByID(pid);
         if(isAJAX) {
             res.render('ctr/ctr_user_page_ajax.ejs', {
                 // EJS variable and server-side variable

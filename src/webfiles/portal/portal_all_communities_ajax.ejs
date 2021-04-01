@@ -1,0 +1,28 @@
+<h1 class="page-header">All Communities</h1>
+<div class="search-container">
+    <form action="/communities/search">
+        <div id="search-icon"></div>
+        <input id="search-bar" type="text" placeholder="Search communities..." name="search">
+    </form>
+</div>
+<div id="popular" class="communities-wrapper">
+    <table style="margin-top: 30px">
+        <tbody>
+        <tr>
+            <% for(var h = 0; h < 5; h++) { for(var i = 0; i < communities.length; i++) {%>
+                <td>
+                    <div class="community-list-wrapper" onclick="loadCommunityPage('<%= communities[i].community_id %>')">
+                        <img class="community-list-icon" src="<%= communities[i].browser_icon %>">
+                        <h2 class="community-list-title"><%= communities[i].name %></h2>
+                        <h4 class="community-list-followers"><%= communities[i].followers %> followers</h4>
+                    </div>
+                </td>
+                <% if( (i + 1) % 3 === 0) { %>
+        </tr>
+        <tr>
+            <% } %>
+            <% }} %>
+        </tr>
+        </tbody>
+    </table>
+</div>

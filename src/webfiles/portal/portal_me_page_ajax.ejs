@@ -153,7 +153,7 @@
 </div>
 <div class="community-page-posts-wrapper" <% if(numPosts === 0) {%>style="height: 110px"<%}%>>
     <% if(numPosts === 0) {%>
-        <p style="font-size: xx-large; margin-left: 443px;">No Posts</p>
+        <p class="no-posts-text">No Posts</p>
     <%} else { %>
         <button id="load-more-posts-button" onclick="loadUserPosts()">Load More Posts</button>
         <% newPosts.forEach(function(post) { %>

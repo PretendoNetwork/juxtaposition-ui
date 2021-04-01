@@ -123,7 +123,7 @@
     </div>
     <div class="community-page-posts-wrapper">
         <% if(numPosts === 0) {%>
-            <p>No Posts</p>
+            <p class="no-posts-text">No Posts</p>
         <%} else { %>
             <button id="load-more-posts-button" onclick="loadUserPosts()">Load More Posts</button>
             <% newPosts.forEach(function(post) { %>
@@ -136,7 +136,7 @@
                     <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
                 <%}%>
                 <h2 class="community-page-post-username"><%= post.screen_name %></h2>
-                <h4 class="community-page-post-time-stamp"><%= post.created_at %> - <%= communityMap.get(post.title_id) %></h4>
+                <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow()%> - <%= communityMap.get(post.title_id) %></h4>
 
                 <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
                     <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
