@@ -4,6 +4,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Juxt Admin Panel</title>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 60%;
+        }
+        th {
+            cursor: pointer;
+        }
+        th, td {
+            text-align: left;
+            padding: 16px;
+        }
+        tr {
+            border: black;
+            border-width: 2px;
+            border-style: groove;
+        }
+    </style>
 </head>
 <body>
 
@@ -23,88 +42,29 @@
     <div class="right" style="background-color:#ddd;">
         <h2>Communities</h2>
         <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search..">
-        <div id="txtHint">Communities should be listed here. If not, that fucking blows</div>
+        <table id="adddrop"><tbody id="search-list">
+            <tbody>
+            <tr>
+                <th>Icon</th>
+                <th onClick="sortTable(0)">Name</th>
+                <th onClick="sortTable(1)">Created At</th>
+                <th onClick="sortTable(1)">Account Status</th>
+                <th onClick="sortTable(2)">Followers</th>
+            </tr>
+            <% for(var i = 0; i < users.length; i++) { %>
+                <tr id="<%= users[i].community_id %>" onclick="location.assign('/communities/' + this.id)">
+                    <td><img style="width: 80px " src="<%= users[i].pfp_uri %>"></img></td>
+                    <td><a><%= users[i].user_id %></a></td>
+                    <td><%= moment(users[i].created_at).fromNow() %></td>
+                    <td><%= users[i].account_status %></td>
+                    <td><%= users[i].followers %></td>
+                </tr>
+            <%}%>
+            </tbody>
+        </table>
     </div>
 </div>
 <script>
-    /**
-     * Fetches table from MongoDB and
-     * displays in on the main page
-     */
-    function generate_table() {
-        var xhttp;
-        xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                var data = JSON.parse(this.responseText);
-                let header = '<style>\n' +
-                    '        table {\n' +
-                    '            font-family: arial, sans-serif;\n' +
-                    '            border-collapse: collapse;\n' +
-                    '            width: 60%%;\n' +
-                    '        }\n' +
-                    '\n' +
-                    '        th {\n' +
-                    '            cursor: pointer;\n' +
-                    '        }\n' +
-                    '\n' +
-                    '        th, td {\n' +
-                    '            text-align: left;\n' +
-                    '            padding: 16px;\n' +
-                    '        }\n' +
-                    '\n' +
-                    '        tr {\n' +
-                    '            border: black;\n' +
-                    '            border-width: 2px;\n' +
-                    '            border-style: groove;\n' +
-                    '        }\n' +
-                    '    </style>';
-                let body;
-                body = '<table id="adddrop"><tbody id="search-list"><tr>' +
-                    '<th>Icon</th>' +
-                    '<th onClick="sortTable(0)">Name</th>' +
-                    '<th onClick="sortTable(1)">Created At</th>' +
-                    '<th onClick="sortTable(1)">Account Status</th>' +
-                    '<th onClick="sortTable(2)">Followers</th>' +
-                    '</tr>';
-                for(let i = 0; i < data.length; i++) {
-
-                    body +=
-                        '<tr id="' + data[i].pid + '" onclick="location.assign(\'/users/\' + this.id)">' +
-                        '<td><img style="width: 80px " src="' + data[i].pfp_uri + '"></img></td>' +
-                        '<td><a>' + data[i].user_id + '</a></td>' +
-                        '<td>' + data[i].created_at + '</td>' +
-                        '<td>' + data[i].account_status + '</td>' +
-                        '<td>' + data[i].followers + '</td></tr>';
-                }
-                body += '</tbody></table>';
-                document.getElementById("txtHint").innerHTML = header + '</head><body>' + body;
-            }
-        };
-        xhttp.open("GET", "/v1/users/all", true);
-        xhttp.send();
-    }
-    /**
-     * Deletes entry from MongoDB
-     * @param id
-     */
-    function deleteScout(id) {
-        var xhttp;
-        var e = document.getElementById("addDrop");
-        var period = e.options[e.selectedIndex].value;
-        xhttp = new XMLHttpRequest();
-        xhttp.open("GET", "/remove?p=" + period + "&id=" + id, true);
-        xhttp.send();
-        removeRow((id + "_row"));
-    }
-    /**
-     * Removes row from table
-     * @param id
-     */
-    function removeRow(id) {
-        var row = document.getElementById(id);
-        row.parentNode.removeChild(row);
-    }
     /**
      * Sorts table by selected column
      * @param n
@@ -145,9 +105,6 @@
             }
         }
     }
-    generate_table();
-</script>
-<script>
     function myFunction() {
         var input, filter, ul, tr, a, i;
         input = document.getElementById("mySearch");

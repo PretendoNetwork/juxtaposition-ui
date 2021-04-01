@@ -107,8 +107,12 @@ router.get('/communities', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
+        let communities = await database.getCommunities(100)
+        console.log(communities[0].name)
         res.render('admin/admin_communities.ejs', {
             user: user,
+            communities: communities,
+            moment: moment
         });
 
     }).catch(error => {
@@ -302,8 +306,11 @@ router.get('/users', upload.none(), function (req, res) {
             return;
         }
         let user = await database.getUserByPID(pid);
+        let users = await database.getUsers(100);
         res.render('admin/admin_users.ejs', {
             user: user,
+            users: users,
+            moment: moment
         });
 
     }).catch(error => {
