@@ -52,7 +52,7 @@
                 <th onClick="sortTable(2)">Followers</th>
             </tr>
             <% for(var i = 0; i < users.length; i++) { %>
-                <tr id="<%= users[i].community_id %>" onclick="location.assign('/communities/' + this.id)">
+                <tr id="<%= users[i].pid %>" onclick="location.assign('/users/' + this.id)">
                     <td><img style="width: 80px " src="<%= users[i].pfp_uri %>"></img></td>
                     <td><a><%= users[i].user_id %></a></td>
                     <td><%= moment(users[i].created_at).fromNow() %></td>

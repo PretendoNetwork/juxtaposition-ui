@@ -108,7 +108,7 @@ router.get('/communities', upload.none(), function (req, res) {
         }
         let user = await database.getUserByPID(pid);
         let communities = await database.getCommunities(100)
-        console.log(communities[0].name)
+
         res.render('admin/admin_communities.ejs', {
             user: user,
             communities: communities,
