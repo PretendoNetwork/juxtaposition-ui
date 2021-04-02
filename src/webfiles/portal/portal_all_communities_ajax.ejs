@@ -9,7 +9,7 @@
     <table style="margin-top: 30px">
         <tbody>
         <tr>
-            <% for(var h = 0; h < 5; h++) { for(var i = 0; i < communities.length; i++) {%>
+            <% for(var i = 0; i < communities.length; i++) {%>
                 <td>
                     <div class="community-list-wrapper" onclick="loadCommunityPage('<%= communities[i].community_id %>')">
                         <img class="community-list-icon" src="<%= communities[i].browser_icon %>">
@@ -21,7 +21,7 @@
         </tr>
         <tr>
             <% } %>
-            <% }} %>
+            <% } %>
         </tr>
         </tbody>
     </table>
