@@ -41,6 +41,10 @@ const  CommunitySchema = new Schema({
     CTR_browser_header: String,
     WiiU_browser_header: String,
     description: String,
+    parent: {
+        type: Number,
+        default: null
+    }
 });
 
 CommunitySchema.methods.upEmpathy = async function() {

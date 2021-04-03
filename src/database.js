@@ -49,19 +49,26 @@ async function getTopicByCommunityID(communityID) {
 async function getCommunities(numberOfCommunities) {
     verifyConnected();
     if(numberOfCommunities === -1)
-        return COMMUNITY.find({});
+        return COMMUNITY.find({ parent: null });
     else
-        return COMMUNITY.find({}).limit(numberOfCommunities);
+        return COMMUNITY.find({ parent: null }).limit(numberOfCommunities);
 }
 
 async function getMostPopularCommunities(numberOfCommunities) {
     verifyConnected();
-    return COMMUNITY.find({}).sort({followers: -1}).limit(numberOfCommunities);
+    return COMMUNITY.find({ parent: null }).sort({followers: -1}).limit(numberOfCommunities);
 }
 
 async function getNewCommunities(numberOfCommunities) {
     verifyConnected();
-    return COMMUNITY.find({}).sort([['created_at', -1]]).limit(numberOfCommunities);
+    return COMMUNITY.find({ parent: null }).sort([['created_at', -1]]).limit(numberOfCommunities);
+}
+
+async function getSubCommunities(communityID) {
+    verifyConnected();
+    return COMMUNITY.find({
+        parent: communityID
+    });
 }
 
 async function getCommunityByTitleID(title_id) {
@@ -98,6 +105,21 @@ async function getPostsByUserID(userID) {
     return POST.find({
         pid: userID
     });
+}
+
+async function getPostReplies(postID, number) {
+    verifyConnected();
+    return POST.find({
+        parent: postID
+    }).limit(number);
+}
+
+async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
+    verifyConnected();
+    return POST.find({
+        parent: post.pid,
+        created_at: { $lt: post.created_at }
+    }).limit(numberOfPosts);
 }
 
 async function getNumberUserPostsByID(userID, number) {
@@ -165,8 +187,6 @@ async function getNewPostsByCommunity(community, numberOfPosts) {
     }).sort({ created_at: -1 }).limit(numberOfPosts);
 }
 
-
-
 async function getUserPostsAfterTimestamp(post, numberOfPosts) {
     verifyConnected();
     return POST.find({
@@ -224,6 +244,7 @@ module.exports = {
     getCommunities,
     getMostPopularCommunities,
     getNewCommunities,
+    getSubCommunities,
     getCommunityByTitleID,
     getCommunityByID,
     getTotalPostsByCommunity,
@@ -236,6 +257,8 @@ module.exports = {
     getNewPostsByCommunity,
     getPostsByCommunityKey,
     getPostsByUserID,
+    getPostReplies,
+    getUserPostRepliesAfterTimestamp,
     getNumberUserPostsByID,
     getTotalPostsByUserID,
     getPostByID,

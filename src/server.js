@@ -15,7 +15,7 @@ const juxt_web = require('./services/juxt-web');
 app.set('etag', false);
 app.disable('x-powered-by');
 app.set('view engine', 'ejs');
-app.set('views', __dirname + '\\webfiles');
+app.set('views', __dirname + '/webfiles');
 
 // Create router
 logger.info('Setting up Middleware');

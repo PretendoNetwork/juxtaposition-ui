@@ -63,6 +63,10 @@ const PostSchema = new Schema({
     verified: {
         type: Boolean,
         default: false
+    },
+    parent: {
+        type: Number,
+        default: null
     }
 });
 
