@@ -59,13 +59,10 @@ router.get('/me', function (req, res) {
 });
 
 router.post('/me', upload.none(), function (req, res) {
-    console.log('yeet im running look at me you dumb bitch');
     database.connect().then(async e => {
-
-        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         if (pid === null)
-            pid = 1000000000;
+            throw new Error('User does not exist');
         let user = await database.getUserByPID(pid);
 
         user.country_visibility = !!req.body.country;

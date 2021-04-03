@@ -99,7 +99,7 @@
         <p class="user-page-back-button-text">Go back</p>
     </div>
     <div class="community-page-info-container">
-        <div class="user-page-follow-button-wrapper">
+        <div class="user-page-follow-button-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
             <p class="user-page-follow-button-text" onclick="showOverlay()">User Settings</p>
         </div>
         <img class="community-page-info-icon" src="<%= user.pfp_uri %>">
