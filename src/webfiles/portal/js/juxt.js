@@ -671,6 +671,28 @@ function loadScreenshots() {
         dropdown.style.display = 'block';
     }
 }
+function searchCommunities() {
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById("search-bar");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("community-list");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        for(j = 0; j < tr[i].getElementsByTagName("td").length; j++) {
+            td = tr[i].getElementsByTagName("td")[j].children[0].children[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                console.log(txtValue + '  ' + txtValue.toUpperCase().indexOf(filter))
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].getElementsByTagName("td")[j].style.display = "";
+                } else {
+                    tr[i].getElementsByTagName("td")[j].style.display = "none";
+                }
+            }
+        }
+    }
+}
+
 
 checkForUpdates();
 function checkForUpdates() {

@@ -82,14 +82,14 @@ router.post('/newUser', function (req, res) {
         let user = null;
         if(pid === null)
         {
-            res.sendStatus(501);
+            res.sendStatus(401);
         }
         else
         {
             user = await database.getUserByPID(pid);
             if(user === null)
             {
-                await util.data.create_user(pid, req.body.experience, req.body.notifications);
+                await util.data.create_user(pid, req.body.experience, req.body.notifications, req.body.region);
                 if(await database.getUserByPID(pid) !== null)
                     res.sendStatus(200);
                 else

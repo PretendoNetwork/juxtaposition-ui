@@ -104,7 +104,7 @@ router.post('/new', upload.none(), async function (req, res, next) {
             };
             const newPost = new POST(document);
             newPost.save();
-            res.redirect('/communities/' + community.community_id + '/new');
+            res.redirect('/communities/' + community.community_id);
         }
     }
     catch (e)

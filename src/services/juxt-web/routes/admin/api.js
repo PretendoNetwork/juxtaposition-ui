@@ -218,7 +218,7 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
                 has_shop_page: req.body.has_shop_page,
                 platform_id: req.body.platform_ID,
                 icon: req.body.icon,
-                created_at: moment().format('YYYY-MM-DD HH:MM:SS'),
+                created_at: moment(new Date()),
                 title_ids: req.body.title_ids,
                 title_id: req.body.title_ids,
                 community_id: snowflake.nextId(),

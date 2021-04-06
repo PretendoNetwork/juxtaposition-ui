@@ -56,7 +56,7 @@
         var theUrl = "/titles/show/newUser";
         xmlhttp.open("POST", theUrl);
         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications  }));
+        xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications, "region": wiiuSystemSetting.getCountry().code }));
     }
 </script>
 <body>
@@ -77,7 +77,7 @@
 
     <div id="parental-controls" class="about-wrapper">
         <h1 class="about-header">Beta Disclaimer</h1>
-        <div class="about-body">
+        <div class="about-body" style="position: relative">
             <p>
                 You are about to try out the first public beta of Juxt.
                 This means that a lot is still up in the air, and a lot can change at any time.
@@ -90,11 +90,11 @@
                 website, its software or any of its content.
             </p>
         </div>
-        <button class="about-button" style="margin-left: 50px;"
+        <button class="about-button" style="margin-left: 50px;margin-top: 100px; z-index: 4;"
                 onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
                          document.getElementById('welcome').style.display = 'block';
                          document.getElementById('parental-controls').style.display = 'none';">Back</button>
-        <button class="about-button" style="margin-left: 625px;"
+        <button class="about-button" style="margin-left: 625px;margin-top: 100px; z-index: 4;"
                 onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
                          document.getElementById('about').style.display = 'block'
                          document.getElementById('parental-controls').style.display = 'none'">Next</button>

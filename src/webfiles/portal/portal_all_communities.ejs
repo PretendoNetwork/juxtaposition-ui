@@ -32,14 +32,14 @@
 <div id="main">
     <h1 class="page-header">All Communities</h1>
     <div class="search-container">
-        <form action="/communities/search">
+        <form>
             <div id="search-icon"></div>
-            <input id="search-bar" type="text" placeholder="Search communities..." name="search">
+            <input id="search-bar" onchange="searchCommunities()" onkeyup="searchCommunities()" type="text" placeholder="Search communities..." name="search">
         </form>
     </div>
-    <div id="popular" class="communities-wrapper">
+    <div id="community-list" class="communities-wrapper">
         <table style="margin-top: 30px">
-            <tbody id="search-list">
+            <tbody>
             <tr>
                 <% for(var i = 0; i < communities.length; i++) {%>
                     <td>
@@ -59,23 +59,6 @@
         </table>
     </div>
 </div>
-<script>
-    function myFunction() {
-        var input, filter, ul, tr, a, i;
-        input = document.getElementById("search-bar");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("search-list");
-        tr = ul.getElementsByTagName("tr");
-        for (i = 1; i < tr.length; i++) {
-            a = tr[i].getElementsByTagName("a")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
-</script>
 <body onload="stopLoading()">
 </body>
 </html>

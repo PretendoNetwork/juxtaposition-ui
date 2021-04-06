@@ -42,8 +42,9 @@
     <div class="right" style="background-color:#ddd;">
         <h2>Communities</h2>
         <button onclick="location.assign('/communities/new')">New</button>
-        <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search..">
-        <table id="adddrop"><tbody id="search-list">
+        <input type="text" id="search" onkeyup="search()" placeholder="Search..">
+        <table id="community-list">
+            <tbody id="search-list">
             <tbody>
                 <tr>
                     <th>Icon</th>
@@ -80,7 +81,7 @@
      */
     function sortTable(n) {
         var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-        table = document.getElementById("adddrop");
+        table = document.getElementById("community-list");
         switching = true;
         dir = "asc";
         while (switching) {
@@ -114,18 +115,21 @@
             }
         }
     }
-    function myFunction() {
-        var input, filter, ul, tr, a, i;
-        input = document.getElementById("mySearch");
+    function search() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
         filter = input.value.toUpperCase();
-        ul = document.getElementById("search-list");
-        tr = ul.getElementsByTagName("tr");
-        for (i = 1; i < tr.length; i++) {
-            a = tr[i].getElementsByTagName("a")[0];
-            if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
+        table = document.getElementById("community-list");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
             }
         }
     }
