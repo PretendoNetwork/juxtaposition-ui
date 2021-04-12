@@ -127,7 +127,7 @@
             </div>
         </div>
     </div>
-    <div class="community-page-header" style="background-image: url('<%= community.WiiU_browser_header %>')"></div>
+    <div class="community-page-header" style="background-image: url('/banner/<%= community.community_id %>.png')"></div>
     <div class="community-page-header-overlay"></div>
     <div class="community-page-back-button" onclick="window.history.back()"></div>
     <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
@@ -145,7 +145,7 @@
             <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)">Follow Community</p>
         </div>
         <%}%>
-        <img class="community-page-info-icon" src="<%= community.browser_icon %>">
+        <img class="community-page-info-icon" src="/icons/<%= community.community_id %>.png">
         <h2 class="community-page-title"><%= community.name %></h2>
         <h4 class="community-page-description"><%= community.description %></h4>
         <div class="community-page-margin-line"></div>

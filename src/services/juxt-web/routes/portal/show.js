@@ -13,10 +13,6 @@ router.get('/', function (req, res) {
         let user = null;
         if(pid === null)
         {
-            pid = 1000000000;
-            user = await database.getUserByPID(pid);
-            let popularCommunities = await database.getMostPopularCommunities(9);
-            let newCommunities = await database.getNewCommunities(6);
             res.render('portal/portal_guest_notice.ejs', {});
         }
         else
