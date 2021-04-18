@@ -55,7 +55,7 @@
                 </tr>
                 <% for(var i = 0; i < communities.length; i++) { %>
                 <tr id="<%= communities[i].community_id %>" onclick="location.assign('/communities/' + this.id)">
-                    <td><img style="width: 80px " src="<%= communities[i].browser_icon %>"></img></td>
+                    <td><img style="width: 80px " src="/icons/<%= communities[i].community_id %>.png"></img></td>
                     <td><a><%= communities[i].name %></a></td>
                     <td><%= moment(communities[i].created_at).fromNow() %></td>
                     <td><%= communities[i].title_ids %></td>

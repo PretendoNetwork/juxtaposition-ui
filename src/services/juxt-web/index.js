@@ -29,6 +29,7 @@ portal.use('/communities', routes.PORTAL_COMMUNITIES);
 portal.use('/users', routes.PORTAL_USER);
 portal.use('/posts', routes.PORTAL_POST);
 portal.use('/activity-feed', routes.PORTAL_FEED);
+portal.use('/news', routes.PORTAL_NEWS);
 portal.use('/', routes.PORTAL_WEB);
 
 ctr.use('/titles/show', routes.CTR_SHOW);

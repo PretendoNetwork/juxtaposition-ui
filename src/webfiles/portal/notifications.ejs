@@ -1,0 +1,70 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/juxt.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-279PNEDGEE');
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-T9NZ7BK');</script>
+    <!-- End Google Tag Manager -->
+    </script>
+</head>
+<body>
+<menu id="nav-bar" class="">
+    <li id="nav-bar-profile" data-url="users/me" class="" onclick="loadTab(this)"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" data-url="activity-feed" class="" onclick="loadTab(this)"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" data-url="communities" onclick="loadTab(this)"><a>Communities</a></li>
+    <li id="nav-bar-messages" data-url="messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-url="news" class="selected" onclick="loadTab(this)"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
+</menu>
+<div id="main">
+    <h1 id="title" class="page-header">Notifications</h1>
+
+    <div id="messages-list-wrapper">
+        <table cellspacing="0">
+            <tbody id="messages-list">
+            <% let i = 0; user.notification_list.reverse().forEach(function(notification) { %>
+                <% if(i === 0) { %>
+                <tr class="message-wrapper" onclick="location.href='<%=notification.link%>'">
+                    <td class="messages-unread-badge-wrapper top">
+                        <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
+                    </td>
+                    <td class="messages-list-wrapper top">
+                        <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
+                    </td>
+                </tr>
+                <%i = -1;%>
+                <%} else {%>
+                <tr class="message-wrapper" onclick="location.href='<%=notification.link%>'">
+                    <td class="messages-unread-badge-wrapper">
+                        <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
+                    </td>
+                    <td class="messages-list-wrapper">
+                        <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
+                    </td>
+                </tr>
+                <%}%>
+            <%});%>
+            </tr>
+            <td></td>
+            <td class="messages-list-wrapper end"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
+</body>
+</html>

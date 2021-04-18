@@ -55,6 +55,47 @@ router.get('/css/juxt.css', function (req, res) {
     res.sendFile('css/juxt.css', {root: path.join(__dirname, '../../../../webfiles/admin/')});
 });
 
+router.get('/icons/:image_id.png', function (req, res) {
+    database.connect().then(async e => {
+        let community = await database.getCommunityByID(req.params.image_id.toString());
+        if(community !== null) {
+            if(community.browser_icon.indexOf('data:image/png;base64,') !== -1)
+                res.send(Buffer.from(community.browser_icon.replace('data:image/png;base64,',''), 'base64'));
+            else
+                res.send(Buffer.from(community.browser_icon, 'base64'));
+        }
+        else {
+            let user = await database.getUserByPID(req.params.image_id.toString());
+            if(user !== null)
+                if(user.pfp_uri.indexOf('data:image/png;base64,') !== -1)
+                    res.send(Buffer.from(user.pfp_uri.replace('data:image/png;base64,',''), 'base64'));
+                else
+                    res.send(Buffer.from(user.pfp_uri, 'base64'));
+            else
+                res.sendStatus(404);
+        }
+    }).catch(error => {
+        console.error(error);
+        res.sendStatus(404)
+    });
+});
+
+router.get('/banner/:image_id.png', function (req, res) {
+    database.connect().then(async e => {
+        let community = await database.getCommunityByID(req.params.image_id.toString());
+        if(community !== null)
+            if(community.WiiU_browser_header.indexOf('data:image/png;base64,') !== -1)
+                res.send(Buffer.from(community.WiiU_browser_header.replace('data:image/png;base64,',''), 'base64'));
+            else
+                res.send(Buffer.from(community.WiiU_browser_header, 'base64'));
+        else
+            res.sendStatus(404);
+    }).catch(error => {
+        console.error(error);
+        res.sendStatus(404)
+    });
+});
+
 router.get('/discovery', upload.none(), function (req, res) {
 
     database.connect().then(async e => {

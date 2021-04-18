@@ -1,5 +1,12 @@
 const { Schema, model } = require('mongoose');
 
+const notification = new Schema({
+    content: String,
+    link: String,
+    read: Boolean,
+    created_at: Date,
+});
+
 const  UserSchema = new Schema({
     pid: Number,
     created_at: String,
@@ -85,6 +92,15 @@ const  UserSchema = new Schema({
     following: {
         type: Number,
         default: 0
+    },
+    notification_list: {
+        type: [notification],
+        default: [{
+            content: 'This is your notifications! You\'ll see more stuff here soon!',
+            link: '/users/me',
+            read: false,
+            created_at: new Date(),
+        }]
     }
 
 });

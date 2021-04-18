@@ -31,12 +31,9 @@
 </menu>
 <div id="main">
     <h1 class="page-header">Communities</h1>
-    <!--<div class="search-container">
-        <form action="/action_page.php">
-            <img id="search-icon" src="/icons/Icon-feather-search.svg"></img>
-            <input id="search-bar" type="text" placeholder="Search communities..." name="search">
-        </form>
-    </div>-->
+    <div id="admin-announcements" class="communities-wrapper announcements-banner" onclick="loadCommunityPage('announcements')">
+        <p class="announcements-banner-text">Click here to view recent announcements!</p>
+    </div>
     <div id="popular" class="communities-wrapper">
         <table style="padding-top: 20px">
             <tbody>
@@ -93,6 +90,6 @@
         </table>
     </div>
 </div>
-<body onload="stopLoading();wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
+<body onload="stopLoading();wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>

@@ -1,0 +1,90 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/juxt.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-279PNEDGEE');
+
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-T9NZ7BK');</script>
+    <!-- End Google Tag Manager -->
+    </script>
+</head>
+<body>
+<menu id="nav-bar" class="">
+    <li id="nav-bar-profile" data-url="users/me" class="" onclick="loadTab(this)"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" data-url="activity-feed" class="" onclick="loadTab(this)"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" data-url="communities" class="selected" onclick="loadTab(this)"><a>Communities</a></li>
+    <li id="nav-bar-messages" data-url="messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-url="news" class="" onclick="loadTab(this)"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
+</menu>
+<div id="main">
+    <div class="community-page-header" style="background-image: url('/banner/<%= community.community_id %>.png')"></div>
+    <div class="community-page-info-container" style="min-height: 150px">
+        <img class="community-page-info-icon" src="/icons/<%= community.community_id %>.png">
+        <h2 class="community-page-title"><%= community.name %></h2>
+        <h4 class="community-page-description"><%= community.description %></h4>
+    </div>
+    <div class="community-page-posts-wrapper" style="margin-top: -40px;">
+        <div id="community-posts-inner-body">
+            <% if(totalNumPosts === 0) {%>
+                <p class="no-posts-text">No Posts</p>
+            <%} else { %>
+                <button id="load-more-posts-button" onclick="loadCommunityPosts()">Load More Posts</button>
+                <% newPosts.forEach(function(post) { %>
+                    <div class="post-user-info-wrapper" id="<%= post.id %>">
+                        <%if(post.verified) {%>
+                            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%= post.pid %>)">
+                            <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+                        <%} else {%>
+                            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%= post.pid %>)">
+                            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+                        <%}%>
+                        <h2 class="community-page-post-username" onclick="loadUserProfile(<%= post.pid %>)"><%= post.screen_name %></h2>
+                        <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <%= community.name %></h4>
+
+                        <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
+                            <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+                        </div>
+                        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                    </div>
+                    <div class="community-page-post-wrapper">
+                        <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
+                            <h3><%= post.body %></h3>
+                        <%} else { %>
+                            <% if(post.screenshot !== '') { %>
+                                <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                            <%}%>
+                            <% if(post.painting !== '') { %>
+                                <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+                            <%}%>
+                            <% if(post.url) { %>
+                                <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <%}%>
+                            <% if(post.body) { %>
+                                <div class="community-page-post-text-overlay">
+                                    <h3><%= post.body %></h3>
+                                </div>
+                            <%}%>
+                        <%}%>
+                    </div>
+                <% }); %>
+            <%}%>
+        </div>
+    </div>
+</div>
+<br>
+<body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1);wiiuBrowser.lockUserOperation(false);">
+</body>
+</html>
