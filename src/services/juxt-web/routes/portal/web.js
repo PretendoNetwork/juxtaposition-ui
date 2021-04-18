@@ -20,6 +20,10 @@ router.get('/fonts/Poppins-Light.ttf', function (req, res) {
     res.sendFile('fonts/Poppins-Light.ttf', {root: path.join(__dirname, '../../../../webfiles/portal/')});
 });
 
+router.get('/favicon.ico', function (req, res) {
+    res.sendFile('css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/portal/')});
+});
+
 router.get('/icons/:image_id.png', function (req, res) {
     database.connect().then(async e => {
         let community = await database.getCommunityByID(req.params.image_id.toString());

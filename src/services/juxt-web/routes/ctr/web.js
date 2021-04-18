@@ -19,4 +19,8 @@ router.get('/icons/mario-kart.jpg', function (req, res) {
     res.sendFile('icons/mario-kart.jpg', {root: path.join(__dirname, '../../../../webfiles/ctr/')});
 });
 
+router.get('/favicon.ico', function (req, res) {
+    res.sendFile('css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/portal/')});
+});
+
 module.exports = router;
