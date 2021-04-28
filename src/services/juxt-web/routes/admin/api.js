@@ -431,4 +431,19 @@ router.post('/posts/:postID/delete', function (req, res) {
     });
 });
 
+router.get('/notifications', function (req, res) {
+    database.connect().then(async e => {
+        await database.pushNewNotificationToAll('Testing a system wide notification and linking to a post', '/users/me')
+        res.sendStatus(200);
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
 module.exports = router;

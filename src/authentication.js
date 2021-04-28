@@ -22,6 +22,7 @@ database.connect().then(async e => {
             if(communities[i].title_id !== null) {
                 for(let j = 0; j < communities[i].title_id.length; j++) {
                     communityMap.set(communities[i].title_id[j], communities[i].name);
+                    communityMap.set(communities[i].title_id[j] + '-id', communities[i].community_id);
                 }
             }
         }

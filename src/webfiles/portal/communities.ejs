@@ -1,6 +1,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/pjax.min.js"></script>
     <script src="/js/juxt.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
@@ -21,17 +22,17 @@
     </script>
 </head>
 <body>
-<menu id="nav-bar" class="">
-    <li id="nav-bar-profile" data-url="users/me" class="" onclick="loadTab(this)"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-url="activity-feed" class="" onclick="loadTab(this)"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-url="communities" class="selected" onclick="loadTab(this)"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-url="messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-url="news" class="" onclick="loadTab(this)"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
+<menu id="nav-bar">
+    <li id="nav-bar-profile" data-pjax="/users/me"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" data-pjax="/communities" class="selected"><a>Communities</a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
 </menu>
 <div id="main">
     <h1 class="page-header">Communities</h1>
-    <div id="admin-announcements" class="communities-wrapper announcements-banner" onclick="loadCommunityPage('announcements')">
+    <div id="admin-announcements" class="communities-wrapper announcements-banner" data-pjax="/communities/announcements">
         <p class="announcements-banner-text">Click here to view recent announcements!</p>
     </div>
     <div id="popular" class="communities-wrapper">
@@ -42,7 +43,9 @@
                         <h1 class="communities-header">Popular Places</h1>
                     </td>
                     <td>
-                        <button class="outlined-button" style="margin-left: 575px; margin-top: -20px" onclick="loadCommunityPage('all')">Show All</button>
+                        <div data-pjax="/communities/all">
+                            <button class="outlined-button" style="margin-left: 575px; margin-top: -20px">Show All</button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -52,7 +55,7 @@
             <tr>
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>
                     <td>
-                        <div class="community-list-wrapper" onclick="loadCommunityPage('<%= popularCommunities[i].community_id %>')">
+                        <div class="community-list-wrapper" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
                             <img class="community-list-icon" src="/icons/<%= popularCommunities[i].community_id %>.png">
                             <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                             <h4 class="community-list-followers"><%= popularCommunities[i].followers %> followers</h4>
@@ -74,7 +77,7 @@
             <tr>
                 <% for(var j = 0; j < newCommunities.length; j++) {%>
                     <td>
-                        <div class="community-list-wrapper" onclick="loadCommunityPage('<%= newCommunities[j].community_id %>')">
+                        <div class="community-list-wrapper" data-pjax="/communities/<%= newCommunities[j].community_id %>/new">
                             <img class="community-list-icon" src="/icons/<%= newCommunities[j].community_id %>.png">
                             <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
                             <h4 class="community-list-followers"><%= newCommunities[j].followers %> followers</h4>
@@ -89,7 +92,8 @@
             </tbody>
         </table>
     </div>
+    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
-<body onload="stopLoading();wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);wiiuBrowser.lockUserOperation(false);">
+<body onload="stopLoading();wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
 </body>
 </html>

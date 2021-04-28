@@ -5,26 +5,37 @@ const util = require('../../../../authentication');
 var path = require('path');
 
 router.get('/css/juxt.css', function (req, res) {
+    res.set("Content-Type", "text/css");
     res.sendFile('css/juxt.css', {root: path.join(__dirname, '../../../../webfiles/portal/')});
 });
 
 router.get('/js/juxt.js', function (req, res) {
+    res.set("Content-Type", "application/javascript; charset=utf-8");
     res.sendFile('js/juxt.js', {root: path.join(__dirname, '../../../../webfiles/portal/')});
 });
 
+router.get('/js/pjax.min.js', function (req, res) {
+    res.set("Content-Type", "application/javascript; charset=utf-8");
+    res.sendFile('js/pjax.min.js', {root: path.join(__dirname, '../../../../webfiles/portal/')});
+});
+
 router.get('/fonts/Poppins-Light.woff', function (req, res) {
+    res.set("Content-Type", "font/woff");
     res.sendFile('fonts/Poppins-Light.woff', {root: path.join(__dirname, '../../../../webfiles/portal/')});
 });
 
 router.get('/fonts/Poppins-Light.ttf', function (req, res) {
+    res.set("Content-Type", "font/ttf");
     res.sendFile('fonts/Poppins-Light.ttf', {root: path.join(__dirname, '../../../../webfiles/portal/')});
 });
 
 router.get('/favicon.ico', function (req, res) {
+    res.set("Content-Type", "image/x-icon");
     res.sendFile('css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/portal/')});
 });
 
 router.get('/icons/:image_id.png', function (req, res) {
+    res.set("Content-Type", "image/png");
     database.connect().then(async e => {
         let community = await database.getCommunityByID(req.params.image_id.toString());
         if(community !== null) {
@@ -50,6 +61,7 @@ router.get('/icons/:image_id.png', function (req, res) {
 });
 
 router.get('/banner/:image_id.png', function (req, res) {
+    res.set("Content-Type", "image/png");
     database.connect().then(async e => {
         let community = await database.getCommunityByID(req.params.image_id.toString());
         if(community !== null)

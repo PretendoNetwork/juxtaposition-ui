@@ -21,7 +21,7 @@ router.get('/me', function (req, res) {
         let numPosts = await database.getTotalPostsByUserID(pid);
         let communityMap = await util.data.getCommunityHash();
         if(isAJAX) {
-            res.render('portal/portal_me_page_ajax.ejs', {
+            res.render('portal/me_page_ajax.ejs', {
                 // EJS variable and server-side variable
                 communityMap: communityMap,
                 moment: moment,
@@ -31,7 +31,7 @@ router.get('/me', function (req, res) {
             });
         }
         else {
-            res.render('portal/portal_me_page.ejs', {
+            res.render('portal/me_page.ejs', {
                 // EJS variable and server-side variable
                 communityMap: communityMap,
                 moment: moment,
@@ -114,28 +114,15 @@ router.get('/show', function (req, res) {
         let newPosts = await database.getNumberUserPostsByID(user.pid, 10);
         let numPosts = await database.getTotalPostsByUserID(user.pid);
         let communityMap = await util.data.getCommunityHash();
-        if(isAJAX) {
-            res.render('portal/portal_user_page_ajax.ejs', {
-                // EJS variable and server-side variable
-                communityMap: communityMap,
-                moment: moment,
-                user: user,
-                newPosts: newPosts,
-                numPosts: numPosts,
-                parentUser: parentUser
-            });
-        }
-        else {
-            res.render('portal/portal_user_page.ejs', {
-                // EJS variable and server-side variable
-                communityMap: communityMap,
-                moment: moment,
-                user: user,
-                newPosts: newPosts,
-                numPosts: numPosts,
-                parentUser: parentUser
-            });
-        }
+        res.render('portal/user_page.ejs', {
+            // EJS variable and server-side variable
+            communityMap: communityMap,
+            moment: moment,
+            user: user,
+            newPosts: newPosts,
+            numPosts: numPosts,
+            parentUser: parentUser
+        });
     }).catch(error => {
         console.error(error);
         res.set("Content-Type", "application/xml");
@@ -165,7 +152,7 @@ router.get('/loadPosts', function (req, res) {
         let communityMap = await util.data.getCommunityHash();
         if(newPosts.length > 0)
         {
-            res.render('portal/portal_more_posts_ajax.ejs', {
+            res.render('portal/more_posts_ajax.ejs', {
                 communityMap: communityMap,
                 moment: moment,
                 user: user,
@@ -205,6 +192,7 @@ router.post('/follow', upload.none(), function (req, res) {
             userToFollow.addToFollowers(user.pid);
             user.addToUsers(userToFollow.pid);
             res.sendStatus(200);
+            await database.pushNewNotificationByPID(userToFollow.pid, user.user_id + ' followed you!', '/users/show?pid=' + user.pid)
         }
         else if(req.body.type === 'false' && user !== null  && user.followed_users.indexOf(userToFollow.pid) !== -1)
         {

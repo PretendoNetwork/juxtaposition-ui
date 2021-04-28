@@ -1,6 +1,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/pjax.min.js"></script>
     <script src="/js/juxt.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
@@ -21,20 +22,20 @@
     </script>
 </head>
 <body>
-<menu id="nav-bar" class="">
-    <li id="nav-bar-profile" data-url="users/me" class="" onclick="loadTab(this)"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-url="activity-feed" class="" onclick="loadTab(this)"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-url="communities" class="selected" onclick="loadTab(this)"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-url="messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-url="news" class="" onclick="loadTab(this)"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
+<menu id="nav-bar">
+    <li id="nav-bar-profile" data-pjax="/users/me"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" data-pjax="/communities" class="selected"><a>Communities</a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
 </menu>
 <div id="main">
     <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
         <div class="overlay-content" style="position: fixed">
             <div id="post-window" class="post-wrapper">
                 <!--Start of Main Post-->
-                <form class="post-emotion-radio"  action="/posts/new" method="post" enctype="multipart/form-data">
+                <form class="post-emotion-radio" action="/posts/new" method="post" enctype="multipart/form-data">
                     <table>
                         <tr>
                             <td colspan="2">
@@ -44,46 +45,51 @@
                         <tr>
                             <td>
                                 <img class="post-user-icon" src="<%= user.pfp_uri %>">
+                                <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
+                                <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
+                                <input type="hidden" id="_post_type" name="_post_type" value="body">
                             </td>
                             <td>
                                 <div class="post-emotions-wrapper">
                                     <label for="post-emotion-0">
-                                        <input type="radio" name="emotion" id="post-emotion-0" checked>
+                                        <input type="radio" name="emotion" id="post-emotion-0" value="0" checked>
                                         <span class="post-emotion-0"></span>
                                     </label>
                                     <label for="post-emotion-1">
-                                        <input type="radio" name="emotion" id="post-emotion-1">
+                                        <input type="radio" name="emotion" id="post-emotion-1" value="1">
                                         <span class="post-emotion-1"></span>
                                     </label>
                                     <label for="post-emotion-2">
-                                        <input type="radio" name="emotion" id="post-emotion-2">
+                                        <input type="radio" name="emotion" id="post-emotion-2" value="2">
                                         <span class="post-emotion-2"></span>
                                     </label>
                                     <label for="post-emotion-3">
-                                        <input type="radio" name="emotion" id="post-emotion-3">
+                                        <input type="radio" name="emotion" id="post-emotion-3" value="3">
                                         <span class="post-emotion-3"></span>
                                     </label>
                                     <label for="post-emotion-4">
-                                        <input type="radio" name="emotion" id="post-emotion-4">
+                                        <input type="radio" name="emotion" id="post-emotion-4" value="4">
                                         <span class="post-emotion-4"></span>
                                     </label>
                                     <label for="post-emotion-5">
-                                        <input type="radio" name="emotion" id="post-emotion-5">
+                                        <input type="radio" name="emotion" id="post-emotion-5" value="5">
                                         <span class="post-emotion-5"></span>
                                     </label>
                                 </div>
                                 <div class="post-emotions-arrow-left"></div>
                             </td>
                             <td>
+                            <td>
                                 <div class="post-screenshot-picker" onclick="loadScreenshots()">
                                     <div class="post-screenshot-picker-icon"></div>
                                     <div class="post-screenshot-picker-dropdown">
-                                        <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true); loadScreenshots()"></div>
-                                        <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false); loadScreenshots()"></div>
-                                        <div><button onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</button></div>
-                                        <input type="hidden" id="screenshot-value" name="screenshot-value" value="">
+                                        <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true);"></div>
+                                        <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false);"></div>
+                                        <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
+                                        <input type="hidden" id="screenshot-value" name="screenshot" value="">
                                     </div>
                                 </div>
+                            </td>
                             </td>
                         </tr>
                         <tr>
@@ -91,12 +97,12 @@
                                 <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
                             </td>
                             <td rowspan="2" id="post-text-input">
-                                <textarea class="post-textarea" id="comment" name="comment" placeholder="Tap here to make a post." rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Prost cannot contain explicit language');}"></textarea>
+                                <textarea class="post-textarea" id="comment" name="body" placeholder="Tap here to make a post." rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Prost cannot contain explicit language');}"></textarea>
                             </td>
                             <td rowspan="2" id="post-painting-input" style="display: none;">
                                 <div class="post-memo">
                                     <img class="post-memo-preview" id="memo" width="640px" height="240px" src="" style="display: none;" onclick="newPainting(false)">
-                                    <input type="hidden" id="memo-value" name="memo-value" value="">
+                                    <input type="hidden" id="memo-value" name="painting" value="">
                                 </div>
                             </td>
                             <br>
@@ -114,9 +120,9 @@
                                 </label>
                             </td>
                         </tr>
-                        <tr>
+                        <tr style="height: 70px">
                             <td class="post-close-button-wrapper" colspan="2">
-                                <div class="post-close-button" onclick="hideNewPostScreen();wiiuMemo.reset();" ></div>
+                                <div class="post-close-button" onclick="hideNewPostScreen();wiiuMemo.reset();">X <b>Close</b></div>
                             </td>
                             <td>
                                 <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
@@ -129,7 +135,9 @@
     </div>
     <div class="community-page-header" style="background-image: url('/banner/<%= community.community_id %>.png')"></div>
     <div class="community-page-header-overlay"></div>
-    <div class="community-page-back-button" onclick="window.history.back()"></div>
+    <div class="community-page-back-button" onclick="window.history.back()">
+        <p class="user-page-back-button-text">Go back</p>
+    </div>
     <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
         <div class="new-post-button-text" onclick="showNewPostScreen()">
             + New Post
@@ -198,13 +206,13 @@
                 <% newPosts.forEach(function(post) { %>
                     <div class="post-user-info-wrapper" id="<%= post.id %>">
                         <%if(post.verified) {%>
-                            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%= post.pid %>)">
+                            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>">
                             <span class="community-page-verified-user-badge community-page-verified" style=""></span>
                         <%} else {%>
-                            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%= post.pid %>)">
-                            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+                            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
+                            <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
                         <%}%>
-                        <h2 class="community-page-post-username" onclick="loadUserProfile(<%= post.pid %>)"><%= post.screen_name %></h2>
+                        <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
                         <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <%= community.name %></h4>
 
                         <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
@@ -236,6 +244,8 @@
             <%}%>
         </div>
     </div>
+    <br>
+    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
 <br>
 <body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1);wiiuBrowser.lockUserOperation(false);">

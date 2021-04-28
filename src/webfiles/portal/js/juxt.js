@@ -1,56 +1,106 @@
-var scrollPosition;
-window.onpopstate = handleBackFunctionality;
-
+var scrollPosition, pjax;
 var updateCheck = setInterval(checkForUpdates, 30000);
 {
     var blankMemo = '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';
 }
-
-function handleBackFunctionality() {
-    var oldURL = window.location.pathname;
-    var xhttp = new XMLHttpRequest();
-    //alert(oldURL);
-    if(oldURL.indexOf('users') !== -1)
-    {
-        wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
-        wiiuBrowser.showLoadingIcon(true);
-        loadUserProfile(oldURL.replace('/users/', ''));
-        wiiuBrowser.showLoadingIcon(false);
-    }
-    else if(oldURL === '/communities' || oldURL === '/titles/show')
-    {
-        wiiuBrowser.showLoadingIcon(true);
-        document.getElementById('nav-bar-profile').classList.remove('selected')
-        document.getElementById('nav-bar-communities').classList.add('selected')
-        xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                document.getElementById("main").innerHTML = this.responseText;
-                wiiuBrowser.showLoadingIcon(false);
+/* global Pjax */
+function initNavBar() {
+    var buttons = document.querySelectorAll("li[data-pjax]");
+    if (!buttons)
+        return;
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            for(var i = 0; i < buttons.length; i++) {
+                if(buttons[i].classList.contains('selected'))
+                    buttons[i].classList.remove('selected');
+                if(buttons[i].getAttribute('data-pjax') === el.getAttribute("data-pjax"))
+                    buttons[i].classList.add('selected');
             }
-        };
-        xhttp.open("GET", "/communities?ajax=true", true);
-        xhttp.send();
-    }
-    else if(oldURL.indexOf('/communities/') !== -1)
-    {
-        wiiuBrowser.showLoadingIcon(true);
-        var communityID = oldURL.replace('/communities/', '');
-        wiiuBrowser.showLoadingIcon(!0)
-        xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                document.getElementById("main").innerHTML = this.responseText;
-                wiiuBrowser.showLoadingIcon(false);
-            }
-        };
-        xhttp.open("GET", "/communities/" + communityID + '?ajax=true', true);
-        xhttp.send();
-
-        wiiuBrowser.showLoadingIcon(!1);
-    }
-    else {
-        wiiuErrorViewer.openByCodeAndMessage(5981000, 'Please send error code to Jemma on Discord with what you were doing');
+            wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+            wiiuBrowser.showLoadingIcon(!0)
+            pjax.loadUrl(el.getAttribute("data-pjax"));
+        });
     }
 }
+function initCommunities() {
+    var buttons = document.querySelectorAll("div[data-pjax]");
+    if (!buttons)
+        return;
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+            wiiuBrowser.showLoadingIcon(!0)
+            pjax.loadUrl(el.getAttribute("data-pjax"));
+        });
+    }
+}
+function initNotifications() {
+    var buttons = document.querySelectorAll("tr[data-pjax]");
+    if (!buttons)
+        return;
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+            wiiuBrowser.showLoadingIcon(!0)
+            pjax.loadUrl(el.getAttribute("data-pjax"));
+        });
+    }
+}
+function initCommunityUsers() {
+    var users = document.querySelectorAll("img[data-pjax], span[data-pjax], h2[data-pjax]");
+    /*users.push(document.querySelectorAll(""));
+    users.push(document.querySelectorAll(""));*/
+    console.log(users)
+    if (!users)
+        return;
+    for (var i = 0; i < users.length; i++) {
+        users[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+            wiiuBrowser.showLoadingIcon(!0)
+            pjax.loadUrl(el.getAttribute("data-pjax"));
+        });
+    }
+}
+
+console.log("Document initialized:", window.location.href);
+document.addEventListener("pjax:send", function() {
+    console.log("Event: pjax:send", arguments);
+});
+document.addEventListener("pjax:complete", function() {
+    console.log("Event: pjax:complete", arguments);
+});
+document.addEventListener("pjax:error", function() {
+    wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send code to Jemma on Discord with what you were doing');
+});
+document.addEventListener("pjax:success", function() {
+    console.log("Event: pjax:success", arguments);
+
+    // Init page content
+    initNavBar();
+    initCommunities();
+    initNotifications();
+    initCommunityUsers();
+});
+document.addEventListener("DOMContentLoaded", function() {
+    // Init Pjax instance
+    pjax = new Pjax({
+        elements: [".js-Pjax"],
+        selectors: ["#main", "#nav-bar", "title"],
+        cacheBust: false
+    });
+    console.log("Pjax initialized.", pjax);
+
+    // Init page content
+    initNavBar();
+    initCommunities();
+    initNotifications();
+    initCommunityUsers();
+});
+
 function stopLoading() {
     if (typeof wiiuBrowser !== 'undefined'
         && typeof wiiuBrowser.endStartUp !== 'undefined') {
@@ -58,85 +108,13 @@ function stopLoading() {
     }
 }
 function exit() {
-    wiiuSound.playSoundByName("SE_WAVE_EXIT", 1);
-    wiiuBrowser.closeApplication();
-}
-function loadTab(element) {
-        if(element.getAttribute('data-url') === 'activity-feed' /*|| element.getAttribute('data-url') === 'news'*/)
-    {
-        alert('Not Implemented. Check back soon!');
-        return;
+    wiiu.gamepad.update()
+    if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
+        alert('Debug Menu');
+    else {
+        wiiuSound.playSoundByName("SE_WAVE_EXIT", 1);
+        wiiuBrowser.closeApplication();
     }
-    var elementID = element.id;
-    wiiuBrowser.showLoadingIcon(!0)
-    wiiuBrowser.lockUserOperation(true);
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("main").innerHTML = this.responseText;
-            history.pushState({}, element.getAttribute('data-url'), '/' + element.getAttribute('data-url'));
-        }
-        else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5984000 + this.status, 'Error: Unable to load "' + elementID + '"\nPlease send code to Jemma on Discord with what you were doing');
-        }
-    };
-    xhttp.open("GET", "/" + element.getAttribute('data-url') + '?ajax=true', true);
-    xhttp.send();
-
-    document.getElementById('nav-bar-profile').classList.remove('selected')
-    document.getElementById('nav-bar-activity-feed').classList.remove('selected')
-    document.getElementById('nav-bar-communities').classList.remove('selected')
-    document.getElementById('nav-bar-messages').classList.remove('selected')
-    document.getElementById('nav-bar-news').classList.remove('selected')
-
-    document.getElementById(elementID).classList.add('selected')
-
-    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
-    checkForUpdates();
-}
-function loadCommunityPage(communityID) {
-    wiiuBrowser.showLoadingIcon(!0)
-    wiiuBrowser.lockUserOperation(true);
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("main").innerHTML = this.responseText;
-            history.pushState({}, 'Community', '/communities/' + communityID);
-        }
-        else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5981000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
-        }
-    };
-    xhttp.open("GET", "/communities/" + communityID + '?ajax=true', true);
-    xhttp.send();
-
-    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
-    wiiuBrowser.showLoadingIcon(!1);
-    checkForUpdates();
-}
-function loadMessagesTab() {
-    alert('Not Implemented. Check back soon!');
-    /*wiiuBrowser.showLoadingIcon(!0)
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("main").innerHTML = this.responseText;
-            loadMessages()
-        }
-    };
-    xhttp.open("GET", "/messages.html" + '?ajax=true', true);
-    xhttp.send();
-
-    document.getElementById('nav-bar-profile').classList.remove('selected')
-    document.getElementById('nav-bar-activity-feed').classList.remove('selected')
-    document.getElementById('nav-bar-communities').classList.remove('selected')
-    document.getElementById('nav-bar-messages').classList.remove('selected')
-    document.getElementById('nav-bar-news').classList.remove('selected')
-
-    document.getElementById('nav-bar-messages').classList.add('selected')
-
-    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
-    wiiuBrowser.showLoadingIcon(!1)*/
 }
 function showOverlay() {
     wiiuSound.playSoundByName('SE_OLV_OK', 1)
@@ -318,6 +296,30 @@ function followUser(user) {
 
 
     }
+}
+function loadMessagesTab() {
+    alert('Not Implemented. Check back soon!');
+    /*wiiuBrowser.showLoadingIcon(!0)
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById("main").innerHTML = this.responseText;
+            loadMessages()
+        }
+    };
+    xhttp.open("GET", "/messages.html" + '?ajax=true', true);
+    xhttp.send();
+
+    document.getElementById('nav-bar-profile').classList.remove('selected')
+    document.getElementById('nav-bar-activity-feed').classList.remove('selected')
+    document.getElementById('nav-bar-communities').classList.remove('selected')
+    document.getElementById('nav-bar-messages').classList.remove('selected')
+    document.getElementById('nav-bar-news').classList.remove('selected')
+
+    document.getElementById('nav-bar-messages').classList.add('selected')
+
+    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+    wiiuBrowser.showLoadingIcon(!1)*/
 }
 function loadMessages() {
     var xhttp = new XMLHttpRequest();
@@ -516,6 +518,7 @@ function loadPosts(type) {
         if (this.readyState === 4 && this.status === 200) {
             document.getElementById('community-posts-inner-body').innerHTML = this.responseText;
             wiiuBrowser.showLoadingIcon(false);
+            initCommunityUsers();
         }
         else if(this.readyState === 4 && this.status === 204)
         {
@@ -572,6 +575,7 @@ function loadCommunityPosts() {
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+            initCommunityUsers();
         }
         else if(this.readyState === 4 && this.status === 204)
         {
@@ -586,26 +590,6 @@ function loadCommunityPosts() {
 
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
-}
-function loadUserProfile(pid) {
-    if(pid === 'me')
-        return;
-    wiiuBrowser.showLoadingIcon(!0)
-    wiiuBrowser.lockUserOperation(true);
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("main").innerHTML = this.responseText;
-            history.pushState({}, 'User Page', '/users/show?pid=' + pid + '&ajax=true');
-        }
-        else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5982000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
-        }
-    };
-    xhttp.open("GET", "/users/show?pid=" + pid + "&ajax=true", true);
-    xhttp.send();
-
-    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
 }
 function switchUserPageTabs(type) {
     document.getElementById('user-page-posts-tab').classList.remove('selected');
@@ -694,7 +678,6 @@ function searchCommunities() {
     }
 }
 
-
 checkForUpdates();
 function checkForUpdates() {
     var xhttp = new XMLHttpRequest();
@@ -732,12 +715,25 @@ function checkForUpdates() {
     xhttp.open("GET", "/notifications.json", true);
     xhttp.send();
 }
-function filterById(jsonObject, id) {
-    return jsonObject.filter(function(jsonObject) {
-        return (jsonObject['id'] === id);})[0];
-}
+var bButtonCheck = setInterval(function() {
+    wiiu.gamepad.update()
+    if(wiiu.gamepad.hold === 16384 && wiiuBrowser.canHistoryBack()) {
+        wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
+        window.history.back()
+    }
 
+}, 250);
 /*Debugging*/
+if (typeof wiiu === 'undefined') {
+    window.gamepad = {
+        update: function () {
+          return true;
+        },
+        hold: function () {
+            return 0;
+        }
+    };
+}
 if (typeof wiiuSound === 'undefined') {
     window.wiiuSound = {
         playSound: function (soundId, device) {

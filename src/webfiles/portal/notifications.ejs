@@ -1,6 +1,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/pjax.min.js"></script>
     <script src="/js/juxt.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
@@ -21,13 +22,13 @@
     </script>
 </head>
 <body>
-<menu id="nav-bar" class="">
-    <li id="nav-bar-profile" data-url="users/me" class="" onclick="loadTab(this)"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-url="activity-feed" class="" onclick="loadTab(this)"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-url="communities" onclick="loadTab(this)"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-url="messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-url="news" class="selected" onclick="loadTab(this)"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
+<menu id="nav-bar">
+    <li id="nav-bar-profile" data-pjax="/users/me"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" data-pjax="/communities"><a>Communities</a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news" class="selected"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
 </menu>
 <div id="main">
     <h1 id="title" class="page-header">Notifications</h1>
@@ -35,35 +36,40 @@
     <div id="messages-list-wrapper">
         <table cellspacing="0">
             <tbody id="messages-list">
-            <% let i = 0; user.notification_list.reverse().forEach(function(notification) { %>
-                <% if(i === 0) { %>
-                <tr class="message-wrapper" onclick="location.href='<%=notification.link%>'">
-                    <td class="messages-unread-badge-wrapper top">
-                        <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
-                    </td>
-                    <td class="messages-list-wrapper top">
-                        <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
-                    </td>
+            <% if(user.notification_list.length === 0) {%>
+                <p class="no-posts-text" style="margin-left: 36%;">No Notifications</p>
+            <%} else { %>
+                <% let i = 0; user.notification_list.reverse().forEach(function(notification) { %>
+                    <% if(i === 0) { %>
+                    <tr class="message-wrapper" data-pjax="<%=notification.link%>">
+                        <td class="messages-unread-badge-wrapper top">
+                            <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
+                        </td>
+                        <td class="messages-list-wrapper top">
+                            <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
+                        </td>
+                    </tr>
+                    <%i = -1;%>
+                    <%} else {%>
+                    <tr class="message-wrapper" data-pjax="<%=notification.link%>">
+                        <td class="messages-unread-badge-wrapper">
+                            <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
+                        </td>
+                        <td class="messages-list-wrapper">
+                            <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
+                        </td>
+                    </tr>
+                    <%}%>
+                <%});%>
                 </tr>
-                <%i = -1;%>
-                <%} else {%>
-                <tr class="message-wrapper" onclick="location.href='<%=notification.link%>'">
-                    <td class="messages-unread-badge-wrapper">
-                        <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
-                    </td>
-                    <td class="messages-list-wrapper">
-                        <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
-                    </td>
+                <td></td>
+                <td class="messages-list-wrapper end"></td>
                 </tr>
-                <%}%>
-            <%});%>
-            </tr>
-            <td></td>
-            <td class="messages-list-wrapper end"></td>
-            </tr>
+            <%}%>
             </tbody>
         </table>
     </div>
+    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
 <body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>

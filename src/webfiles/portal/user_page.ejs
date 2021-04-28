@@ -1,6 +1,7 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/pjax.min.js"></script>
     <script src="/js/juxt.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
@@ -21,13 +22,13 @@
     </script>
 </head>
 <body>
-<menu id="nav-bar" class="">
-    <li id="nav-bar-profile" data-url="users/me" class="selected" onclick="loadTab(this)"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-url="activity-feed" class="" onclick="loadTab(this)"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-url="communities" class="" onclick="loadTab(this)"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-url="messages" class="" onclick="loadMessagesTab();"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-url="news" class="" onclick="loadTab(this)"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" class="" onclick="exit()"><a href="">Close</a></li>
+<menu id="nav-bar">
+    <li id="nav-bar-profile" data-pjax="/users/me" class="selected"><a>User Page</a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
+    <li id="nav-bar-communities" data-pjax="/communities"><a>Communities</a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
 </menu>
 <div id="main">
     <div class="community-page-header" style="background: #673DB6"></div>
@@ -37,11 +38,11 @@
     <div class="community-page-info-container">
         <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
             <div class="user-page-follow-button-wrapper selected">
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)" style="color: #FFFFFF">Following</p>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" data-pjax="/users/show?pid=<%=user.pid%>" style="color: #FFFFFF">Following</p>
             </div>
         <%} else {%>
             <div class="user-page-follow-button-wrapper">
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)">Follow User</p>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" data-pjax="/users/show?pid=<%=user.pid%>">Follow User</p>
             </div>
         <%}%>
         <img class="community-page-info-icon" src="<%= user.pfp_uri %>">
@@ -136,7 +137,7 @@
                     <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
                 <%}%>
                 <h2 class="community-page-post-username"><%= post.screen_name %></h2>
-                <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow()%> - <%= communityMap.get(post.title_id) %></h4>
+                <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow()%> - <a data-pjax="/communities/<%=communityMap.get(post.title_id + '-id')%>"><%= communityMap.get(post.title_id) %></a></h4>
 
                 <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
                     <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>

@@ -9,25 +9,14 @@ var router = express.Router();
 
 router.get('/', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
-    var isAJAX = ((req.query.ajax+'').toLowerCase() === 'true')
     database.connect().then(async e => {
         let popularCommunities = await database.getMostPopularCommunities(9);
         let newCommunities = await database.getNewCommunities(6);
-        if(isAJAX) {
-            res.render('portal/portal_communities_ajax.ejs', {
-                // EJS variable and server-side variable
-                popularCommunities: popularCommunities,
-                newCommunities: newCommunities
-            });
-        }
-        else {
-            res.render('portal/portal_communities.ejs', {
-                // EJS variable and server-side variable
-                popularCommunities: popularCommunities,
-                newCommunities: newCommunities
-            });
-        }
-
+        res.render('portal/communities.ejs', {
+            // EJS variable and server-side variable
+            popularCommunities: popularCommunities,
+            newCommunities: newCommunities
+        });
     }).catch(error => {
         res.set("Content-Type", "application/xml");
         res.statusCode = 400;
@@ -46,20 +35,11 @@ router.get('/', function (req, res) {
 
 router.get('/all', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
-    var isAJAX = ((req.query.ajax+'').toLowerCase() === 'true')
     database.connect().then(async e => {
         let communities = await database.getCommunities(90);
-        if(isAJAX) {
-            res.render('portal/portal_all_communities_ajax.ejs', {
-                communities: communities,
-            });
-        }
-        else {
-            res.render('portal/portal_all_communities.ejs', {
-                communities: communities,
-            });
-        }
-
+        res.render('portal/all_communities.ejs', {
+            communities: communities,
+        });
     }).catch(error => {
         res.set("Content-Type", "application/xml");
         res.statusCode = 400;
@@ -78,7 +58,6 @@ router.get('/all', function (req, res) {
 
 router.get('/announcements', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
-    var isAJAX = ((req.query.ajax+'').toLowerCase() === 'true')
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
@@ -87,25 +66,13 @@ router.get('/announcements', function (req, res) {
         let community = await database.getCommunityByID('announcements');
         let newPosts = await database.getNumberNewCommunityPostsByID(community, 25);
         let totalNumPosts = await database.getTotalPostsByCommunity(community);
-
-        if(isAJAX) {
-            res.render('portal/portal_announcements_ajax.ejs', {
-                moment: moment,
-                community: community,
-                newPosts: newPosts,
-                user: user,
-                totalNumPosts: totalNumPosts
-            });
-        }
-        else {
-            res.render('portal/portal_announcements.ejs', {
-                moment: moment,
-                community: community,
-                newPosts: newPosts,
-                user: user,
-                totalNumPosts: totalNumPosts
-            });
-        }
+        res.render('portal/announcements.ejs', {
+            moment: moment,
+            community: community,
+            newPosts: newPosts,
+            user: user,
+            totalNumPosts: totalNumPosts
+        });
     }).catch(error => {
         console.error(error);
         res.set("Content-Type", "application/xml");
@@ -123,9 +90,8 @@ router.get('/announcements', function (req, res) {
     });
 });
 
-router.get('/:communityID', function (req, res) {
+router.get('/:communityID/:type', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
-    var isAJAX = ((req.query.ajax+'').toLowerCase() === 'true')
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
@@ -134,28 +100,15 @@ router.get('/:communityID', function (req, res) {
         console.log(req.params.communityID)
         let community = await database.getCommunityByID(req.params.communityID.toString());
         let newPosts = await database.getNumberNewCommunityPostsByID(community, 5);
-        let totalNumPosts = await database.getTotalPostsByCommunity(community);
-
-        if(isAJAX) {
-            res.render('portal/portal_community_ajax.ejs', {
-                // EJS variable and server-side variable
-                moment: moment,
-                community: community,
-                newPosts: newPosts,
-                totalNumPosts: totalNumPosts,
-                user: user
-            });
-        }
-        else {
-            res.render('portal/portal_community.ejs', {
-                // EJS variable and server-side variable
-                moment: moment,
-                community: community,
-                newPosts: newPosts,
-                totalNumPosts: totalNumPosts,
-                user: user
-            });
-        }
+        let totalNumPosts = await database.getTotalPostsByCommunity(community)
+        res.render('portal/community.ejs', {
+            // EJS variable and server-side variable
+            moment: moment,
+            community: community,
+            newPosts: newPosts,
+            totalNumPosts: totalNumPosts,
+            user: user
+        });
     }).catch(error => {
         console.error(error);
         res.set("Content-Type", "application/xml");
@@ -202,7 +155,7 @@ router.get('/:communityID/:type/loadPosts', function (req, res) {
 
         if(posts.length > 0)
         {
-            res.render('portal/portal_more_posts_ajax.ejs', {
+            res.render('portal/more_posts.ejs', {
                 communityMap: communityMap,
                 moment: moment,
                 database: database,

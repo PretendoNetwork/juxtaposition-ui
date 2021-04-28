@@ -23,7 +23,7 @@ router.get('/loadPosts', function (req, res) {
         let communityMap = await util.data.getCommunityHash();
         if(newPosts.length > 0)
         {
-            res.render('portal/portal_more_posts_ajax.ejs', {
+            res.render('portal/more_posts_ajax.ejs', {
                 communityMap: communityMap,
                 moment: moment,
                 user: user,

@@ -28,7 +28,7 @@ router.get('/me', function (req, res) {
             });
         }
         else {
-            res.render('ctr/portal_user_page.ejs', {
+            res.render('ctr/user_page.ejs', {
                 // EJS variable and server-side variable
                 user: user,
                 newPosts: newPosts,
@@ -62,7 +62,7 @@ router.get('/show', function (req, res) {
         let newPosts = await database.getPostsByUserID(user.pid);
         let numPosts = await database.getNumberPostsByUserID(user.pid);
         if(isAJAX) {
-            res.render('ctr/portal_user_page_ajax.ejs', {
+            res.render('ctr/user_page_ajax.ejs', {
                 // EJS variable and server-side variable
                 user: user,
                 newPosts: newPosts,
@@ -70,7 +70,7 @@ router.get('/show', function (req, res) {
             });
         }
         else {
-            res.render('ctr/portal_user_page.ejs', {
+            res.render('ctr/user_page.ejs', {
                 // EJS variable and server-side variable
                 user: user,
                 newPosts: newPosts,

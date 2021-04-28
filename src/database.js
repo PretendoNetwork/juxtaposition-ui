@@ -203,6 +203,18 @@ async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
     }).limit(numberOfPosts);
 }
 
+async function pushNewNotificationByPID(PID, content, link) {
+    verifyConnected();
+    return USER.update(
+        { pid: PID }, { $push: { notification_list: { content: content, link: link, read: false, created_at: Date() }}});
+}
+
+async function pushNewNotificationToAll(content, link) {
+    verifyConnected();
+    return USER.updateMany(
+        {}, { $push: { notification_list: { content: content, link: link, read: false, created_at: Date() }}});
+}
+
 async function getDiscoveryHosts() {
     verifyConnected();
     return ENDPOINT.findOne({
@@ -267,5 +279,7 @@ module.exports = {
     getUserByUsername,
     getUserPostsAfterTimestamp,
     getCommunityPostsAfterTimestamp,
-    getServerConfig
+    getServerConfig,
+    pushNewNotificationByPID,
+    pushNewNotificationToAll
 };
