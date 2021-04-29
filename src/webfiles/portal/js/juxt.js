@@ -78,7 +78,6 @@ document.addEventListener("pjax:error", function() {
 });
 document.addEventListener("pjax:success", function() {
     console.log("Event: pjax:success", arguments);
-
     // Init page content
     initNavBar();
     initCommunities();
