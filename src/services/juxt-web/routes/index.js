@@ -6,6 +6,7 @@ module.exports = {
 	PORTAL_POST: require('./portal/posts'),
 	PORTAL_FEED: require('./portal/feed'),
 	PORTAL_NEWS: require('./portal/notifications'),
+	PORTAL_MESSAGES: require('./portal/messages'),
 	CTR_SHOW: require('./ctr/show'),
 	CTR_WEB: require('./ctr/web'),
 	CTR_COMMUNITIES: require('./ctr/communities'),

@@ -1015,6 +1015,7 @@ h4 {
     margin-top: 40px;
     margin-left: -15px;
     width: 1035px;
+    min-height: 190px;
 }
 
 .community-page-posts-header {

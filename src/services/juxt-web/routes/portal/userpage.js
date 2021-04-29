@@ -107,10 +107,11 @@ router.get('/show', function (req, res) {
         if(pid === null)
             pid = 1000000000;
         let parentUser = await database.getUserByPID(pid);
-
         let user = await database.getUserByPID(userID);
         if(user === null)
             res.sendStatus(404);
+        if(user.pid === parentUser.pid)
+            res
         let newPosts = await database.getNumberUserPostsByID(user.pid, 10);
         let numPosts = await database.getTotalPostsByUserID(user.pid);
         let communityMap = await util.data.getCommunityHash();
@@ -152,7 +153,7 @@ router.get('/loadPosts', function (req, res) {
         let communityMap = await util.data.getCommunityHash();
         if(newPosts.length > 0)
         {
-            res.render('portal/more_posts_ajax.ejs', {
+            res.render('portal/more_posts.ejs', {
                 communityMap: communityMap,
                 moment: moment,
                 user: user,

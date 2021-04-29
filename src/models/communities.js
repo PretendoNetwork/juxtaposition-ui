@@ -38,6 +38,7 @@ const  CommunitySchema = new Schema({
     platform_id: Number,
     name: String,
     browser_icon: String,
+    browser_thumbnail: String,
     CTR_browser_header: String,
     WiiU_browser_header: String,
     description: String,

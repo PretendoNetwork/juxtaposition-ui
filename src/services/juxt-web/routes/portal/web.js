@@ -60,6 +60,32 @@ router.get('/icons/:image_id.png', function (req, res) {
     });
 });
 
+router.get('/tip/:image_id.png', function (req, res) {
+    res.set("Content-Type", "image/png");
+    database.connect().then(async e => {
+        let community = await database.getCommunityByID(req.params.image_id.toString());
+        if(community !== null) {
+            if(community.browser_thumbnail.indexOf('data:image/png;base64,') !== -1)
+                res.send(Buffer.from(community.browser_thumbnail.replace('data:image/png;base64,',''), 'base64'));
+            else
+                res.send(Buffer.from(community.browser_thumbnail, 'base64'));
+        }
+        else {
+            let user = await database.getUserByPID(req.params.image_id.toString());
+            if(user !== null)
+                if(user.pfp_uri.indexOf('data:image/png;base64,') !== -1)
+                    res.send(Buffer.from(user.pfp_uri.replace('data:image/png;base64,',''), 'base64'));
+                else
+                    res.send(Buffer.from(user.pfp_uri, 'base64'));
+            else
+                res.sendStatus(404);
+        }
+    }).catch(error => {
+        console.error(error);
+        res.sendStatus(404)
+    });
+});
+
 router.get('/banner/:image_id.png', function (req, res) {
     res.set("Content-Type", "image/png");
     database.connect().then(async e => {

@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
         if(pid === null)
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
-        res.render('portal/feed.ejs', {
+        res.render('portal/messages.ejs', {
             moment: moment,
             user: user,
         });

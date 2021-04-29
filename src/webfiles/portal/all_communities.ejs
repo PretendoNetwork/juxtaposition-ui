@@ -45,7 +45,7 @@
                 <% for(var i = 0; i < communities.length; i++) {%>
                     <td>
                         <div class="community-list-wrapper" data-pjax="/communities/<%= communities[i].community_id %>/new">
-                            <img class="community-list-icon" src="/icons/<%= communities[i].community_id %>.png">
+                            <img class="community-list-icon" src="/tip/<%= communities[i].community_id %>.png">
                             <h2 class="community-list-title"><%= communities[i].name %></h2>
                             <h4 class="community-list-followers"><%= communities[i].followers %> followers</h4>
                         </div>
