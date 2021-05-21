@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>3DS Testing</title>
+    <script src="/js/pjax.js"></script>
     <script src="/js/juxt.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&amp;display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="main">
@@ -31,8 +31,8 @@
                     <% if(i === popularCommunities.length - 1) { %>
                         <tr>
                             <td>
-                                <div class="community-list-wrapper bottom" id="<%= popularCommunities[i].id %>">
-                                    <img class="community-list-icon bottom" src="<%= popularCommunities[i].browser_icon %>">
+                                <div class="community-list-wrapper bottom" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
+                                    <img class="community-list-icon" src="<%= popularCommunities[i].browser_thumbnail %>">
                                     <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                                     <h4><%= popularCommunities[i].followers %> followers</h4>
                                 </div>
@@ -41,8 +41,8 @@
                     <% } else { %>
                         <tr>
                             <td>
-                                <div class="community-list-wrapper" id="<%= popularCommunities[i].id %>">
-                                    <img class="community-list-icon" src="<%= popularCommunities[i].browser_icon %>">
+                                <div class="community-list-wrapper" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
+                                    <img class="community-list-icon" src="<%= popularCommunities[i].browser_thumbnail %>">
                                     <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                                     <h4><%= popularCommunities[i].followers %> followers</h4>
                                 </div>
@@ -56,24 +56,24 @@
             <h1 class="communities-header">New Communities</h1>
             <table>
                 <tbody>
-                <% for(var j = 0; j < newCommunities.length; j++) {%>
-                    <% if(j === newCommunities.length - 1) { %>
+                    <% for(var i = 0; i < newCommunities.length; i++) {%>
+                    <% if(i === newCommunities.length - 1) { %>
                         <tr>
                             <td>
-                                <div class="community-list-wrapper bottom" id="<%= newCommunities[i] %>">
-                                    <img class="community-list-icon bottom" src="<%= newCommunities[j].browser_icon %>">
-                                    <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
-                                    <h4><%= newCommunities[j].followers %> followers</h4>
+                                <div class="community-list-wrapper bottom" data-pjax="/communities/<%= newCommunities[i].community_id %>/new">
+                                    <img class="community-list-icon" src="<%= newCommunities[i].browser_thumbnail %>">
+                                    <h2 class="community-list-title"><%= newCommunities[i].name %></h2>
+                                    <h4><%= newCommunities[i].followers %> followers</h4>
                                 </div>
                             </td>
                         </tr>
                     <% } else { %>
                         <tr>
                             <td>
-                                <div class="community-list-wrapper" id="<%= newCommunities[i] %>">
-                                    <img class="community-list-icon" src="<%= newCommunities[j].browser_icon %>">
-                                    <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
-                                    <h4><%= newCommunities[j].followers %> followers</h4>
+                                <div class="community-list-wrapper" data-pjax="/communities/<%= newCommunities[i].community_id %>/new">
+                                    <img class="community-list-icon" src="<%= newCommunities[i].browser_thumbnail %>">
+                                    <h2 class="community-list-title"><%= newCommunities[i].name %></h2>
+                                    <h4><%= newCommunities[i].followers %> followers</h4>
                                 </div>
                             </td>
                         </tr>

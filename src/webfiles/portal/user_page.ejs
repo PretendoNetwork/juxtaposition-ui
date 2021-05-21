@@ -50,13 +50,13 @@
                 <td>
                     <div class="community-page-shaded-info-container">
                         <h4 class="community-page-table-label">Country</h4>
-                        <h4 class="community-page-table-text">N/A</h4>
+                        <h4 class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%>Private<%}%></h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
                         <h4 class="community-page-table-label">Birthday</h4>
-                        <h4 class="community-page-table-text">N/A</h4>
+                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%>N/A<%}else {%>Private<%}%></h4>
                     </div>
                 </td>
                 <td>

@@ -183,7 +183,7 @@ async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
 async function getNewPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
-        title_id: community.title_id
+        community_id: community.community_id
     }).sort({ created_at: -1 }).limit(numberOfPosts);
 }
 

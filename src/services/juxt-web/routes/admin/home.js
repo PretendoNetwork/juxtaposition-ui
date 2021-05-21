@@ -217,7 +217,7 @@ router.get('/audit', upload.none(), function (req, res) {
 });
 
 router.get('/communities/new', upload.none(), function (req, res) {
-
+    var communityID = req.query.CID;
     database.connect().then(async e => {
         if(req.cookies.token === null)
         {
@@ -233,6 +233,7 @@ router.get('/communities/new', upload.none(), function (req, res) {
         let user = await database.getUserByPID(pid);
         res.render('admin/admin_new_community.ejs', {
             user: user,
+            communityID: communityID
         });
 
     }).catch(error => {
@@ -250,7 +251,6 @@ router.get('/communities/new', upload.none(), function (req, res) {
         };
         res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
     });
-
 });
 
 router.get('/communities/:communityID', upload.none(), function (req, res) {
@@ -298,7 +298,6 @@ router.get('/communities/:communityID', upload.none(), function (req, res) {
 });
 
 router.get('/communities/:communityID/edit', upload.none(), function (req, res) {
-
     database.connect().then(async e => {
         if(req.cookies.token === null)
         {
@@ -333,7 +332,85 @@ router.get('/communities/:communityID/edit', upload.none(), function (req, res) 
         };
         res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
     });
+});
 
+router.get('/communities/:communityID/sub', upload.none(), function (req, res) {
+
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let pid = util.data.processServiceToken(req.cookies.token);
+        if(pid === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let user = await database.getUserByPID(pid);
+        let communities = await database.getSubCommunities(req.params.communityID.toString());
+
+        res.render('admin/admin_sub_communities.ejs', {
+            user: user,
+            communities: communities,
+            moment: moment,
+            communityID: req.params.communityID.toString()
+        });
+
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+
+});
+
+router.get('/communities/:communityID/sub/new', upload.none(), function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let pid = util.data.processServiceToken(req.cookies.token);
+        if(pid === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let user = await database.getUserByPID(pid);
+        let community = await database.getCommunityByID(req.params.communityID.toString());
+        res.render('admin/admin_edit_sub_community.ejs', {
+            user: user,
+            community: community,
+        });
+
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
 });
 
 router.get('/users', upload.none(), function (req, res) {

@@ -71,7 +71,7 @@ ul, ol, menu, li {
     display: none;
 }
 
-#nav-bar  span {
+#nav-bar span {
     display: block;
     margin-top: 5px;
 }
@@ -1283,9 +1283,6 @@ iframe {
     width: 940px;
     height: 640px;
     margin: 40px 190px;
-    /*background-color: rgba(255,255,255,1);
-    border: 1.5px solid #d6d2d2;
-    border-radius: 10px;*/
 }
 
 .about-header {

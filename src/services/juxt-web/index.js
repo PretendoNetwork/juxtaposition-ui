@@ -36,6 +36,7 @@ portal.use('/', routes.PORTAL_WEB);
 ctr.use('/titles/show', routes.CTR_SHOW);
 ctr.use('/communities', routes.CTR_COMMUNITIES);
 ctr.use('/users', routes.CTR_USER);
+ctr.use('/posts', routes.CTR_POST);
 ctr.use('/', routes.CTR_WEB);
 
 admin.use('/', routes.WEB_ADMIN);

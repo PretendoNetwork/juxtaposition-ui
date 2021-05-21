@@ -71,11 +71,11 @@
                 <div class="section-inputs">
                     <div class="input-div choices-inputs do-input-cols">
                         <div>
-                            Browser Icon (512px x 512px)
+                            Browser Icon (128px x 128px)
                             <input type="file" id="browserIcon" accept="image/png" name="browserIcon">
                         </div>
                         <div>
-                            <img src="<%=community.browser_icon%>">
+                            <img src="/icons/<%= community.community_id %>.png">
                         </div>
                     </div>
 
@@ -125,6 +125,21 @@
                         <label for="platform_id">3DS</label>
                         <input type="radio" id="Both" name="platform_id" value="2" <%if(community.platform_id === 2) {%> checked <%}%>>
                         <label for="platform_id">Both</label>
+                    </div>
+
+                    <div class="input-div choices-inputs">
+                        Type
+                        <input type="radio" id="main" name="type" value="0" <%if(community.type === 0) {%> checked <%}%>>
+                        <label for="type">Main</label>
+                        <input type="radio" id="sub" name="type" value="1" <%if(community.type === 1) {%> checked <%}%>>
+                        <label for="type">Sub</label>
+                        <input type="radio" id="admin" name="type" value="2" <%if(community.type === 2) {%> checked <%}%>>
+                        <label for="type">Announcement</label>
+                    </div>
+
+                    <div class="input-div">
+                        <label for="parent">Parent Community</label>
+                        <input type="text" id="parent" name="parent" value="<%=community.parent%>">
                     </div>
                 </div>
             </div>

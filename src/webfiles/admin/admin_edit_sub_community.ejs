@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Juxt Admin Panel</title>
+    <title>Edit - <%= community.name %></title>
     <link rel="stylesheet" type="text/css" href="/css/juxt.css">
 </head>
 <body>
@@ -21,8 +21,8 @@
     </div>
 
     <div class="right" style="background-color:#ddd;">
-        <h2>New Community</h2>
-        <form action="/v1/communities/new" target="formSubmitFrame" enctype="multipart/form-data" method="post">
+        <h2>New <%=community.name%> Sub-Community</h2>
+        <form action="/v1/communities/<%=community.community_id%>/sub/new" enctype="multipart/form-data" target="formSubmitFrame" method="post">
             <div class="form-section">
                 <div class="section-info">
                     <h2>Meta information</h2>
@@ -31,33 +31,33 @@
                 <div class="section-inputs">
                     <div class="input-div">
                         <label for="name">Community Name:</label>
-                        <input type="text" id="name" name="name" required>
+                        <input type="text" id="name" name="name" value="<%=community.name%>">
                     </div>
 
                     <div class="input-div">
                         <label for="description">Description:</label>
-                        <textarea type="text" id="description" name="description" required></textarea>
+                        <textarea type="text" id="description" name="description"><%=community.description%></textarea>
                     </div>
 
                     <div class="input-grid">
                         <div class="input-div">
                             <label for="title_ids">Title ID 1:</label>
-                            <input type="text" id="title_ids" name="title_ids[]" required>
+                            <input type="text" id="title_ids" name="title_ids[]" value="<%=community.title_ids[0]%>">
                         </div>
 
                         <div class="input-div">
                             <label for="title_ids">Title ID 2:</label>
-                            <input type="text" id="title_ids" name="title_ids[]">
+                            <input type="text" id="title_ids" name="title_ids[]" value="<%=community.title_ids[1]%>">
                         </div>
 
                         <div class="input-div">
                             <label for="title_ids">Title ID 3:</label>
-                            <input type="text" id="title_ids" name="title_ids[]">
+                            <input type="text" id="title_ids" name="title_ids[]" value="<%=community.title_ids[2]%>">
                         </div>
 
                         <div class="input-div">
                             <label for="icon">System Icon (B64 TGA):</label>
-                            <input type="text" id="icon" name="icon" required>
+                            <input type="text" id="icon" name="icon" value="<%=community.icon%>">
                         </div>
                     </div>
                 </div>
@@ -71,8 +71,11 @@
                 <div class="section-inputs">
                     <div class="input-div choices-inputs do-input-cols">
                         <div>
-                            Browser Icon (512px x 512px)
-                            <input type="file" id="browserIcon" accept="image/png" name="browserIcon" required>
+                            Browser Icon (128px x 128px)
+                            <input type="file" id="browserIcon" accept="image/png" name="browserIcon">
+                        </div>
+                        <div>
+                            <img src="/icons/<%= community.community_id %>.png">
                         </div>
                     </div>
 
@@ -80,8 +83,11 @@
 
                     <div class="input-div choices-inputs do-input-cols">
                         <div>
-                            3DS Browser Banner
-                            <input type="file" id="CTRbrowserHeader" accept="image/png" name="CTRbrowserHeader" required>
+                            3DS Browser Banner (400px x 220px)
+                            <input type="file" id="CTRbrowserHeader" accept="image/png" name="CTRbrowserHeader">
+                        </div>
+                        <div>
+                            <img src="<%=community.CTR_browser_header%>">
                         </div>
                     </div>
 
@@ -89,42 +95,43 @@
 
                     <div class="input-div choices-inputs">
                         Wii U Browser Banner (1498px x 328px)
-                        <input type="file" id="WiiUbrowserHeader" accept="image/png" name="WiiUbrowserHeader" required>
+                        <input type="file" id="WiiUbrowserHeader" accept="image/png" name="WiiUbrowserHeader">
+                        <img src="<%=community.WiiU_browser_header%>">
                     </div>
 
                     <hr>
 
                     <div class="input-div choices-inputs">
                         Is Recommended?
-                        <input type="radio" id="isRecomended" name="is_recommended" value="1" required>
+                        <input type="radio" id="isRecomended" name="is_recommended" value="1" <%if(community.is_recommended === 1) {%> checked <%}%>>
                         <label for="isRecomended">True</label>
-                        <input type="radio" id="isNotRecomended" name="is_recommended" value="0" required>
+                        <input type="radio" id="isNotRecomended" name="is_recommended" value="0" <%if(community.is_recommended === 0) {%> checked <%}%>>
                         <label for="isNotRecomended">False</label>
                     </div>
 
                     <div class="input-div choices-inputs">
                         Has Shop Page?
-                        <input type="radio" id="hasShopPage" name="has_shop_page" value="1" required>
+                        <input type="radio" id="hasShopPage" name="has_shop_page" value="1" <%if(community.has_shop_page === 1) {%> checked <%}%>>
                         <label for="hasShopPage">True</label>
-                        <input type="radio" id="noShopPage" name="has_shop_page" value="0" required>
+                        <input type="radio" id="noShopPage" name="has_shop_page" value="0" <%if(community.has_shop_page === 0) {%> checked <%}%>>
                         <label for="noShopPage">False</label>
                     </div>
 
                     <div class="input-div choices-inputs">
                         Platform
-                        <input type="radio" id="WiiU" name="platform_id" value="0" required>
+                        <input type="radio" id="WiiU" name="platform_id" value="0" <%if(community.platform_id === 0) {%> checked <%}%>>
                         <label for="platform_id">Wii U</label>
-                        <input type="radio" id="3DS" name="platform_id" value="1" required>
+                        <input type="radio" id="3DS" name="platform_id" value="1" <%if(community.platform_id === 1) {%> checked <%}%>>
                         <label for="platform_id">3DS</label>
-                        <input type="radio" id="Both" name="platform_id" value="2" required>
+                        <input type="radio" id="Both" name="platform_id" value="2" <%if(community.platform_id === 2) {%> checked <%}%>>
                         <label for="platform_id">Both</label>
                     </div>
 
                     <div class="input-div choices-inputs">
                         Type
-                        <input type="radio" id="main" name="type" value="0" checked>
+                        <input type="radio" id="main" name="type" value="0">
                         <label for="type">Main</label>
-                        <input type="radio" id="sub" name="type" value="1" <%if(communityID){%>checked<%}%>>
+                        <input type="radio" id="sub" name="type" value="1" checked>
                         <label for="type">Sub</label>
                         <input type="radio" id="admin" name="type" value="2">
                         <label for="type">Announcement</label>
@@ -132,19 +139,20 @@
 
                     <div class="input-div">
                         <label for="parent">Parent Community</label>
-                        <input type="text" id="parent" name="parent" value="<%=communityID%>">
+                        <input type="text" id="parent" name="parent" value="<%=community.community_id%>">
                     </div>
                 </div>
             </div>
 
             <div class="form-section">
                 <div class="section-info">
-                    <h2>Submit Community</h2>
+                    <h2>Submit or Delete Community</h2>
                     <p></p>
                 </div>
                 <div class="section-inputs">
                     <div>
                         <button type="submit" class="btn">Submit</button>
+                        <button type="button" class="btn" onclick="deleteCommunity()">Delete Community</button>
                     </div>
                     <iframe name="formSubmitFrame"></iframe>
                 </div>
@@ -153,5 +161,24 @@
     </div>
 </div>
 
+<script>
+    function deleteCommunity() {
+        var confirm = prompt('Type the name of the community in to confirm you want to delete it.');
+        if (confirm === '<%=community.name%>') {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    alert('Community has been deleted');
+                    window.location.replace("/communities");
+                }
+                else if (this.readyState === 4){
+                    alert("Unable to delete community.")
+                }
+            };
+            xhttp.open("POST", "/v1/communities/<%=community.community_id%>/delete", true);
+            xhttp.send();
+        }
+    }
+</script>
 </body>
 </html>

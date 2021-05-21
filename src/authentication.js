@@ -232,6 +232,14 @@ let methods = {
     },
     getCommunityHash: function() {
         return communityMap;
+    },
+    resizeImage: function (file, width, height) {
+        sharp(file)
+            .resize({ height: height, width: width })
+            .toBuffer()
+            .then(data => {
+                return data;
+            });
     }
 };
 exports.data = methods;

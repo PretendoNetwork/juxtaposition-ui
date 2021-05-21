@@ -724,12 +724,12 @@ var bButtonCheck = setInterval(function() {
 }, 250);
 /*Debugging*/
 if (typeof wiiu === 'undefined') {
-    window.gamepad = {
-        update: function () {
-          return true;
-        },
-        hold: function () {
-            return 0;
+    window.wiiu = {
+        gamepad: {
+            update: function () {
+                return true;
+            },
+            hold: 0
         }
     };
 }

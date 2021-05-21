@@ -11,6 +11,7 @@ module.exports = {
 	CTR_WEB: require('./ctr/web'),
 	CTR_COMMUNITIES: require('./ctr/communities'),
 	CTR_USER: require('./ctr/userpage'),
+	CTR_POST: require('./ctr/posts'),
 	WEB_ADMIN: require('./admin/home'),
 	WEB_API: require('./admin/api'),
 };

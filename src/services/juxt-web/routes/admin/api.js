@@ -7,6 +7,7 @@ const { COMMUNITY } = require('../../../../models/communities');
 var router = express.Router();
 const moment = require('moment');
 var multer  = require('multer');
+const sharp = require("sharp");
 const snowflake = require('node-snowflake').Snowflake;
 var storage = multer.memoryStorage();
 var upload = multer({ storage: storage });
@@ -156,14 +157,15 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
             if(req.body.icon && community.icon !== req.body.icon)
                 community.icon = req.body.icon;
 
-            if(req.files.browserIcon)
-                community.browser_icon = `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`;
-
+            if(req.files.browserIcon) {
+                community.browser_icon = `data:image/png;base64,${await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer().toString('base64')}`;
+                community.browser_thumbnail = `data:image/png;base64,${await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer().toString('base64')}`;
+            }
             if(req.files.CTRbrowserHeader)
-                community.CTR_browser_header = `data:image/png;base64,${req.files.CTRbrowserHeader[0].buffer.toString('base64')}`;
+                community.CTR_browser_header = `data:image/png;base64,${await sharp(req.files.CTRbrowserHeader[0].buffer).resize({ height: 220, width: 400 }).toBuffer().toString('base64')}`;
 
             if(req.files.WiiUbrowserHeader)
-                community.WiiU_browser_header = `data:image/png;base64,${req.files.WiiUbrowserHeader[0].buffer.toString('base64')}`;
+                community.WiiU_browser_header = `data:image/png;base64,${await sharp(req.files.WiiUbrowserHeader[0].buffer).resize({ height: 328, width: 1498 }).toBuffer().toString('base64')}`;
 
             if(req.body.is_recommended)
                 community.is_recommended = req.body.is_recommended;
@@ -210,8 +212,16 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
                 logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
                 throw new Error('Invalid credentials supplied');
             }
-
             JSON.parse(JSON.stringify(req.files));
+            let browserIcon, CTRHeader, WiiUHeader, thumb;
+            if(req.files.browserIcon) {
+                browserIcon = await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer();
+                thumb = await sharp(req.files.browserIcon[0].buffer).resize({ height: 75, width: 75 }).toBuffer();
+            }
+            if(req.files.CTRbrowserHeader)
+                CTRHeader = await sharp(req.files.CTRbrowserHeader[0].buffer).resize({ height: 220, width: 400 }).toBuffer();
+            if(req.files.WiiUbrowserHeader)
+                WiiUHeader = await sharp(req.files.WiiUbrowserHeader[0].buffer).resize({ height: 328, width: 1498 }).toBuffer();
             const document = {
                 empathy_count: 0,
                 id: snowflake.nextId(),
@@ -224,10 +234,89 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
                 community_id: snowflake.nextId(),
                 is_recommended: req.body.is_recommended,
                 name: req.body.name,
-                browser_icon: `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`,
-                CTR_browser_header: `data:image/png;base64,${req.files.CTRbrowserHeader[0].buffer.toString('base64')}`,
-                WiiU_browser_header:  `data:image/png;base64,${req.files.WiiUbrowserHeader[0].buffer.toString('base64')}`,
+                browser_icon: `data:image/png;base64,${browserIcon.toString('base64')}`,
+                CTR_browser_header: `data:image/png;base64,${CTRHeader.toString('base64')}`,
+                WiiU_browser_header:  `data:image/png;base64,${WiiUHeader.toString('base64')}`,
+                browser_thumbnail: `data:image/png;base64,${thumb.toString('base64')}`,
                 description: req.body.description,
+            };
+            const newCommunity = new COMMUNITY(document);
+            newCommunity.save();
+            res.sendStatus(200);
+            logger.audit('[' + user.user_id + ' - ' + user.pid + '] created community ' + newCommunity.name);
+        }
+        else
+            throw new Error('Invalid account ID or password');
+
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
+router.post('/communities/:communityID/sub/new', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let user = await database.getUserByPID(pid);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
+                throw new Error('Invalid credentials supplied');
+            }
+            const community = await database.getCommunityByID(req.params.communityID);
+            let browserIcon, CTRHeader, WiiUHeader, thumb;
+            if(req.files.browserIcon) {
+                browserIcon = `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`;
+                thumb = await sharp(req.files.browserIcon[0].buffer)
+                    .resize({ height: 75, width: 75 })
+                    .toBuffer();
+            }
+            else {
+                browserIcon = community.browser_icon;
+                thumb = community.browser_thumbnail;
+            }
+            if(req.files.CTRbrowserHeader)
+                CTRHeader = `data:image/png;base64,${req.files.CTRbrowserHeader[0].buffer.toString('base64')}`;
+            else
+                CTRHeader = community.CTR_browser_header;
+            if(req.files.WiiUbrowserHeader)
+                WiiUHeader = `data:image/png;base64,${req.files.WiiUbrowserHeader[0].buffer.toString('base64')}`;
+            else
+                WiiUHeader = community.WiiU_browser_header;
+            JSON.parse(JSON.stringify(req.files));
+            const document = {
+                name: req.body.name,
+                description: req.body.description,
+                parent: req.body.parent,
+                type: req.body.type,
+                empathy_count: 0,
+                id: snowflake.nextId(),
+                has_shop_page: req.body.has_shop_page,
+                platform_id: req.body.platform_ID,
+                icon: req.body.icon,
+                created_at: moment(new Date()),
+                title_ids: req.body.title_ids,
+                title_id: req.body.title_ids,
+                community_id: snowflake.nextId(),
+                is_recommended: req.body.is_recommended,
+                browser_icon: browserIcon,
+                browser_thumbnail: `data:image/png;base64,${thumb.toString('base64')}`,
+                CTR_browser_header: CTRHeader,
+                WiiU_browser_header:  WiiUHeader,
             };
             const newCommunity = new COMMUNITY(document);
             newCommunity.save();

@@ -38,12 +38,12 @@ h4 {
     height: 30px;
 }
 .header-title {
-    margin: 165px 0 0;
     position: absolute;
     width: 350px;
-    height: 40px;
+    height: 44px;
     z-index: 2;
-    padding-top: 11px;
+    margin: 167px 0 0;
+    padding-top: 9px;
     padding-left: 50px;
     white-space: nowrap;
     text-align: left;
@@ -51,7 +51,7 @@ h4 {
     font-weight: bolder;
     font-size: 25px;
     color: rgb(0 0 0);
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(255, 255, 255, 0.6)
 }
 
 .header-icon {
@@ -163,12 +163,9 @@ h4 {
     background-size: 50px 50px !important;
     width: 50px;
     height: 50px;
-    border-radius: 10px;
-    margin-top: 5px;
-    margin-right: 10px;
-    margin-left: 5px;
+    border-radius: 6px;
     float: left;
-    margin-bottom: 15px;
+    margin: 5px 10px 15px 5px;
     background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV/TaqVUHOwg4pChdrIgKuIoVSyChdJWaNXB5NIvaGJIUlwcBdeCgx+LVQcXZ10dXAVB8APEydFJ0UVK/F9SaBHjwXE/3t173L0DhGaNqWZgHFA1y8gkE2K+sCIGXxFCAH7E0CsxU09lF3LwHF/38PH1Ls6zvM/9OfqVoskAn0g8y3TDIl4nnt60dM77xBFWkRTic+Ixgy5I/Mh12eU3zmWHBZ4ZMXKZOeIIsVjuYrmLWcVQiaeIo4qqUb6Qd1nhvMVZrdVZ+578heGitpzlOs0RJLGIFNIQIaOOKmqwEKdVI8VEhvYTHv5hx58ml0yuKhg55rEBFZLjB/+D392apckJNymcAHpebPtjFAjuAq2GbX8f23brBPA/A1dax7/RBGY+SW90tOgRMLANXFx3NHkPuNwBhp50yZAcyU9TKJWA9zP6pgIweAuEVt3e2vs4fQBy1NXSDXBwCMTKlL3m8e6+7t7+PdPu7wciuXKHjJUaWAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAN1wAADdcBQiibeAAAAAd0SU1FB+QKBAMtDK8J1F8AAADsSURBVGje7dvNDYMwDIZhYmWtLsAizMQiXYDB2nsEEkj4J/brY3vpIzvkw1Lb9vn+lkIlS7ECDDhZ9bMP92NtGXBnD2RGGjBgwIABAwYMGLBmlrbMttbZvXtCx+8t4KINfbJCslg3hTvD2miJ+MM10S4d3o+1eS0ZxLK7I9QD7X6Gr9BaYy1WiCh7sm7dufLR0jp9SURsmiztCXXr8B2s5vmXSthwWXr6t6W7IMuoKZ5d9MjUPevoTvM+DHj2kR6vJuvxDpulywSP9PdwuZFO/9DyXgxwDwMGDBgwYMCAAQN+qRp/4wEMGPBM9Qf3C2DK9iBTlQAAAABJRU5ErkJggg==');
 }
 .community-list-icon.bottom {
@@ -474,15 +471,9 @@ h4 {
     text-align: center;
     width: 350px;
     height: 640px;
-    /*margin: 40px 190px;*/
-    /*background-color: rgba(255,255,255,1);
-    border: 1.5px solid #d6d2d2;
-    border-radius: 10px;*/
 }
 
 .about-header {
-    /*margin-top: -420px;
-    margin-left: 175px;*/
     text-align: center;
     font-size: 20px;
     padding-top: 180px;
@@ -514,7 +505,7 @@ h4 {
 .community-page-info-icon {
     width: 40px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: 6px;
 }
 
 .user-page-tab-table {
@@ -570,22 +561,285 @@ h4 {
     display: inline-block;
 }
 
+.user-menu-button {
+    height: 37px;
+    width: 290px;
+    margin: 2px;
+    background: #673DB6;
+    color: white;
+    font-size: large;
+    border-width: 0;
+    border-radius: 6px;
+}
+
 .community-page-table-wrapper {
-    border-top: #D6D2D2;
-    border-width: 5px;
-    position: absolute;
-    padding-top: 115px;
-    margin-left: 17px;
+    position: relative;
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     line-height: 20px;
+    background-color: rgba(255,255,255,1);
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
 }
 
 .community-page-table-label {
     color: #673DB6;
     padding-left: 15px;
+    margin-top: 0;
 }
 
 .community-page-table-text {
     color: black;
     padding-left: 15px;
-    margin-top: -15px
+    margin-top: -20px;
+}
+
+.community-page-shaded-info-container {
+    z-index: 3;
+    width: 139px;
+    height: 36px;
+    background-color: rgb(233, 233, 233);
+    border: 1.5px solid #e9e9e9;
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.community-page-follow-button {
+    width: 115px;
+    height: 25px;
+    position: relative;
+    margin-bottom: 10px;
+    margin-left: 239px;
+    background-color: white;
+    border-color: #1F8A42;
+    border-style: solid;
+    border-bottom-left-radius: 4px;
+}
+
+.community-page-follow-button.selected {
+    background-color: #1F8A42;
+}
+
+.community-page-follow-button > .community-page-follow-button-text {
+    color: #1F8A42;
+    font-size: 11px;
+    margin-top: 6px;
+    margin-left: 20px;
+}
+
+.community-page-follow-button.selected > .community-page-follow-button-text {
+    color: white;
+    font-size: 11px;
+    margin-top: 5px;
+    margin-left: 12px;
+}
+
+#community-related-wrapper {
+    width: 75px;
+    height: 25px;
+    position: absolute;
+    margin-bottom: 10px;
+    margin-left: -40px;
+    padding-left: 40px;
+    background-color: #1F8A42;
+    border-color: #1F8A42;
+    border-style: solid;
+    border-bottom-right-radius: 4px;
+}
+
+.related-button-text {
+    color: white;
+    font-size: 11px;
+    margin-top: 5px;
+    margin-left: 20px;
+}
+
+.community-page-posts-wrapper {
+    position: relative;
+    z-index: 3;
+    background-color: rgba(255,255,255,1);
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+    min-height: 190px;
+}
+
+.community-page-posts-header {
+    margin-top: 25px;
+}
+
+.community-page-posts-header-tab {
+    padding-left: 14px;
+    padding-right: 10px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.community-page-posts-header-tab.active {
+    color: #673DB6;
+}
+
+.community-page-post-wrapper {
+    padding-top: 10px;
+}
+
+.community-page-post-screenshot {
+    width: 280px;
+    border: 1.5px solid #d6d2d2;
+    border-radius: 6px;
+    margin-left: 15px;
+}
+
+.community-page-post-painting {
+    margin-left: 15px;
+    max-width: 280px;
+}
+
+.community-page-post-time-stamp {
+    margin-top: 5px;
+}
+
+.community-page-post-yeah-button-wrapper {
+    padding-bottom: 0;
+    margin-left: 244px;
+    margin-top: -46px;
+    background-repeat: no-repeat !important;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAAA8CAYAAADSfGxZAAAABHNCSVQICAgIfAhkiAAABHpJREFUaEPtm8Fu20YQhv+hpAQ51X2CKIfIvVW5FW2M2sc4sK08QSSgZNJTmieo8gR2T02kAlaeIJQMO0czSFr0FudWKQXqPkGlU5BI4hRLiDQpU/LS4lKCQp4EaZfc/9uZ2eFol+C7jO9e3ifiMhMXCbTi/21ZPjO4S0wnzNSo/X7nuauLxIfy+vHK1cGHFyCsL4tgKR0M62P22r2GtdF1QDy4fXT82UFwSTGsZ282N+jh2mGZQftSBJe0EYErZNw+sojw/ZlGbtpDVOt/3D1ZRt0Pv3mZ55y9B9COZxSMV2SsHf7nD4zUpxtP/7xzuowQXE36t4dFLUNvz7yDu/Rg7Yj9op+93nTixrJf47pTEKMZT0GkIIIhIbWI1CJSi3BsIF01Rq6QgkhBBFPEuVhE6atf88NB5nqG0DPfG1LvMKX8/sow2/9aDD8zyL0zTyvdOLPdxEBsFX4racSPgNAah8Vgs9U2fvGLE8DYzuyCUAQoHxTOp2CckDZ8bP7148zvQspBiJnkK/19EJUkZtAiGlSEsO3V2iNiqoIwvTLG6NqgykHnB1Pi/hObKAVRulkrMpEo8siX+RhdgE9BVIwkjLnR7BiVSH18jZWC2CnU3k4Q9C8LsYwVInL8/sKLuccEJ54QowiiL8b72MDjg7a+d+G9QhooA7FdqFeJ8LP/mQx+pX3MlfyBTriOfbVfJZCIH+cv5p4NrTxu+k7Mgd0IAGF0SRvcukzMUALCCXKc/ScAgfG81dHLk2Zr62atrGnBEiEzv9M+5dYnrRCj+CPcyLMOZjRbHV0mHgWGogTEuCghqNUxLvR5f7+LILgqRqvRC08Vo9vs6F9GdQ8lILZXa3t+U4/iu8KaMMjmzb91S1bMzmpdLJ/X3fZEgxtR3UMVCItAXgGYhtiIIkwWgNtuu1A3ieAVX22me1GX0xTEiKYaEIV6gwj33Rmzba4cvDcaUWdatv34Mk0235JN3d1nKAGxtVr/SQN2fUKsZlvfkBUWpZ2TtGlnpXjRt9nWI1felYAIG1yUgCkLYrR8HvuTNpGrtNpG5P9slYAQQsYDmPgubhfZKdTEO0wgN7mMW4ixKQMRluzECSMMAjOetDp6Vdai/O2UgRAPOZfsjJ48q2WEQ5BL2iZBUgrCgRGSOs9iGZMgTEvFZSxEOYg4YaiCoDRGjM/CrJahEkKiIGaxDNUQEgdxGRhJQJgLiCgwkoIwNxAyMJKEMFcQ02AAELWIQJosW6iRWSrD2iSyfE4b3KTVxN9HNYS5W4QrdhqMJCAsDIhJbpIUhIUCMQ4jSQgLB0IMSNQyhkAx08+Zcf/ROy1WzT1YXjbKx90vBTEimoJIQQSdK7WI1CJSiwhdcFLXmOQaxtqRONjl7Tf4PA+uoHfuKBMzTLb5yTIfZbKzvEsEb3MJi6NM6eE2wDncJlzm/AG3uBPaxb2fsIbam8117wDslcEHsfnCd9pvcQcf18gEhE/ZayXvAKx7Y+EmNlNZ7Hz1B9C4HrwI92GgJ3bwasSNp6/vens4/gcrH5FO7PvkhAAAAABJRU5ErkJggg==');
+    background-size: 35px;
+    width: 50px;
+    height: 40px;
+    position: absolute;
+}
+
+.community-page-post-yeah-button-wrapper.selected {
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEIAAAA8CAYAAADSfGxZAAAABHNCSVQICAgIfAhkiAAABBNJREFUaEPtmztMFEEYx78hEAOihRb4QEMBKAWKFCq5O0MwvgATTIROCRheBRDpgNaD7hK1ECFK0E4KNeHpKyYcQSl4FiZAYRSUK6BAlAJkzLfeHrvL3u3u7dxuOOZLLrmwM7Pz/eb/PdjLEpBYhbP3VgxAEQVynhA4Ir0WLd8phR8E6KdNgFcd3oLnol8Ev1Q63h6HmPUOAnA5WhzW4wcFeAObcRXtw5e+CSCqnH1eIODQMznaxlAK3nZvvotUOXvLgJCn0eagIX8oLSdVrr4BALhiaGL0DR4klc7eRUJIUvT5pt8jSqkPFUH1T4nekRyE/2w5CA5CHuZcEVwRXBGqpY+HBg8NHhr2hcbBQ/GAn7XfG/B9dkVXe5qQGAfJqfuEsfNzv+DP6rqueeEOiliOyHIlQd7NFEg/c2Db3mbGl2HC64MP3V9l1xBWcW0GHEvbL4CT2tLimgCx++EXwO+sjTkIPMnbjZmAILQMgXS1TgmO5RWnQGFZKuD8UIbKeNY6DRNDPq3lDV1nCgJP8u79s5rOSHeIji39XBNUYMRG+uehq3XayJSQY5mCaH7iUHUITxw/CYmxkJyqz2FpPkFI8XtjtzmCYfJeEV7hkmEGAmVdWJYm28fMxDK0NY3JEh1KH8diKKgZAuhqmdomfQy10qZTMiCoJnf5MJOcwQQEJjb3i1yZXyMDC4JDwSznWjKUNmbKLs/PrYCnbjRohUCI7u5cGYxJrw8eNY2FK4TAPCYglE6hQ/fKhzU3J52nBUFcDJVR7c4OrI2qaMh/p3kvrQFMQJTUZsikbiR2hR7jcALMjC9p7TVwHdUnLa/NJR9NhwcTEA0PzkF61la/4KkfNeSYbgL+gTUt2XDauVWe25rHTJdTDsIPlwkIzOY5V48GDhbrO9b5SJmyTLvvDOtu3YPtiQmIi8UpQmssGnaMnvrPEeGAPQWCkFr1hX7T92ICQm1zRhKmES+UasBexVNnHjoTEOiIMoHh31iHCPYdWHKlxiIscD1mINSaHZYw1CD0dM5CT+ecEUEFHcsMBN5B2eyIdzWrDDUIeps2vZSYgsCbqrXOZpQRDEKoVlyv89JxzEGwhGEVBKY5QnkKZpVhJYSIgjCjDKshRBxEODDsgGAJCCMw7IJgGQg9MOyEYCmIUDDwfxPlY3+9D2rCKZVqcyJSPkNtLlg1kc6xGoLlihCdDQXDDgi2gQgWJnZBsBWEEoadEGwHgRvAZxn4o8/kkC/iP/SGyl2WJ0tWWZ71OhyEnygHwUHIg4srgiuCK0K14PDQEEODv7gCIL64wl9lAhgkla6+IgLwknWntpPWowA3/r/uuKtfcKOvHw8VoBgAahz9JzZj6CQA7NlJJ8lgr6tk4+/JtpHrCwII0XbzK9H/AA3nZQ9WdEU6AAAAAElFTkSuQmCC');
+    background-size: 35px;
+    background-repeat: no-repeat !important;
+}
+
+.community-page-post-yeah-button {
+    cursor: pointer;
+    position: absolute;
+    height: 32px;
+    width: 36px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.community-page-post-yeah-count {
+    color: #673DB6;
+    margin-top: -40px;
+    font-weight: bold;
+    font-size: small;
+    position: absolute;
+    text-align: right;
+    height: 33px;
+    width: 240px;
+}
+
+.community-page-post-user-info-wrapper {
+    background-color: rgba(255,255,255,1);
+    margin-bottom: 15px;
+    margin-left: 80px;
+    min-width: 520px;
+}
+
+.community-page-post-user-icon {
+    width: 50px;
+    border-radius: 4px;
+    margin-right: 5px;
+    float: left;
+}
+
+.community-page-verified-user-badge {
+    position: absolute;
+    min-width: 1px;
+    height: 1px;
+    margin-left: 40px;
+    margin-top: -6px;
+    padding: 6px 5px 4px 5px;
+    border: 3px solid #673DB6;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAALCAYAAABPhbxiAAAABHNCSVQICAgIfAhkiAAAAI5JREFUKFOV0lERgzAQRdH7FBQpSKgTpgrQgIPioE7AAg4qAQfLLE0YyBBC+cgH2TObt4n44zOzCmiBXnddQANQA90tmKAJeBbhKZJmhY1GUp8eO4e8zuE7BP5IekV8hSL0sCPwAFZcQiv0xcwOOEzO//0GIc1pjG04Cfa6LNo67nLFzt9cp1hbvI7cA1kA5mlGowbMjrkAAAAASUVORK5CYII=');
+    background-color: #673DB6;
+    background-position: 1.5px 3px;
+    background-size: 79%;
+    background-repeat: no-repeat !important;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 18px;
+    -webkit-border-radius: 20px;
+}
+
+.community-page-post-username {
+    padding-top: 5px;
+    font-size: small;
+    margin-bottom: 0;
+}
+
+.community-page-post-text-overlay {
+    position: relative;
+    z-index: 5;
+    width: 280px;
+    margin-top: -10px;
+}
+
+.no-posts-text {
+    margin-left: 40%;
+    color: rgba(113,141,148,1);
+    padding-top: 24px;
+}
+
+h3 {
+    padding-left: 20px;
+}
+
+iframe {
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
+    background-color: black;
+    margin-left: 15px;
+}
+
+#load-more-posts-button {
+    position: absolute;
+    height: 25px;
+    width: 175px;
+    background: #673DB6;
+    color: white;
+    font-size: small;
+    border-width: 0;
+    border-radius: 15px;
+    bottom: -30px;
+    left: 70px;
+}
+
+.community-page-new-post-button {
+    position: absolute;
+    margin-left: 100px;
+    margin-top: -41px;
+    height: 31px;
+    width: 120px;
+    background: #1F8A42;
+    color: white;
+    border-width: 0;
+    border-radius: 0 0 4px 4px;
+}
+
+.post-user-info-wrapper {
+    margin-left: 15px
+
+}
+
+.community-page-post-wrapper > h3 {
+    font-size: small;
+    font-weight: normal;
+    margin-top: -5px;
+}
+
+.community-page-post-text-overlay > h3 {
+    font-size: small;
+    font-weight: normal;
 }

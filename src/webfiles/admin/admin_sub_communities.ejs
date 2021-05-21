@@ -41,7 +41,7 @@
 
     <div class="right" style="background-color:#ddd;">
         <h2>Communities</h2>
-        <button onclick="location.assign('/communities/new')">New</button>
+        <button onclick="location.assign('/communities/<%=communityID%>/sub/new')">New</button>
         <input type="text" id="search" onkeyup="search()" placeholder="Search..">
         <table id="community-list">
             <tbody id="search-list">

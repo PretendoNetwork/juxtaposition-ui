@@ -32,6 +32,7 @@
     "node-snowflake": "0.0.1",
     "pako": "^2.0.2",
     "pngjs": "^6.0.0",
+    "sharp": "^0.28.1",
     "tga": "^1.0.4",
     "xmlbuilder": "^15.1.1",
     "xmlbuilder2": "^2.4.0"

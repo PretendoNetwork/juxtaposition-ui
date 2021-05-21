@@ -1,9 +1,93 @@
 var scrollPosition;
 var toolbarBackBtn = false;
-var screenName = 'PNID_3DS_Test';
 //var updateCheck = setInterval(checkForUpdates, 30000);
 var blankMemo = 'Qk0AEwAAAAAAAD4AAAAoAAAAQAEAAHgAAAABAAEAAAAAAMISAAASCwAAEgsAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
 
+/* global Pjax */
+function initCommunities() {
+    var buttons = document.querySelectorAll("div[data-pjax]");
+    if (!buttons)
+        return;
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            cave.snd_playSe("SE_OLV_OK");
+            cave.transition_begin();
+            //alert(el.getAttribute("data-pjax"))
+            pjax.loadUrl(el.getAttribute("data-pjax"));
+        });
+    }
+}
+function initUserMenu() {
+    var buttons = document.querySelectorAll("button[data-pjax]");
+    if (!buttons)
+        return;
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            cave.snd_playSe("SE_OLV_OK");
+            cave.transition_begin();
+            pjax.loadUrl(el.getAttribute("data-pjax"));
+        });
+    }
+}
+function initNotifications() {
+    var buttons = document.querySelectorAll("tr[data-pjax]");
+    if (!buttons)
+        return;
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            cave.snd_playSe("SE_OLV_OK");
+            pjax.loadUrl(el.getAttribute("data-pjax"));
+        });
+    }
+}
+function initCommunityUsers() {
+    var users = document.querySelectorAll("img[data-pjax], span[data-pjax], h2[data-pjax]");
+    console.log(users)
+    if (!users)
+        return;
+    for (var i = 0; i < users.length; i++) {
+        users[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            cave.snd_playSe("SE_OLV_OK");
+        });
+    }
+}
+document.addEventListener("DOMContentLoaded", onPageLoad);
+cave.toolbar_setCallback(1, function() {
+    pjax.back();
+    restoreLastScrollPosition();
+})
+cave.toolbar_setCallback(2, function() {
+    cave.toolbar_setActiveButton(2);
+    pjax.loadUrl('/feed');
+})
+cave.toolbar_setCallback(3, function() {
+    cave.toolbar_setActiveButton(3);
+    pjax.loadUrl('/communities');
+})
+cave.toolbar_setCallback(4, function() {
+    cave.toolbar_setActiveButton(4);
+    pjax.loadUrl('/news')
+})
+cave.toolbar_setCallback(5, function() {
+    cave.toolbar_setActiveButton(5);
+    pjax.loadUrl('/users/menu')
+})
+cave.toolbar_setCallback(8, function() {
+    messageResponse()
+})
+
+function onPageLoad() {
+    // Init page content
+    pjax.canGoBack();
+    initUserMenu();
+    initCommunities();
+    initNotifications();
+    initCommunityUsers();
+}
 function onStart() {
     //loadTab(3);
     cave.transition_end();
@@ -26,39 +110,6 @@ function toggleBackBtn() {
     }
 
 }
-
-cave.toolbar_setCallback(1, function() {
-    //history.back();
-    toggleBackBtn();
-    loadTab(6);
-    cave.toolbar_setMode(0);
-    restoreLastScrollPosition();
-})
-
-cave.toolbar_setCallback(2, function() {
-    cave.toolbar_setActiveButton(2);
-    loadTab(2);
-})
-
-cave.toolbar_setCallback(3, function() {
-    cave.toolbar_setActiveButton(3);
-    loadTab(3);
-})
-
-cave.toolbar_setCallback(4, function() {
-    cave.toolbar_setActiveButton(4);
-    loadTab(4);
-})
-
-cave.toolbar_setCallback(5, function() {
-    cave.toolbar_setActiveButton(5);
-    loadTab(5);
-})
-
-cave.toolbar_setCallback(8, function() {
-    messageResponse()
-})
-
 function loadMessageThread() {
     storeScrollPosition();
     var xhttp = new XMLHttpRequest();
@@ -73,7 +124,6 @@ function loadMessageThread() {
     xhttp.open("GET", "/message-thread.html", true);
     xhttp.send();
 }
-
 function messageResponse() {
     var messageConfirmation;
     var responseType = cave.dialog_twoButton('Reply to Message', 'Select your response type', 'Drawing', 'Text');
@@ -122,7 +172,6 @@ function sendTextMessage(messageContents) {
         '<img src=\'\' onerror=\'cave.brw_scrollImmediately(0,document.body.scrollHeight);\'>';
     document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage
 }
-
 function sendDrawingMessage(memoURI) {
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -138,15 +187,13 @@ function sendDrawingMessage(memoURI) {
     document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage
 }
 function loadTab(tabID) {
-    cave.transition_begin();
+
     var pageID = '';
     switch (tabID)
     {
         case 2:
-            window.location.reload();
-            return;
-            //pageID = 'activity-feed';
-            //break;
+            pageID = 'activity-feed';
+            break;
         case 3:
             pageID = 'communities';
             break;
@@ -154,7 +201,7 @@ function loadTab(tabID) {
             pageID = 'news';
             break;
         case 5:
-            pageID = 'users/me';
+            pageID = 'users/menu';
             break;
         case 6:
             pageID = 'messages';
@@ -163,6 +210,9 @@ function loadTab(tabID) {
         case 7:
             pageID = 'message-thread';
             cave.snd_playSe("SE_OLV_OK");
+            break;
+        case 8:
+            pageID = 'users/me'
             break;
         default :
             pageID = 'communities';
@@ -175,9 +225,13 @@ function loadTab(tabID) {
             document.getElementById("main").innerHTML = this.responseText;
             cave.transition_end();
             checkForUpdates();
+            onPageLoad();
+        }
+        else if(this.readyState === 4) {
+            cave.error_callFreeErrorViewer(5983000 + this.status, 'Load Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing ' + this.readyState);
         }
     };
-    xhttp.open("GET", "/" + pageID + "?ajax=true", true);
+    xhttp.open("GET", "/" + pageID, true);
     xhttp.send();
 }
 function searchCommunities(searchBox) {
@@ -190,14 +244,14 @@ function checkForUpdates() {
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             var notificationObj = JSON.parse(this.responseText);
-            var notificationCount = notificationObj.notifications.length + notificationObj.messages.length;
+            var notificationCount = notificationObj.news + notificationObj.messages;
             /*Check for Notifications*/
             if(document.getElementById("messages-banner-badge")) {
-                if(notificationObj.messages.length > 0  && notificationObj.messages.length < 99) {
-                    document.getElementById("messages-banner-badge").innerHTML = notificationObj.messages.length;
+                if(notificationObj.messages > 0  && notificationObj.messages < 99) {
+                    document.getElementById("messages-banner-badge").innerHTML = notificationObj.messages;
                     document.getElementById("messages-banner-badge").style.display = "block";
                 }
-                else if(notificationObj.messages.length >= 99) {
+                else if(notificationObj.messages >= 99) {
                     document.getElementById("messages-banner-badge").innerHTML = "99+";
                     document.getElementById("messages-banner-badge").style.display = "block";
                 }
@@ -230,4 +284,190 @@ function storeScrollPosition() {
 }
 function restoreLastScrollPosition() {
     cave.brw_scrollImmediately(0, scrollPosition);
+}
+function followCommunity(communityWrapper) {
+    var community = document.getElementsByClassName('community-page-follow-button-text')[0];
+    if (communityWrapper.className.indexOf('selected') !== -1) {
+        communityWrapper.className = 'community-page-follow-button';
+        community.style.color = '#1F8A42';
+        var params = "communityID=" + communityWrapper.id + "&type=false";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/communities/follow', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send(params);
+        community.innerHTML = 'Follow';
+        cave.snd_playSe('SE_OLV_CHECKBOX_UNCHECK');
+    }
+    else {
+        var params = "communityID=" + communityWrapper.id + "&type=true";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/communities/follow', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                communityWrapper.className = 'community-page-follow-button selected';
+                community.style.color = 'white';
+                community.innerHTML = 'Following';
+                cave.snd_playSe('SE_OLV_CHECKBOX_CHECK');
+            }
+            if (this.readyState === 4 && this.status === 423) {
+                cave.error_callFreeErrorViewer(5980002, "An error has occurred.\n\nPlease try again later.\n\nIf the problem persists, please make a \nnote of the error code and visit invite.gg/pretendo")
+            }
+        }
+
+
+        xhttp.send(params);
+
+
+    }
+}
+function yeah(postNode, postID) {
+    var yeahCountElement = document.getElementById('yeah-' + postID);
+    var yeahcount = yeahCountElement.innerHTML.replace(' Yeahs', '');
+    if (postNode.className.indexOf("selected") !== -1) {
+        postNode.className = "community-page-post-yeah-button-wrapper";
+        var params = "postID=" + postID + "&type=down";
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", '/posts/empathy', true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(params);
+        yeahCountElement.innerHTML = --yeahcount + ' Yeahs';
+        cave.snd_playSe('SE_OLV_CANCEL');
+    }
+    else {
+        postNode.className += " selected";
+
+        var params = "postID=" + postID + "&type=up";
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", '/posts/empathy', true);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                cave.snd_playSe('SE_OLV_MII_ADD');
+            }
+            if (this.readyState === 4 && this.status === 423) {
+                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                cave.snd_playSe('SE_OLV_MII_ADD');
+            }
+        }
+        xhttp.send(params);
+
+    }
+}
+function loadPosts(type) {
+    cave.transition_begin();
+    document.getElementById('recent-tab').className = 'community-page-posts-header-tab';
+    document.getElementById('popular-tab').className = 'community-page-posts-header-tab';
+    document.getElementById('verified-tab').className = 'community-page-posts-header-tab';
+    //0 recent : 1 popular : 2 verified
+    switch (type) {
+        case 0:
+            document.getElementById("recent-tab").className +=' active';
+            type = 'new';
+            break;
+        case 1:
+            document.getElementById("popular-tab").className +=' active';
+            type = 'popular';
+            break;
+        case 2:
+            document.getElementById("verified-tab").className +=' active';
+            type = 'verified';
+            break;
+    }
+    var id = document.getElementsByClassName('community-page-follow-button')[0].id
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById('community-posts-inner-body').innerHTML = this.responseText;
+            cave.transition_end();
+            initCommunityUsers();
+        }
+        else if(this.readyState === 4 && this.status === 204)
+        {
+            document.getElementById('community-posts-inner-body').innerHTML = '<p class="no-posts-text">No Posts</p>';
+            cave.transition_end();
+        }
+        else if (this.readyState === 4){
+            cave.transition_end();
+            cave.error_callFreeErrorViewer(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+        }
+    };
+    xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts', true);
+    xhttp.send();
+
+    cave.snd_playSe("SE_OLV_OK");
+    cave.transition_end();
+}
+function loadUserPosts() {
+    cave.transition_begin();
+    var id = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+        }
+        else if(this.readyState === 4 && this.status === 204)
+        {
+            document.getElementById('load-more-posts-button').style.display = 'none';
+        }
+        else if (this.readyState === 4){
+            cave.error_callFreeErrorViewer(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+        }
+    };
+    xhttp.open("GET", "/users/loadPosts" + '?postID=' + id, true);
+    xhttp.send();
+
+    cave.snd_playSe("SE_OLV_OK");
+    cave.transition_end();
+}
+function loadCommunityPosts() {
+    cave.transition_begin();
+    var postID = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var id = document.getElementsByClassName('community-page-follow-button')[0].id
+    var xhttp = new XMLHttpRequest();
+    var type = 'null';
+    if(document.getElementById('recent-tab').className.indexOf('active') !== -1)
+        type = 'new';
+    else if(document.getElementById('popular-tab').className.indexOf('active') !== -1)
+        type = 'popular';
+    else if(document.getElementById('verified-tab').className.indexOf('active') !== -1)
+        type = 'verified';
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+            initCommunityUsers();
+        }
+        else if(this.readyState === 4 && this.status === 204)
+        {
+            document.getElementById('load-more-posts-button').style.display = 'none';
+        }
+        else if (this.readyState === 4){
+            cave.error_callFreeErrorViewer(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+        }
+    };
+    xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?postID=' + postID, true);
+    xhttp.send();
+
+    cave.snd_playSe("SE_OLV_OK");
+    cave.transition_end();
+}
+function newPainting(reset) {
+    if(reset)
+        cave.memo_clear()
+    cave.memo_open();
+    if(cave.memo_hasValidImage()) {
+        document.getElementById('memo').src = 'data:image/png;base64,' + cave.memo_getImageBmp();
+        document.getElementById('memo').style.display = '';
+        document.getElementById('memo-value').value = cave.memo_getImageZipTga();
+    }
+}
+function loadScreenshots() {
+    var dropdown = document.getElementsByClassName('post-screenshot-picker-dropdown')[0];
+    if(dropdown.style.display === 'block')
+        dropdown.style.display = 'none';
+    else
+        dropdown.style.display = 'block';
 }
