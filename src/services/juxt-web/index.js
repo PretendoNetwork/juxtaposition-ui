@@ -37,6 +37,8 @@ ctr.use('/titles/show', routes.CTR_SHOW);
 ctr.use('/communities', routes.CTR_COMMUNITIES);
 ctr.use('/users', routes.CTR_USER);
 ctr.use('/posts', routes.CTR_POST);
+ctr.use('/news', routes.CTR_NEWS);
+ctr.use('/activity-feed', routes.CTR_FEED);
 ctr.use('/', routes.CTR_WEB);
 
 admin.use('/', routes.WEB_ADMIN);

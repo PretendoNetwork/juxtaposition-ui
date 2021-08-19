@@ -25,6 +25,9 @@
         </div>
         <div class="communities-wrapper" id="popular-communities">
             <h1 class="communities-header">Popular Places</h1>
+            <div data-pjax="/communities/all">
+                <button class="outlined-button" style="position: absolute;margin-left: 222px;margin-top: -28px;"><p>Show All</p></button>
+            </div>
             <table>
                 <tbody>
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>

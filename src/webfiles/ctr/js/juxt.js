@@ -1,6 +1,6 @@
 var scrollPosition;
 var toolbarBackBtn = false;
-//var updateCheck = setInterval(checkForUpdates, 30000);
+setInterval(checkForUpdates, 30000);
 var blankMemo = 'Qk0AEwAAAAAAAD4AAAAoAAAAQAEAAHgAAAABAAEAAAAAAMISAAASCwAAEgsAAAAAAAAAAAAA////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==';
 
 /* global Pjax */
@@ -15,6 +15,7 @@ function initCommunities() {
             cave.transition_begin();
             //alert(el.getAttribute("data-pjax"))
             pjax.loadUrl(el.getAttribute("data-pjax"));
+            cave.brw_scrollImmediately(0,0);
         });
     }
 }
@@ -28,6 +29,7 @@ function initUserMenu() {
             cave.snd_playSe("SE_OLV_OK");
             cave.transition_begin();
             pjax.loadUrl(el.getAttribute("data-pjax"));
+            cave.brw_scrollImmediately(0,0);
         });
     }
 }
@@ -40,6 +42,7 @@ function initNotifications() {
             var el = e.currentTarget;
             cave.snd_playSe("SE_OLV_OK");
             pjax.loadUrl(el.getAttribute("data-pjax"));
+            cave.brw_scrollImmediately(0,0);
         });
     }
 }
@@ -52,17 +55,18 @@ function initCommunityUsers() {
         users[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
             cave.snd_playSe("SE_OLV_OK");
+            cave.brw_scrollImmediately(0,0);
         });
     }
 }
-document.addEventListener("DOMContentLoaded", onPageLoad);
+
 cave.toolbar_setCallback(1, function() {
     pjax.back();
     restoreLastScrollPosition();
 })
 cave.toolbar_setCallback(2, function() {
     cave.toolbar_setActiveButton(2);
-    pjax.loadUrl('/feed');
+    pjax.loadUrl('/activity-feed');
 })
 cave.toolbar_setCallback(3, function() {
     cave.toolbar_setActiveButton(3);
@@ -70,7 +74,8 @@ cave.toolbar_setCallback(3, function() {
 })
 cave.toolbar_setCallback(4, function() {
     cave.toolbar_setActiveButton(4);
-    pjax.loadUrl('/news')
+    checkForUpdates();
+    pjax.loadUrl('/news');
 })
 cave.toolbar_setCallback(5, function() {
     cave.toolbar_setActiveButton(5);
@@ -186,54 +191,6 @@ function sendDrawingMessage(memoURI) {
         '<img src=\'\' onerror=\'cave.brw_scrollImmediately(0,document.body.scrollHeight);\'>';
     document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage
 }
-function loadTab(tabID) {
-
-    var pageID = '';
-    switch (tabID)
-    {
-        case 2:
-            pageID = 'activity-feed';
-            break;
-        case 3:
-            pageID = 'communities';
-            break;
-        case 4:
-            pageID = 'news';
-            break;
-        case 5:
-            pageID = 'users/menu';
-            break;
-        case 6:
-            pageID = 'messages';
-            //cave.snd_playSe("SE_OLV_OK");
-            break;
-        case 7:
-            pageID = 'message-thread';
-            cave.snd_playSe("SE_OLV_OK");
-            break;
-        case 8:
-            pageID = 'users/me'
-            break;
-        default :
-            pageID = 'communities';
-            break;
-    }
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("main").innerHTML = this.responseText;
-            cave.transition_end();
-            checkForUpdates();
-            onPageLoad();
-        }
-        else if(this.readyState === 4) {
-            cave.error_callFreeErrorViewer(5983000 + this.status, 'Load Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing ' + this.readyState);
-        }
-    };
-    xhttp.open("GET", "/" + pageID, true);
-    xhttp.send();
-}
 function searchCommunities(searchBox) {
     var searchText = cave.swkbd_callFullKeyboardWithGuide(searchBox.value, 200, 0, false, false, true, 'Search communities...');
     searchBox.value = searchText;
@@ -246,7 +203,7 @@ function checkForUpdates() {
             var notificationObj = JSON.parse(this.responseText);
             var notificationCount = notificationObj.news + notificationObj.messages;
             /*Check for Notifications*/
-            if(document.getElementById("messages-banner-badge")) {
+            /**if(document.getElementById("messages-banner-badge")) {
                 if(notificationObj.messages > 0  && notificationObj.messages < 99) {
                     document.getElementById("messages-banner-badge").innerHTML = notificationObj.messages;
                     document.getElementById("messages-banner-badge").style.display = "block";
@@ -259,7 +216,7 @@ function checkForUpdates() {
                     document.getElementById("messages-banner-badge").innerHTML = "";
                     document.getElementById("messages-banner-badge").style.display = "none";
                 }
-            }
+            }**/
 
             if(notificationCount > 0  && notificationCount < 99) {
                 cave.toolbar_setNotificationCount(notificationCount);
@@ -454,6 +411,29 @@ function loadCommunityPosts() {
     cave.snd_playSe("SE_OLV_OK");
     cave.transition_end();
 }
+function loadFeedPosts() {
+    cave.transition_begin();
+    var postID = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+            initCommunityUsers();
+        }
+        else if(this.readyState === 4 && this.status === 204)
+        {
+            document.getElementById('load-more-posts-button').style.display = 'none';
+        }
+        else if (this.readyState === 4){
+            cave.error_callFreeErrorViewer(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+        }
+    };
+    xhttp.open("GET", '/activity-feed/loadposts?postID=' + postID, true);
+    xhttp.send();
+
+    cave.snd_playSe("SE_OLV_OK");
+    cave.transition_end();
+}
 function newPainting(reset) {
     if(reset)
         cave.memo_clear()
@@ -471,3 +451,34 @@ function loadScreenshots() {
     else
         dropdown.style.display = 'block';
 }
+function showNewPostScreen() {
+    //cave.snd_playSe("SE_OLV_OK");
+    //cave.snd_playBgm('BGM_CAVE_SYOKAI');
+    document.getElementById('windowOverlay').style.display = 'block';
+    document.getElementById('community-related-wrapper').style.display = 'none';
+    document.getElementsByClassName('community-page-follow-button')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-new-post-button')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = 'none';
+    document.getElementById('post-top-screen-preview').src = 'data:image/png;base64,' + cave.memo_getImageBmp();
+    document.getElementById('post-bottom-screen-preview').src = 'data:image/png;base64,' + cave.memo_getImageBmp();
+}
+function hideNewPostScreen() {
+    //cave.snd_playBgm('BGM_CAVE_MAIN_LOOP_NOWAIT');
+    document.getElementById('windowOverlay').style.display = 'none';
+    document.getElementById('community-related-wrapper').style.display = 'block';
+    document.getElementsByClassName('community-page-follow-button')[0].style.display = 'block';
+    document.getElementsByClassName('community-page-new-post-button')[0].style.display = 'block';
+    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = 'block';
+    //cave.snd_playSe("SE_OLV_CANCEL");
+}
+function selectEmotion(element) {
+    for (var i = 0; i < element.parentElement.parentElement.children.length; i++) {
+        var child = element.parentElement.parentElement.children[i];
+        if(child.children[1].className.indexOf('selected-') !== -1) {
+            child.children[1].className = child.children[1].className.substring(9, child.children[1].className.length);
+        }
+    }
+    element.parentElement.children[1].className = 'selected-' + element.id
+}
+
+document.addEventListener("DOMContentLoaded", onPageLoad);

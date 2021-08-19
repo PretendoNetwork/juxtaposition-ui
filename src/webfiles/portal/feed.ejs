@@ -23,9 +23,55 @@
     <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
 </menu>
 <div id="main">
-    <h1 id="title" class="page-header">Activity Feed</h1>
+    <div class="community-page-posts-wrapper">
+        <h1 id="title" class="page-header" style="margin-left: 135px; margin-top: -15px;">Activity Feed</h1>
+        <div id="community-posts-inner-body">
+            <% if(posts.length === 0) {%>
+                <p class="no-posts-text" style="margin-left: 20%">It's empty here. Try following someone!</p>
+            <%} else { %>
+                <button id="load-more-posts-button" onclick="loadFeedPosts()">Load More Posts</button>
+                <% posts.forEach(function(post) { %>
+                    <div class="post-user-info-wrapper" id="<%= post.id %>">
+                        <%if(post.verified) {%>
+                            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
+                            <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
+                        <%} else {%>
+                            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
+                            <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
+                        <%}%>
+                        <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
+                        <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <a onclick="pjax.loadUrl('/communities/<%=communityMap.get(post.title_id + '-id')%>/new')"><%= communityMap.get(post.title_id) %></a></h4>
 
-    <div id="messages-list-wrapper"></div>
+                        <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
+                            <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, '<%= post.id %>')"></div>
+                        </div>
+                        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                    </div>
+                    <div class="community-page-post-wrapper">
+                        <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
+                            <h3><%= post.body %></h3>
+                        <%} else { %>
+                            <% if(post.screenshot !== '') { %>
+                                <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+                            <%}%>
+                            <% if(post.painting !== '') { %>
+                                <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+                            <%}%>
+                            <% if(post.url) { %>
+                                <h3 style="font-weight: bolder; color: #4F279B">Video Playback is not yet supported on the 3DS</h3>
+                            <%}%>
+                            <% if(post.body) { %>
+                                <div class="community-page-post-text-overlay">
+                                    <h3><%= post.body %></h3>
+                                </div>
+                            <%}%>
+                        <%}%>
+                    </div>
+                <% }); %>
+            <%}%>
+        </div>
+    </div>
+
     <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
 <body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">

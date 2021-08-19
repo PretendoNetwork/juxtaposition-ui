@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3DS Testing</title>
+    <script src="/js/pjax.js"></script>
+    <script src="/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+</head>
+<body>
+<div id="main">
+    <div class="top-screen">
+        <div class="header-description">
+            <p>
+                Here you can view notifications. You'll get notifications when someone follows you, or replies to your post.
+            </p>
+        </div>
+        <div id="headers-news-icon" class="header-icon"></div>
+        <h2 class="header-title">Notifications</h2>
+    </div>
+    <div class="bottom-screen">
+        <div id="messages-list-wrapper">
+            <table cellspacing="0">
+                <tbody id="messages-list">
+                <% if(user.notification_list.length === 0) {%>
+                    <p class="no-posts-text" style="margin-left: 36%;">No Notifications</p>
+                <%} else { %>
+                    <% let i = 0; user.notification_list.reverse().forEach(function(notification) { %>
+                        <% if(i === 0) { %>
+                        <tr class="message-wrapper" data-pjax="<%=notification.link%>">
+                            <td class="messages-unread-badge-wrapper top">
+                                <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
+                            </td>
+                            <td class="messages-list-wrapper top">
+                                <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
+                            </td>
+                        </tr>
+                        <%i = -1;%>
+                        <%} else {%>
+                        <tr class="message-wrapper" data-pjax="<%=notification.link%>">
+                            <td class="messages-unread-badge-wrapper">
+                                <%if(!notification.read) {%><div class="unread-badge"></div><%}%>
+                            </td>
+                            <td class="messages-list-wrapper">
+                                <h3 class="notifications-list-content"><%= notification.content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notification.created_at).fromNow() %></span></h3>
+                            </td>
+                        </tr>
+                        <%}%>
+                    <%});%>
+                    </tr>
+                    <td></td>
+                    <td class="messages-list-wrapper end"></td>
+                    </tr>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+        <div class="toolbar-padding"></div>
+    </div>
+    <body onload="onStart()"></body>
+</body>
+</html>

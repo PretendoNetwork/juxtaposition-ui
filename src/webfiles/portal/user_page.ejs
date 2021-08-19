@@ -33,11 +33,11 @@
     <div class="community-page-info-container">
         <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
             <div class="user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" data-pjax="/users/show?pid=<%=user.pid%>" style="color: #FFFFFF">Following</p>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)" style="color: #FFFFFF">Following</p>
             </div>
         <%} else {%>
             <div class="user-page-follow-button-wrapper" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" data-pjax="/users/show?pid=<%=user.pid%>">Follow User</p>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)">Follow User</p>
             </div>
         <%}%>
         <img class="community-page-info-icon" src="<%= user.pfp_uri %>">

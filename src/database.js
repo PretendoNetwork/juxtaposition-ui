@@ -251,6 +251,27 @@ async function getServerConfig() {
     return ENDPOINT.findOne();
 }
 
+async function getNewsFeed(user, numberOfPosts) {
+    verifyConnected();
+    return POST.find({
+        $or: [
+            {pid: user.followed_users},
+            {pid: user.pid}
+        ],
+    }).limit(numberOfPosts).sort({ created_at: -1});
+}
+
+async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
+    verifyConnected();
+    return POST.find({
+        $or: [
+            {pid: user.followed_users},
+            {pid: user.pid}
+        ],
+        created_at: { $lt: post.created_at }
+    }).limit(numberOfPosts).sort({ created_at: -1});
+}
+
 module.exports = {
     connect,
     getCommunities,
@@ -281,5 +302,7 @@ module.exports = {
     getCommunityPostsAfterTimestamp,
     getServerConfig,
     pushNewNotificationByPID,
-    pushNewNotificationToAll
+    pushNewNotificationToAll,
+    getNewsFeed,
+    getNewsFeedAfterTimestamp,
 };

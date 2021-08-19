@@ -89,7 +89,7 @@ router.get('/show', function (req, res) {
     database.connect().then(async e => {
         let user = await database.getUserByPID(userID);
         let newPosts = await database.getPostsByUserID(user.pid);
-        let numPosts = await database.getNumberPostsByUserID(user.pid);
+        let numPosts = await database.getNumberUserPostsByID(user.pid);
         if(isAJAX) {
             res.render('ctr/user_page_ajax.ejs', {
                 // EJS variable and server-side variable
