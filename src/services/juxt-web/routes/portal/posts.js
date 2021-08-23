@@ -12,16 +12,18 @@ router.post('/empathy', function (req, res) {
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         let post = await database.getPostByID(req.body.postID);
-        if(pid === null)
-            pid = 1000000000;
+        if(pid === null) {
+            res.sendStatus(403);
+            return;
+        }
         let user = await database.getUserByPID(pid);
-        if(req.body.type === 'up' && user !== null && user.likes.indexOf(post.id) === -1 && user.id !== post.pid)
+        if(req.body.type === 'up' && user.likes.indexOf(post.id) === -1 && user.id !== post.pid)
         {
             post.upEmpathy();
             user.addToLikes(post.id)
             res.sendStatus(200);
         }
-        else if(req.body.type === 'down' && user !== null  && user.likes.indexOf(post.id) !== -1 && user.id !== post.pid)
+        else if(req.body.type === 'down' && user.likes.indexOf(post.id) !== -1 && user.id !== post.pid)
         {
             post.downEmpathy();
             user.removeFromLike(post.id);

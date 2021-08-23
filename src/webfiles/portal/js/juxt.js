@@ -181,9 +181,11 @@ function yeah(postNode, postID) {
         xhr.open("POST", '/posts/empathy', true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(params);
+        if(yeahcount > 0) {
+            yeahCountElement.innerHTML = --yeahcount + ' Yeahs';
+            wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+        }
 
-        yeahCountElement.innerHTML = --yeahcount + ' Yeahs';
-        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
     }
     else {
         postNode.classList.add("selected");
@@ -203,8 +205,6 @@ function yeah(postNode, postID) {
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
         }
-
-
         xhttp.send(params);
 
 

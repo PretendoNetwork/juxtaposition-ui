@@ -2,13 +2,14 @@ var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../authentication');
+const config = require('../../../../config.json');
 var multer  = require('multer');
 var moment = require('moment');
 var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
 
 router.get('/me', function (req, res) {
-    res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2||fonts.googleapis.com,,2');
+    res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,pretendo.cc,,2|https,pretendo.cc,,2');
     var isAJAX = ((req.query.ajax+'').toLowerCase() === 'true')
     database.connect().then(async e => {
 
@@ -27,7 +28,8 @@ router.get('/me', function (req, res) {
                 moment: moment,
                 user: user,
                 newPosts: newPosts,
-                numPosts: numPosts
+                numPosts: numPosts,
+                account_server: config.account_server_domain.slice(8),
             });
         }
         else {
@@ -37,7 +39,8 @@ router.get('/me', function (req, res) {
                 moment: moment,
                 user: user,
                 newPosts: newPosts,
-                numPosts: numPosts
+                numPosts: numPosts,
+                account_server: config.account_server_domain.slice(8),
             });
         }
 
@@ -121,7 +124,8 @@ router.get('/show', function (req, res) {
             user: user,
             newPosts: newPosts,
             numPosts: numPosts,
-            parentUser: parentUser
+            parentUser: parentUser,
+            account_server: config.account_server_domain.slice(8),
         });
     }).catch(error => {
         console.error(error);
@@ -157,6 +161,7 @@ router.get('/loadPosts', function (req, res) {
                 moment: moment,
                 user: user,
                 newPosts: newPosts,
+                account_server: config.account_server_domain.slice(8),
             });
         }
         else
