@@ -39,7 +39,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <img class="post-user-icon" src="http://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+                                <img class="post-user-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
                                 <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
                                 <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
                                 <input type="hidden" id="_post_type" name="_post_type" value="body">
@@ -201,10 +201,10 @@
                 <% newPosts.forEach(function(post) { %>
                     <div class="post-user-info-wrapper" id="<%= post.id %>">
                         <%if(post.verified) {%>
-                            <img class="community-page-post-user-icon verified" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
+                            <img class="community-page-post-user-icon verified" src="https://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
                             <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
                         <%} else {%>
-                            <img class="community-page-post-user-icon" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
+                            <img class="community-page-post-user-icon" src="https://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
                             <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
                         <%}%>
                         <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
