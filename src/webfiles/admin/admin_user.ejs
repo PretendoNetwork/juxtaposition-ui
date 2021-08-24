@@ -22,7 +22,7 @@
 
     <div class="right" style="background-color:#ddd;">
         <div class="community-page-info-container">
-            <img class="community-page-info-icon" src="<%= user.pfp_uri %>">
+            <img class="community-page-info-icon" src="http://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
             <h2 class="community-page-title"><%= user.user_id %></h2>
             <h4 class="community-page-description"><%= user.profile_comment %></h4>
             <button type="button" style="margin-left: 20px; width: 760px" onclick="window.location='/users/<%= user.pid %>/edit'">Edit</button>
@@ -70,10 +70,10 @@
                         <div id="<%= post.id %>">
                             <div class="post-user-info-wrapper">
                                 <%if(post.verified) {%>
-                                    <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
+                                    <img class="community-page-post-user-icon verified" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" onclick="loadUserProfile(<%=post.pid%>)">
                                     <span class="community-page-verified-user-badge community-page-verified" style=""></span>
                                 <%} else {%>
-                                    <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" onclick="loadUserProfile(<%=post.pid%>)">
+                                    <img class="community-page-post-user-icon" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" onclick="loadUserProfile(<%=post.pid%>)">
                                     <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
                                 <%}%>
                                 <h2 class="community-page-post-username" onclick="loadUserProfile(<%=post.pid%>)"><%= post.screen_name %></h2>

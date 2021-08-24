@@ -1,8 +1,8 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-    <script src="/js/pjax.min.js"></script>
-    <script src="/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://portal-cdn.olv.pretendo.cc/css/juxt.css">
+    <script src="https://portal-cdn.olv.pretendo.cc/js/pjax.min.js"></script>
+    <script src="https://portal-cdn.olv.pretendo.cc/js/juxt.js"></script>
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -81,7 +81,7 @@
                         <tr>
                             <td style="padding-left: 75px;">
                                 <label for="comment" style="font-size: xx-large">Profile Comment</label>
-                                <textarea id="comment" name="comment" maxlength="150" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Profile comment cannot contain explicit language');}"><%= user.profile_comment %></textarea>
+                                <input type="text" id="comment" name="comment" class="user-input-text-area" maxlength="150" value="<%= user.profile_comment %>" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Profile comment cannot contain explicit language');}">
                             </td>
                             <br>
                         </tr>
@@ -187,10 +187,10 @@
             <% newPosts.forEach(function(post) { %>
                 <div class="post-user-info-wrapper" id="<%= post.id %>">
                     <%if(post.verified) {%>
-                        <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>">
+                        <img class="community-page-post-user-icon verified" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>">
                         <span class="community-page-verified-user-badge community-page-verified" style=""></span>
                     <%} else {%>
-                        <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>">
+                        <img class="community-page-post-user-icon" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>">
                         <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
                     <%}%>
                     <h2 class="community-page-post-username"><%= post.screen_name %></h2>

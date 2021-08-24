@@ -506,6 +506,7 @@ h4 {
     width: 40px;
     height: 40px;
     border-radius: 6px;
+    background-color: rgba(113,141,148,1);
 }
 
 .user-page-tab-table {
@@ -752,6 +753,7 @@ h4 {
     border-radius: 4px;
     margin-right: 5px;
     float: left;
+    background-color: rgba(113,141,148,1);
 }
 
 .community-page-verified-user-badge {
@@ -1112,6 +1114,7 @@ textarea {
     width: 120px;
     border-radius: 10px;
     float: left;
+    background-color: rgba(113,141,148,1);
 }
 
 .post-emotions-wrapper {

@@ -2,6 +2,7 @@ var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../authentication');
+const config = require('../../../../config.json');
 var multer  = require('multer');
 var moment = require('moment');
 var upload = multer({ dest: 'uploads/' });
@@ -71,7 +72,8 @@ router.get('/announcements', function (req, res) {
             community: community,
             newPosts: newPosts,
             user: user,
-            totalNumPosts: totalNumPosts
+            totalNumPosts: totalNumPosts,
+            account_server: config.account_server_domain.slice(8),
         });
     }).catch(error => {
         console.error(error);
@@ -107,7 +109,8 @@ router.get('/:communityID/:type', function (req, res) {
             community: community,
             newPosts: newPosts,
             totalNumPosts: totalNumPosts,
-            user: user
+            user: user,
+            account_server: config.account_server_domain.slice(8),
         });
     }).catch(error => {
         console.error(error);
@@ -161,6 +164,7 @@ router.get('/:communityID/:type/loadPosts', function (req, res) {
                 database: database,
                 user: user,
                 newPosts: posts,
+                account_server: config.account_server_domain.slice(8),
             });
         }
         else

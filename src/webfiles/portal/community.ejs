@@ -1,8 +1,8 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-    <script src="/js/pjax.min.js"></script>
-    <script src="/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://portal-cdn.olv.pretendo.cc/css/juxt.css">
+    <script src="https://portal-cdn.olv.pretendo.cc/js/pjax.min.js"></script>
+    <script src="https://portal-cdn.olv.pretendo.cc/js/juxt.js"></script>
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -39,7 +39,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <img class="post-user-icon" src="<%= user.pfp_uri %>">
+                                <img class="post-user-icon" src="http://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
                                 <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
                                 <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
                                 <input type="hidden" id="_post_type" name="_post_type" value="body">
@@ -128,7 +128,7 @@
             </div>
         </div>
     </div>
-    <div class="community-page-header" style="background-image: url('/banner/<%= community.community_id %>.png')"></div>
+    <div class="community-page-header" style="background-image: url('https://portal-cdn.olv.pretendo.cc/banner/<%= community.community_id %>.png')"></div>
     <div class="community-page-header-overlay"></div>
     <div class="community-page-back-button" onclick="window.history.back()">
         <p class="user-page-back-button-text">Go back</p>
@@ -148,7 +148,7 @@
             <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)">Follow Community</p>
         </div>
         <%}%>
-        <img class="community-page-info-icon" src="/icons/<%= community.community_id %>.png">
+        <img class="community-page-info-icon" src="https://portal-cdn.olv.pretendo.cc/icons/<%= community.community_id %>.png">
         <h2 class="community-page-title"><%= community.name %></h2>
         <h4 class="community-page-description"><%= community.description %></h4>
         <div class="community-page-margin-line"></div>
@@ -201,10 +201,10 @@
                 <% newPosts.forEach(function(post) { %>
                     <div class="post-user-info-wrapper" id="<%= post.id %>">
                         <%if(post.verified) {%>
-                            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
+                            <img class="community-page-post-user-icon verified" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
                             <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
                         <%} else {%>
-                            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
+                            <img class="community-page-post-user-icon" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
                             <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
                         <%}%>
                         <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>

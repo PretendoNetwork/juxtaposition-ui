@@ -26,7 +26,7 @@
 </head>
 <body>
 
-<h2 style="display: inline-block; margin-left: 20px">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="<%= user.pfp_uri %>">
+<h2 style="display: inline-block; margin-left: 20px">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="http://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
 
 <div class="row">
     <div class="left" style="background-color:#bbb;max-width: 10%;">
@@ -53,7 +53,7 @@
             </tr>
             <% for(var i = 0; i < users.length; i++) { %>
                 <tr id="<%= users[i].pid %>" onclick="location.assign('/users/' + this.id)">
-                    <td><img style="width: 80px " src="<%= users[i].pfp_uri %>"></img></td>
+                    <td><img style="width: 80px " src="http://mii-images.cdn.<%= account_server %>/<%= users[i].pid %>/normal_face.png"></td>
                     <td><a><%= users[i].user_id %></a></td>
                     <td><%= moment(users[i].created_at).fromNow() %></td>
                     <td><%= users[i].account_status %></td>

@@ -92,7 +92,7 @@ router.post('/new', upload.none(), async function (req, res, next) {
                 screenshot: screenshot,
                 country_id: paramPackData.country_id,
                 created_at: new Date(),
-                feeling_id: req.body.feeling_id,
+                feeling_id: req.body.emotion,
                 id: snowflake.nextId(),
                 is_autopost: req.body.is_autopost,
                 is_spoiler: req.body.is_spoiler,

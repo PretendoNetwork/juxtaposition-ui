@@ -31,6 +31,7 @@ router.get('/', upload.none(), function (req, res) {
         let user = await database.getUserByPID(pid);
         res.render('admin/admin_home.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8)
         });
 
     }).catch(error => {
@@ -117,6 +118,7 @@ router.get('/discovery', upload.none(), function (req, res) {
         let user = await database.getUserByPID(pid);
         res.render('admin/admin_discovery.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
         });
 
     }).catch(error => {
@@ -156,8 +158,9 @@ router.get('/communities', upload.none(), function (req, res) {
 
         res.render('admin/admin_communities.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
             communities: communities,
-            moment: moment
+            moment: moment,
         });
 
     }).catch(error => {
@@ -196,6 +199,7 @@ router.get('/audit', upload.none(), function (req, res) {
         let user = await database.getUserByPID(pid);
         res.render('admin/admin_audit.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
         });
 
     }).catch(error => {
@@ -233,6 +237,7 @@ router.get('/communities/new', upload.none(), function (req, res) {
         let user = await database.getUserByPID(pid);
         res.render('admin/admin_new_community.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
             communityID: communityID
         });
 
@@ -276,7 +281,8 @@ router.get('/communities/:communityID', upload.none(), function (req, res) {
             community: community,
             newPosts: newPosts,
             totalNumPosts: totalNumPosts,
-            user: user
+            user: user,
+            account_server: config.account_server_domain.slice(8),
         });
 
     }).catch(error => {
@@ -314,6 +320,7 @@ router.get('/communities/:communityID/edit', upload.none(), function (req, res) 
         let community = await database.getCommunityByID(req.params.communityID.toString());
         res.render('admin/admin_edit_community.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
             community: community,
         });
 
@@ -353,6 +360,7 @@ router.get('/communities/:communityID/sub', upload.none(), function (req, res) {
 
         res.render('admin/admin_sub_communities.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
             communities: communities,
             moment: moment,
             communityID: req.params.communityID.toString()
@@ -393,6 +401,7 @@ router.get('/communities/:communityID/sub/new', upload.none(), function (req, re
         let community = await database.getCommunityByID(req.params.communityID.toString());
         res.render('admin/admin_edit_sub_community.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
             community: community,
         });
 
@@ -431,6 +440,7 @@ router.get('/users', upload.none(), function (req, res) {
         let users = await database.getUsers(100);
         res.render('admin/admin_users.ejs', {
             user: user,
+            account_server: config.account_server_domain.slice(8),
             users: users,
             moment: moment
         });
@@ -481,6 +491,7 @@ router.get('/users/:userID', upload.none(), function (req, res) {
             moment: moment,
             parentUser: parentUser,
             user: user,
+            account_server: config.account_server_domain.slice(8),
             newPosts: newPosts,
             numPosts: numPosts,
         });
@@ -529,6 +540,7 @@ router.get('/users/:userID/edit', upload.none(), function (req, res) {
             moment: moment,
             parentUser: parentUser,
             user: user,
+            account_server: config.account_server_domain.slice(8),
             newPosts: newPosts,
             numPosts: numPosts,
         });
