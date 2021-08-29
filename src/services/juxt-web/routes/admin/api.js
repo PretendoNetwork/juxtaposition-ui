@@ -405,6 +405,60 @@ router.get('/users/all', function (req, res) {
     });
 });
 
+router.get('/users/loadPosts', function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let user = await database.getUserByPID(pid);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+                throw new Error('Invalid credentials supplied');
+
+            let post = await database.getPostByID(req.query.postID);
+            let newPosts = await database.getUserPostsAfterTimestamp(post, 5);
+            let communityMap = await util.data.getCommunityHash();
+            if(newPosts.length > 0)
+            {
+                res.render('portal/more_posts.ejs', {
+                    communityMap: communityMap,
+                    moment: moment,
+                    user: user,
+                    newPosts: newPosts,
+                    account_server: config.account_server_domain.slice(8),
+                });
+            }
+            else
+            {
+                res.sendStatus(204);
+            }
+        }
+        else
+            throw new Error('Invalid account ID or password');
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+});
+
 router.get('/users/:userID', function (req, res) {
     database.connect().then(async e => {
         if(req.cookies.token === null)

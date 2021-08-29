@@ -32,6 +32,7 @@ router.get('/', function (req, res) {
              * 2 - Temporary Ban
              * 3 - Forever Ban
              */
+            console.log(user.account_status)
             if(user.account_status !== 0)
             {
                 res.render('ctr/ban_notification.ejs', {

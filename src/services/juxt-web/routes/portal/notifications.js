@@ -2,6 +2,7 @@ var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../authentication');
+const config = require('../../../../config.json');
 var moment = require('moment');
 var router = express.Router();
 
@@ -18,6 +19,7 @@ router.get('/', function (req, res) {
         res.render('portal/notifications.ejs', {
             moment: moment,
             user: user,
+            cdnURL: config.CDN_domain,
         });
         user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
             notification.read = true;

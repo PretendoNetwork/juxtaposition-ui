@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../authentication');
 var path = require('path');
@@ -108,89 +109,91 @@ router.get('/notifications.json', function (req, res) {
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
-            pid = 1000000000;
-        let user = await database.getUserByPID(pid);
-        res.send(
-            {
-                message_count: 0,
-                notification_count: user.notification_list.filter(notification => notification.read === false).length,
-                "messages": [
+            res.sendStatus(403);
+        else {
+            let user = await database.getUserByPID(pid);
+            if(user.notification_list) {
+                res.send(
                     {
-                        "screen_name": "JayDaBirb",
-                        "mii_face_url": "http://mii-images.account.pretendo.cc/",
-                        "is_official": true,
-                        "is_read": false,
-                        "created_at": "2020-04-29 01:04:80",
-                        "feeling_id": 1,
-                        "id": 1255383017044709400,
-                        "message_content": "https://invite.gg/pretendo"
-                    },
-                    {
-                        "screen_name": "PNID_Test06",
-                        "mii_face_url": "http://mii-images.account.pretendo.cc/",
-                        "is_official": false,
-                        "is_read": true,
-                        "created_at": "2020-05-18 02:17:50",
-                        "feeling_id": 1,
-                        "id": 1244384456055709400,
-                        "message_content": "Testing message number 2 updated"
-                    },
-                    {
-                        "screen_name": "PNID_Test14",
-                        "mii_face_url": "http://mii-images.account.pretendo.cc/",
-                        "is_official": false,
-                        "is_read": true,
-                        "created_at": "2020-05-18 02:17:50",
-                        "feeling_id": 1,
-                        "id": 1244384118059519400,
-                        "message_content": "Testing message number 3"
-                    },
-                    {
-                        "screen_name": "PNID_Test65",
-                        "mii_face_url": "http://mii-images.account.pretendo.cc/",
-                        "is_official": false,
-                        "is_read": true,
-                        "created_at": "2020-05-18 02:17:50",
-                        "feeling_id": 1,
-                        "id": 1244465118055709400,
-                        "message_content": "Did you know our Miiverse fork is called Juxt? pretty cool huh? ;)"
-                    },
-                    {
-                        "screen_name": "AnotherTestUser",
-                        "mii_face_url": "http://mii-images.account.pretendo.cc/",
-                        "is_official": false,
-                        "is_read": true,
-                        "created_at": "2020-05-18 02:17:50",
-                        "feeling_id": 1,
-                        "id": 1244384118792519400,
-                        "message_content": "Frick frack tic tak"
-                    },
-                    {
-                        "screen_name": "WowAnotherUserHuh",
-                        "mii_face_url": "http://mii-images.account.pretendo.cc/",
-                        "is_official": false,
-                        "is_read": true,
-                        "created_at": "2020-05-18 02:17:50",
-                        "feeling_id": 1,
-                        "id": 1244384648059589400,
-                        "message_content": "Hey kid want some meme?"
-                    },
-                    {
-                        "screen_name": "OkayLastOneIPromise",
-                        "mii_face_url": "http://mii-images.account.pretendo.cc/",
-                        "is_official": false,
-                        "is_read": true,
-                        "created_at": "2020-05-18 02:17:50",
-                        "feeling_id": 1,
-                        "id": 1244386594569545800,
-                        "message_content": "I promise this is the last time I'll ask for mod pls I'm sorry"
+                        message_count: 0,
+                        notification_count: user.notification_list.filter(notification => notification.read === false).length,
+                        "messages": [
+                            {
+                                "screen_name": "JayDaBirb",
+                                "mii_face_url": "http://mii-images.account.pretendo.cc/",
+                                "is_official": true,
+                                "is_read": false,
+                                "created_at": "2020-04-29 01:04:80",
+                                "feeling_id": 1,
+                                "id": 1255383017044709400,
+                                "message_content": "https://invite.gg/pretendo"
+                            },
+                            {
+                                "screen_name": "PNID_Test06",
+                                "mii_face_url": "http://mii-images.account.pretendo.cc/",
+                                "is_official": false,
+                                "is_read": true,
+                                "created_at": "2020-05-18 02:17:50",
+                                "feeling_id": 1,
+                                "id": 1244384456055709400,
+                                "message_content": "Testing message number 2 updated"
+                            },
+                            {
+                                "screen_name": "PNID_Test14",
+                                "mii_face_url": "http://mii-images.account.pretendo.cc/",
+                                "is_official": false,
+                                "is_read": true,
+                                "created_at": "2020-05-18 02:17:50",
+                                "feeling_id": 1,
+                                "id": 1244384118059519400,
+                                "message_content": "Testing message number 3"
+                            },
+                            {
+                                "screen_name": "PNID_Test65",
+                                "mii_face_url": "http://mii-images.account.pretendo.cc/",
+                                "is_official": false,
+                                "is_read": true,
+                                "created_at": "2020-05-18 02:17:50",
+                                "feeling_id": 1,
+                                "id": 1244465118055709400,
+                                "message_content": "Did you know our Miiverse fork is called Juxt? pretty cool huh? ;)"
+                            },
+                            {
+                                "screen_name": "AnotherTestUser",
+                                "mii_face_url": "http://mii-images.account.pretendo.cc/",
+                                "is_official": false,
+                                "is_read": true,
+                                "created_at": "2020-05-18 02:17:50",
+                                "feeling_id": 1,
+                                "id": 1244384118792519400,
+                                "message_content": "Frick frack tic tak"
+                            },
+                            {
+                                "screen_name": "WowAnotherUserHuh",
+                                "mii_face_url": "http://mii-images.account.pretendo.cc/",
+                                "is_official": false,
+                                "is_read": true,
+                                "created_at": "2020-05-18 02:17:50",
+                                "feeling_id": 1,
+                                "id": 1244384648059589400,
+                                "message_content": "Hey kid want some meme?"
+                            },
+                            {
+                                "screen_name": "OkayLastOneIPromise",
+                                "mii_face_url": "http://mii-images.account.pretendo.cc/",
+                                "is_official": false,
+                                "is_read": true,
+                                "created_at": "2020-05-18 02:17:50",
+                                "feeling_id": 1,
+                                "id": 1244386594569545800,
+                                "message_content": "I promise this is the last time I'll ask for mod pls I'm sorry"
+                            }
+                        ],
                     }
-                ],
+                )
             }
-        )
-
+        }
     }).catch(error => {
-        console.log(error);
         res.set("Content-Type", "application/xml");
         res.statusCode = 400;
         response = {

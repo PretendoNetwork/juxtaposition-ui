@@ -1,8 +1,8 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="https://portal-cdn.olv.pretendo.cc/css/juxt.css">
-    <script src="https://portal-cdn.olv.pretendo.cc/js/pjax.min.js"></script>
-    <script src="https://portal-cdn.olv.pretendo.cc/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
+    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
+    <script src="<%= cdnURL %>/js/juxt.js"></script>
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -89,25 +89,25 @@
         <table class="user-page-tab-table">
             <tbody>
             <tr>
-                <td onclick="switchUserPageTabs(0)">
+                <td onclick="switchUserPageTabs(0, '<%= user.pid %>')">
                     <div class="user-page-tab left selected" id="user-page-posts-tab">
                         <%=numPosts%> Posts
                     </div>
                     <div class="user-page-tab-triangle selected" id="user-page-posts-triangle"></div>
                 </td>
-                <td onclick="switchUserPageTabs(1)">
+                <td onclick="switchUserPageTabs(1, '<%= user.pid %>')">
                     <div class="user-page-tab" id="user-page-friends-tab">
                         0 Friends
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-friends-triangle"></div>
                 </td>
-                <td onclick="switchUserPageTabs(2)">
+                <td onclick="switchUserPageTabs(2, '<%= user.pid %>')">
                     <div class="user-page-tab" id="user-page-following-tab">
                         <%= user.following %> Following
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-following-triangle"></div>
                 </td>
-                <td onclick="switchUserPageTabs(3)">
+                <td onclick="switchUserPageTabs(3, '<%= user.pid %>')">
                     <div class="user-page-tab right" id="user-page-followers-tab">
                         <%= user.followers %> Followers
                     </div>
@@ -135,7 +135,7 @@
                 <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow()%> - <a data-pjax="/communities/<%=communityMap.get(post.title_id + '-id')%>"><%= communityMap.get(post.title_id) %></a></h4>
 
                 <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-                    <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
+                    <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, '<%= post.id %>')"></div>
                 </div>
                 <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
             </div>

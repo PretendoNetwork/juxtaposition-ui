@@ -1,0 +1,27 @@
+<style>
+    .post-user-info-wrapper {
+        margin-left: 30px;
+    }
+</style>
+<% followers.forEach(function(user) { %>
+    <div class="post-user-info-wrapper" id="<%= user %>">
+        <%if(user.official) {%>
+            <img class="community-page-post-user-icon verified" src="https://mii-images.cdn.<%= account_server %>/<%= user %>/normal_face.png" data-pjax="/users/show?pid=<%= user %>">
+            <span class="community-page-verified-user-badge community-page-verified" style=""></span>
+        <%} else {%>
+            <img class="community-page-post-user-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user %>/normal_face.png" data-pjax="/users/show?pid=<%= user %>">
+            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+        <%}%>
+        <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= user %>"><%= userMap.get(user) %></h2>
+    </div>
+    <br>
+<% }); %>
+
+<% communities.forEach(function(community) { %>
+    <div class="post-user-info-wrapper" id="<%= community %>">
+            <img class="community-page-post-user-icon" src="<%= cdnURL %>/icons/<%= community %>.png" data-pjax="/communities/<%= community %>/new">
+        <h2 class="community-page-post-username" data-pjax="/communities/<%= community %>/new"><%= communityMap.get(community) %></h2>
+    </div>
+    <br>
+<% }); %>
+<img src="" onerror="initCommunityUsers()">

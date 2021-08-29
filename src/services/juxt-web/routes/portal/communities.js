@@ -16,7 +16,8 @@ router.get('/', function (req, res) {
         res.render('portal/communities.ejs', {
             // EJS variable and server-side variable
             popularCommunities: popularCommunities,
-            newCommunities: newCommunities
+            newCommunities: newCommunities,
+            cdnURL: config.CDN_domain,
         });
     }).catch(error => {
         res.set("Content-Type", "application/xml");
@@ -40,6 +41,7 @@ router.get('/all', function (req, res) {
         let communities = await database.getCommunities(90);
         res.render('portal/all_communities.ejs', {
             communities: communities,
+            cdnURL: config.CDN_domain,
         });
     }).catch(error => {
         res.set("Content-Type", "application/xml");
@@ -74,6 +76,7 @@ router.get('/announcements', function (req, res) {
             user: user,
             totalNumPosts: totalNumPosts,
             account_server: config.account_server_domain.slice(8),
+            cdnURL: config.CDN_domain,
         });
     }).catch(error => {
         console.error(error);
@@ -111,6 +114,7 @@ router.get('/:communityID/:type', function (req, res) {
             totalNumPosts: totalNumPosts,
             user: user,
             account_server: config.account_server_domain.slice(8),
+            cdnURL: config.CDN_domain,
         });
     }).catch(error => {
         console.error(error);
@@ -165,6 +169,7 @@ router.get('/:communityID/:type/loadPosts', function (req, res) {
                 user: user,
                 newPosts: posts,
                 account_server: config.account_server_domain.slice(8),
+                cdnURL: config.CDN_domain,
             });
         }
         else
@@ -192,19 +197,20 @@ router.post('/follow', upload.none(), function (req, res) {
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         let community = await database.getCommunityByID(req.body.communityID);
-        if(pid === null)
-            pid = 1000000000;
+        if(pid === null) {
+            throw "Guest Accounts Cannot Follow Communities";
+        }
         let user = await database.getUserByPID(pid);
-        if(req.body.type === 'true' && user !== null && user.followed_communities.indexOf(community.id) === -1)
+        if(req.body.type === 'true' && user !== null && user.followed_communities.indexOf(community.community_id) === -1)
         {
             community.upFollower();
-            user.addToCommunities(community.id);
+            user.addToCommunities(community.community_id);
             res.sendStatus(200);
         }
-        else if(req.body.type === 'false' && user !== null  && user.followed_communities.indexOf(community.id) !== -1)
+        else if(req.body.type === 'false' && user !== null  && user.followed_communities.indexOf(community.community_id) !== -1)
         {
             community.downFollower();
-            user.removeFromCommunities(community.id);
+            user.removeFromCommunities(community.community_id);
             res.sendStatus(200);
         }
         else

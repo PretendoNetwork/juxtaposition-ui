@@ -1,8 +1,8 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="https://portal-cdn.olv.pretendo.cc/css/juxt.css">
-    <script src="https://portal-cdn.olv.pretendo.cc/js/pjax.min.js"></script>
-    <script src="https://portal-cdn.olv.pretendo.cc/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
+    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
+    <script src="<%= cdnURL %>/js/juxt.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
     <script>
@@ -45,7 +45,7 @@
                 <% for(var i = 0; i < communities.length; i++) {%>
                     <td>
                         <div class="community-list-wrapper" data-pjax="/communities/<%= communities[i].community_id %>/new">
-                            <img class="community-list-icon" src="https://portal-cdn.olv.pretendo.cc/icons/<%= communities[i].community_id %>.png">
+                            <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= communities[i].community_id %>.png">
                             <h2 class="community-list-title"><%= communities[i].name %></h2>
                             <h4 class="community-list-followers"><%= communities[i].followers %> followers</h4>
                         </div>

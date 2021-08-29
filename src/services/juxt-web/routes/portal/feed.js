@@ -24,6 +24,7 @@ router.get('/', function (req, res) {
             posts: posts,
             communityMap: communityMap,
             account_server: config.account_server_domain.slice(8),
+            cdnURL: config.CDN_domain,
         });
         user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
             notification.read = true;
@@ -69,6 +70,7 @@ router.get('/loadposts', function (req, res) {
                 user: user,
                 newPosts: posts,
                 account_server: config.account_server_domain.slice(8),
+                cdnURL: config.CDN_domain,
             });
         }
         else

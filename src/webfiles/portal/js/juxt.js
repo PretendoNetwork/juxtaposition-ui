@@ -104,6 +104,10 @@ function stopLoading() {
     if (typeof wiiuBrowser !== 'undefined'
         && typeof wiiuBrowser.endStartUp !== 'undefined') {
         wiiuBrowser.endStartUp();
+        wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);
+        setTimeout(function() {
+            wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
+        },90000);
     }
 }
 function exit() {
@@ -613,7 +617,8 @@ function loadFeedPosts() {
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
-function switchUserPageTabs(type) {
+function switchUserPageTabs(type, id) {
+    var typeDomain = '';
     document.getElementById('user-page-posts-tab').classList.remove('selected');
     document.getElementById('user-page-friends-tab').classList.remove('selected');
     document.getElementById('user-page-following-tab').classList.remove('selected');
@@ -627,21 +632,36 @@ function switchUserPageTabs(type) {
         case 0:
             document.getElementById("user-page-posts-tab").classList.add('selected');
             document.getElementById("user-page-posts-triangle").classList.add('selected');
+            typeDomain = 'loadPosts';
             break;
         case 1:
             document.getElementById("user-page-friends-tab").classList.add('selected');
             document.getElementById("user-page-friends-triangle").classList.add('selected');
+            typeDomain = 'friends';
             break;
         case 2:
             document.getElementById("user-page-following-tab").classList.add('selected');
             document.getElementById("user-page-following-triangle").classList.add('selected');
+            typeDomain = 'following';
             break;
         case 3:
             document.getElementById("user-page-followers-tab").classList.add('selected');
             document.getElementById("user-page-followers-triangle").classList.add('selected');
+            typeDomain = 'followers';
             break;
 
     }
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML = this.responseText;
+        }
+        else if (this.readyState === 4){
+            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+        }
+    };
+    xhttp.open("GET", "/users/" + typeDomain + '?pid=' + id, true);
+    xhttp.send();
     wiiuSound.playSoundByName("SE_OLV_OK", 1);
 }
 function swapPostType(type) {
@@ -698,6 +718,35 @@ function searchCommunities() {
             }
         }
     }
+}
+function changeMiiImageReaction(element) {
+    if(element.checked) {
+        var pfp = document.getElementsByClassName('post-user-icon')[0];
+        var newPfp;
+        switch (element.value) {
+            case '1':
+                newPfp = 'smile_open_mouth.png'
+                break;
+            case '2':
+                newPfp = 'wink_left.png'
+                break;
+            case '3':
+                newPfp = 'surprise_open_mouth.png'
+                break;
+            case '4':
+                newPfp = 'frustrated.png'
+                break;
+            case '5':
+                newPfp = 'sorrow.png'
+                break;
+            default:
+                newPfp = 'normal_face.png'
+                break;
+        }
+        pfp.src = pfp.src.substring(0, pfp.src.lastIndexOf('/') + 1) + newPfp;
+    }
+
+
 }
 
 checkForUpdates();

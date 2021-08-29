@@ -1,8 +1,8 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="https://portal-cdn.olv.pretendo.cc/css/juxt.css">
-    <script src="https://portal-cdn.olv.pretendo.cc/js/pjax.min.js"></script>
-    <script src="https://portal-cdn.olv.pretendo.cc/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
+    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
+    <script src="<%= cdnURL %>/js/juxt.js"></script>
     <!-- Google Analytics -->
     <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -50,7 +50,7 @@
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>
                     <td>
                         <div class="community-list-wrapper" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
-                            <img class="community-list-icon" src="https://portal-cdn.olv.pretendo.cc/icons/<%= popularCommunities[i].community_id %>.png">
+                            <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].community_id %>.png">
                             <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                             <h4 class="community-list-followers"><%= popularCommunities[i].followers %> followers</h4>
                         </div>
@@ -72,7 +72,7 @@
                 <% for(var j = 0; j < newCommunities.length; j++) {%>
                     <td>
                         <div class="community-list-wrapper" data-pjax="/communities/<%= newCommunities[j].community_id %>/new">
-                            <img class="community-list-icon" src="https://portal-cdn.olv.pretendo.cc/icons/<%= newCommunities[j].community_id %>.png">
+                            <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= newCommunities[j].community_id %>.png">
                             <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
                             <h4 class="community-list-followers"><%= newCommunities[j].followers %> followers</h4>
                         </div>
@@ -88,6 +88,6 @@
     </div>
     <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
-<body onload="stopLoading();wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);">
+<body onload="stopLoading();">
 </body>
 </html>

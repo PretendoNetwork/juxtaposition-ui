@@ -68,7 +68,7 @@
             <%} else { %>
                 <% newPosts.forEach(function(post) {  %>
                         <div id="<%= post.id %>">
-                            <div class="post-user-info-wrapper">
+                            <div class="post-user-info-wrapper" id="<%= post.id %>">
                                 <%if(post.verified) {%>
                                     <img class="community-page-post-user-icon verified" src="http://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" onclick="loadUserProfile(<%=post.pid%>)">
                                     <span class="community-page-verified-user-badge community-page-verified" style=""></span>
@@ -159,7 +159,7 @@
                 alert('Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
             }
         };
-        xhttp.open("GET", "/users/loadPosts" + '?postID=' + id, true);
+        xhttp.open("GET", "/v1/users/loadPosts" + '?postID=' + id, true);
         xhttp.send();
     }
 </script>
