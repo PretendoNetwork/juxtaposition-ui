@@ -18,28 +18,44 @@
 </head>
 <body>
 <menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me" class="selected"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-pjax="/communities"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
+    <li id="nav-bar-profile" data-pjax="/users/me" class="selected"><a><%= lang.global.user_page %></a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
+    <li id="nav-bar-communities" data-pjax="/communities"><a><%= lang.global.communities %></a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
 </menu>
 <div id="main">
     <div class="community-page-header" style="background: #673DB6"></div>
     <div class="user-page-back-button" onclick="window.history.back()">
-        <p class="user-page-back-button-text">Go back</p>
+        <p class="user-page-back-button-text"><%= lang.global.go_back %></p>
     </div>
     <div class="community-page-info-container">
-        <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
+        <div class="community-page-action-button-wrapper">
+            <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
+            <div class="user-page-follow-button-wrapper friend selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="" style="color: #FFFFFF"><%= lang.user_page.unfriend %></p>
+            </div>
+            <%} else if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
+            <div class="user-page-follow-button-wrapper friend selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="" style="color: #FFFFFF"><%= lang.user_page.pending %></p>
+            </div>
+            <%} else {%>
+            <div class="user-page-follow-button-wrapper friend" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick=""><%= lang.user_page.befriend %></p>
+            </div>
+            <%}%>
+
+            <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
             <div class="user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)" style="color: #FFFFFF">Following</p>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)" style="color: #FFFFFF"><%= lang.user_page.following_user %></p>
             </div>
-        <%} else {%>
+            <%} else {%>
             <div class="user-page-follow-button-wrapper" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)">Follow User</p>
+                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)"><%= lang.user_page.follow_user %></p>
             </div>
-        <%}%>
+            <%}%>
+        </div>
         <img class="community-page-info-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
         <h2 class="community-page-title"><%= user.user_id %></h2>
         <h4 class="community-page-description"><%= user.profile_comment %></h4>
@@ -49,26 +65,26 @@
             <tr>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Country</h4>
+                        <h4 class="community-page-table-label"><%= lang.user_page.country %></h4>
                         <h4 class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%>Private<%}%></h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Birthday</h4>
+                        <h4 class="community-page-table-label"><%= lang.user_page.birthday %></h4>
                         <h4 class="community-page-table-text"><%if(user.birthday_visibility){%>N/A<%}else {%>Private<%}%></h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Game experience</h4>
+                        <h4 class="community-page-table-label"><%= lang.user_page.game_experience %></h4>
                         <h4 class="community-page-table-text">
                             <%if(user.game_skill === 0) {%>
-                                Beginner
+                                <%= lang.setup.experience_text.beginner %>
                             <%} else if(user.game_skill === 1) {%>
-                                Intermediate
+                                <%= lang.setup.experience_text.intermediate %>
                             <%} else if(user.game_skill === 2) {%>
-                                Expert
+                                <%= lang.setup.experience_text.expert %>
                             <%} else {%>
                                 N/A
                             <%}%>
@@ -77,7 +93,7 @@
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Yeahs</h4>
+                        <h4 class="community-page-table-label"><%= lang.global.yeahs %></h4>
                         <h4 class="community-page-table-text">N/A</h4>
                     </div>
                 </td>
@@ -91,25 +107,25 @@
             <tr>
                 <td onclick="switchUserPageTabs(0, '<%= user.pid %>')">
                     <div class="user-page-tab left selected" id="user-page-posts-tab">
-                        <%=numPosts%> Posts
+                        <%=numPosts%> <%= lang.user_page.posts %>
                     </div>
                     <div class="user-page-tab-triangle selected" id="user-page-posts-triangle"></div>
                 </td>
                 <td onclick="switchUserPageTabs(1, '<%= user.pid %>')">
                     <div class="user-page-tab" id="user-page-friends-tab">
-                        0 Friends
+                        0 <%= lang.user_page.friends %>
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-friends-triangle"></div>
                 </td>
                 <td onclick="switchUserPageTabs(2, '<%= user.pid %>')">
                     <div class="user-page-tab" id="user-page-following-tab">
-                        <%= user.following %> Following
+                        <%= user.following %> <%= lang.user_page.following %>
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-following-triangle"></div>
                 </td>
                 <td onclick="switchUserPageTabs(3, '<%= user.pid %>')">
                     <div class="user-page-tab right" id="user-page-followers-tab">
-                        <%= user.followers %> Followers
+                        <%= user.followers %> <%= lang.user_page.followers %>
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-followers-triangle"></div>
                 </td>
@@ -119,9 +135,9 @@
     </div>
     <div class="community-page-posts-wrapper">
         <% if(numPosts === 0) {%>
-            <p class="no-posts-text">No Posts</p>
+            <p class="no-posts-text"><%= lang.global.no_posts %></p>
         <%} else { %>
-            <button id="load-more-posts-button" onclick="loadUserPosts()">Load More Posts</button>
+            <button id="load-more-posts-button" onclick="loadUserPosts()"><%= lang.global.more %></button>
             <% newPosts.forEach(function(post) { %>
             <div class="post-user-info-wrapper" id="<%= post.id %>">
                 <%if(post.verified) {%>
@@ -137,7 +153,7 @@
                 <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
                     <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, '<%= post.id %>')"></div>
                 </div>
-                <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
             </div>
                     <div class="community-page-post-wrapper">
                         <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>

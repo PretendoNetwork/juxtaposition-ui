@@ -23,12 +23,12 @@
 </head>
 <body>
 <menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-pjax="/communities" class="selected"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
+    <li id="nav-bar-profile" data-pjax="/users/me"><a><%= lang.global.user_page %></a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
+    <li id="nav-bar-communities" data-pjax="/communities" class="selected"><a><%= lang.global.communities %></a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
 </menu>
 <div id="main">
     <div class="community-page-header" style="background-image: url('/banner/<%= community.community_id %>.png')"></div>
@@ -40,7 +40,7 @@
     <div class="community-page-posts-wrapper" style="margin-top: -40px;">
         <div id="community-posts-inner-body">
             <% if(totalNumPosts === 0) {%>
-                <p class="no-posts-text">No Posts</p>
+                <p class="no-posts-text"><%= lang.global.no_posts %></p>
             <%} else { %>
                 <button id="load-more-posts-button" onclick="loadCommunityPosts()">Load More Posts</button>
                 <% newPosts.forEach(function(post) { %>

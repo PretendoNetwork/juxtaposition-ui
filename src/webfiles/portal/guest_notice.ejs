@@ -56,74 +56,64 @@
     }
 </script>
 <body>
-<div id="welcome" class="about-wrapper" style="display: block">
-    <h1 class="about-header">Welcome to Juxtaposition!</h1>
+    <div id="welcome" class="about-wrapper" style="display: block">
+    <h1 class="about-header"><%= lang.setup.welcome %></h1>
     <div class="about-body">
         <p>
-            Juxt is a gaming community that connects people from all over the world using Mii characters.
-            Use Juxt to share your gaming experiences and meet people from around the world.
+            <%= lang.setup.welcome_text %>
         </p>
     </div>
-    <button class="about-button" style="margin-left: 50px" onclick="exit()">Exit</button>
+    <button class="about-button" style="margin-left: 50px" onclick="exit()"><%= lang.global.exit %></button>
     <button class="about-button" style="margin-left: 625px;"
             onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
                          document.getElementById('beta').style.display = 'block';
-                         document.getElementById('welcome').style.display = 'none';">Next</button>
+                         document.getElementById('welcome').style.display = 'none';"><%= lang.global.next %></button>
 </div>
 
-<div id="beta" class="about-wrapper">
-    <h1 class="about-header">Beta Disclaimer</h1>
-    <div class="about-body" style="position: relative">
-        <p>
-            You are about to try out the first public beta of Juxt.
-            This means that a lot is still up in the air, and a lot can change at any time.
-            <br>
-            <b><u>This can and may include a total wipe of the database at the conclusion or during the beta period.</u></b>
-            <br>
-            The website, its software and all content found on it are provided on an
-            “as is” and “as available” basis. The Pretendo Network does not give any warranties,
-            whether express or implied, as to the suitability or usability of the
-            website, its software or any of its content.
-        </p>
-    </div>
-    <button class="about-button" style="margin-left: 50px;margin-top: 100px; z-index: 4;"
-            onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+    <div id="beta" class="about-wrapper">
+        <h1 class="about-header"><%= lang.setup.beta %></h1>
+        <div class="about-body" style="position: relative">
+            <p>
+                <%= lang.setup.beta_text.first %>
+                <br>
+                <b><u><%= lang.setup.beta_text.second %></u></b>
+                <br>
+                <%= lang.setup.beta_text.third %>
+            </p>
+        </div>
+        <button class="about-button" style="margin-left: 50px;margin-top: 100px; z-index: 4;"
+                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
                          document.getElementById('welcome').style.display = 'block';
-                         document.getElementById('beta').style.display = 'none';">Back</button>
-    <button class="about-button" style="margin-left: 625px;margin-top: 100px; z-index: 4;"
-            onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+                         document.getElementById('beta').style.display = 'none';"><%= lang.global.back %></button>
+        <button class="about-button" style="margin-left: 625px;margin-top: 100px; z-index: 4;"
+                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
                          document.getElementById('google-analytics').style.display = 'block'
-                         document.getElementById('beta').style.display = 'none'">Next</button>
-    <div style="position: relative; height: 200px; z-index: 0"></div>
-</div>
-
-<div id="google-analytics" class="about-wrapper">
-    <h1 class="about-header">Google Analytics</h1>
-    <div class="about-body">
-        <p>
-            Juxtaposition uses Google Analytics in order to track how users are using our service. The data collected
-            includes but is not limited to time of visit, pages visited, and time spent on the site. This data is
-            not attached to you in any way, and is not used for advertisements by us or Google.
-        </p>
+                         document.getElementById('beta').style.display = 'none'"><%= lang.global.next %></button>
+        <div style="position: relative; height: 200px; z-index: 0"></div>
     </div>
-    <button class="about-button" style="margin-left: 50px;"
-            onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
-                         document.getElementById('beta').style.display = 'block';
-                         document.getElementById('google-analytics').style.display = 'none';">Back</button>
-    <button class="about-button" style="margin-left: 625px;"
-            onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
-                         document.getElementById('ready').style.display = 'block'
-                         document.getElementById('google-analytics').style.display = 'none'">Next</button>
-</div>
 
-<div id="ready" class="about-wrapper">
-    <h1 class="about-header">Guest Mode</h1>
+    <div id="google-analytics" class="about-wrapper">
+        <h1 class="about-header"><%= lang.setup.google %></h1>
+        <div class="about-body">
+            <p>
+                <%= lang.setup.google_text %>
+            </p>
+        </div>
+        <button class="about-button" style="margin-left: 50px;"
+                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+                         document.getElementById('beta').style.display = 'block';
+                         document.getElementById('google-analytics').style.display = 'none';"><%= lang.global.back %></button>
+        <button class="about-button" style="margin-left: 625px;"
+                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+                         document.getElementById('ready').style.display = 'block'
+                         document.getElementById('google-analytics').style.display = 'none'"><%= lang.global.next %></button>
+    </div>
+
+    <div id="ready" class="about-wrapper">
+    <h1 class="about-header"><%= lang.setup.guest %></h1>
     <div class="about-body">
         <p>
-            We can't verify your account at the moment, which likely means your are currently
-            logging in with a Nintendo Network account. You will still be able to browse juxt,
-            but you will not be able to Yeah! posts or make posts of your own till you log in
-            with a Pretendo Network account. For more information check the Discord server.
+            <%= lang.setup.guest_text %>
         </p>
     </div>
     <button class="about-button" style="margin-left: 320px; width: 250px"

@@ -8,6 +8,7 @@ const xmlParser = require('xml2json');
 const request = require("request");
 const moment = require('moment');
 const { USER } = require('./models/user');
+const translations = require('./translations')
 var HashMap = require('hashmap');
 let TGA = require('tga');
 let pako = require('pako');
@@ -16,33 +17,37 @@ let PNG = require('pngjs').PNG;
 let communityMap = new HashMap();
 let userMap = new HashMap();
 
-database.connect().then(async e => {
-    let communities = await database.getCommunities();
-    if(communities !== null) {
-        for(let i = 0; i < communities.length; i++ ) {
-            if(communities[i].title_id !== null) {
-                for(let j = 0; j < communities[i].title_id.length; j++) {
-                    communityMap.set(communities[i].title_id[j], communities[i].name);
-                    communityMap.set(communities[i].title_id[j] + '-id', communities[i].community_id);
-                }
-                communityMap.set(communities[i].community_id, communities[i].name);
-            }
-        }
-    }
-    logger.success('Created community index')
-    let users = await database.getUsers(1000);
-    if(users !== null) {
-        for(let i = 0; i < users.length; i++ ) {
-            if(users[i].pid !== null) {
-                userMap.set(users[i].pid.toString(), users[i].user_id);
-            }
-        }
-    }
-    logger.success('Created user index of ' + users.length + ' user(s)')
+nameCache();
 
-}).catch(error => {
-    logger.error(error);
-});
+function nameCache() {
+    database.connect().then(async e => {
+        let communities = await database.getCommunities();
+        if(communities !== null) {
+            for(let i = 0; i < communities.length; i++ ) {
+                if(communities[i].title_id !== null) {
+                    for(let j = 0; j < communities[i].title_id.length; j++) {
+                        communityMap.set(communities[i].title_id[j], communities[i].name);
+                        communityMap.set(communities[i].title_id[j] + '-id', communities[i].community_id);
+                    }
+                    communityMap.set(communities[i].community_id, communities[i].name);
+                }
+            }
+        }
+        logger.success('Created community index')
+        let users = await database.getUsers(1000);
+        if(users !== null) {
+            for(let i = 0; i < users.length; i++ ) {
+                if(users[i].pid !== null) {
+                    userMap.set(users[i].pid.toString(), users[i].user_id);
+                }
+            }
+        }
+        logger.success('Created user index of ' + users.length + ' user(s)')
+
+    }).catch(error => {
+        logger.error(error);
+    });
+}
 
 let methods = {
     create_user: function(pid, experience, notifications, region) {
@@ -197,6 +202,9 @@ let methods = {
     getUserHash: function() {
         return userMap;
     },
+    refreshCache: function () {
+      nameCache();
+    },
     resizeImage: function (file, width, height) {
         sharp(file)
             .resize({ height: height, width: width })
@@ -204,6 +212,40 @@ let methods = {
             .then(data => {
                 return data;
             });
+    },
+    processLanguage: function (header) {
+        if(!header)
+            return translations.EN;
+        let paramPackData = this.decodeParamPack(header);
+        console.log(paramPackData.language_id)
+        switch (paramPackData.language_id) {
+            case '0':
+                return translations.JA
+            case '1':
+                return translations.EN
+            case '2':
+                return translations.FR
+            case '3':
+                return translations.DE
+            case '4':
+                return translations.IT
+            case '5':
+                return translations.ES
+            case '6':
+                return translations.ZH
+            case '7':
+                return translations.KO
+            case '8':
+                return translations.NL
+            case '9':
+                return translations.PT
+            case '10':
+                return translations.RU
+            case '11':
+                return translations.ZH
+            default:
+                return translations.EN
+        }
     }
 };
 exports.data = methods;

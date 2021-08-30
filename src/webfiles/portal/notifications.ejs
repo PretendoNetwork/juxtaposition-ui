@@ -18,12 +18,12 @@
 </head>
 <body>
 <menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-pjax="/communities"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news" class="selected"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
+    <li id="nav-bar-profile" data-pjax="/users/me"><a><%= lang.global.user_page %></a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
+    <li id="nav-bar-communities" data-pjax="/communities"><a><%= lang.global.communities %></a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news" class="selected"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
 </menu>
 <div id="main">
     <h1 id="title" class="page-header">Notifications</h1>
@@ -32,7 +32,7 @@
         <table cellspacing="0">
             <tbody id="messages-list">
             <% if(user.notification_list.length === 0) {%>
-                <p class="no-posts-text" style="margin-left: 36%;">No Notifications</p>
+                <p class="no-posts-text"><%= lang.notifications.none %></p>
             <%} else { %>
                 <% let i = 0; user.notification_list.reverse().forEach(function(notification) { %>
                     <% if(i === 0) { %>

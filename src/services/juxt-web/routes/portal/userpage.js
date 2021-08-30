@@ -10,8 +10,8 @@ var router = express.Router();
 
 router.get('/me', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,pretendo.cc,,2|https,pretendo.cc,,2');
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
-
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         if(pid === null)
             pid = 1000000000;
@@ -27,6 +27,7 @@ router.get('/me', function (req, res) {
             numPosts: numPosts,
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
+            lang: lang,
         });
 
     }).catch(error => {
@@ -83,6 +84,7 @@ router.post('/me', upload.none(), function (req, res) {
 
 router.get('/show', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     var userID = req.query.pid;
     if(userID === 'me') {
         res.sendStatus(504);
@@ -111,6 +113,7 @@ router.get('/show', function (req, res) {
             parentUser: parentUser,
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
+            lang: lang,
         });
     }).catch(error => {
         console.error(error);
@@ -131,6 +134,7 @@ router.get('/show', function (req, res) {
 
 router.get('/loadPosts', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         let post = await database.getPostByID(req.query.postID);
@@ -153,6 +157,7 @@ router.get('/loadPosts', function (req, res) {
                 newPosts: newPosts,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
+                lang: lang
             });
         }
         else
@@ -178,6 +183,7 @@ router.get('/loadPosts', function (req, res) {
 
 router.get('/following', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
         let user = await database.getUserByPID(req.query.pid);
         let followers = user.followed_users;
@@ -201,20 +207,22 @@ router.get('/following', function (req, res) {
                 userMap: userMap,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
+                lang: lang
             });
         }
         else
         {
-            res.send('<p class="no-posts-text"> Not following anyone.</p>')
+            res.send('<p class="no-posts-text">' + lang.user_page.no_following + '</p>')
         }
     }).catch(error => {
         console.log(error);
-        res.send('<p class="no-posts-text"> Not following anyone.</p>')
+        res.send('<p class="no-posts-text">' + lang.user_page.no_following + '</p>')
     });
 });
 
 router.get('/followers', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
         let user = await database.getUserByPID(req.query.pid);
         let followers = user.following_users;
@@ -236,20 +244,22 @@ router.get('/followers', function (req, res) {
                 userMap: userMap,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
+                lang: lang
             });
         }
         else
         {
-            res.send('<p class="no-posts-text">No Followers</p>')
+            res.send('<p class="no-posts-text">' + lang.user_page.no_followers + '</p>')
         }
     }).catch(error => {
         console.log(error);
-        res.send('<p class="no-posts-text"> No Followers.</p>')
+        res.send('<p class="no-posts-text">' + lang.user_page.no_followers + '</p>')
     });
 });
 
 router.get('/friends', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2|fonts.googleapis.com,,2|https,www.googletagmanager.com,,2');
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
         let user = await database.getUserByPID(req.query.pid);
         let friends = null;
@@ -264,11 +274,12 @@ router.get('/friends', function (req, res) {
                 userMap: userMap,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
+                lang: lang
             });
         }
         else
         {
-            res.send('<p class="no-posts-text">No Friends</p>')
+            res.send('<p class="no-posts-text">' + lang.user_page.no_friends + '</p>')
         }
     }).catch(error => {
         console.log(error);
@@ -288,6 +299,7 @@ router.get('/friends', function (req, res) {
 });
 
 router.post('/follow', upload.none(), function (req, res) {
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
         let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
         let userToFollow = await database.getUserByPID(req.body.userID);
@@ -299,7 +311,7 @@ router.post('/follow', upload.none(), function (req, res) {
             userToFollow.addToFollowers(user.pid);
             user.addToUsers(userToFollow.pid);
             res.sendStatus(200);
-            await database.pushNewNotificationByPID(userToFollow.pid, user.user_id + ' followed you!', '/users/show?pid=' + user.pid)
+            await database.pushNewNotificationByPID(userToFollow.pid, user.user_id + ' ' + lang.notifications.new_follower, '/users/show?pid=' + user.pid)
         }
         else if(req.body.type === 'false' && user !== null  && user.followed_users.indexOf(userToFollow.pid) !== -1)
         {

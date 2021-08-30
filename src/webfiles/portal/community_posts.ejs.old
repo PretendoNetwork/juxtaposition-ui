@@ -2,13 +2,13 @@
     <tbody>
     <tr>
         <td>
-            <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active">Recent posts</h4>
+            <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
         </td>
         <td>
-            <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab">Popular posts</h4>
+            <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
         </td>
         <td>
-            <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab">Verified posts</h4>
+            <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
         </td>
     </tr>
     </tbody>
@@ -28,7 +28,7 @@
         <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
             <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, <%= post.id %>)"></div>
         </div>
-        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
 </div>
 <%if(post.screenshot !== '' && post.painting === '' && post.url === '' && post.body === '') {%>
     <div class="community-page-post-wrapper">

@@ -257,7 +257,8 @@ function followCommunity(community) {
 }
 function followUser(user) {
     //user-page-followers-tab
-    var userWrapper = document.getElementsByClassName('user-page-follow-button-wrapper')[0];
+    var userWrapper = user.parentElement;
+    //var userWrapper = document.getElementsByClassName('user-page-follow-button-wrapper')[0];
     var followersElement = document.getElementById('user-page-followers-tab');
     var followers = followersElement.innerHTML.replace(' Followers', '');
     if (userWrapper.classList.contains("selected")) {

@@ -18,12 +18,12 @@
 </head>
 <body>
 <menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me" class="selected"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-pjax="/communities"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
+    <li id="nav-bar-profile" data-pjax="/users/me" class="selected"><a><%= lang.global.user_page %></a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
+    <li id="nav-bar-communities" data-pjax="/communities"><a><%= lang.global.communities %></a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
 </menu>
 <div id="main">
     <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
@@ -34,21 +34,21 @@
                     <table>
                         <tr>
                             <td class="post-close-button-wrapper">
-                                <div class="post-close-button" onclick="hideOverlay()" >Close</div>
+                                <div class="post-close-button" onclick="hideOverlay()" ><%= lang.global.close %></div>
                             </td>
                             <td>
-                                <input type="submit" value="Save" class="submit-button" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
+                                <input type="submit" value="<%= lang.global.save %>" class="submit-button" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <h1 class="communities-header" style="padding-left: 75px; padding-top: 50px">Profile Settings</h1>
+                                <h1 class="communities-header" style="padding-left: 75px; padding-top: 50px"><%= lang.user_settings.profile_settings %></h1>
                             </td>
                         </tr>
                         <tr></tr>
                         <tr>
                             <td style="padding-left: 75px;">
-                                <label class="checkbox-container">Show Country on Profile
+                                <label class="checkbox-container"><%= lang.user_settings.show_country %>
                                     <input type="checkbox" id="country" name="country" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.country_visibility){%>checked="checked"<%}%>>
                                     <span class="checkmark"></span>
                                 </label>
@@ -56,7 +56,7 @@
                         </tr>
                         <tr>
                             <td style="padding-left: 75px;">
-                                <label class="checkbox-container">Show Birthday on Profile
+                                <label class="checkbox-container"><%= lang.user_settings.show_birthday %>
                                     <input type="checkbox" id="birthday" name="birthday" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.birthday_visibility){%>checked="checked"<%}%>>
                                     <span class="checkmark"></span>
                                 </label>
@@ -64,7 +64,7 @@
                         </tr>
                         <tr>
                             <td style="padding-left: 75px;">
-                                <label class="checkbox-container">Show Game Experience on Profile
+                                <label class="checkbox-container"><%= lang.user_settings.show_game %>
                                     <input type="checkbox" id="experience" name="experience" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.game_skill_visibility){%>checked="checked"<%}%>>
                                     <span class="checkmark"></span>
                                 </label>
@@ -72,7 +72,7 @@
                         </tr>
                         <tr>
                             <td style="padding-left: 75px;">
-                                <label class="checkbox-container">Show Comment on Profile
+                                <label class="checkbox-container"><%= lang.user_settings.show_comment %>
                                     <input type="checkbox" id="commentShow" name="commentShow" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(user.profile_comment_visibility){%>checked="checked"<%}%>>
                                     <span class="checkmark"></span>
                                 </label>
@@ -80,8 +80,8 @@
                         </tr>
                         <tr>
                             <td style="padding-left: 75px;">
-                                <label for="comment" style="font-size: xx-large">Profile Comment</label>
-                                <input type="text" id="comment" name="comment" class="user-input-text-area" maxlength="150" value="<%= user.profile_comment %>" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Profile comment cannot contain explicit language');}">
+                                <label for="comment" style="font-size: xx-large"><%= lang.user_settings.profile_comment %></label>
+                                <input type="text" id="comment" name="comment" class="user-input-text-area" maxlength="150" value="<%= user.profile_comment %>" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.user_settings.swearing %>');}">
                             </td>
                             <br>
                         </tr>
@@ -92,54 +92,56 @@
     </div>
     <div class="community-page-header" style="background: #673DB6"></div>
     <div class="user-page-back-button" onclick="window.history.back()">
-        <p class="user-page-back-button-text">Go back</p>
+        <p class="user-page-back-button-text"><%= lang.global.go_back %></p>
     </div>
     <div class="community-page-info-container">
-        <div class="user-page-follow-button-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
-            <p class="user-page-follow-button-text" onclick="showOverlay()">User Settings</p>
+        <div class="community-page-action-button-wrapper">
+            <div class="user-page-follow-button-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
+                <p class="user-page-follow-button-text" onclick="showOverlay()"><%= lang.user_settings.profile_settings %></p>
+            </div>
         </div>
         <img class="community-page-info-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
         <h2 class="community-page-title"><%= user.user_id %></h2>
-        <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%>Private<%}%></h4>
+        <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
         <div class="community-page-margin-line"></div>
         <table class="community-page-table-wrapper">
             <tbody>
             <tr>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Country</h4>
-                        <h4 class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%>Private<%}%></h4>
+                        <h4 class="community-page-table-label"><%= lang.user_page.country %></h4>
+                        <h4 class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%><%= lang.global.private %><%}%></h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Birthday</h4>
-                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%>N/A<%}else {%>Private<%}%></h4>
+                        <h4 class="community-page-table-label"><%= lang.user_page.birthday %></h4>
+                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%>N/A<%}else {%><%= lang.global.private %><%}%></h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Game experience</h4>
+                        <h4 class="community-page-table-label"><%= lang.user_page.game_experience %></h4>
                         <h4 class="community-page-table-text">
                             <%if(user.game_skill_visibility){%>
                             <%if(user.game_skill === 0) {%>
-                                Beginner
+                                <%= lang.setup.experience_text.beginner %>
                             <%} else if(user.game_skill === 1) {%>
-                                Intermediate
+                                <%= lang.setup.experience_text.intermediate %>
                             <%} else if(user.game_skill === 2) {%>
-                                Expert
+                                <%= lang.setup.experience_text.expert %>
                             <%} else {%>
                                 N/A
                             <%}%>
                             <%}else {%>
-                                Private
+                                <%= lang.global.private %>
                             <%}%>
                         </h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Yeahs</h4>
+                        <h4 class="community-page-table-label"><%= lang.global.yeahs %></h4>
                         <h4 class="community-page-table-text">0</h4>
                     </div>
                 </td>
@@ -153,25 +155,25 @@
             <tr>
                 <td onclick="switchUserPageTabs(0, '<%= user.pid %>')">
                     <div class="user-page-tab left selected" id="user-page-posts-tab">
-                        <%=numPosts%> Posts
+                        <%=numPosts%> <%= lang.user_page.posts %>
                     </div>
                     <div class="user-page-tab-triangle selected" id="user-page-posts-triangle"></div>
                 </td>
                 <td onclick="switchUserPageTabs(1, '<%= user.pid %>')">
                     <div class="user-page-tab" id="user-page-friends-tab">
-                        0 Friends
+                        0 <%= lang.user_page.friends %>
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-friends-triangle"></div>
                 </td>
                 <td onclick="switchUserPageTabs(2, '<%= user.pid %>')">
                     <div class="user-page-tab" id="user-page-following-tab">
-                        <%= user.following %> Following
+                        <%= user.following %> <%= lang.user_page.following %>
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-following-triangle"></div>
                 </td>
                 <td onclick="switchUserPageTabs(3, '<%= user.pid %>')">
                     <div class="user-page-tab right" id="user-page-followers-tab">
-                        <%= user.followers %> Followers
+                        <%= user.followers %> <%= lang.user_page.followers %>
                     </div>
                     <div class="user-page-tab-triangle" id="user-page-followers-triangle"></div>
                 </td>
@@ -181,9 +183,9 @@
     </div>
     <div class="community-page-posts-wrapper" <% if(numPosts === 0) {%>style="height: 110px"<%}%>>
         <% if(numPosts === 0) {%>
-            <p class="no-posts-text">No Posts</p>
+            <p class="no-posts-text"><%= lang.global.no_posts %></p>
         <%} else { %>
-            <button id="load-more-posts-button" onclick="loadUserPosts()">Load More Posts</button>
+            <button id="load-more-posts-button" onclick="loadUserPosts()"><%= lang.global.more %></button>
             <% newPosts.forEach(function(post) { %>
                 <div class="post-user-info-wrapper" id="<%= post.id %>">
                     <%if(post.verified) {%>
@@ -199,7 +201,7 @@
                     <div class="community-page-post-yeah-button-wrapper">
                         <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, '<%= post.id %>')"></div>
                     </div>
-                    <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                    <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
                 </div>
                     <div class="community-page-post-wrapper">
                         <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>

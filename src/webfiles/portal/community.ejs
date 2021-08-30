@@ -18,12 +18,12 @@
 </head>
 <body>
 <menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me"><a>User Page</a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a>Activity Feed</a></li>
-    <li id="nav-bar-communities" data-pjax="/communities" class="selected"><a>Communities</a></li>
-    <li id="nav-bar-messages" data-pjax="/messages"><a>Messages<span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news"><a>Notifications<span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href="">Close</a></li>
+    <li id="nav-bar-profile" data-pjax="/users/me"><a><%= lang.global.user_page %></a></li>
+    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
+    <li id="nav-bar-communities" data-pjax="/communities" class="selected"><a><%= lang.global.communities %></a></li>
+    <li id="nav-bar-messages" data-pjax="/messages"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
+    <li id="nav-bar-news" data-pjax="/news"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
+    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
 </menu>
 <div id="main">
     <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
@@ -34,7 +34,7 @@
                     <table>
                         <tr>
                             <td colspan="2">
-                                <h1 class="communities-header" style="padding-left: 50px; padding-top: 10px">Post to <%= community.name %></h1>
+                                <h1 class="communities-header" style="padding-left: 50px; padding-top: 10px"><%= lang.new_post.post_to %> <%= community.name %></h1>
                             </td>
                         </tr>
                         <tr>
@@ -74,7 +74,6 @@
                                 <div class="post-emotions-arrow-left"></div>
                             </td>
                             <td>
-                            <td>
                                 <div class="post-screenshot-picker" onclick="loadScreenshots()">
                                     <div class="post-screenshot-picker-icon"></div>
                                     <div class="post-screenshot-picker-dropdown">
@@ -85,14 +84,13 @@
                                     </div>
                                 </div>
                             </td>
-                            </td>
                         </tr>
                         <tr>
                             <td>
                                 <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
                             </td>
                             <td rowspan="2" id="post-text-input">
-                                <textarea class="post-textarea" id="comment" name="body" placeholder="Tap here to make a post." rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Prost cannot contain explicit language');}"></textarea>
+                                <textarea class="post-textarea" id="comment" name="body" placeholder="<%= lang.new_post.text_hint %>" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.new_post.swearing %>');}"></textarea>
                             </td>
                             <td rowspan="2" id="post-painting-input" style="display: none;">
                                 <div class="post-memo">
@@ -117,7 +115,7 @@
                         </tr>
                         <tr style="height: 70px">
                             <td class="post-close-button-wrapper" colspan="2">
-                                <div class="post-close-button" onclick="hideNewPostScreen();wiiuMemo.reset();">X <b>Close</b></div>
+                                <div class="post-close-button" onclick="hideNewPostScreen();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
                             </td>
                             <td>
                                 <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
@@ -135,17 +133,17 @@
     </div>
     <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
         <div class="new-post-button-text" onclick="showNewPostScreen()">
-            + New Post
+            + <%= lang.new_post.new_post_text %>
         </div>
     </div>
     <div class="community-page-info-container">
         <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>
             <div class="community-page-follow-button-wrapper selected">
-                <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF">Following</p>
+                <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF"><%= lang.community.following %></p>
             </div>
         <%} else {%>
         <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
-            <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)">Follow Community</p>
+            <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>
         </div>
         <%}%>
         <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
@@ -157,19 +155,19 @@
             <tr>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Followers</h4>
+                        <h4 class="community-page-table-label"><%= lang.community.followers %></h4>
                         <h4 class="community-page-table-text"><%= community.followers %></h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label">Posts</h4>
+                        <h4 class="community-page-table-label"><%= lang.community.posts %></h4>
                         <h4 class="community-page-table-text"><%=totalNumPosts%></h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container" style="width: 500px;">
-                        <h4 class="community-page-table-label">Tags</h4>
+                        <h4 class="community-page-table-label"><%= lang.community.tags %></h4>
                         <h4 class="community-page-table-text">N/A</h4>
                     </div>
                 </td>
@@ -182,22 +180,22 @@
             <tbody>
             <tr>
                 <td>
-                    <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active">Recent posts</h4>
+                    <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
                 </td>
                 <td>
-                    <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab">Popular posts</h4>
+                    <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
                 </td>
                 <td>
-                    <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab">Verified posts</h4>
+                    <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
                 </td>
             </tr>
             </tbody>
         </table>
         <div id="community-posts-inner-body">
             <% if(totalNumPosts === 0) {%>
-                <p class="no-posts-text">No Posts</p>
+                <p class="no-posts-text"><%= lang.global.no_posts %></p>
             <%} else { %>
-                <button id="load-more-posts-button" onclick="loadCommunityPosts()">Load More Posts</button>
+                <button id="load-more-posts-button" onclick="loadCommunityPosts()"><%= lang.global.more %></button>
                 <% newPosts.forEach(function(post) { %>
                     <div class="post-user-info-wrapper" id="<%= post.id %>">
                         <%if(post.verified) {%>
@@ -213,7 +211,7 @@
                         <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
                             <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, '<%= post.id %>')"></div>
                         </div>
-                        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
+                        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
                     </div>
                     <div class="community-page-post-wrapper">
                         <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>

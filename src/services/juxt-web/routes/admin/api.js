@@ -178,6 +178,7 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
 
             community.save();
             res.sendStatus(200);
+            util.data.refreshCache();
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] updated community ' + community.name);
         }
         else
@@ -514,6 +515,7 @@ router.post('/users/:userID/update', upload.none(), function (req, res) {
             user.ban_lift_date = moment(req.body.ban_date);
             user.save();
             res.sendStatus(200);
+            util.data.refreshCache();
             logger.audit('[' + parentUser.user_id + ' - ' + parentUser.pid + '] banned ' + user.user_id + ' until ' + user.ban_lift_date + ' for ' + user.ban_reason);
         }
         else
@@ -545,7 +547,7 @@ router.post('/posts/:postID/delete', function (req, res) {
         if(user !== null)
         {
             if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
-                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to delete a community and is not authorized');
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to delete a post and is not authorized');
                 throw new Error('Invalid credentials supplied');
             }
 
