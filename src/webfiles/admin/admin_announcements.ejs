@@ -36,7 +36,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button type="button" style="margin-left: 20px; width: 760px; <%if(community.type === 1){%>display: none;<%}%>" onclick="window.location='/communities/<%= community.community_id %>/sub'">Sub-Communities</button>
+            <button type="button" style="margin-left: 20px; width: 760px; <%if(community.type === 1){%>display: none;<%}%>" onclick="window.location='/posts/new'">New Post</button>
             <button type="button" style="margin-left: 20px; width: 760px" onclick="window.location='/communities/<%= community.community_id %>/edit'">Edit</button>
             <div class="community-page-margin-line"></div>
             <table class="community-page-table-wrapper">

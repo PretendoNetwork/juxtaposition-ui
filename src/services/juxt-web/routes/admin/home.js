@@ -220,6 +220,51 @@ router.get('/audit', upload.none(), function (req, res) {
 
 });
 
+router.get('/announcements', upload.none(), function (req, res) {
+
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let pid = util.data.processServiceToken(req.cookies.token);
+        if(pid === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let user = await database.getUserByPID(pid);
+        let community = await database.getCommunityByID('announcements');
+        let newPosts = await database.getNewPostsByCommunity(community, 100);
+        let totalNumPosts = await database.getTotalPostsByCommunity(community);
+
+        res.render('admin/admin_announcements.ejs', {
+            community: community,
+            newPosts: newPosts,
+            totalNumPosts: totalNumPosts,
+            user: user,
+            account_server: config.account_server_domain.slice(8),
+        });
+
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+
+});
+
 router.get('/communities/new', upload.none(), function (req, res) {
     var communityID = req.query.CID;
     database.connect().then(async e => {
@@ -563,6 +608,47 @@ router.get('/users/:userID/edit', upload.none(), function (req, res) {
 
 });
 
+router.get('/posts/new', upload.none(), function (req, res) {
+
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let pid = util.data.processServiceToken(req.cookies.token);
+        if(pid === null)
+        {
+            res.redirect('/login');
+            return;
+        }
+        let user = await database.getUserByPID(pid);
+        let community = await database.getCommunityByID('announcements');
+
+        res.render('admin/admin_new_post.ejs', {
+            community: community,
+            user: user,
+            account_server: config.account_server_domain.slice(8),
+        });
+
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+
+});
+
 router.get('/login', upload.none(), function (req, res) {
 
     database.connect().then(async e => {
@@ -638,7 +724,7 @@ router.post('/login', upload.none(), function (req, res) {
 
             let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
             await request.post({
-                url: "https://" + config.account_server_domain + "/v1/api/oauth20/access_token/generate",
+                url: "http://" + config.account_server_domain + "/v1/api/oauth20/access_token/generate",
                 headers: {
                     'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
                     'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"],
@@ -658,9 +744,9 @@ router.post('/login', upload.none(), function (req, res) {
                 else
                 {
                     console.log(body)
-                    res.statusCode = 400;
+                    res.statusCode = 403;
                     let response = {
-                        error_code: 400,
+                        error_code: 403,
                         message: 'Invalid account ID or password'
                     };
                     res.send(response);
@@ -673,9 +759,9 @@ router.post('/login', upload.none(), function (req, res) {
 
     }).catch(error =>
     {
-        res.statusCode = 400;
+        res.statusCode = 504;
         let response = {
-            error_code: 400,
+            error_code: 504,
             message: error.message
         };
         res.send(response);

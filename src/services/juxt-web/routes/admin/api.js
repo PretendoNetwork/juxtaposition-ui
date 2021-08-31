@@ -4,6 +4,7 @@ const logger = require('../../../../logger');
 const util = require('../../../../authentication');
 const config = require('../../../../config.json');
 const { COMMUNITY } = require('../../../../models/communities');
+const { POST } = require('../../../../models/post');
 var router = express.Router();
 const moment = require('moment');
 var multer  = require('multer');
@@ -580,6 +581,81 @@ router.get('/notifications', function (req, res) {
     database.connect().then(async e => {
         await database.pushNewNotificationToAll('Testing a system wide notification and linking to a post', '/users/me')
         res.sendStatus(200);
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
+router.post('/posts/new', upload.none(), function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let user = await database.getUserByPID(pid);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
+                throw new Error('Invalid credentials supplied');
+            }
+            let community = await database.getCommunityByID(req.body.olive_community_id);
+            let appData = "";
+            if (req.body.app_data) {
+                appData = req.body.app_data.replace(/\0/g, "").trim();
+            }
+            let painting = "", paintingURI = "";
+            if (req.body.painting && req.body.painting !== 'eJztwTEBACAMA7DCNRlIQRbu4ZoEviTJTNvjZNUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL55fYLL3w==') {
+                painting = req.body.painting.replace(/\0/g, "").trim();
+                paintingURI = await util.data.processPainting(painting);
+            }
+            let screenshot = "";
+            if (req.body.screenshot) {
+                screenshot = req.body.screenshot.replace(/\0/g, "").trim();
+            }
+            const document = {
+                title_id: community.title_id[0],
+                community_id: community.community_id,
+                screen_name: user.user_id,
+                body: req.body.body,
+                app_data: appData,
+                painting: painting,
+                painting_uri: paintingURI,
+                screenshot: screenshot,
+                country_id: 49,
+                created_at: new Date(),
+                feeling_id: req.body.emotion,
+                id: snowflake.nextId(),
+                is_autopost: req.body.is_autopost,
+                is_spoiler: req.body.is_spoiler,
+                is_app_jumpable: req.body.is_app_jumpable,
+                language_id: req.body.language_id,
+                mii: user.mii,
+                mii_face_url: user.pfp_uri,
+                pid: pid,
+                platform_id: 0,
+                region_id: 2,
+                verified: user.official
+            };
+            const newPost = new POST(document);
+            newPost.save();
+            res.sendStatus(200);
+            logger.audit('[' + user.user_id + ' - ' + user.pid + '] created community ' + newCommunity.name);
+        }
+        else
+            throw new Error('Invalid account ID or password');
+
     }).catch(error =>
     {
         res.statusCode = 400;
