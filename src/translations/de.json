@@ -81,16 +81,16 @@
   },
   "setup": {
     "welcome": "Willkommen bei Juxtaposition!",
-    "welcome_text": "Juxt is a gaming community that connects people from all over the world using Mii characters. Use Juxt to share your gaming experiences and meet people from around the world.",
-    "beta": "Beta Disclaimer",
+    "welcome_text": "Juxt ist eine Gaming-Community, die Menschen aus der ganzen Welt durch Mii-Charaktäre miteinander verbindet. Verwende Juxt zum teilen deiner Spielerfahrung und zum Treffen von Personen aus aller Welt.",
+    "beta": "Beta-Haftungsausschluss",
     "beta_text": {
-      "fisrt": "You are about to try out the first public beta of Juxt. This means that a lot is still up in the air, and a lot can change at any time.",
-      "second": "This can and may include a total wipe of the database at the conclusion or during the beta period.",
+      "fisrt": "Du bist dabei, die erste öffentliche Beta von Juxt auszuprobieren. Das bedeutet, dass einige Dinge noch fehlen oder ungeklärt sind und dass sich jederzeit noch etwas ändern kann.",
+      "second": "Dies kann und wird eine vollständige Löschung der Datenbank während der Betaphase oder am Ende dieser beinhalten.",
       "third": "The website, its software and all content found on it are provided on an “as is” and “as available” basis. The Pretendo Network does not give any warranties, whether express or implied, as to the suitability or usability of the website, its software or any of its content."
     },
-    "info": "What is Juxtaposition?",
-    "info_text": "Juxt is a user-driven gaming community where you can interact with people\n                all over the world. You can write or draw posts in game communities or send messages directly to your friends.",
-    "rules": "Juxt Rules",
+    "info": "Was ist Juxtaposition?",
+    "info_text": "Juxt ist eine Benutzergesteuerte Gaming-Community, auf der du mit Nutzern\n                aus aller Welt kommunizeren kannst. Du kannst Beiträge in Spiel-Communities Malen oder Zeichnen und Direkt-Nachrichten an deine Freunde senden.",
+    "rules": "Juxt Regeln",
     "rules_text": {
       "first": "The following are some important guidelines for making Juxt a fun and enjoyable experience for everyone. The Juxt Code of Conduct contains detailed information, so please read it carefully.",
       "second": "Posts Can Be Viewed Around the World",
@@ -106,21 +106,21 @@
       "twelfth": "Have You Played That Game?",
       "thirteenth": "If you're posting in the community for a game you've played, your posts will have an icon indicating that you've played it."
     },
-    "experience": "Game Experience",
+    "experience": "Spielerfahrung",
     "experience_text": {
-      "info": "Please tell us how you would describe your level of experience with games. You can change this setting later.",
-      "beginner": "Beginner",
-      "intermediate": "Intermediate",
-      "expert": "Expert"
+      "info": "Wie würdest du deinen Erfahrunsstand mit Spielen beschreiben? Du kannst diese Einstellung später ändern.",
+      "beginner": "Anfänger",
+      "intermediate": "Fortgeschritten",
+      "expert": "Experte"
     },
     "google": "Google Analytics",
-    "google_text": "Juxtaposition uses Google Analytics in order to track how users are using our service. The data collected includes but is not limited to time of visit, pages visited, and time spent on the site. This data is not attached to you in any way, and is not used for advertisements by us or Google.",
-    "ready": "Ready to Start Using Juxt",
-    "ready_text": "First check out some communities and see what people from all over the world are posting about. Take this opportunity to familiarize yourself with Juxt. You might make some new discoveries along the way!",
-    "done": "Have fun in Juxt!",
-    "done_button": "Let's Go!",
-    "guest": "Guest Mode",
-    "guest_text": "We can't verify your account at the moment, which likely means your are currently logging in with a Nintendo Network account. You will still be able to browse juxt, but you will not be able to Yeah! posts or make posts of your own till you log in with a Pretendo Network account. For more information check the Discord server.",
-    "guest_button": "I Understand"
+    "google_text": "Juxtaposition verwendet Google Analytics, um herauszufinden, wie unser Service verwendet wird. Die gesammelten Daten enthalten unter anderem: Besuchszeit, besuchte Seiten und Zeit, die auf der Webseite verbracht wurde. Diese Daten werden nicht mit dir in Verbindung gebracht und auch nicht für Werbezwecke von Juxt oder Google verwendet.",
+    "ready": "Bereit zur Nutzung von Juxt",
+    "ready_text": "Schau dir erstmal einige Communities an und worüber andere Nutzer aus aller Welt Beitragen. Nutze diese Gelegenheut, um dich mit Juxt vertraut zu machen. Du könntest auf deinem Weg einige neue Entdeckungen machen!",
+    "done": "Viel Spaß mit Juxt!",
+    "done_button": "Los Geht's!",
+    "guest": "Gastmodus",
+    "guest_text": "Wir können dich aktuell nicht verifizieren, da du duch wahrscheinlich mit einem Nintendo Network Account anmeldest. Du kannst dich trotzdem auf Juxt umsehen, aber du kannst keine Beiträge mit Yeah! versehen oder eigene Beiträge posten, bis du dich mit eienm Pretendo Network Account anmeldest. Für weitere Informationen, schau auf unseren Discord Server.",
+    "guest_button": "Verstanden"
   }
 }
