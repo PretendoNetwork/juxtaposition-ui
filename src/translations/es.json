@@ -1,13 +1,13 @@
 {
   "language": "Español",
   "global": {
-    "user_page": "Página personal",
+    "user_page": "Perfil de usuario",
     "activity_feed": "Nuevas Publicaciones",
     "communities": "Comunidades",
     "messages": "Mensajes",
     "notifications": "Notificaciones",
     "go_back": "Ir atrás",
-    "back": "Regresar",
+    "back": "Volver",
     "yeahs": "Yeahs",
     "more": "Cargar más publicaciones",
     "no_posts": "No hay publicaciones",
@@ -19,11 +19,11 @@
   },
   "all_communities": {
     "text": "Todas las comunidades",
-    "announcements": "Anuncios",
-    "ann_string": "¡Haz click para ver los anuncios recientes!",
-    "popular_places": "Lugares Populares",
+    "announcements": "Noticias",
+    "ann_string": "¡Haz click para ver las últimas noticias!",
+    "popular_places": "Sitios populares",
     "new_communities": "Nuevas Comunidades",
-    "show_all": "Ver todo",
+    "show_all": "Mostrar todo",
     "search": "Buscar comunidades..."
   },
   "community": {
@@ -55,16 +55,16 @@
     "no_followers": "No tiene seguidores"
   },
   "user_settings": {
-    "profile_settings": "Preferencias del Perfil",
-    "show_country": "Mostrar país en Perfil",
-    "show_birthday": "Mostrar cumpleaños en Perfil",
-    "show_game": "Mostrar experiencía en Perfil",
-    "show_comment": "Mostrar comentario en Perfil",
-    "profile_comment": "Comentario del Perfil",
-    "swearing": "Los comentarios no pueden tener lenguaje no apropiado."
+    "profile_settings": "Preferencias del perfil",
+    "show_country": "Mostrar país en tu perfil",
+    "show_birthday": "Mostrar cumpleaños en tu perfil",
+    "show_game": "Mostrar experiencía en tu perfil",
+    "show_comment": "Mostrar comentario en tu perfil",
+    "profile_comment": "Comentario del perfil",
+    "swearing": "Los comentarios no pueden tener lenguaje inapropiado."
   },
   "activity_feed": {
-    "empty": "No hay nada. Intenta seguir a alguien!"
+    "empty": "No hay nada. ¡Intenta seguir a alguien!"
   },
   "notifications": {
     "none": "Sin notificaciones.",
@@ -77,7 +77,7 @@
     "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones."
   },
   "messages": {
-    "coming_soon": "La función de mensajería no esta lista. ¡Revisa despues!"
+    "coming_soon": "La función de mensajería no esta lista. ¡Revisa más tarde!"
   },
   "setup": {
     "welcome": "Bienvenido a Juxtaposition!",
