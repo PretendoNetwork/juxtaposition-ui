@@ -31,7 +31,7 @@
     <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
 </menu>
 <div id="main">
-    <div class="community-page-header" style="background-image: url('/banner/<%= community.community_id %>.png')"></div>
+    <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
     <div class="community-page-info-container" style="min-height: 150px">
         <img class="community-page-info-icon" src="/icons/<%= community.community_id %>.png">
         <h2 class="community-page-title"><%= community.name %></h2>

@@ -133,9 +133,8 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
 
         let user = await database.getUserByPID(pid);
 
-        if(user !== null)
-        {
-            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+        if(user !== null) {
+            if (config.authorized_PNIDs.indexOf(user.pid) === -1) {
                 logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to update a community and is not authorized');
                 throw new Error('Invalid credentials supplied');
             }
@@ -143,30 +142,46 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
             const community = await database.getCommunityByID(req.params.communityID);
             const files = JSON.parse(JSON.stringify(req.files));
 
-            if(req.body.name && community.name !== req.body.name)
+            if (req.body.name && community.name !== req.body.name)
                 community.name = req.body.name;
 
-            if(req.body.description && community.description !== req.body.description)
+            if (req.body.description && community.description !== req.body.description)
                 community.description = req.body.description;
 
-            if(req.body.title_ids[0] !== community.title_ids[0] && req.body.title_ids[1] !== community.title_ids[1] && req.body.title_ids[2] !== community.title_ids[2]
-            && req.body.title_ids[0] !== '' && req.body.title_ids[1] !== '' && req.body.title_ids[2] !== '') {
+            if (req.body.title_ids[0] !== community.title_ids[0] && req.body.title_ids[1] !== community.title_ids[1] && req.body.title_ids[2] !== community.title_ids[2]
+                && req.body.title_ids[0] !== '' && req.body.title_ids[1] !== '' && req.body.title_ids[2] !== '') {
                 community.title_id = req.body.title_ids;
                 community.title_ids = req.body.title_ids;
             }
 
-            if(req.body.icon && community.icon !== req.body.icon)
+            if (req.body.icon && community.icon !== req.body.icon)
                 community.icon = req.body.icon;
 
-            if(req.files.browserIcon) {
-                community.browser_icon = `data:image/png;base64,${await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer().toString('base64')}`;
-                community.browser_thumbnail = `data:image/png;base64,${await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer().toString('base64')}`;
+            if (req.files.browserIcon) {
+                await sharp(req.files.browserIcon[0].buffer).then(file => function () {
+                    community.browser_icon = `data:image/png;base64,${file.resize({
+                        height: 128,
+                        width: 128
+                    }).toBuffer().toString('base64')}`
+                })
             }
-            if(req.files.CTRbrowserHeader)
-                community.CTR_browser_header = `data:image/png;base64,${await sharp(req.files.CTRbrowserHeader[0].buffer).resize({ height: 220, width: 400 }).toBuffer().toString('base64')}`;
+            if (req.files.CTRbrowserHeader) {
+                await sharp(req.files.CTRbrowserHeader[0].buffer).then(file => function () {
+                    community.CTR_browser_header = `data:image/png;base64,${file.resize({
+                        height: 220,
+                        width: 400
+                    }).toBuffer().toString('base64')}`
+                })
+            }
 
-            if(req.files.WiiUbrowserHeader)
-                community.WiiU_browser_header = `data:image/png;base64,${await sharp(req.files.WiiUbrowserHeader[0].buffer).resize({ height: 328, width: 1498 }).toBuffer().toString('base64')}`;
+            if (req.files.WiiUbrowserHeader) {
+                await sharp(req.files.WiiUbrowserHeader[0].buffer).then(file => function () {
+                    community.WiiU_browser_header = `data:image/png;base64,${file.resize({
+                        height: 328,
+                        width: 1498
+                    }).toBuffer().toString('base64')}`
+                })
+            }
 
             if(req.body.is_recommended)
                 community.is_recommended = req.body.is_recommended;
