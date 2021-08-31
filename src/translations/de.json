@@ -1,86 +1,86 @@
 {
-  "language": "German",
+  "language": "Deutsch",
   "global": {
-    "user_page": "User Page",
-    "activity_feed": "Activity Feed",
+    "user_page": "Nutzerprofil",
+    "activity_feed": "Aktivitätsfeed",
     "communities": "Communities",
-    "messages": "Messages",
-    "notifications": "Notifications",
-    "go_back": "Go Back",
-    "back": "Back",
+    "messages": "Nachrichten",
+    "notifications": "Benachrichtigungen",
+    "go_back": "Gehe Zurück",
+    "back": "Zurück",
     "yeahs": "Yeahs",
-    "more": "Load More Posts",
-    "no_posts": "No Posts",
-    "private": "Private",
-    "close": "Close",
-    "save": "Save",
-    "exit": "Exit",
-    "next": "Next"
+    "more": "Lade weitere Beiträge",
+    "no_posts": "Keine Beiträge",
+    "private": "Privat",
+    "close": "Schließen",
+    "save": "Speichern",
+    "exit": "Verlassen",
+    "next": "Weiter"
   },
   "all_communities": {
-    "text": "All Communities",
-    "announcements": "Announcements",
-    "ann_string": "Click here to view recent announcements!",
-    "popular_places": "Popular Places",
-    "new_communities": "New Communities",
-    "show_all": "Show All",
-    "search": "Search communities..."
+    "text": "Alle Communities",
+    "announcements": "Ankündigungen",
+    "ann_string": "Klicke hier, um die letzten Ankündigungen anzusehen!",
+    "popular_places": "Beliebte Orte",
+    "new_communities": "Neue Communities",
+    "show_all": "Alle anzeigen",
+    "search": "Communities Suchen..."
   },
   "community": {
-    "follow": "Follow Community",
-    "following": "Following",
-    "followers": "Followers",
-    "posts": "Posts",
+    "follow": "Community Folgen",
+    "following": "Folgen",
+    "followers": "Folgende",
+    "posts": "Beiträge",
     "tags": "Tags",
-    "recent": "Recent Posts",
-    "popular": "Popular Posts",
-    "verified": "Verified Posts",
-    "new": "New Post"
+    "recent": "Kürzliche Beiträge",
+    "popular": "Beliebte Beiträge",
+    "verified": "Verifizierter Beitrag",
+    "new": "Neuer Beitrag"
   },
   "user_page": {
-    "country": "Country",
-    "birthday": "Birthday",
-    "game_experience": "Game Experience",
-    "posts": "Posts",
-    "friends": "Friends",
-    "following": "Following",
-    "followers": "Followers",
-    "follow_user": "Follow",
-    "following_user": "Following",
-    "befriend": "Befriend",
-    "pending": "Pending",
-    "unfriend": "Unfriend",
-    "no_friends": "No Friends",
-    "no_following": "Not Following Anyone",
-    "no_followers": "No Followers"
+    "country": "Land",
+    "birthday": "Geburtstag",
+    "game_experience": "Spielerfahrung",
+    "posts": "Beiträge",
+    "friends": "Freunde",
+    "following": "Folge",
+    "followers": "Folgende",
+    "follow_user": "Folgen",
+    "following_user": "Folge",
+    "befriend": "Anfreunden",
+    "pending": "Ausstehend",
+    "unfriend": "Freundschaft Beenden",
+    "no_friends": "Keine Freunde",
+    "no_following": "Folge Niemanden",
+    "no_followers": "Keine Folgenden"
   },
   "user_settings": {
-    "profile_settings": "Profile Settings",
-    "show_country": "Show Country on Profile",
-    "show_birthday": "Show Birthday on Profile",
-    "show_game": "Show Game Experience on Profile",
-    "show_comment": "Show Comment on Profile",
-    "profile_comment": "Profile Comment",
-    "swearing": "Profile comment cannot contain explicit language."
+    "profile_settings": "Profileinstellungen",
+    "show_country": "Zeige Land im Profil",
+    "show_birthday": "Zeige Geburtstag im Profil",
+    "show_game": "Zeige Spielerfahrung im Profil",
+    "show_comment": "Zeige Kommentar im Profil",
+    "profile_comment": "Profilkommentar",
+    "swearing": "Profilkommentar darf keine explizite Sprache enthalten."
   },
   "activity_feed": {
-    "empty": "It's empty here. Try following someone!"
+    "empty": "Es ist ganz schön leer hier. Versuche, jemandem zu Folgen!"
   },
   "notifications": {
-    "none": "No notifications.",
-    "new_follower": "followed you!"
+    "none": "Keine Benachrichtigungen.",
+    "new_follower": "folgt dir!"
   },
   "new_post": {
-    "new_post_text": "New Post",
-    "post_to": "Post to",
-    "text_hint": "Tap here to make a post.",
-    "swearing": "Post cannot contain explicit language."
+    "new_post_text": "Neuer Beitrag",
+    "post_to": "Beitragen zu",
+    "text_hint": "Hier tippen, um einen Beitrag zu erstellen.",
+    "swearing": "Beitrag darf keine explizite Sprache enthalten."
   },
   "messages": {
-    "coming_soon": "Messages isn't ready yet. Check back soon!"
+    "coming_soon": "Nachrichten sind noch nicht fertig. Schau später noch einmal vorbei!"
   },
   "setup": {
-    "welcome": "Welcome to Juxtaposition!",
+    "welcome": "Willkommen bei Juxtaposition!",
     "welcome_text": "Juxt is a gaming community that connects people from all over the world using Mii characters. Use Juxt to share your gaming experiences and meet people from around the world.",
     "beta": "Beta Disclaimer",
     "beta_text": {
