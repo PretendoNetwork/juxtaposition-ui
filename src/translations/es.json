@@ -56,10 +56,10 @@
   },
   "user_settings": {
     "profile_settings": "Preferencias del Perfil",
-    "show_country": "Mostrar país en Perfil",
-    "show_birthday": "Mostrar cumpleaños en Perfil",
-    "show_game": "Mostrar experiencia en Perfil",
-    "show_comment": "Mostrar comentario en Perfil",
+    "show_country": "Mostrar país en tu Perfil",
+    "show_birthday": "Mostrar cumpleaños en tu Perfil",
+    "show_game": "Mostrar experiencia en tu Perfil",
+    "show_comment": "Mostrar comentario en tu Perfil",
     "profile_comment": "Comentario del Perfil",
     "swearing": "Los comentarios no pueden tener lenguaje no apropiado."
   },
