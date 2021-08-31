@@ -110,7 +110,8 @@ router.get('/:communityID/:type', function (req, res) {
         if(pid === null)
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
-        console.log(req.params.communityID)
+        if(req.params.communityID === 'announcements')
+            res.redirect('/communities/announcements')
         let community = await database.getCommunityByID(req.params.communityID.toString());
         let newPosts = await database.getNumberNewCommunityPostsByID(community, 5);
         let totalNumPosts = await database.getTotalPostsByCommunity(community)
