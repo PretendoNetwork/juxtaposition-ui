@@ -32,6 +32,9 @@
 </menu>
 <div id="main">
     <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
+    <div class="community-page-follow-button-wrapper" style="display: none">
+        <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>
+    </div>
     <div class="community-page-info-container" style="min-height: 150px">
         <img class="community-page-info-icon" src="/icons/<%= community.community_id %>.png">
         <h2 class="community-page-title"><%= community.name %></h2>
@@ -46,10 +49,10 @@
                 <% newPosts.forEach(function(post) { %>
                     <div class="post-user-info-wrapper" id="<%= post.id %>">
                         <%if(post.verified) {%>
-                            <img class="community-page-post-user-icon verified" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" onclick="loadUserProfile(<%= post.pid %>)">
+                            <img class="community-page-post-user-icon verified" src="https://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
                             <span class="community-page-verified-user-badge community-page-verified" style=""></span>
                         <%} else {%>
-                            <img class="community-page-post-user-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" onclick="loadUserProfile(<%= post.pid %>)">
+                            <img class="community-page-post-user-icon" src="https://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
                             <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
                         <%}%>
                         <h2 class="community-page-post-username" onclick="loadUserProfile(<%= post.pid %>)"><%= post.screen_name %></h2>
