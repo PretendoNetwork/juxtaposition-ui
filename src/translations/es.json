@@ -1,13 +1,13 @@
 {
   "language": "Español",
   "global": {
-    "user_page": "Página personal",
+    "user_page": "Perfil de usuario",
     "activity_feed": "Nuevas Publicaciones",
     "communities": "Comunidades",
     "messages": "Mensajes",
     "notifications": "Notificaciones",
     "go_back": "Ir atrás",
-    "back": "Regresar",
+    "back": "Volver",
     "yeahs": "Yeahs",
     "more": "Cargar más publicaciones",
     "no_posts": "No hay publicaciones",
@@ -19,11 +19,11 @@
   },
   "all_communities": {
     "text": "Todas las comunidades",
-    "announcements": "Anuncios",
-    "ann_string": "¡Haz click para ver los anuncios recientes!",
-    "popular_places": "Lugares Populares",
+    "announcements": "Noticias",
+    "ann_string": "¡Haz click para ver las últimas noticias!",
+    "popular_places": "Sitios populares",
     "new_communities": "Nuevas Comunidades",
-    "show_all": "Ver todo",
+    "show_all": "Mostrar todo",
     "search": "Buscar comunidades..."
   },
   "community": {
@@ -52,19 +52,19 @@
     "unfriend": "Eliminar amigo",
     "no_friends": "Sin amigos",
     "no_following": "No sigue a nadie",
-    "no_followers": "No tiene seguidores"
+    "no_followers": "Sin seguidores"
   },
   "user_settings": {
-    "profile_settings": "Preferencias del Perfil",
-    "show_country": "Mostrar país en Perfil",
-    "show_birthday": "Mostrar cumpleaños en Perfil",
-    "show_game": "Mostrar experiencía en Perfil",
-    "show_comment": "Mostrar comentario en Perfil",
-    "profile_comment": "Comentario del Perfil",
-    "swearing": "Los comentarios no pueden tener lenguaje no apropiado."
+    "profile_settings": "Preferencias del perfil",
+    "show_country": "Mostrar país en tu perfil",
+    "show_birthday": "Mostrar cumpleaños en tu perfil",
+    "show_game": "Mostrar experiencía en tu perfil",
+    "show_comment": "Mostrar comentario en tu perfil",
+    "profile_comment": "Comentario del perfil",
+    "swearing": "Los comentarios no pueden tener lenguaje inapropiado."
   },
   "activity_feed": {
-    "empty": "No hay nada. Intenta seguir a alguien!"
+    "empty": "No hay nada. ¡Intenta seguir a alguien!"
   },
   "notifications": {
     "none": "Sin notificaciones.",
@@ -77,7 +77,7 @@
     "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones."
   },
   "messages": {
-    "coming_soon": "La función de mensajería no esta lista. ¡Revisa despues!"
+    "coming_soon": "La función de mensajería no esta lista. ¡Revisa más tarde!"
   },
   "setup": {
     "welcome": "Bienvenido a Juxtaposition!",
@@ -85,11 +85,11 @@
     "beta": "Información de la Beta",
     "beta_text": {
       "fisrt": "Estás a punto de probar la primera beta pública de Juxt. Esto significa que todavía quedan muchas cosas en el aire y muchas cosas pueden cambiar en cualquier momento.",
-      "second": "Cuando el periodo Beta finalize los datos incluidos aquí seran borrados.",
+      "second": "Cuando el periodo Beta finalize todos los datos incluidos aquí seran borrados.",
       "third": "El sitio web, su software y todo el contenido que se encuentra en él se proporcionan 'tal cual' y 'según esté disponible'. Pretendo Network no ofrece ninguna garantía, ya sea expresa o implícita, en cuanto a la integridad o usabilidad del sitio web, su software o cualquiera de sus contenidos."
     },
     "info": "¿Que es Juxtaposition?",
-    "info_text": "Juxt es una comunio es una comunidad gamer donde tu puedes interactuar con las personas\n                de todo el mundo. Tu puedes escribir y dibujar publicaciones en comunidades enfocadas a los videojuegos y enviar mensajes directamente a tus amigos.",
+    "info_text": "Juxt es una comunidad gamer donde tu puedes interactuar con las personas\n                de todo el mundo. Tu puedes escribir y dibujar publicaciones en comunidades enfocadas a los videojuegos y enviar mensajes directamente a tus amigos.",
     "rules": "Reglas de Juxt",
     "rules_text": {
       "first": "Las siguientes son algunas normas importantes para hacer de Juxt una experiencia divertida y agradable para todos. El Código de conducta de Juxt contiene información detallada, así que léalo detenidamente",
@@ -104,11 +104,11 @@
       "tenth": "Violaciones al Codigo de Conducta",
       "eleventh": "Nuestro objetivo es hacer que Juxt sea divertido y agradable para todos. En el caso de que alguien viole el Código de conducta de Juxt, tomaremos las medidas adecuadas, hasta e incluyendo el bloqueo del usuario o la consola infractores.",
       "twelfth": "¿Has jugado este juego?",
-      "thirteenth": "Si tu publicas en una comunidad sobre algún juego que has jugado, tus publicaciones tendran un icono que dija que has jugado ese juego."
+      "thirteenth": "Si tu publicas en una comunidad sobre algún juego que has jugado, tus publicaciones tendran un icono que diga que has jugado ese juego."
     },
     "experience": "Experiencía de Juego",
     "experience_text": {
-      "info": "Por favor dijanos que experiencía tiene jugando. Puedes cambiarlo despues en ajustes.",
+      "info": "Por favor diganos que experiencía tiene jugando. Puedes cambiarlo despues en ajustes.",
       "beginner": "Principiante",
       "intermediate": "Intermedio",
       "expert": "Experto"
@@ -118,7 +118,7 @@
     "ready": "Listo para usar Juxt",
     "ready_text": "Primero, revise algunas comunidades y vea sobre qué publican personas de todo el mundo. Aproveche esta oportunidad para familiarizarse con Juxt. ¡Podrías hacer nuevos descubrimientos en el camino!",
     "done": "Que te diviertas en Juxt!",
-    "done_button": "Vamos!",
+    "done_button": "¡Vamos!",
     "guest": "Modo invitado",
     "guest_text": "No podemos verificar tu cuenta en este momento, lo que probablemente significa que estás iniciando sesión con una cuenta de Nintendo Network. Podrás seguir navegando por juxt, pero no podrás ¡Sí! publicaciones o haga sus propias publicaciones hasta que inicie sesión con una cuenta de Pretendo Network. Para obtener más información, consulte el servidor de Discord.",
     "guest_button": "Entendido"
