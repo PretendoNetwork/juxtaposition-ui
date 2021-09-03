@@ -217,7 +217,6 @@ let methods = {
         if(!header)
             return translations.EN;
         let paramPackData = this.decodeParamPack(header);
-        console.log(paramPackData.language_id)
         switch (paramPackData.language_id) {
             case '0':
                 return translations.JA

@@ -100,7 +100,13 @@
                 <p class="user-page-follow-button-text" onclick="showOverlay()"><%= lang.user_settings.profile_settings %></p>
             </div>
         </div>
-        <img class="community-page-info-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+        <%if(user.official) {%>
+            <img class="community-page-info-icon verified" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+            <span class="community-page-verified-user-badge community-page-verified" style="margin-left: 110px;margin-top: 5px;"></span>
+        <%} else {%>
+            <img class="community-page-info-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+        <%}%>
         <h2 class="community-page-title"><%= user.user_id %></h2>
         <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
         <div class="community-page-margin-line"></div>

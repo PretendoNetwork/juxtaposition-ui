@@ -9,7 +9,6 @@
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
         ga('create', 'UA-195842548-1', 'auto');
         ga('send', 'pageview');
     </script>
@@ -24,7 +23,7 @@
 </style>
 <script>
     var experience = 0;
-    var google-analytics = false;
+    var notifications = false;
     function selectExperience(type) {
         document.getElementById('beginner').classList.remove('selected');
         document.getElementById('intermediate').classList.remove('selected');
@@ -42,7 +41,6 @@
                 document.getElementById("expert").classList.add('selected');
                 experience = 2;
                 break;
-
         }
         wiiuSound.playSoundByName("SE_OLV_OK", 1);
     }

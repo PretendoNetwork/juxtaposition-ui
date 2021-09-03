@@ -4,10 +4,10 @@ const logger = require('../../../../logger');
 const util = require('../../../../authentication');
 const config = require('../../../../config.json');
 const { COMMUNITY } = require('../../../../models/communities');
+const { POST } = require('../../../../models/post');
 var router = express.Router();
 const moment = require('moment');
 var multer  = require('multer');
-const sharp = require("sharp");
 const snowflake = require('node-snowflake').Snowflake;
 var storage = multer.memoryStorage();
 var upload = multer({ storage: storage });
@@ -158,14 +158,14 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
                 community.icon = req.body.icon;
 
             if(req.files.browserIcon) {
-                community.browser_icon = `data:image/png;base64,${await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer().toString('base64')}`;
-                community.browser_thumbnail = `data:image/png;base64,${await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer().toString('base64')}`;
+                community.browser_icon = `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`;
+                community.browser_thumbnail = `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`;
             }
             if(req.files.CTRbrowserHeader)
-                community.CTR_browser_header = `data:image/png;base64,${await sharp(req.files.CTRbrowserHeader[0].buffer).resize({ height: 220, width: 400 }).toBuffer().toString('base64')}`;
+                community.CTR_browser_header = `data:image/png;base64,${req.files.CTRbrowserHeader[0].buffer.toString('base64')}`;
 
             if(req.files.WiiUbrowserHeader)
-                community.WiiU_browser_header = `data:image/png;base64,${await sharp(req.files.WiiUbrowserHeader[0].buffer).resize({ height: 328, width: 1498 }).toBuffer().toString('base64')}`;
+                community.WiiU_browser_header = `data:image/png;base64,${req.files.WiiUbrowserHeader[0].buffer.toString('base64')}`;
 
             if(req.body.is_recommended)
                 community.is_recommended = req.body.is_recommended;
@@ -216,13 +216,14 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
             JSON.parse(JSON.stringify(req.files));
             let browserIcon, CTRHeader, WiiUHeader, thumb;
             if(req.files.browserIcon) {
-                browserIcon = await sharp(req.files.browserIcon[0].buffer).resize({ height: 128, width: 128 }).toBuffer();
-                thumb = await sharp(req.files.browserIcon[0].buffer).resize({ height: 75, width: 75 }).toBuffer();
+                browserIcon = `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`;
+                thumb = `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`;
             }
             if(req.files.CTRbrowserHeader)
-                CTRHeader = await sharp(req.files.CTRbrowserHeader[0].buffer).resize({ height: 220, width: 400 }).toBuffer();
+                CTRHeader = `data:image/png;base64,${req.files.CTRbrowserHeader[0].buffer.toString('base64')}`;
+
             if(req.files.WiiUbrowserHeader)
-                WiiUHeader = await sharp(req.files.WiiUbrowserHeader[0].buffer).resize({ height: 328, width: 1498 }).toBuffer();
+                WiiUHeader = `data:image/png;base64,${req.files.WiiUbrowserHeader[0].buffer.toString('base64')}`;
             const document = {
                 empathy_count: 0,
                 id: snowflake.nextId(),
@@ -282,9 +283,6 @@ router.post('/communities/:communityID/sub/new', upload.fields([{name: 'browserI
             let browserIcon, CTRHeader, WiiUHeader, thumb;
             if(req.files.browserIcon) {
                 browserIcon = `data:image/png;base64,${req.files.browserIcon[0].buffer.toString('base64')}`;
-                thumb = await sharp(req.files.browserIcon[0].buffer)
-                    .resize({ height: 75, width: 75 })
-                    .toBuffer();
             }
             else {
                 browserIcon = community.browser_icon;
@@ -315,7 +313,7 @@ router.post('/communities/:communityID/sub/new', upload.fields([{name: 'browserI
                 community_id: snowflake.nextId(),
                 is_recommended: req.body.is_recommended,
                 browser_icon: browserIcon,
-                browser_thumbnail: `data:image/png;base64,${thumb.toString('base64')}`,
+                browser_thumbnail: thumb,
                 CTR_browser_header: CTRHeader,
                 WiiU_browser_header:  WiiUHeader,
             };
@@ -580,6 +578,81 @@ router.get('/notifications', function (req, res) {
     database.connect().then(async e => {
         await database.pushNewNotificationToAll('Testing a system wide notification and linking to a post', '/users/me')
         res.sendStatus(200);
+    }).catch(error =>
+    {
+        res.statusCode = 400;
+        let response = {
+            error_code: 400,
+            message: error.message
+        };
+        res.send(response);
+    });
+});
+
+router.post('/posts/new', upload.none(), function (req, res) {
+    database.connect().then(async e => {
+        if(req.cookies.token === null)
+            throw new Error('No service token supplied');
+
+        let pid = util.data.processServiceToken(req.cookies.token);
+
+        if(pid === null)
+            throw new Error('Invalid credentials supplied');
+
+        let user = await database.getUserByPID(pid);
+
+        if(user !== null)
+        {
+            if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+                logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
+                throw new Error('Invalid credentials supplied');
+            }
+            let community = await database.getCommunityByID(req.body.olive_community_id);
+            let appData = "";
+            if (req.body.app_data) {
+                appData = req.body.app_data.replace(/\0/g, "").trim();
+            }
+            let painting = "", paintingURI = "";
+            if (req.body.painting && req.body.painting !== 'eJztwTEBACAMA7DCNRlIQRbu4ZoEviTJTNvjZNUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL55fYLL3w==') {
+                painting = req.body.painting.replace(/\0/g, "").trim();
+                paintingURI = await util.data.processPainting(painting);
+            }
+            let screenshot = "";
+            if (req.body.screenshot) {
+                screenshot = req.body.screenshot.replace(/\0/g, "").trim();
+            }
+            const document = {
+                title_id: community.title_id[0],
+                community_id: community.community_id,
+                screen_name: user.user_id,
+                body: req.body.body,
+                app_data: appData,
+                painting: painting,
+                painting_uri: paintingURI,
+                screenshot: screenshot,
+                country_id: 49,
+                created_at: new Date(),
+                feeling_id: req.body.emotion,
+                id: snowflake.nextId(),
+                is_autopost: req.body.is_autopost,
+                is_spoiler: req.body.is_spoiler,
+                is_app_jumpable: req.body.is_app_jumpable,
+                language_id: req.body.language_id,
+                mii: user.mii,
+                mii_face_url: user.pfp_uri,
+                pid: pid,
+                platform_id: 0,
+                region_id: 2,
+                verified: user.official
+            };
+            const newPost = new POST(document);
+            newPost.save();
+            res.sendStatus(200);
+            logger.audit('[' + user.user_id + ' - ' + user.pid + '] created community ' + newCommunity.name);
+        }
+        else
+            throw new Error('Invalid account ID or password');
+
     }).catch(error =>
     {
         res.statusCode = 400;

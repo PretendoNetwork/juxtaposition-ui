@@ -100,6 +100,7 @@ router.post('/new', upload.none(), async function (req, res, next) {
                 pid: pid,
                 platform_id: paramPackData.platform_id,
                 region_id: paramPackData.region_id,
+                verified: usrObj.official
             };
             const newPost = new POST(document);
             newPost.save();
