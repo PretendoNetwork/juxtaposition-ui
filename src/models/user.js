@@ -8,7 +8,7 @@ const notification = new Schema({
 });
 
 const  UserSchema = new Schema({
-    pid: String,
+    pid: Number,
     created_at: Date,
     user_id: String,
     birthday: Date,
