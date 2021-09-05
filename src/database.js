@@ -14,6 +14,9 @@ async function connect() {
 
     connection = mongoose.connection;
     connection.on('error', console.error.bind(console, 'connection error:'));
+    connection.on('close', () => {
+        connection.removeAllListeners();
+    });
 }
 
 function verifyConnected() {
@@ -230,6 +233,19 @@ async function getUsers(numberOfUsers) {
         return USER.find({}).limit(numberOfUsers);
 }
 
+async function getFollowingUsers(user) {
+    verifyConnected();
+    return USER.find({
+        pid: user.following_users
+    });
+}
+async function getFollowedUsers(user) {
+    verifyConnected();
+    return USER.find({
+        pid: user.followed_users
+    });
+}
+
 async function getUserByPID(PID) {
     verifyConnected();
 
@@ -305,4 +321,6 @@ module.exports = {
     pushNewNotificationToAll,
     getNewsFeed,
     getNewsFeedAfterTimestamp,
+    getFollowingUsers,
+    getFollowedUsers
 };

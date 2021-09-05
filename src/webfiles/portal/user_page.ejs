@@ -26,7 +26,7 @@
     <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
 </menu>
 <div id="main">
-    <div class="community-page-header" style="background: #673DB6"></div>
+    <div class="community-page-header" style="background: #673DB6;margin-left: -150px;"></div>
     <div class="user-page-back-button" onclick="window.history.back()">
         <p class="user-page-back-button-text"><%= lang.global.go_back %></p>
     </div>
@@ -57,10 +57,10 @@
             <%}%>
         </div>
         <%if(user.official) {%>
-            <img class="community-page-info-icon verified" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+            <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
             <span class="community-page-verified-user-badge community-page-verified" style="margin-left: 110px;margin-top: 5px;"></span>
         <%} else {%>
-            <img class="community-page-info-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+            <img class="community-page-info-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
             <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
         <%}%>
         <h2 class="community-page-title"><%= user.user_id %></h2>
@@ -145,42 +145,7 @@
         <%} else { %>
             <button id="load-more-posts-button" onclick="loadUserPosts()"><%= lang.global.more %></button>
             <% newPosts.forEach(function(post) { %>
-            <div class="post-user-info-wrapper" id="<%= post.id %>">
-                <%if(post.verified) {%>
-                    <img class="community-page-post-user-icon verified" src="https://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>">
-                    <span class="community-page-verified-user-badge community-page-verified" style=""></span>
-                <%} else {%>
-                    <img class="community-page-post-user-icon" src="https://mii-images.cdn.<%= account_server %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>">
-                    <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
-                <%}%>
-                <h2 class="community-page-post-username"><%= post.screen_name %></h2>
-                <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow()%> - <a data-pjax="/communities/<%=communityMap.get(post.title_id + '-id')%>"><%= communityMap.get(post.title_id) %></a></h4>
-
-                <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-                    <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, '<%= post.id %>')"></div>
-                </div>
-                <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
-            </div>
-                    <div class="community-page-post-wrapper">
-                        <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
-                            <h3><%= post.body %></h3>
-                        <%} else { %>
-                            <% if(post.screenshot !== '') { %>
-                                <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-                            <%}%>
-                            <% if(post.painting !== '') { %>
-                                <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-                            <%}%>
-                            <% if(post.url) { %>
-                                <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <%}%>
-                            <% if(post.body) { %>
-                                <div class="community-page-post-text-overlay">
-                                    <h3><%= post.body %></h3>
-                                </div>
-                            <%}%>
-                        <%}%>
-                    </div>
+                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang }); %>
             <% }); %>
         <%}%>
     </div>

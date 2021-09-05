@@ -24,7 +24,8 @@ router.get('/', function (req, res) {
             communityMap: communityMap,
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
-            lang: lang
+            lang: lang,
+            mii_image_CDN: config.mii_image_CDN
         });
         user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
             notification.read = true;
@@ -72,7 +73,8 @@ router.get('/loadposts', function (req, res) {
                 newPosts: posts,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
-                lang: lang
+                lang: lang,
+                mii_image_CDN: config.mii_image_CDN
             });
         }
         else

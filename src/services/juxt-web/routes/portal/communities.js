@@ -83,7 +83,8 @@ router.get('/announcements', function (req, res) {
             totalNumPosts: totalNumPosts,
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
-            lang: lang
+            lang: lang,
+            mii_image_CDN: config.mii_image_CDN
         });
     }).catch(error => {
         console.error(error);
@@ -124,7 +125,8 @@ router.get('/:communityID/:type', function (req, res) {
             user: user,
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
-            lang: lang
+            lang: lang,
+            mii_image_CDN: config.mii_image_CDN
         });
     }).catch(error => {
         console.error(error);
@@ -181,7 +183,8 @@ router.get('/:communityID/:type/loadPosts', function (req, res) {
                 newPosts: posts,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
-                lang: lang
+                lang: lang,
+                mii_image_CDN: config.mii_image_CDN
             });
         }
         else

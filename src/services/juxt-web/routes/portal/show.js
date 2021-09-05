@@ -58,7 +58,7 @@ router.get('/', function (req, res) {
                         popularCommunities: popularCommunities,
                         newCommunities: newCommunities,
                         cdnURL: config.CDN_domain,
-                        lang: lang,
+                        lang: lang
                     });
                 }
             }

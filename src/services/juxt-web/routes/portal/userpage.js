@@ -28,6 +28,7 @@ router.get('/me', function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: lang,
+            mii_image_CDN: config.mii_image_CDN
         });
 
     }).catch(error => {
@@ -114,6 +115,7 @@ router.get('/show', function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: lang,
+            mii_image_CDN: config.mii_image_CDN
         });
     }).catch(error => {
         console.error(error);
@@ -157,7 +159,8 @@ router.get('/loadPosts', function (req, res) {
                 newPosts: newPosts,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
-                lang: lang
+                lang: lang,
+                mii_image_CDN: config.mii_image_CDN
             });
         }
         else
@@ -186,15 +189,15 @@ router.get('/following', function (req, res) {
     let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
         let user = await database.getUserByPID(req.query.pid);
-        let followers = user.followed_users;
+        let followers = await database.getFollowedUsers(user);
         let communities = user.followed_communities;
         let communityMap = await util.data.getCommunityHash();
-        let userMap = await util.data.getUserHash();
 
-        if(followers[0] === '0')
+        if(user.followed_users[0] === '0')
             followers.splice(0, 1);
         if(communities[0] === '0')
             communities.splice(0, 1);
+
 
         if(user.following > 0)
         {
@@ -204,10 +207,10 @@ router.get('/following', function (req, res) {
                 followers: followers,
                 communities: communities,
                 communityMap: communityMap,
-                userMap: userMap,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
-                lang: lang
+                lang: lang,
+                mii_image_CDN: config.mii_image_CDN
             });
         }
         else
@@ -225,9 +228,8 @@ router.get('/followers', function (req, res) {
     let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
     database.connect().then(async e => {
         let user = await database.getUserByPID(req.query.pid);
-        let followers = user.following_users;
+        let followers = await database.getFollowingUsers(user);
         let communities = [];
-        let communityMap = await util.data.getCommunityHash();
         let userMap = await util.data.getUserHash();
 
         if(followers[0] === '0')
@@ -240,11 +242,11 @@ router.get('/followers', function (req, res) {
                 user: user,
                 followers: followers,
                 communities: communities,
-                communityMap: communityMap,
                 userMap: userMap,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
-                lang: lang
+                lang: lang,
+                mii_image_CDN: config.mii_image_CDN
             });
         }
         else
@@ -274,7 +276,8 @@ router.get('/friends', function (req, res) {
                 userMap: userMap,
                 account_server: config.account_server_domain.slice(8),
                 cdnURL: config.CDN_domain,
-                lang: lang
+                lang: lang,
+                mii_image_CDN: config.mii_image_CDN
             });
         }
         else

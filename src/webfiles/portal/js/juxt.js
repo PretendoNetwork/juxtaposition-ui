@@ -564,18 +564,18 @@ function loadUserPosts() {
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
-function loadCommunityPosts() {
+function loadCommunityPosts(typeCheck) {
     wiiuBrowser.showLoadingIcon(!0);
     var postID = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
     var id = document.getElementsByClassName('community-page-follow-button-text')[0].id
     var xhttp = new XMLHttpRequest();
-    var type = 'null';
-    if(document.getElementById('recent-tab').classList.contains('active'))
-        type = 'new';
-    else if(document.getElementById('popular-tab').classList.contains('active'))
-        type = 'popular';
-    else if(document.getElementById('verified-tab').classList.contains('active'))
-        type = 'verified';
+    var type = 'new';
+    if(!typeCheck) {
+        if(document.getElementById('popular-tab').classList.contains('active'))
+            type = 'popular';
+        else if(document.getElementById('verified-tab').classList.contains('active'))
+            type = 'verified';
+    }
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;

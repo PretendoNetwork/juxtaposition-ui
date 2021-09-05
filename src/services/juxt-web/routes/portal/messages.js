@@ -22,6 +22,7 @@ router.get('/', function (req, res) {
             user: user,
             cdnURL: config.CDN_domain,
             lang: lang,
+            mii_image_CDN: config.mii_image_CDN
         });
         user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
             notification.read = true;
