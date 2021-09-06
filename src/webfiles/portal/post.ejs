@@ -20,10 +20,10 @@
     <meta content="#1F8A42" data-react-helmet="true" name="theme-color" />
     <link type="application/json+oembed" href="/<%= post.id %>/oembed.json" />
     <% if(post.screenshot !== '') { %>
-        <meta name="twitter:card" content="https://portal.cdn.pretendo.cc/screenshot/<%= post.id %>.png">
+        <meta name="twitter:image" content="https://portal.cdn.pretendo.cc/screenshot/<%= post.id %>.png">
     <%}%>
     <% if(post.painting !== '') { %>
-        <meta name="twitter:card" content="https://portal.cdn.pretendo.cc/drawing/<%= post.id %>.png">
+        <meta name="twitter:image" content="https://portal.cdn.pretendo.cc/drawing/<%= post.id %>.png">
     <%}%>
 </head>
 <body>
