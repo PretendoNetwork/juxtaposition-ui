@@ -17,17 +17,9 @@
 
 </head>
 <body>
-<menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me"><a><%= lang.global.user_page %></a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
-    <li id="nav-bar-communities" data-pjax="/communities"><a><%= lang.global.communities %></a></li>
-    <li id="nav-bar-messages" data-pjax="/messages" class="selected"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
-</menu>
+<%- include('nav_bar', { selection: 3 }); %>
 <div id="main">
     <h1 id="title" class="page-header"><%= lang.global.messages %></h1>
-
     <div id="messages-list-wrapper">
         <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
     </div>

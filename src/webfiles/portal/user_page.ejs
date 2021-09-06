@@ -17,14 +17,7 @@
 
 </head>
 <body>
-<menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me" class="selected"><a><%= lang.global.user_page %></a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
-    <li id="nav-bar-communities" data-pjax="/communities"><a><%= lang.global.communities %></a></li>
-    <li id="nav-bar-messages" data-pjax="/messages"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
-</menu>
+<%- include('nav_bar', { selection: -1 }); %>
 <div id="main">
     <div class="community-page-header" style="background: #673DB6;margin-left: -150px;"></div>
     <div class="user-page-back-button" onclick="window.history.back()">
@@ -145,7 +138,7 @@
         <%} else { %>
             <button id="load-more-posts-button" onclick="loadUserPosts()"><%= lang.global.more %></button>
             <% newPosts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang }); %>
+                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, user: parentUser }); %>
             <% }); %>
         <%}%>
     </div>

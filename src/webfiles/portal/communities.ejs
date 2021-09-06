@@ -16,14 +16,7 @@
     <!-- End Google Analytics -->
 </head>
 <body>
-<menu id="nav-bar">
-    <li id="nav-bar-profile" data-pjax="/users/me"><a><%= lang.global.user_page %></a></li>
-    <li id="nav-bar-activity-feed" data-pjax="/activity-feed"><a><%= lang.global.activity_feed %></a></li>
-    <li id="nav-bar-communities" data-pjax="/communities" class="selected"><a><%= lang.global.communities %></a></li>
-    <li id="nav-bar-messages" data-pjax="/messages"><a><%= lang.global.messages %><span id="messages-badge" class="badge" style=""></span></a></li>
-    <li id="nav-bar-news" data-pjax="/news"><a><%= lang.global.notifications %><span id="news-badge" class="badge" style=""></span></a></li >
-    <li id="nav-bar-exit" onclick="exit()"><a href=""><%= lang.global.close %></a></li>
-</menu>
+<%- include('nav_bar', { selection: 2 }); %>
 <div id="main">
     <h1 class="page-header"><%= lang.global.communities %></h1>
     <div id="admin-announcements" class="communities-wrapper announcements-banner" data-pjax="/communities/announcements">
@@ -38,7 +31,7 @@
                     </td>
                     <td>
                         <div data-pjax="/communities/all">
-                            <button class="outlined-button" style="margin-left: 575px; margin-top: -20px"><%= lang.all_communities.show_all %></button>
+                            <button class="outlined-button" style="    margin-top: -35px; right: 60px; position: absolute;"><%= lang.all_communities.show_all %></button>
                         </div>
                     </td>
                 </tr>
