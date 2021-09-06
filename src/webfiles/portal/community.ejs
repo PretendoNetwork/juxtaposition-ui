@@ -26,7 +26,7 @@
 <div id="main">
     <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
         <div class="overlay-content" style="position: fixed">
-            <div id="post-window" class="post-wrapper">
+            <div id="post-window" class="new-post-wrapper">
                 <!--Start of Main Post-->
                 <form class="post-emotion-radio" action="/posts/new" method="post" enctype="multipart/form-data">
                     <table>
@@ -164,7 +164,7 @@
                     </div>
                 </td>
                 <td>
-                    <div class="community-page-shaded-info-container" style="width: 526px;">
+                    <div class="community-page-shaded-info-container" style="width: 507px;">
                         <h4 class="community-page-table-label"><%= lang.community.tags %></h4>
                         <h4 class="community-page-table-text">N/A</h4>
                     </div>
@@ -174,7 +174,7 @@
         </table>
     </div>
     <div class="community-page-posts-wrapper">
-        <table class="community-page-posts-header">
+        <table class="community-page-posts-header switcher">
             <tbody>
             <tr>
                 <td>
@@ -195,7 +195,7 @@
             <%} else { %>
                 <button id="load-more-posts-button" onclick="loadCommunityPosts()"><%= lang.global.more %></button>
                 <% newPosts.forEach(function(post) { %>
-                        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang }); %>
+                        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
                 <% }); %>
             <%}%>
         </div>

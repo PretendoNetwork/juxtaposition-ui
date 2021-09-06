@@ -28,11 +28,121 @@
     <%}%>
 </head>
 <body>
-<%- include('nav_bar', { selection: 3 }); %>
+<%- include('nav_bar', { selection: -1 }); %>
 <div id="main">
-    <h1 id="title" class="page-header"><%= lang.global.messages %></h1>
+    <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
+        <div class="overlay-content" style="position: fixed">
+            <div id="post-window" class="new-post-wrapper">
+                <!--Start of Main Post-->
+                <form class="post-emotion-radio" action="/posts/<%= post.id %>/new" method="post" enctype="multipart/form-data">
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <h1 class="communities-header" style="padding-left: 50px; padding-top: 10px">Reply to <%= post.screen_name %></h1>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
+                                <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
+                                <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
+                                <input type="hidden" id="_post_type" name="_post_type" value="body">
+                            </td>
+                            <td>
+                                <div class="post-emotions-wrapper">
+                                    <label for="post-emotion-0">
+                                        <input type="radio" name="emotion" id="post-emotion-0" value="0" onclick="changeMiiImageReaction(this)" checked>
+                                        <span class="post-emotion-0"></span>
+                                    </label>
+                                    <label for="post-emotion-1">
+                                        <input type="radio" name="emotion" id="post-emotion-1" value="1" onclick="changeMiiImageReaction(this)">
+                                        <span class="post-emotion-1"></span>
+                                    </label>
+                                    <label for="post-emotion-2">
+                                        <input type="radio" name="emotion" id="post-emotion-2" value="2" onclick="changeMiiImageReaction(this)">
+                                        <span class="post-emotion-2"></span>
+                                    </label>
+                                    <label for="post-emotion-3">
+                                        <input type="radio" name="emotion" id="post-emotion-3" value="3" onclick="changeMiiImageReaction(this)">
+                                        <span class="post-emotion-3"></span>
+                                    </label>
+                                    <label for="post-emotion-4">
+                                        <input type="radio" name="emotion" id="post-emotion-4" value="4" onclick="changeMiiImageReaction(this)">
+                                        <span class="post-emotion-4"></span>
+                                    </label>
+                                    <label for="post-emotion-5">
+                                        <input type="radio" name="emotion" id="post-emotion-5" value="5" onclick="changeMiiImageReaction(this)">
+                                        <span class="post-emotion-5"></span>
+                                    </label>
+                                </div>
+                                <div class="post-emotions-arrow-left"></div>
+                            </td>
+                            <td>
+                                <div class="post-screenshot-picker" onclick="loadScreenshots()">
+                                    <div class="post-screenshot-picker-icon"></div>
+                                    <div class="post-screenshot-picker-dropdown">
+                                        <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true);"></div>
+                                        <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false);"></div>
+                                        <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
+                                        <input type="hidden" id="screenshot-value" name="screenshot" value="">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
+                            </td>
+                            <td rowspan="2" id="post-text-input">
+                                <textarea class="post-textarea" id="comment" name="body" placeholder="<%= lang.new_post.text_hint %>" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.new_post.swearing %>');}"></textarea>
+                            </td>
+                            <td rowspan="2" id="post-painting-input" style="display: none;">
+                                <div class="post-memo">
+                                    <img class="post-memo-preview" id="memo" width="640px" height="240px" src="" style="display: none;" onclick="newPainting(false)">
+                                    <input type="hidden" id="memo-value" name="painting" value="">
+                                </div>
+                            </td>
+                            <br>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="post-type-button-painting" onclick="swapPostType(1);newPainting(false)"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <label class="checkbox-container checkbox-post">Spoilers
+                                    <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </td>
+                        </tr>
+                        <tr style="height: 70px">
+                            <td class="post-close-button-wrapper" colspan="2">
+                                <div class="post-close-button" onclick="hideReplyScreen();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
+                            </td>
+                            <td>
+                                <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="community-page-back-button" onclick="window.history.back()">
+        <p class="user-page-back-button-text">Go back</p>
+    </div>
+    <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
+        <div class="new-post-button-text" onclick="showReplyScreen()">
+            +  Reply
+        </div>
+    </div>
     <div class="community-page-posts-wrapper">
-        <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
+        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
+        <% replies.forEach(function(post) { %>
+            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+        <% }); %>
     </div>
     <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>

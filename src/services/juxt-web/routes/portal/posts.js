@@ -63,12 +63,16 @@ router.get('/:post_id', function (req, res) {
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
         let post = await database.getPostByID(req.params.post_id.toString());
-        let community = await database.getCommunityByID(post.community_id)
+        let community = await database.getCommunityByID(post.community_id);
+        let communityMap = await util.data.getCommunityHash();
+        let replies = await database.getPostReplies(req.params.post_id.toString(), 25)
         res.render('portal/post.ejs', {
             moment: moment,
             user: user,
             post: post,
+            replies: replies,
             community: community,
+            communityMap: communityMap,
             cdnURL: config.CDN_domain,
             lang: lang,
             mii_image_CDN: config.mii_image_CDN
@@ -93,6 +97,87 @@ router.get('/:post_id', function (req, res) {
         };
         res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
     });
+});
+
+router.post('/:post_id/new', upload.none(), async function (req, res, next) {
+    try
+    {
+        let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
+        let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
+        if(pid === null)
+        {
+            throw new Error('The User token was not valid');
+        }
+        else
+        {
+            let usrObj = await database.getUserByPID(pid);
+            if(usrObj.account_status !== 0) {
+                throw new Error('User not allowed to post')
+            }
+            let parentPost = await database.getPostByID(req.params.post_id.toString())
+            let community = await database.getCommunityByID(req.body.olive_community_id);
+            let appData = "";
+            if (req.body.app_data) {
+                appData = req.body.app_data.replace(/\0/g, "").trim();
+            }
+            let painting = "", paintingURI = "";
+            if (req.body.painting && req.body.painting !== 'eJztwTEBACAMA7DCNRlIQRbu4ZoEviTJTNvjZNUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL55fYLL3w==') {
+                painting = req.body.painting.replace(/\0/g, "").trim();
+                paintingURI = await util.data.processPainting(painting);
+            }
+            let screenshot = "";
+            if (req.body.screenshot) {
+                screenshot = req.body.screenshot.replace(/\0/g, "").trim();
+            }
+            parentPost.reply_count = parentPost.reply_count + 1;
+            parentPost.save();
+            const document = {
+                title_id: community.title_id[0],
+                community_id: community.community_id,
+                screen_name: usrObj.user_id,
+                body: req.body.body,
+                app_data: appData,
+                painting: painting,
+                painting_uri: paintingURI,
+                screenshot: screenshot,
+                country_id: paramPackData.country_id,
+                created_at: new Date(),
+                feeling_id: req.body.emotion,
+                id: snowflake.nextId(),
+                is_autopost: req.body.is_autopost,
+                is_spoiler: req.body.is_spoiler,
+                is_app_jumpable: req.body.is_app_jumpable,
+                language_id: req.body.language_id,
+                mii: usrObj.mii,
+                mii_face_url: usrObj.pfp_uri,
+                pid: pid,
+                platform_id: paramPackData.platform_id,
+                region_id: paramPackData.region_id,
+                verified: usrObj.official,
+                parent: req.params.post_id.toString()
+            };
+            const newPost = new POST(document);
+            newPost.save();
+            res.redirect('/posts/' + req.params.post_id.toString());
+        }
+    }
+    catch (e)
+    {
+        console.error(e);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 7,
+                message: "POSTING_FROM_NNID"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    }
+
 });
 
 router.post('/new', upload.none(), async function (req, res, next) {

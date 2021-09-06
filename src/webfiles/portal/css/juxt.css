@@ -14,7 +14,7 @@
 body {
     background-color: rgba(232,236,236,1);
     background-repeat: no-repeat !important;
-    /*background: #eeeeee url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADwBAMAAADMe/ShAAAAHlBMVEX29vb09PTy8vL19fXz8/Px8fHw8PDv7+/u7u739/dHdNvrAAACSElEQVR4AezYNX7DMBiGcafcKTRlC0hdy7T1Z7iAcS5YOkEl38DeQlNOW24YX63fsxr+Ztm2RmvjMiu2bWbOXPmjtW2A7S8YKlfMCK4lKPzeMoJvYhROHYIJno9gggkmmGCCCSaYYIIJJphgggkmGP/PZQZf4XDHCK5JFFYtE7hXkwWYap0awEMPh8NHA7jPNQprv2EAH5zh8MsTDo9vY/xGxuCeLXFYsVMY7nNZwCm/AcM3scZhnTooPBwfafBYP4JwiZvBfgWDh7Xxkc71DmXjY916hOAbLrMxK7ZuTOfKdxC4ZMf6z1Ui2iEh/2Sdssru8L4dy+zXFVGbuVtntyPxK+cqZRc7wr1Ll0v95/qser1DVZv/yVr5bv10Bczq+ML4Rl/als/ww4WfJptbwuACMbgwhaUVfkvgt6LU1icpdkAAAADAEEz/1EKshHOBgMAnwZ7gNgG9DEwybTKpyZiLRCT6ItqUCJuIYqKoosaJlEsMJBki+ZOElwRfkpqSuElcS9Qnd4LcGN3enRUACMRQDFSDJRzg3wIKuNnNzygYA83rGbx9g1cwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPB/bFgfx7ZH4TWJ7DB0W9w5hwcdgen7MHxfp8r9IFGkKQEEU6WHWWhVZaWZTFdlg9mwWSdiAZRbJABB+FzkHoHcXuQ82cDBtlkQzVSkc1yZEMk2fRKNjZTzetkg0LlhJK1KjAYDAaDwWAwGAwGg8FgcAD3L/H6J4DLS/j67eEOl9GYoKbAV2YAAAAASUVORK5CYII=');*/
+    /* background: #eeeeee url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADwBAMAAADMe/ShAAAAHlBMVEX29vb09PTy8vL19fXz8/Px8fHw8PDv7+/u7u739/dHdNvrAAACSElEQVR4AezYNX7DMBiGcafcKTRlC0hdy7T1Z7iAcS5YOkEl38DeQlNOW24YX63fsxr+Ztm2RmvjMiu2bWbOXPmjtW2A7S8YKlfMCK4lKPzeMoJvYhROHYIJno9gggkmmGCCCSaYYIIJJphgggkmGP/PZQZf4XDHCK5JFFYtE7hXkwWYap0awEMPh8NHA7jPNQprv2EAH5zh8MsTDo9vY/xGxuCeLXFYsVMY7nNZwCm/AcM3scZhnTooPBwfafBYP4JwiZvBfgWDh7Xxkc71DmXjY916hOAbLrMxK7ZuTOfKdxC4ZMf6z1Ui2iEh/2Sdssru8L4dy+zXFVGbuVtntyPxK+cqZRc7wr1Ll0v95/qser1DVZv/yVr5bv10Bczq+ML4Rl/als/ww4WfJptbwuACMbgwhaUVfkvgt6LU1icpdkAAAADAEEz/1EKshHOBgMAnwZ7gNgG9DEwybTKpyZiLRCT6ItqUCJuIYqKoosaJlEsMJBki+ZOElwRfkpqSuElcS9Qnd4LcGN3enRUACMRQDFSDJRzg3wIKuNnNzygYA83rGbx9g1cwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPB/bFgfx7ZH4TWJ7DB0W9w5hwcdgen7MHxfp8r9IFGkKQEEU6WHWWhVZaWZTFdlg9mwWSdiAZRbJABB+FzkHoHcXuQ82cDBtlkQzVSkc1yZEMk2fRKNjZTzetkg0LlhJK1KjAYDAaDwWAwGAwGg8FgcAD3L/H6J4DLS/j67eEOl9GYoKbAV2YAAAAASUVORK5CYII='); */
     margin: 0;
     font-family: 'Conv_Poppins-Light', sans-serif;
 }
@@ -204,6 +204,8 @@ ul, ol, menu, li {
     overflow: hidden;
     margin-top: 13px;
     margin-bottom: 0;
+    z-index: 20;
+    position: absolute;
 }
 
 .overlay .closebtn {
@@ -214,15 +216,13 @@ ul, ol, menu, li {
 }
 
 .post-wrapper {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    width: 1065px;
     background-color: rgba(255,255,255,1);
     border: 1.5px solid #d6d2d2;
     border-radius: 10px;
-    margin-bottom: 0;
-
+    margin-bottom: 30px;
+    margin-left: 135px;
+    width: 790px;
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
 }
 
 .post-close-button-wrapper {
@@ -305,7 +305,7 @@ ul, ol, menu, li {
 .post-user-info-wrapper {
     background-color: rgba(255,255,255,1);
     margin-bottom: 15px;
-    margin-left: 135px;
+    margin-left: 15px;
     min-width: 520px;
 }
 
@@ -790,7 +790,7 @@ td.messages-list-wrapper.end  {
 .communities-wrapper {
     width: 1060px;
     background-color: rgba(255,255,255,1);
-    /*border: 1.5px solid #d6d2d2;*/
+    border: 1.5px solid #ffffff00;
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     border-radius: 10px;
@@ -1045,18 +1045,16 @@ h4 {
 .community-page-description {
     margin-top: 5px;
     position: absolute;
-    margin-left: 140px;
+    margin-left: 155px;
     width: 550px;
     line-height: 20px;
+    word-wrap: break-word;
 }
 
 .community-page-posts-wrapper {
     position: relative;
     z-index: 3;
-    background-color: rgba(255,255,255,1);
-    border: 1.5px solid #d6d2d2;
-    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
+    border: 1.5px solid #ffffff00;
     border-radius: 10px;
     margin-top: 40px;
     width: 1060px;
@@ -1070,10 +1068,12 @@ h4 {
 }
 
 .community-page-posts-header-tab {
+    padding-top: 10px;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 21px;
     cursor: pointer;
+    margin-bottom: 15px;
 }
 
 .community-page-posts-header-tab.active {
@@ -1081,8 +1081,8 @@ h4 {
 }
 
 .community-page-post-wrapper {
-    margin-left: 130px;
-    margin-bottom: 90px;
+    margin-left: 15px;
+    margin-bottom: 0;
     width: 760px;
 }
 
@@ -1090,8 +1090,7 @@ h4 {
     margin-top: 20px;
     width: 760px;
     border-radius: 10px;
-    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
 }
 
 .community-page-post-painting {
@@ -1103,9 +1102,13 @@ h4 {
     margin-top: 0;
 }
 
+.community-page-post-time-stamp > p {
+    display: inline-block;
+}
+
 .community-page-post-yeah-button-wrapper {
     position: absolute;
-    right: 168px;
+    right: 148px;
     margin-top: -82px;
     margin-bottom: 0;
 }
@@ -1138,16 +1141,15 @@ h4 {
 
 .community-page-post-yeah-count {
     color: #673DB6;
-    margin-left: 435px;
+    margin-left: 440px;
     margin-bottom: 0;
-    margin-top: -65px;
+    margin-top: -67px;
     font-weight: bold;
     font-size: large;
     position: absolute;
     text-align: right;
     height: 33px;
     width: 250px;
-
 }
 
 .community-page-post-user-info-wrapper {
@@ -1204,14 +1206,14 @@ h4 {
 }
 
 .community-page-post-text-overlay {
-    position: relative;
+    position: absolute;
     z-index: 5;
     width: 730px;
     min-height: 50px;
     background-color: rgba(255,255,255,0.95);
     border: 1.5px solid #d6d2d2;
     border-radius: 10px;
-    margin-top: -80px;
+    margin-top: -97px;
     margin-left: 13px;
 }
 
@@ -1408,8 +1410,9 @@ iframe {
     font-size: large;
     border-width: 0;
     border-radius: 15px;
-    bottom: 15px;
-    left: 430px
+    bottom: -50px;
+    left: 430px;
+    margin-bottom: 15px;
 }
 
 #user-new-post-wrapper {
@@ -1436,7 +1439,6 @@ iframe {
     height: 100px;
     border-top-left-radius: 15px;
     background-color: #1F8A42;
-    /*background: -webkit-gradient(linear, left top, right top, from(#1F8A42), to(#1F8A42));*/
     color: white;
     text-align: center;
     font-size: xx-large;
@@ -1449,6 +1451,18 @@ iframe {
 }
 
 /* New Post Container */
+
+.new-post-wrapper {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    width: 1065px;
+    background-color: rgba(255,255,255,1);
+    border: 1.5px solid #d6d2d2;
+    border-radius: 10px;
+    margin-bottom: 0;
+}
+
 .checkbox-container {
     display: block;
     position: relative;
@@ -1760,7 +1774,6 @@ https://ninstars.blogspot.com/
     background-size: cover;
     user-select: none;
     cursor: pointer;
-    height: 100px;
 }
 
 .announcements-banner-text {
@@ -1768,7 +1781,6 @@ https://ninstars.blogspot.com/
     font-size: 30px;
     font-weight: bolder;
     padding-left: 63px;
-    padding-top: 30px;
 }
 
 .notifications-list-text {
@@ -1784,4 +1796,28 @@ https://ninstars.blogspot.com/
 .notifications-list-content {
     margin-top: 25px;
     text-align: left;
+}
+
+.reply-banner > svg {
+    margin-left: 30px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.reply-banner > h2 {
+    color: #4F279B;
+    position: absolute;
+    margin-top: -50px;
+    margin-left: 89px;
+}
+
+.community-page-posts-header.switcher {
+    padding: 0 15px 0 20px;
+    background-color: white;
+    height: 4px !important;
+    border-radius: 15px;
+    margin-top: 15px;
+    margin-bottom: 18px;
+    border: 1.5px solid #d6d2d2;
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
 }

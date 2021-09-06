@@ -91,7 +91,8 @@ async function getCommunityByID(community_id) {
 async function getTotalPostsByCommunity(community) {
     verifyConnected();
     return POST.find({
-        title_id: community.title_id
+        title_id: community.title_id,
+        parent: null
     }).countDocuments();
 }
 
@@ -106,7 +107,8 @@ async function getPostByID(postID) {
 async function getPostsByUserID(userID) {
     verifyConnected();
     return POST.find({
-        pid: userID
+        pid: userID,
+        parent: null
     });
 }
 
@@ -128,35 +130,40 @@ async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
 async function getNumberUserPostsByID(userID, number) {
     verifyConnected();
     return POST.find({
-        pid: userID
+        pid: userID,
+        parent: null
     }).sort({ created_at: -1}).limit(number);
 }
 
 async function getTotalPostsByUserID(userID) {
     verifyConnected();
     return POST.find({
-        pid: userID
+        pid: userID,
+        parent: null
     }).countDocuments();
 }
 
 async function getHotPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
-        title_id: community.title_id
+        title_id: community.title_id,
+        parent: null
     }).sort({empathy_count: -1}).limit(numberOfPosts);
 }
 
 async function getNumberNewCommunityPostsByID(community, number) {
     verifyConnected();
     return POST.find({
-        title_id: community.title_id
+        title_id: community.title_id,
+        parent: null
     }).sort({ created_at: -1}).limit(number);
 }
 
 async function getNumberPopularCommunityPostsByID(community, number) {
     verifyConnected();
     return POST.find({
-        title_id: community.title_id
+        title_id: community.title_id,
+        parent: null
     }).sort({ empathy_count: -1}).limit(number);
 }
 
@@ -164,14 +171,16 @@ async function getNumberVerifiedCommunityPostsByID(community, number) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
-        verified: true
+        verified: true,
+        parent: null
     }).sort({ created_at: -1}).limit(number);
 }
 
 async function getPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
-        title_id: community.title_id
+        title_id: community.title_id,
+        parent: null
     }).limit(numberOfPosts);
 }
 
@@ -179,14 +188,16 @@ async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
-        search_key: search_key
+        search_key: search_key,
+        parent: null
     }).limit(numberOfPosts);
 }
 
 async function getNewPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id
+        community_id: community.community_id,
+        parent: null
     }).sort({ created_at: -1 }).limit(numberOfPosts);
 }
 
@@ -194,7 +205,8 @@ async function getUserPostsAfterTimestamp(post, numberOfPosts) {
     verifyConnected();
     return POST.find({
         pid: post.pid,
-        created_at: { $lt: post.created_at }
+        created_at: { $lt: post.created_at },
+        parent: null
     }).limit(numberOfPosts);
 }
 
@@ -202,7 +214,8 @@ async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
     verifyConnected();
     return POST.find({
         title_id: post.title_id,
-        created_at: { $lt: post.created_at }
+        created_at: { $lt: post.created_at },
+        parent: null
     }).limit(numberOfPosts);
 }
 
@@ -274,6 +287,7 @@ async function getNewsFeed(user, numberOfPosts) {
             {pid: user.followed_users},
             {pid: user.pid}
         ],
+        parent: null
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
@@ -284,7 +298,8 @@ async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
             {pid: user.followed_users},
             {pid: user.pid}
         ],
-        created_at: { $lt: post.created_at }
+        created_at: { $lt: post.created_at },
+        parent: null
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 

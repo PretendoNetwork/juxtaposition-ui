@@ -73,12 +73,14 @@ router.get('/announcements', function (req, res) {
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
         let community = await database.getCommunityByID('announcements');
+        let communityMap = await util.data.getCommunityHash();
         let newPosts = await database.getNumberNewCommunityPostsByID(community, 25);
         let totalNumPosts = await database.getTotalPostsByCommunity(community);
         res.render('portal/announcements.ejs', {
             moment: moment,
             community: community,
             newPosts: newPosts,
+            communityMap: communityMap,
             user: user,
             totalNumPosts: totalNumPosts,
             account_server: config.account_server_domain.slice(8),
@@ -114,12 +116,14 @@ router.get('/:communityID/:type', function (req, res) {
         if(req.params.communityID === 'announcements')
             res.redirect('/communities/announcements')
         let community = await database.getCommunityByID(req.params.communityID.toString());
+        let communityMap = await util.data.getCommunityHash();
         let newPosts = await database.getNumberNewCommunityPostsByID(community, 5);
         let totalNumPosts = await database.getTotalPostsByCommunity(community)
         res.render('portal/community.ejs', {
             // EJS variable and server-side variable
             moment: moment,
             community: community,
+            communityMap: communityMap,
             newPosts: newPosts,
             totalNumPosts: totalNumPosts,
             user: user,

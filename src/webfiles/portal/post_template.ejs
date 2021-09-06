@@ -1,47 +1,61 @@
-<div class="post-user-info-wrapper" id="<%= post.id %>">
-    <%if(post.verified) {%>
-        <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
-        <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
-    <%} else {%>
-        <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
-        <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
-    <%}%>
-    <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
-    <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %></h4>
+<div class="post-wrapper" id="<%= post.id %>">
+    <div class="post-user-info-wrapper" id="<%= post.id %>">
+        <%if(post.verified) {%>
+            <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
+            <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
+        <%} else {%>
+            <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
+            <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
+        <%}%>
+        <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
+        <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <p onclick="pjax.loadUrl('/communities/<%= post.community_id %>/new')"><%= communityMap.get(post.community_id) %></p></h4>
 
-    <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 33 30">
-            <g id="Group_101" data-name="Group 101" transform="translate(-687.416 -110)">
-                <g id="Rectangle_49" data-name="Rectangle 49" transform="translate(687.416 110)" fill="none" stroke="#673db6" stroke-width="2">
-                    <rect width="33" height="30" rx="3" stroke="none"/>
-                    <rect x="1" y="1" width="31" height="28" rx="2" fill="none"/>
+        <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 33 30">
+                <g id="Group_101" data-name="Group 101" transform="translate(-687.416 -110)">
+                    <g id="Rectangle_49" data-name="Rectangle 49" transform="translate(687.416 110)" fill="none" stroke="#673db6" stroke-width="2">
+                        <rect width="33" height="30" rx="3" stroke="none"/>
+                        <rect x="1" y="1" width="31" height="28" rx="2" fill="none"/>
+                    </g>
+                    <g id="Group_82" data-name="Group 82" transform="translate(696.98 119.326)">
+                        <path id="Icon_feather-heart" data-name="Icon feather-heart" d="M15.38,5.588a3.723,3.723,0,0,0-5.266,0L9.4,6.306,8.68,5.588a3.724,3.724,0,1,0-5.266,5.266l.717.717L9.4,16.837l5.266-5.266.717-.717a3.723,3.723,0,0,0,0-5.266Z" transform="translate(-2.323 -4.497)" fill="none" stroke="#4f279b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    </g>
                 </g>
-                <g id="Group_82" data-name="Group 82" transform="translate(696.98 119.326)">
-                    <path id="Icon_feather-heart" data-name="Icon feather-heart" d="M15.38,5.588a3.723,3.723,0,0,0-5.266,0L9.4,6.306,8.68,5.588a3.724,3.724,0,1,0-5.266,5.266l.717.717L9.4,16.837l5.266-5.266.717-.717a3.723,3.723,0,0,0,0-5.266Z" transform="translate(-2.323 -4.497)" fill="none" stroke="#4f279b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-                </g>
+            </svg>
+            <div class="community-page-post-yeah-button" onclick="<%if(user.pid !== 1000000000) {%>yeah(this.parentNode, '<%= post.id %>')<%}%>"></div>
+        </div>
+        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
+    </div>
+    <div class="community-page-post-wrapper" <%if(!reply){%>onclick="pjax.loadUrl('/posts/<%= post.id%>')"<%}%>>
+        <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
+            <h3><%= post.body %></h3>
+        <%} else { %>
+            <% if(post.screenshot !== '') { %>
+                <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
+            <%}%>
+            <% if(post.painting !== '') { %>
+                <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
+            <%}%>
+            <% if(post.url) { %>
+                <h3 style="font-weight: bolder; color: #4F279B">Video Playback is not yet supported on the 3DS</h3>
+            <%}%>
+            <% if(post.body) { %>
+                <div class="community-page-post-text-overlay">
+                    <h3><%= post.body %></h3>
+                </div>
+            <%}%>
+        <%}%>
+    </div>
+    <%if(post.reply_count > 0) {%>
+    <div class="reply-banner">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 13 13.311">
+            <g id="Icon_feather-corner-down-right" data-name="Icon feather-corner-down-right" transform="translate(-5.25 -5.25)">
+                <path id="Path_47" data-name="Path 47" d="M22.5,15l3.594,3.594L22.5,22.188" transform="translate(-8.594 -4.688)" fill="none" stroke="#673db6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                <path id="Path_48" data-name="Path 48" d="M6,6v5.031a2.875,2.875,0,0,0,2.875,2.875H17.5" fill="none" stroke="#673db6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
             </g>
         </svg>
-        <div class="community-page-post-yeah-button" onclick="<%if(user.pid !== 1000000000) {%>yeah(this.parentNode, '<%= post.id %>')<%}%>"></div>
+        <h2><%= post.reply_count %> replies</h2>
     </div>
-    <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
-</div>
-<div class="community-page-post-wrapper">
-    <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
-        <h3><%= post.body %></h3>
-    <%} else { %>
-        <% if(post.screenshot !== '') { %>
-            <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-        <%}%>
-        <% if(post.painting !== '') { %>
-            <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-        <%}%>
-        <% if(post.url) { %>
-            <h3 style="font-weight: bolder; color: #4F279B">Video Playback is not yet supported on the 3DS</h3>
-        <%}%>
-        <% if(post.body) { %>
-            <div class="community-page-post-text-overlay">
-                <h3><%= post.body %></h3>
-            </div>
-        <%}%>
     <%}%>
 </div>
+

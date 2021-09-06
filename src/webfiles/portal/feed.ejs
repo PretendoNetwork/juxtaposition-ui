@@ -24,7 +24,7 @@
             <%} else { %>
                 <button id="load-more-posts-button" onclick="loadFeedPosts()"><%= lang.global.more %></button>
                 <% posts.forEach(function(post) { %>
-                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang }); %>
+                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
                 <% }); %>
             <%}%>
         </div>
