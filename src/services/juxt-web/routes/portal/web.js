@@ -104,6 +104,40 @@ router.get('/banner/:image_id.png', function (req, res) {
     });
 });
 
+router.get('/screenshot/:image_id.png', function (req, res) {
+    res.set("Content-Type", "image/png");
+    database.connect().then(async e => {
+        let post = await database.getPostByID(req.params.image_id.toString());
+        if(post !== null && post.screenshot !== '')
+            if(post.screenshot.indexOf('data:image/png;base64,') !== -1)
+                res.send(Buffer.from(post.screenshot.replace('data:image/png;base64,',''), 'base64'));
+            else
+                res.send(Buffer.from(post.screenshot, 'base64'));
+        else
+            res.sendStatus(404);
+    }).catch(error => {
+        console.error(error);
+        res.sendStatus(404)
+    });
+});
+
+router.get('/drawing/:image_id.png', function (req, res) {
+    res.set("Content-Type", "image/png");
+    database.connect().then(async e => {
+        let post = await database.getPostByID(req.params.image_id.toString());
+        if(post !== null && post.painting_uri !== '')
+            if(post.painting_uri.indexOf('data:image/png;base64,') !== -1)
+                res.send(Buffer.from(post.painting_uri.replace('data:image/png;base64,',''), 'base64'));
+            else
+                res.send(Buffer.from(post.painting_uri, 'base64'));
+        else
+            res.sendStatus(404);
+    }).catch(error => {
+        console.error(error);
+        res.sendStatus(404)
+    });
+});
+
 router.get('/notifications.json', function (req, res) {
     res.header('X-Nintendo-WhiteList','1|http,youtube.com,,2|https,youtube.com,,2|http,.youtube.com,,2|https,.youtube.com,,2|http,.ytimg.com,,2|https,.ytimg.com,,2|http,.googlevideo.com,,2|https,.googlevideo.com,,2|https,youtube.com,/embed/,6|https,youtube.com,/e/,6|https,youtube.com,/v/,6|https,www.youtube.com,/embed/,6|https,www.youtube.com,/e/,6|https,www.youtube.com,/v/,6|https,youtube.googleapis.com,/e/,6|https,youtube.googleapis.com,/v/,6|http,maps.googleapis.com,/maps/api/streetview,2|https,maps.googleapis.com,/maps/api/streetview,2|http,cbk0.google.com,/cbk,2|https,cbk0.google.com,/cbk,2|http,cbk1.google.com,/cbk,2|https,cbk1.google.com,/cbk,2|http,cbk2.google.com,/cbk,2|https,cbk2.google.com,/cbk,2|http,cbk3.google.com,/cbk,2|https,cbk3.google.com,/cbk,2|https,.cloudfront.net,,2|https,www.google-analytics.com,/,2|https,stats.g.doubleclick.net,,2|https,www.google.com,/ads/,2|https,ssl.google-analytics.com,,2|http,fonts.googleapis.com,,2||fonts.googleapis.com,,2');
     database.connect().then(async e => {

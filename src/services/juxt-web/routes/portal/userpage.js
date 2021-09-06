@@ -165,7 +165,7 @@ router.get('/loadPosts', function (req, res) {
         }
         else
         {
-            res.send('<p class="no-posts-text">' + lang.global.no_posts + '</p>')
+            res.sendStatus(204)
         }
     }).catch(error => {
         console.log(error);
