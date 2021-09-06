@@ -2,8 +2,10 @@ var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../authentication');
+const config = require('../../../../config.json');
 const { POST } = require('../../../../models/post');
 var multer  = require('multer');
+var moment = require('moment');
 var upload = multer({ dest: 'uploads/' });
 const snowflake = require('node-snowflake').Snowflake;
 var router = express.Router();
@@ -36,6 +38,48 @@ router.post('/empathy', function (req, res) {
         console.log(error);
         res.set("Content-Type", "application/xml");
         res.statusCode = 423;
+        response = {
+            result: {
+                has_error: 1,
+                version: 1,
+                code: 400,
+                error_code: 15,
+                message: "SERVER_ERROR"
+            }
+        };
+        res.send("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + xml(response));
+    });
+});
+
+router.get('/:post_id', function (req, res) {
+    res.header('X-Nintendo-WhiteList', config.whitelist);
+    let lang = util.data.processLanguage(req.headers["x-nintendo-parampack"]);
+    database.connect().then(async e => {
+
+        //let paramPackData = util.data.decodeParamPack(req.headers["x-nintendo-parampack"]);
+        let pid = util.data.processServiceToken(req.headers["x-nintendo-servicetoken"]);
+
+        if(pid === null)
+            pid = 1000000000;
+        let user = await database.getUserByPID(pid);
+        let post = await database.getPostByID(req.params.post_id.toString());
+        res.render('portal/post.ejs', {
+            moment: moment,
+            user: user,
+            post: post,
+            cdnURL: config.CDN_domain,
+            lang: lang,
+            mii_image_CDN: config.mii_image_CDN
+        });
+        user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
+            notification.read = true;
+        });
+        user.markModified('notification_list');
+        user.save();
+    }).catch(error => {
+        console.log(error);
+        res.set("Content-Type", "application/xml");
+        res.statusCode = 400;
         response = {
             result: {
                 has_error: 1,
