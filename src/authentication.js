@@ -64,7 +64,7 @@ let methods = {
                             let xml = xmlParser.toJson(body, {object: true});
                             const newUsr = {
                                 pid: pid,
-                                created_at: moment().format('YYYY-MM-DD HH:mm:SS'),
+                                created_at: new Date(),
                                 user_id: xml.miis.mii.user_id,
                                 account_status: 0,
                                 mii: xml.miis.mii.data,
