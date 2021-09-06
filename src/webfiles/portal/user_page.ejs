@@ -15,7 +15,7 @@
     </script>
     <!-- End Google Analytics -->
     <meta content="<%= user.user_id %>" property="og:title" />
-    <meta content="<%= user.profile_comment %>" property="og:description" />
+    <meta content="<%= user.profile_comment %> \n**Followers:** <%= user.followers%>" property="og:description" />
     <meta content="https://portal.olv.pretendo.cc/users/show?pid=<%= user.pid %>" property="og:url" />
     <meta content="https://mii-images.cdn.pretendo.cc/<%= user.pid %>/normal_face.png" property="og:image" />
     <meta content="#673DB6" data-react-helmet="true" name="theme-color" />
