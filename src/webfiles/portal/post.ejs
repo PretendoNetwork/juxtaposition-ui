@@ -32,7 +32,7 @@
 <div id="main">
     <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
         <div class="overlay-content" style="position: fixed">
-            <div id="post-window" class="new-post-wrapper">
+            <div id="post-window" class="post-wrapper">
                 <!--Start of Main Post-->
                 <form class="post-emotion-radio" action="/posts/<%= post.id %>/new" method="post" enctype="multipart/form-data">
                     <table>
@@ -138,7 +138,7 @@
             +  Reply
         </div>
     </div>
-    <div class="community-page-posts-wrapper">
+    <div class="community-page-post-box">
         <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
         <% replies.forEach(function(post) { %>
             <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
