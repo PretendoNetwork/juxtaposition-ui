@@ -63,10 +63,12 @@ router.get('/:post_id', function (req, res) {
             pid = 1000000000;
         let user = await database.getUserByPID(pid);
         let post = await database.getPostByID(req.params.post_id.toString());
+        let community = await database.getCommunityByID(post.community_id)
         res.render('portal/post.ejs', {
             moment: moment,
             user: user,
             post: post,
+            community: community,
             cdnURL: config.CDN_domain,
             lang: lang,
             mii_image_CDN: config.mii_image_CDN
