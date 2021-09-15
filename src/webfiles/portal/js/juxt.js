@@ -127,7 +127,7 @@ function showOverlay() {
     document.getElementsByClassName('community-page-header')[0].style.display = 'none';
     document.getElementsByClassName('user-page-back-button')[0].style.display = 'none';
     document.getElementsByClassName('community-page-info-container')[0].style.display = 'none';
-    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = 'none';
+    document.getElementsByClassName('community-page-post-box')[0].style.display = 'none';
     document.getElementsByClassName('user-page-tab-table')[0].style.display = 'none';
     document.getElementById('main').style.marginLeft = '14vh';
     document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";
@@ -139,7 +139,7 @@ function hideOverlay() {
     document.getElementsByClassName('community-page-header')[0].style.display = '';
     document.getElementsByClassName('user-page-back-button')[0].style.display = '';
     document.getElementsByClassName('community-page-info-container')[0].style.display = '';
-    document.getElementsByClassName('community-page-posts-wrapper')[0].style.display = '';
+    document.getElementsByClassName('community-page-post-box')[0].style.display = '';
     document.getElementsByClassName('user-page-tab-table')[0].style.display = '';
     document.getElementById('main').style.marginLeft = '225px';
     document.body.style.backgroundColor = "rgba(232,236,236,1)";
@@ -570,7 +570,7 @@ function loadUserPosts() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+            document.getElementsByClassName('community-page-post-box')[0].innerHTML += this.responseText;
         }
         else if(this.readyState === 4 && this.status === 204)
         {
@@ -600,7 +600,7 @@ function loadCommunityPosts(typeCheck) {
     }
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+            document.getElementsByClassName('community-page-post-box')[0].innerHTML += this.responseText;
             initCommunityUsers();
         }
         else if(this.readyState === 4 && this.status === 204)
@@ -677,7 +677,7 @@ function switchUserPageTabs(type, id) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML = this.responseText;
+            document.getElementsByClassName('community-page-post-box')[0].innerHTML = this.responseText;
         }
         else if (this.readyState === 4){
             wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');

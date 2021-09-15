@@ -303,7 +303,6 @@ ul, ol, menu, li {
 }
 
 .post-user-info-wrapper {
-    background-color: rgba(255,255,255,1);
     margin-bottom: 15px;
     margin-left: 15px;
     min-width: 520px;
@@ -789,8 +788,7 @@ td.messages-list-wrapper.end  {
 
 .communities-wrapper {
     width: 1060px;
-    background-color: rgba(255,255,255,1);
-    /*border: 1.5px solid #d6d2d2;*/
+    background: -webkit-linear-gradient(#ffffff, #f9f9f9);
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     border-radius: 10px;
@@ -799,6 +797,7 @@ td.messages-list-wrapper.end  {
 
 .communities-header {
     padding-left: 3vh;
+    padding-top: 20px;
 }
 
 .outlined-button {
@@ -835,6 +834,8 @@ td.messages-list-wrapper.end  {
     border-radius: 10px;
     white-space: nowrap;
     overflow-x: auto;
+    box-shadow: 0 3px 15px 0 rgb(0 0 0 / 50%);
+    -webkit-box-shadow: 0 3px 15px 0 rgb(0 0 0 / 50%);
 }
 
 #search-icon {
@@ -877,7 +878,7 @@ td.messages-list-wrapper.end  {
     padding-left: 110px;
     margin-bottom: 0;
     position: absolute;
-    max-width: 195px;
+    max-width: 220px;
     line-height: 25px;
 }
 
@@ -896,7 +897,7 @@ h4 {
 
 .community-list-followers {
     position: absolute;
-    margin-top: 70px;
+    margin-top: 65px;
     margin-left: 110px;
     color: rgba(113,141,148,1);
 }
@@ -952,7 +953,8 @@ h4 {
     z-index: 3;
     width: 1060px;
     min-height: 255px;
-    background-color: rgba(255,255,255,1);
+    /* background-color: rgba(255,255,255,1); */
+    background: -webkit-linear-gradient(#ffffff, #f9f9f9);
     border: 1.5px solid #d6d2d2;
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
@@ -985,7 +987,7 @@ h4 {
 
 .community-page-margin-line {
     border-top: 2px solid #D6D2D2;
-    width: 997px;
+    width: 1015px;
     height: 5px;
     position: absolute;
     z-index: 5;
@@ -997,9 +999,12 @@ h4 {
     z-index: 3;
     width: 240px;
     height: 60px;
+    margin-right: 5px;
     background-color: rgb(233, 233, 233);
     border: 1.5px solid #e9e9e9;
     border-radius: 10px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
 }
 
 .community-page-follow-button-wrapper {
@@ -1053,7 +1058,7 @@ h4 {
 .community-page-posts-wrapper {
     position: relative;
     z-index: 3;
-    background-color: rgba(255,255,255,1);
+    background: -webkit-linear-gradient(#ffffff, #f9f9f9);
     border: 1.5px solid #d6d2d2;
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
@@ -1093,11 +1098,17 @@ h4 {
     width: 760px;
     border-radius: 10px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
 }
 
 .community-page-post-painting {
     width: 760px;
     height: 285px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
 }
 
 .community-page-post-time-stamp {
@@ -1111,7 +1122,7 @@ h4 {
 .community-page-post-yeah-button-wrapper {
     position: absolute;
     right: 148px;
-    margin-top: -82px;
+    margin-top: -110px;
     margin-bottom: 0;
 }
 
@@ -1145,7 +1156,7 @@ h4 {
     color: #673DB6;
     margin-left: 440px;
     margin-bottom: 0;
-    margin-top: -67px;
+    margin-top: -94px;
     font-weight: bold;
     font-size: large;
     position: absolute;
@@ -1200,6 +1211,8 @@ h4 {
     text-align: center;
     line-height: 18px;
     -webkit-border-radius: 20px;
+    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
 }
 
 .community-page-post-username {
@@ -1321,7 +1334,6 @@ iframe {
     margin-bottom: -10px;
     background: white;
     width: 1060px;
-    border: 1.5px solid #d6d2d2;
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     border-radius: 10px;
@@ -1352,6 +1364,7 @@ iframe {
 .user-page-tab.right {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    width: 285px;
 }
 
 .user-page-tab-triangle {
@@ -1800,7 +1813,8 @@ iframe {
 }
 
 .posts-wrapper {
-    background-color: rgba(255,255,255,1);
+    /* background-color: rgba(255,255,255,1); */
+    background: -webkit-linear-gradient(#ffffff, #f9f9f9);
     border: 1.5px solid #d6d2d2;
     border-radius: 10px;
     margin-bottom: 30px;
@@ -1824,15 +1838,28 @@ iframe {
 
 .community-page-posts-header.switcher {
     padding: 0 15px 0 20px;
-    background-color: white;
+    /* background-color: white; */
+    background: -webkit-linear-gradient(#ffffff, #f9f9f9);
     height: 4px !important;
     border-radius: 15px;
     margin-top: 15px;
-    margin-bottom: 18px;
+    margin-bottom: 30px;
     border: 1.5px solid #d6d2d2;
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
 }
 
 .overlay-content {
     z-index: 20;
+}
+
+.replies-line {
+    border-left: 5px solid #6e7894;
+    margin: -30px 0 0 200px;
+    height: 31px;
+    position: absolute;
+    z-index: 0;
+}
+
+.replies-line:last-child {
+    display:none;
 }

@@ -23,7 +23,7 @@
         <p class="announcements-banner-text"><%= lang.all_communities.ann_string %></p>
     </div>
     <div id="popular" class="communities-wrapper">
-        <table style="padding-top: 20px">
+        <table>
             <tbody>
                 <tr>
                     <td>
@@ -45,7 +45,7 @@
                         <div class="community-list-wrapper" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
                             <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].community_id %>.png">
                             <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
-                            <h4 class="community-list-followers"><%= popularCommunities[i].followers %> followers</h4>
+                            <h4 class="community-list-followers" <%if(popularCommunities[i].name.length < 16) {%> style="margin-top: 45px" <%}%>><%= popularCommunities[i].followers %> followers</h4>
                         </div>
                     </td>
                     <% if( (i + 1) % 3 === 0) { %>
@@ -67,7 +67,7 @@
                         <div class="community-list-wrapper" data-pjax="/communities/<%= newCommunities[j].community_id %>/new">
                             <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= newCommunities[j].community_id %>.png">
                             <h2 class="community-list-title"><%= newCommunities[j].name %></h2>
-                            <h4 class="community-list-followers"><%= newCommunities[j].followers %> followers</h4>
+                            <h4 class="community-list-followers" <%if(newCommunities[j].name.length < 16) {%> style="margin-top: 45px" <%}%>><%= newCommunities[j].followers %> followers</h4>
                         </div>
                     </td>
                     <% if( (j + 1) % 3 === 0) { %>
