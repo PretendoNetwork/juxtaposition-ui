@@ -126,7 +126,7 @@
     </div>
     <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
     <div class="community-page-header-overlay"></div>
-    <div class="community-page-back-button" onclick="window.history.back()">
+    <div class="community-page-back-button" onclick="back()">
         <p class="user-page-back-button-text">Go back</p>
     </div>
     <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>

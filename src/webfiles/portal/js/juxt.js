@@ -119,6 +119,11 @@ function exit() {
         wiiuBrowser.closeApplication();
     }
 }
+function back() {
+    wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+    wiiuBrowser.showLoadingIcon(!0);
+    window.history.back();
+}
 function showOverlay() {
     wiiuSound.playSoundByName('SE_OLV_OK', 1)
     wiiuSound.playSoundByName('BGM_OLV_SETTING', 3)

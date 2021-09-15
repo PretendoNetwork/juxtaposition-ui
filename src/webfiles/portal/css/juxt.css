@@ -1035,6 +1035,7 @@ h4 {
 
 .community-page-info-icon {
     width: 100px;
+    height: 100px;
     border-radius: 10px;
     margin: 20px;
     float: left;
@@ -1050,9 +1051,12 @@ h4 {
 .community-page-description {
     margin-top: 5px;
     position: absolute;
-    margin-left: 140px;
+    margin-left: 150px;
     width: 550px;
+    max-width: 500px;
+    line-break: anywhere;
     line-height: 20px;
+    overflow: hidden;
 }
 
 .community-page-posts-wrapper {
@@ -1094,7 +1098,6 @@ h4 {
 }
 
 .community-page-post-screenshot {
-    margin-top: 20px;
     width: 760px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -1218,6 +1221,8 @@ h4 {
 .community-page-post-username {
     padding-top: 20px;
     margin-bottom: 0;
+    min-width: 140px;
+    max-width: 340px;
 }
 
 .community-page-post-text-overlay {
@@ -1425,8 +1430,8 @@ iframe {
     font-size: large;
     border-width: 0;
     border-radius: 15px;
-    bottom: 15px;
-    left: 430px
+    bottom: -70px;
+    left: 430px;
 }
 
 #user-new-post-wrapper {
@@ -1808,6 +1813,7 @@ iframe {
     border: 1.5px solid #ffffff00;
     border-radius: 10px;
     margin-top: 40px;
+    margin-bottom: 55px;
     width: 1060px;
     min-height: 190px;
 }
@@ -1862,4 +1868,26 @@ iframe {
 
 .replies-line:last-child {
     display:none;
+}
+
+.spoiler-overlay {
+    display: grid;
+    height: 100px;
+    width: 793px;
+    margin-left: 10px;
+    margin-bottom: -10px;
+    z-index: 10;
+}
+
+.spoiler-overlay > button {
+    width: 775px;
+    height: 70px;
+    margin: auto;
+    background: #673DB6;
+    color: white;
+    font-size: large;
+    border-width: 0;
+    border-radius: 15px;
+    box-shadow: 0 3px 20px 2px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 3px 20px 2px rgba(0, 0, 0, 0.5);
 }

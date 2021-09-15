@@ -77,11 +77,6 @@ router.get('/:post_id', function (req, res) {
             lang: lang,
             mii_image_CDN: config.mii_image_CDN
         });
-        user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
-            notification.read = true;
-        });
-        user.markModified('notification_list');
-        user.save();
     }).catch(error => {
         console.log(error);
         res.set("Content-Type", "application/xml");
@@ -145,7 +140,7 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
                 feeling_id: req.body.emotion,
                 id: snowflake.nextId(),
                 is_autopost: req.body.is_autopost,
-                is_spoiler: req.body.is_spoiler,
+                is_spoiler: (req.body.spoiler) ? 1 : 0,
                 is_app_jumpable: req.body.is_app_jumpable,
                 language_id: req.body.language_id,
                 mii: usrObj.mii,
@@ -158,6 +153,7 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
             };
             const newPost = new POST(document);
             newPost.save();
+            await database.pushNewNotificationByPID(parentPost.pid, usrObj.user_id + ' replied to your post!', '/posts/' + parentPost.id)
             res.redirect('/posts/' + req.params.post_id.toString());
         }
     }
@@ -223,7 +219,7 @@ router.post('/new', upload.none(), async function (req, res, next) {
                 feeling_id: req.body.emotion,
                 id: snowflake.nextId(),
                 is_autopost: req.body.is_autopost,
-                is_spoiler: req.body.is_spoiler,
+                is_spoiler: (req.body.spoiler) ? 1 : 0,
                 is_app_jumpable: req.body.is_app_jumpable,
                 language_id: req.body.language_id,
                 mii: usrObj.mii,

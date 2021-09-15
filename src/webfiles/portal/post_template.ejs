@@ -8,7 +8,7 @@
             <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
         <%}%>
         <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
-        <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <p onclick="pjax.loadUrl('/communities/<%= post.community_id %>/new')"><%= communityMap.get(post.community_id) %></p></h4>
+        <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <p onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);pjax.loadUrl('/communities/<%= post.community_id %>/new')"><%= communityMap.get(post.community_id) %></p></h4>
 
         <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 33 30">
@@ -26,7 +26,10 @@
         </div>
         <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
     </div>
-    <div class="community-page-post-wrapper" <%if(!reply){%>onclick="pjax.loadUrl('/posts/<%= post.id%>')"<%}%>>
+    <div class="spoiler-overlay" <% if(post.is_spoiler === 0) {%>style="display: none"<%}%>>
+        <button onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1); this.parentElement.style.display = 'none'; document.getElementById('post-content-<%= post.id%>').style.display = 'block'">Click to Show Spoiler</button>
+    </div>
+    <div class="community-page-post-wrapper" id="post-content-<%= post.id%>" <%if(!reply){%>onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1); pjax.loadUrl('/posts/<%= post.id%>')"<%}%> <% if(post.is_spoiler === 1) {%>style="display: none"<%}%>>
         <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
             <h3><%= post.body %></h3>
         <%} else { %>

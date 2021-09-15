@@ -27,7 +27,7 @@
             <% if(user.notification_list.length === 0) {%>
                 <p class="no-posts-text"><%= lang.notifications.none %></p>
             <%} else { %>
-                <% let i = 0; user.notification_list.reverse().forEach(function(notification) { %>
+                <% let i = 0; user.notification_list.forEach(function(notification) { %>
                     <% if(i === 0) { %>
                     <tr class="message-wrapper" data-pjax="<%=notification.link%>">
                         <td class="messages-unread-badge-wrapper top">
@@ -49,10 +49,6 @@
                     </tr>
                     <%}%>
                 <%});%>
-                </tr>
-                <td></td>
-                <td class="messages-list-wrapper end"></td>
-                </tr>
             <%}%>
             </tbody>
         </table>
