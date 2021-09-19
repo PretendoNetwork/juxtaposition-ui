@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const ejs = require('ejs');
 const xmlparser = require('./middleware/xml-parser');
+const cookieParser = require('cookie-parser');
 const auth = require('./middleware/auth');
 const database = require('./database');
 const logger = require('./logger');
@@ -29,6 +30,7 @@ app.use(express.urlencoded({
     parameterLimit: 100000
 }));
 app.use(xmlparser);
+app.use(cookieParser());
 app.use(auth);
 
 

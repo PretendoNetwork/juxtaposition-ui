@@ -7,7 +7,6 @@ var moment = require('moment');
 var router = express.Router();
 
 router.get('/', async function (req, res) {
-    console.log(req.pid);
     try {
         if(req.pid === 1000000000) {
             res.render(req.directory + '/guest_notice.ejs', {

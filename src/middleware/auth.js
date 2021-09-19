@@ -2,27 +2,55 @@ const config = require('../config.json');
 const util = require('../authentication');
 
 function auth(request, response, next) {
-    if(!request.headers["x-nintendo-parampack"] || !request.headers["x-nintendo-servicetoken"]) {
-        return response.render('console/ban_notification.ejs', {
-            user: null,
-            error: "Missing auth headers"
-        });
+    if(request.path.includes('/css/') || request.path.includes('/fonts/')
+        || request.path.includes('/js/') || request.path.includes('/icons/') || request.path.includes('/banner/')) {
+        request.directory = request.subdomains[1];
+        return next()
+    }
+
+    if(request.subdomains.indexOf('admin') !== -1) {
+        if(request.path === '/login' || request.path === '/token' || request.path === '/favicon.ico') {
+            return next()
+        }
+        else {
+            if(request.cookies.token === undefined || request.cookies.token === null)
+            {
+                return response.redirect('/login');
+            }
+            let pid = util.data.processServiceToken(request.cookies.token);
+            if(pid === null)
+            {
+                return response.redirect('/login');
+            }
+            else {
+                request.pid = pid;
+                return next();
+            }
+        }
     }
     else {
-        let pid = util.data.processServiceToken(request.headers["x-nintendo-servicetoken"]);
-        let paramPackData = util.data.decodeParamPack(request.headers["x-nintendo-parampack"]);
-        if(pid === null)
-            return response.render('console/ban_notification.ejs', {
+        if(!request.headers["x-nintendo-parampack"] || !request.headers["x-nintendo-servicetoken"]) {
+            return response.render('portal/ban_notification.ejs', {
                 user: null,
-                error: "Unable to parse service token. Are you using a NNID?"
+                error: "Missing auth headers"
             });
+        }
         else {
-            response.header('X-Nintendo-WhiteList', config.whitelist);
-            request.lang = util.data.processLanguage(request.headers["x-nintendo-parampack"]);
-            request.pid = pid;
-            request.paramPackData = paramPackData;
-            request.directory = request.subdomains[1];
-            return next();
+            let pid = util.data.processServiceToken(request.headers["x-nintendo-servicetoken"]);
+            let paramPackData = util.data.decodeParamPack(request.headers["x-nintendo-parampack"]);
+            if(pid === null)
+                return response.render('portal/ban_notification.ejs', {
+                    user: null,
+                    error: "Unable to parse service token. Are you using a NNID?"
+                });
+            else {
+                response.header('X-Nintendo-WhiteList', config.whitelist);
+                request.lang = util.data.processLanguage(request.headers["x-nintendo-parampack"]);
+                request.pid = pid;
+                request.paramPackData = paramPackData;
+                request.directory = request.subdomains[1];
+                return next();
+            }
         }
     }
 }

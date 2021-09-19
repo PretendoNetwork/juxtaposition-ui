@@ -52,11 +52,15 @@ router.get('/:post_id', async function (req, res) {
 
 router.post('/:post_id/new', upload.none(), async function (req, res, next) {
     let user = await database.getUserByPID(req.pid);
-    if(user.account_status !== 0) {
+    if(user.account_status !== 0 || req.body.olive_community_id === 'announcements') {
         throw new Error('User not allowed to post')
     }
     let parentPost = await database.getPostByID(req.params.post_id.toString())
     let community = await database.getCommunityByID(req.body.olive_community_id);
+    if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
+        res.status(422);
+        return res.redirect('/posts/' + req.params.post_id.toString());
+    }
     let appData = "";
     if (req.body.app_data) {
         appData = req.body.app_data.replace(/\0/g, "").trim();
@@ -99,7 +103,8 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
     };
     const newPost = new POST(document);
     newPost.save();
-    await database.pushNewNotificationByPID(parentPost.pid, user.user_id + ' replied to your post!', '/posts/' + parentPost.id)
+    if(parentPost.pid !== user.pid)
+        await database.pushNewNotificationByPID(parentPost.pid, user.user_id + ' replied to your post!', '/posts/' + parentPost.id)
     res.redirect('/posts/' + req.params.post_id.toString());
 });
 
@@ -109,6 +114,10 @@ router.post('/new', upload.none(), async function (req, res, next) {
         throw new Error('User not allowed to post')
     }
     let community = await database.getCommunityByID(req.body.olive_community_id);
+    if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
+        res.status(422);
+        return res.redirect('/communities/' + community.community_id + '/new');
+    }
     let appData = "";
     if (req.body.app_data) {
         appData = req.body.app_data.replace(/\0/g, "").trim();

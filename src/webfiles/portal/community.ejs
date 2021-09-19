@@ -75,9 +75,9 @@
                                 <div class="post-screenshot-picker" onclick="loadScreenshots()">
                                     <div class="post-screenshot-picker-icon"></div>
                                     <div class="post-screenshot-picker-dropdown">
-                                        <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true);"></div>
-                                        <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false);"></div>
-                                        <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
+                                        <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="selectScreenshot(1)"></div>
+                                        <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="selectScreenshot(2)"></div>
+                                        <div onclick="selectScreenshot(0)">No Screenshot</div>
                                         <input type="hidden" id="screenshot-value" name="screenshot" value="">
                                     </div>
                                 </div>
