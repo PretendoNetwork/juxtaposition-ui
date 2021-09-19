@@ -1,18 +1,7 @@
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-        ga('create', 'UA-195842548-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+    <script src="/js/juxt.js"></script>
 </head>
 <style>
     body {
@@ -20,207 +9,217 @@
         background-size: 100%;
         background-repeat: repeat !important;
     }
+    .about-wrapper {
+        height: auto;
+        width: 400px;
+    }
+    .about-button {
+        margin-top: 0;
+    }
 </style>
 <script>
     var experience = 0;
     var notifications = false;
     function selectExperience(type) {
-        document.getElementById('beginner').classList.remove('selected');
-        document.getElementById('intermediate').classList.remove('selected');
-        document.getElementById('expert').classList.remove('selected');
+        document.getElementById('beginner').className = ('user-page-tab left');
+        document.getElementById('intermediate').className = ('user-page-tab');
+        document.getElementById('expert').className = ('user-page-tab right');
         switch (type) {
             case 0:
-                document.getElementById("beginner").classList.add('selected');
+                document.getElementById("beginner").className += ' selected';
                 experience = 0;
                 break;
             case 1:
-                document.getElementById("intermediate").classList.add('selected');
+                document.getElementById("intermediate").className += ' selected';
                 experience = 1;
                 break;
             case 2:
-                document.getElementById("expert").classList.add('selected');
+                document.getElementById("expert").className += ' selected';
                 experience = 2;
                 break;
+
         }
-        wiiuSound.playSoundByName("SE_OLV_OK", 1);
+        cave.snd_playSe('SE_OLV_OK');
     }
     function submit() {
         var xmlhttp = new XMLHttpRequest();   // new HttpRequest instance
         var theUrl = "/titles/show/newUser";
         xmlhttp.open("POST", theUrl);
         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications, "region": wiiuSystemSetting.getCountry().code }));
+        xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications, "region": cave.cfg_getCountryName() }));
     }
 </script>
 <body>
-    <div id="welcome" class="about-wrapper" style="display: block">
-        <h1 class="about-header"><%= lang.setup.welcome %></h1>
-        <div class="about-body">
-            <p>
-                <%= lang.setup.welcome_text %>
-            </p>
-        </div>
-        <button class="about-button" style="margin-left: 50px" onclick="exit()"><%= lang.global.exit %></button>
-        <button class="about-button" style="margin-left: 625px;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+<div id="welcome" class="about-wrapper" style="display: block">
+    <h1 class="about-header" style="padding-top: 120px"><%= lang.setup.welcome %></h1>
+    <div class="about-body">
+        <p>
+            <%= lang.setup.welcome_text %>
+        </p>
+    </div>
+    <button class="about-button" style="margin-left: 75px;margin-top: 175px;" onclick="cave.exitApp()"><%= lang.global.exit %></button>
+    <button class="about-button" style="margin-left: 225px;margin-top: 175px;"
+            onclick="cave.snd_playSe('SE_OLV_OK');
                          document.getElementById('beta').style.display = 'block';
                          document.getElementById('welcome').style.display = 'none';"><%= lang.global.next %></button>
-    </div>
+</div>
 
-    <div id="beta" class="about-wrapper">
-        <h1 class="about-header"><%= lang.setup.beta %></h1>
-        <div class="about-body" style="position: relative">
-            <p>
-                <%= lang.setup.beta_text.first %>
-                <br>
-                <b><u><%= lang.setup.beta_text.second %></u></b>
-                <br>
-                <%= lang.setup.beta_text.third %>
-            </p>
-        </div>
-        <button class="about-button" style="margin-left: 50px;margin-top: 100px; z-index: 4;"
-                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+<div id="beta" class="about-wrapper">
+    <h1 class="about-header"><%= lang.setup.beta %></h1>
+    <div class="about-body" style="position: relative">
+        <p>
+            <%= lang.setup.beta_text.first %>
+            <br>
+            <b><u><%= lang.setup.beta_text.second %></u></b>
+            <br>
+            <%= lang.setup.beta_text.third %>
+        </p>
+    </div>
+    <button class="about-button" style="margin-left: 75px"
+            onclick="cave.snd_playSe('SE_OLV_CANCEL');
                          document.getElementById('welcome').style.display = 'block';
                          document.getElementById('beta').style.display = 'none';"><%= lang.global.back %></button>
-        <button class="about-button" style="margin-left: 625px;margin-top: 100px; z-index: 4;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+    <button class="about-button" style="margin-left: 225px;"
+            onclick="cave.snd_playSe('SE_OLV_OK');
                          document.getElementById('about').style.display = 'block'
                          document.getElementById('beta').style.display = 'none'"><%= lang.global.next %></button>
-        <div style="position: relative; height: 200px; z-index: 0"></div>
-    </div>
+    <div style="position: relative; height: 75px; z-index: 0"></div>
+</div>
 
-    <div id="about" class="about-wrapper">
-        <h1 class="about-header"><%= lang.setup.info %></h1>
-        <div class="about-body">
-            <p>
-                <%= lang.setup.info_text %>
-            </p>
-        </div>
-        <button class="about-button" style="margin-left: 50px;"
-                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+<div id="about" class="about-wrapper">
+    <h1 class="about-header"><%= lang.setup.info %></h1>
+    <div class="about-body">
+        <p>
+            <%= lang.setup.info_text %>
+        </p>
+    </div>
+    <button class="about-button" style="margin-left: 75px;margin-top: 175px;"
+            onclick="cave.snd_playSe('SE_OLV_CANCEL');
                          document.getElementById('beta').style.display = 'block';
                          document.getElementById('about').style.display = 'none';"><%= lang.global.back %></button>
-        <button class="about-button" style="margin-left: 625px;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+    <button class="about-button" style="margin-left: 225px;margin-top: 175px;"
+            onclick="cave.snd_playSe('SE_OLV_OK');
                          document.getElementById('manners').style.display = 'block'
                          document.getElementById('about').style.display = 'none'"><%= lang.global.next %></button>
-    </div>
+</div>
 
-    <div id="manners" class="about-wrapper">
-        <h1 class="about-header"><%= lang.setup.rules %></h1>
-        <div class="about-body" style="position: relative">
-            <p>
-                <%= lang.setup.rules_text.first %>
-                <h2><%= lang.setup.rules_text.second %></h2>
-                <%= lang.setup.rules_text.third %>
-                <h2><%= lang.setup.rules_text.fourth %></h2>
-                <%= lang.setup.rules_text.fifth %>
-                <h2><%= lang.setup.rules_text.sixth %></h2>
-                <%= lang.setup.rules_text.seventh %>
-                <h2><%= lang.setup.rules_text.eighth %></h2>
-                <%= lang.setup.rules_text.ninth %>
-                <h2><%= lang.setup.rules_text.tenth %></h2>
-                <%= lang.setup.rules_text.eleventh %>
-                <h2><%= lang.setup.rules_text.twelfth %></h2>
-                <%= lang.setup.rules_text.thirteenth %>
-            </p>
-        </div>
-        <button class="about-button" style="margin-left: 50px;margin-top: 100px; z-index: 4;"
-                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+<div id="manners" class="about-wrapper">
+    <h1 class="about-header"><%= lang.setup.rules %></h1>
+    <div class="about-body" style="position: relative">
+        <p>
+            <%= lang.setup.rules_text.first %>
+        <h2><%= lang.setup.rules_text.second %></h2>
+        <%= lang.setup.rules_text.third %>
+        <h2><%= lang.setup.rules_text.fourth %></h2>
+        <%= lang.setup.rules_text.fifth %>
+        <h2><%= lang.setup.rules_text.sixth %></h2>
+        <%= lang.setup.rules_text.seventh %>
+        <h2><%= lang.setup.rules_text.eighth %></h2>
+        <%= lang.setup.rules_text.ninth %>
+        <h2><%= lang.setup.rules_text.tenth %></h2>
+        <%= lang.setup.rules_text.eleventh %>
+        <h2><%= lang.setup.rules_text.twelfth %></h2>
+        <%= lang.setup.rules_text.thirteenth %>
+        </p>
+    </div>
+    <button class="about-button" style="margin-left: 75px"
+            onclick="cave.snd_playSe('SE_OLV_CANCEL');
                          document.getElementById('about').style.display = 'block';
                          document.getElementById('manners').style.display = 'none';"><%= lang.global.back %></button>
-        <button class="about-button" style="margin-left: 625px;margin-top: 100px; z-index: 4;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+    <button class="about-button" style="margin-left: 225px;"
+            onclick="cave.snd_playSe('SE_OLV_OK');
                          document.getElementById('game-experience').style.display = 'block'
                          document.getElementById('manners').style.display = 'none'"><%= lang.global.next %></button>
-        <div style="position: relative; height: 200px; z-index: 0"></div>
-    </div>
+    <div style="position: relative; height: 75px; z-index: 0"></div>
+</div>
 
-    <div id="google-analytics" class="about-wrapper">
-        <h1 class="about-header"><%= lang.setup.google %></h1>
-        <div class="about-body">
-            <p>
-                <%= lang.setup.google_text %>
-            </p>
-        </div>
-        <button class="about-button" style="margin-left: 50px;"
-                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+<div id="google-analytics" class="about-wrapper">
+    <h1 class="about-header"><%= lang.setup.google %></h1>
+    <div class="about-body">
+        <p>
+            <%= lang.setup.google_text %>
+        </p>
+    </div>
+    <button class="about-button" style="margin-left: 75px;"
+            onclick="cave.snd_playSe('SE_OLV_CANCEL');
                          document.getElementById('manners').style.display = 'block';
                          document.getElementById('google-analytics').style.display = 'none';"><%= lang.global.back %></button>
-        <button class="about-button" style="margin-left: 625px;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+    <button class="about-button" style="margin-left: 225px;"
+            onclick="cave.snd_playSe('SE_OLV_OK');
                          document.getElementById('game-experience').style.display = 'block'
                          document.getElementById('google-analytics').style.display = 'none'"><%= lang.global.next %></button>
-    </div>
+    <div style="position: relative; height: 75px; z-index: 0"></div>
+</div>
 
-    <div id="game-experience" class="about-wrapper">
-        <h1 class="about-header"><%= lang.setup.experience %></h1>
-        <div class="about-body">
-            <p>
-                <%= lang.setup.experience_text.info %>
-            </p>
-        </div>
-        <div>
-            <table class="user-page-tab-table" style="position: absolute;margin-top: 260px; margin-left: 15px; width: 850px; z-index: 5;">
-                <tbody>
-                <tr>
-                    <td onclick="selectExperience(0)">
-                        <div class="user-page-tab left selected" id="beginner" style="margin-right: 0; width: 293px; margin-top: -2px;">
-                            <%= lang.setup.experience_text.beginner %>
-                        </div>
-                    </td>
-                    <td onclick="selectExperience(1)">
-                        <div class="user-page-tab" id="intermediate" style="margin-right: 0; width: 293px; margin-top: -2px;">
-                            <%= lang.setup.experience_text.intermediate %>
-                        </div>
-                    </td>
-                    <td onclick="selectExperience(2)">
-                        <div class="user-page-tab right" id="expert" style="width: 293px; margin-top: -2px;">
-                            <%= lang.setup.experience_text.expert %>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <button class="about-button" style="margin-left: 50px;"
-                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+<div id="game-experience" class="about-wrapper">
+    <h1 class="about-header"><%= lang.setup.experience %></h1>
+    <div class="about-body">
+        <p>
+            <%= lang.setup.experience_text.info %>
+        </p>
+    </div>
+    <div>
+        <table class="user-page-tab-table" style="position: absolute;margin-top: 90px; margin-left: 50px; width: 285px; z-index: 5;">
+            <tbody>
+            <tr>
+                <td onclick="selectExperience(0)">
+                    <div class="user-page-tab left selected" id="beginner" style="margin-right: 0;">
+                        <%= lang.setup.experience_text.beginner %>
+                    </div>
+                </td>
+                <td onclick="selectExperience(1)">
+                    <div class="user-page-tab" id="intermediate" style="margin-right: 0;">
+                        <%= lang.setup.experience_text.intermediate %>
+                    </div>
+                </td>
+                <td onclick="selectExperience(2)">
+                    <div class="user-page-tab right" id="expert">
+                        <%= lang.setup.experience_text.expert %>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="about-button" style="margin-left: 75px;margin-top: 200px;"
+            onclick="cave.snd_playSe('SE_OLV_CANCEL');
                          document.getElementById('manners').style.display = 'block';
                          document.getElementById('game-experience').style.display = 'none';"><%= lang.global.back %></button>
-        <button class="about-button" style="margin-left: 625px;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+    <button class="about-button" style="margin-left: 225px;margin-top: 200px;"
+            onclick="cave.snd_playSe('SE_OLV_OK');
                          document.getElementById('ready').style.display = 'block'
                          document.getElementById('game-experience').style.display = 'none'"><%= lang.global.next %></button>
-    </div>
+</div>
 
-    <div id="ready" class="about-wrapper">
-        <h1 class="about-header"><%= lang.setup.ready %></h1>
-        <div class="about-body">
-            <p>
-                <%= lang.setup.ready_text %>
-            </p>
-        </div>
-        <button class="about-button" style="margin-left: 50px;"
-                onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
+<div id="ready" class="about-wrapper">
+    <h1 class="about-header" style="padding-top: 120px"><%= lang.setup.ready %></h1>
+    <div class="about-body">
+        <p>
+            <%= lang.setup.ready_text %>
+        </p>
+    </div>
+    <button class="about-button" style="margin-left: 75px;margin-top: 200px"
+            onclick="cave.snd_playSe('SE_OLV_CANCEL');
                          document.getElementById('game-experience').style.display = 'block';
                          document.getElementById('ready').style.display = 'none';"><%= lang.global.back %></button>
-        <button class="about-button" style="margin-left: 625px;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+    <button class="about-button" style="margin-left: 225px;margin-top: 200px;"
+            onclick="cave.snd_playSe('SE_OLV_OK');
                          document.getElementById('have-fun').style.display = 'block'
                          document.getElementById('ready').style.display = 'none';
-                         wiiuSound.playSoundByName('JGL_OLV_INIT_END', 3);
+                         cave.snd_playBgm('BGM_CAVE_SYOKAI2');
                          submit()"><%= lang.global.next %></button>
-    </div>
+</div>
 
-    <div id="have-fun" class="about-wrapper">
-        <h1 class="about-header"></h1>
-        <div class="about-body">
-            <h1 style="margin-left: 130px; margin-top: 200px"><%= lang.setup.done %></h1>
-        </div>
-        <button class="about-button" style="margin-left: 330px;"
-                onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);window.location.replace('/communities')"><%= lang.setup.done_button %></button>
+<div id="have-fun" class="about-wrapper">
+    <h1 class="about-header"></h1>
+    <div class="about-body">
+        <h1 style="margin-left: 15px; margin-top: -100px"><%= lang.setup.done %></h1>
     </div>
+    <button class="about-button" style="margin-left: 155px; margin-top: 150px"
+            onclick="cave.snd_playSe('SE_OLV_OK');cave.transition_begin();window.location.replace('/communities')"><%= lang.setup.done_button %></button>
+</div>
 
-<body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3);">
+
+<body onload="cave.snd_playBgm('BGM_CAVE_SYOKAI');">
 </body>
 </html>

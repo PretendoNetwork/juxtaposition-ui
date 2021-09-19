@@ -303,7 +303,7 @@ ul, ol, menu, li {
 }
 
 .post-user-info-wrapper {
-    margin-bottom: 15px;
+    margin-bottom: 40px;
     margin-left: 15px;
     min-width: 520px;
 }
@@ -834,8 +834,8 @@ td.messages-list-wrapper.end  {
     border-radius: 10px;
     white-space: nowrap;
     overflow-x: auto;
-    box-shadow: 0 3px 15px 0 rgb(0 0 0 / 50%);
-    -webkit-box-shadow: 0 3px 15px 0 rgb(0 0 0 / 50%);
+    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0);
+    -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0);
 }
 
 #search-icon {
@@ -1003,8 +1003,8 @@ h4 {
     background-color: rgb(233, 233, 233);
     border: 1.5px solid #e9e9e9;
     border-radius: 10px;
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
-    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
 }
 
 .community-page-follow-button-wrapper {
@@ -1101,8 +1101,8 @@ h4 {
     width: 760px;
     border-radius: 10px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
-    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
 }
 
 .community-page-post-painting {
@@ -1110,8 +1110,9 @@ h4 {
     height: 285px;
     border-radius: 10px;
     margin-bottom: 15px;
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
-    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+    image-rendering: pixelated;
 }
 
 .community-page-post-time-stamp {
@@ -1214,8 +1215,8 @@ h4 {
     text-align: center;
     line-height: 18px;
     -webkit-border-radius: 20px;
-    box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
-    -webkit-box-shadow: 0 2px 5px 0 rgb(0 0 0 / 50%);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
 }
 
 .community-page-post-username {

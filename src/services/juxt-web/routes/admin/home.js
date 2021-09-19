@@ -57,7 +57,7 @@ router.get('/css/juxt.css', function (req, res) {
 });
 
 router.get('/favicon.ico', function (req, res) {
-    res.sendFile('css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/portal/')});
+    res.sendFile('css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/console/')});
 });
 
 router.get('/icons/:image_id.png', function (req, res) {

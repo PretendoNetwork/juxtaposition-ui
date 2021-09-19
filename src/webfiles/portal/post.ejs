@@ -94,7 +94,7 @@
                                 <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
                             </td>
                             <td rowspan="2" id="post-text-input">
-                                <textarea class="post-textarea" id="comment" name="body" placeholder="<%= lang.new_post.text_hint %>" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.new_post.swearing %>');}"></textarea>
+                                <textarea class="post-textarea" id="comment" name="body" maxlength="280" placeholder="<%= lang.new_post.text_hint %>" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.new_post.swearing %>');}"></textarea>
                             </td>
                             <td rowspan="2" id="post-painting-input" style="display: none;">
                                 <div class="post-memo">

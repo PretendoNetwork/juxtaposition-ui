@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const ejs = require('ejs');
 const xmlparser = require('./middleware/xml-parser');
+const auth = require('./middleware/auth');
 const database = require('./database');
 const logger = require('./logger');
 const config = require('./config.json');
@@ -28,6 +29,7 @@ app.use(express.urlencoded({
     parameterLimit: 100000
 }));
 app.use(xmlparser);
+app.use(auth);
 
 
 // import the servers into one

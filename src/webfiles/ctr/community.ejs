@@ -62,8 +62,8 @@
                                     <div class="post-screenshot-picker" onclick="loadScreenshots()">
                                         <div class="post-screenshot-picker-icon"></div>
                                         <div class="post-screenshot-picker-dropdown">
-                                            <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true);"></div>
-                                            <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false);"></div>
+                                            <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = cave.capture_getUpperImageLeftDetail();"></div>
+                                            <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = cave.capture_getLowerImage();"></div>
                                             <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
                                             <input type="hidden" id="screenshot-value" name="screenshot" value="">
                                         </div>
@@ -77,11 +77,11 @@
                                     <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
                                 </td>
                                 <td rowspan="2" id="post-text-input">
-                                    <textarea class="post-textarea" id="comment" name="body" placeholder="Tap here to make a post." rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('Prost cannot contain explicit language');}"></textarea>
+                                    <textarea class="post-textarea" id="comment" name="body" placeholder="Tap here to make a post." rows="4" cols="50" onchange="if(cave.checkWord(this.value) === -2) { this.value = ''; alert('Post cannot contain explicit language');}"></textarea>
                                 </td>
                                 <td rowspan="2" id="post-painting-input" style="display: none;">
                                     <div class="post-memo">
-                                        <img class="post-memo-preview" id="memo" width="640px" height="240px" src="" style="display: none;" onclick="newPainting(false)">
+                                        <img class="post-memo-preview" id="memo" width="170px" height="77px" src="" style="display: none;" onclick="newPainting(false)">
                                         <input type="hidden" id="memo-value" name="painting" value="">
                                     </div>
                                 </td>
@@ -95,19 +95,19 @@
                             <tr>
                                 <td colspan="2">
                                     <label class="checkbox-container checkbox-post">Spoilers
-                                        <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);">
+                                        <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="cave.snd_playSe('SE_OLV_OK');">
                                         <span class="checkmark"></span>
                                     </label>
                                 </td>
                             </tr>
                             <tr style="height: 70px">
                                 <td class="post-close-button-wrapper" colspan="2">
-                                    <div class="post-close-button" onclick="hideNewPostScreen();wiiuMemo.reset();">
+                                    <div class="post-close-button" onclick="hideNewPostScreen();cave.memo_clear();">
                                         <p style="margin-top: -2px;">X <b>Close</b></p>
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="submit" value="Post" class="submit-button" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
+                                    <input type="submit" value="Post" class="submit-button" onclick="cave.snd_playSe('SE_OLV_OK');">
                                 </td>
                             </tr>
                         </table>
@@ -154,44 +154,9 @@
                     <p class="no-posts-text">No Posts</p>
                 <%} else { %>
                     <button id="load-more-posts-button" onclick="loadCommunityPosts()" style="background: #1F8A42">Load More Posts</button>
-                    <% newPosts.forEach(function(post) { %>
-                        <div class="post-user-info-wrapper" id="<%= post.id %>">
-                            <%if(post.verified) {%>
-                                <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
-                                <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
-                            <%} else {%>
-                                <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
-                                <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
-                            <%}%>
-                            <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
-                            <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %></h4>
-
-                            <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-                                <div class="community-page-post-yeah-button" onclick="yeah(this.parentNode, '<%= post.id %>')"></div>
-                            </div>
-                            <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> Yeahs</div>
-                        </div>
-                        <div class="community-page-post-wrapper">
-                            <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
-                                <h3><%= post.body %></h3>
-                            <%} else { %>
-                                <% if(post.screenshot !== '') { %>
-                                    <img id="<%= post.id %>" class="community-page-post-screenshot" src="data:image/png;base64,<%= post.screenshot %>">
-                                <%}%>
-                                <% if(post.painting !== '') { %>
-                                    <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
-                                <%}%>
-                                <% if(post.url) { %>
-                                        <h3 style="font-weight: bolder; color: #4F279B">Video Playback is not yet supported on the 3DS</h3>
-                                <%}%>
-                                <% if(post.body) { %>
-                                    <div class="community-page-post-text-overlay">
-                                        <h3><%= post.body %></h3>
-                                    </div>
-                                <%}%>
-                            <%}%>
-                        </div>
-                    <% }); %>
+                        <% newPosts.forEach(function(post) { %>
+                            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                        <% }); %>
                 <%}%>
             </div>
         </div>

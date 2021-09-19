@@ -13,6 +13,9 @@ var HashMap = require('hashmap');
 let TGA = require('tga');
 let pako = require('pako');
 let PNG = require('pngjs').PNG;
+var bmp = require("bmp-js");
+const { toImage } = require('indexed-image-converter');
+const imagePixels = require('image-pixels');
 
 let communityMap = new HashMap();
 let userMap = new HashMap();
@@ -165,25 +168,41 @@ let methods = {
         }
         return decryptedBody;
     },
-    processPainting: function (painting) {
-        let paintingBuffer = Buffer.from(painting, 'base64');
-        let output = '';
-        try
-        {
-            output = pako.inflate(paintingBuffer);
+    processPainting: async function (painting, isTGA) {
+        if (isTGA) {
+            let paintingBuffer = Buffer.from(painting, 'base64');
+            let output = '';
+            try {
+                output = pako.inflate(paintingBuffer);
+            } catch (err) {
+                console.error(err);
+            }
+            let tga = new TGA(Buffer.from(output));
+            let png = new PNG({
+                width: tga.width,
+                height: tga.height
+            });
+            png.data = tga.pixels;
+            let pngBuffer = PNG.sync.write(png);
+            return `data:image/png;base64,${pngBuffer.toString('base64')}`;
         }
-        catch (err)
-        {
-            console.error(err);
+        else {
+            let paintingBuffer = Buffer.from(painting, 'base64');
+            let bitmap = bmp.decode(paintingBuffer)
+            const tga = this.createBMPTgaBuffer(bitmap.width, bitmap.height, bitmap.data, false);
+
+            let output;
+            try
+            {
+                output = pako.deflate(tga, {level: 6});
+            }
+            catch (err)
+            {
+                console.error(err);
+            }
+
+            return new Buffer(output).toString('base64')
         }
-        let tga = new TGA(Buffer.from(output));
-        let png = new PNG({
-            width: tga.width,
-            height: tga.height
-        });
-        png.data = tga.pixels;
-        let pngBuffer = PNG.sync.write(png);
-        return `data:image/png;base64,${pngBuffer.toString('base64')}`;
     },
     nintendoPasswordHash: function(password, pid) {
         const pidBuffer = Buffer.alloc(4);
@@ -212,6 +231,35 @@ let methods = {
             .then(data => {
                 return data;
             });
+    },
+    createBMPTgaBuffer: function(width, height, pixels, dontFlipY) {
+    var buffer = Buffer.alloc(18 + pixels.length);
+        // write header
+        buffer.writeInt8(0, 0);
+        buffer.writeInt8(0, 1);
+        buffer.writeInt8(2, 2);
+        buffer.writeInt16LE(0, 3);
+        buffer.writeInt16LE(0, 5);
+        buffer.writeInt8(0, 7);
+        buffer.writeInt16LE(0, 8);
+        buffer.writeInt16LE(0, 10);
+        buffer.writeInt16LE(width, 12);
+        buffer.writeInt16LE(height, 14);
+        buffer.writeInt8(32, 16);
+        buffer.writeInt8(8, 17);
+
+        var offset = 18;
+        for (var i = 0; i < height; i++) {
+            for (var j = 0; j < width; j++) {
+                var idx = ((dontFlipY ? i : height - i - 1) * width + j) * 4;
+                buffer.writeUInt8(pixels[idx + 1], offset++);    // b
+                buffer.writeUInt8(pixels[idx + 2], offset++);    // g
+                buffer.writeUInt8(pixels[idx + 3], offset++);    // r
+                buffer.writeUInt8(255, offset++);          // a
+            }
+        }
+
+        return buffer;
     },
     processLanguage: function (header) {
         if(!header)

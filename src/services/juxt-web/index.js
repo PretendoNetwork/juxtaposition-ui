@@ -5,17 +5,16 @@ const routes = require('./routes');
 
 const router = express.Router();
 
-const portal = express.Router();
-const ctr = express.Router();
+const console = express.Router();
 const admin = express.Router();
 const web_api = express.Router();
 
 // Create subdomains
 logger.info('[JUXT-WEB] Creating \'Wii U\' subdomain');
-router.use(subdomain('portal.olv', portal));
+router.use(subdomain('portal.olv', console));
 
 logger.info('[JUXT-WEB] Creating \'3DS\' subdomain');
-router.use(subdomain('ctr.olv', ctr));
+router.use(subdomain('ctr.olv', console));
 
 logger.info('[JUXT-WEB] Creating \'Admin\' subdomain');
 router.use(subdomain('admin.olv', admin));
@@ -24,22 +23,14 @@ logger.info('[JUXT-WEB] Creating \'Web API\' subdomain');
 router.use(subdomain('web_api.olv', admin));
 
 // Setup routes
-portal.use('/titles/show', routes.PORTAL_SHOW);
-portal.use('/communities', routes.PORTAL_COMMUNITIES);
-portal.use('/users', routes.PORTAL_USER);
-portal.use('/posts', routes.PORTAL_POST);
-portal.use('/activity-feed', routes.PORTAL_FEED);
-portal.use('/messages', routes.PORTAL_MESSAGES);
-portal.use('/news', routes.PORTAL_NEWS);
-portal.use('/', routes.PORTAL_WEB);
-
-ctr.use('/titles/show', routes.CTR_SHOW);
-ctr.use('/communities', routes.CTR_COMMUNITIES);
-ctr.use('/users', routes.CTR_USER);
-ctr.use('/posts', routes.CTR_POST);
-ctr.use('/news', routes.CTR_NEWS);
-ctr.use('/activity-feed', routes.CTR_FEED);
-ctr.use('/', routes.CTR_WEB);
+console.use('/titles/show', routes.PORTAL_SHOW);
+console.use('/communities', routes.PORTAL_COMMUNITIES);
+console.use('/users', routes.PORTAL_USER);
+console.use('/posts', routes.PORTAL_POST);
+console.use('/activity-feed', routes.PORTAL_FEED);
+console.use('/messages', routes.PORTAL_MESSAGES);
+console.use('/news', routes.PORTAL_NEWS);
+console.use('/', routes.PORTAL_WEB);
 
 admin.use('/', routes.WEB_ADMIN);
 admin.use('/v1/', routes.WEB_API);

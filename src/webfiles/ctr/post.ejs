@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3DS Testing</title>
+    <script src="/js/pjax.js"></script>
+    <script src="/js/juxt.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
+</head>
+<body>
+<div id="main">
+    <div class="top-screen">
+        <div class="header-description">
+            <p>
+
+            </p>
+        </div>
+        <div id="" class="header-icon"><img class="community-page-info-icon" src="<%= user.pfp_uri %>"></div>
+        <h2 class="header-title">Post</h2>
+    </div>
+    <div class="bottom-screen">
+        <div class="communities-wrapper" id="popular-communities" style="margin-top: 15px">
+            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
+        </div>
+        <span class="replies-line"></span>
+        <% replies.forEach(function(post) { %>
+        <div class="communities-wrapper" id="popular-communities" style="margin-top: 15px">
+            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+        </div>
+        <span class="replies-line"></span>
+        <% }); %>
+        <div class="toolbar-padding"></div>
+    </div>
+</div>
+<body onload="onStart()"></body>
+</body>
+</html>

@@ -17,7 +17,7 @@
 <%- include('nav_bar', { selection: 1 }); %>
 <div id="main">
     <h1 id="title" class="page-header"><%= lang.global.activity_feed %></h1>
-    <div class="community-page-posts-wrapper">
+    <div class="community-page-post-box">
         <div id="community-posts-inner-body">
             <% if(posts.length === 0) {%>
                 <p class="no-posts-text"><%= lang.activity_feed.empty %></p>

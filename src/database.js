@@ -21,7 +21,7 @@ async function connect() {
 
 function verifyConnected() {
     if (!connection) {
-        throw new Error('Cannot make database requets without being connected');
+        connect();
     }
 }
 
