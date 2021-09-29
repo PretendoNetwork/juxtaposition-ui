@@ -49,6 +49,33 @@ router.get('/announcements', async function (req, res) {
     });
 });
 
+router.get('/:communityID', async function (req, res) {
+    let user = await database.getUserByPID(req.pid);
+    if(req.params.communityID === 'announcements')
+        res.redirect('/communities/announcements')
+    let community = await database.getCommunityByID(req.params.communityID.toString());
+    if(community === null && req.query.title_id)
+        community = await database.getCommunityByTitleID(req.query.title_id)
+    if(community === null)
+        return res.sendStatus(404);
+    let communityMap = await util.data.getCommunityHash();
+    let newPosts = await database.getNumberNewCommunityPostsByID(community, 5);
+    let totalNumPosts = await database.getTotalPostsByCommunity(community)
+    res.render(req.directory + '/community.ejs', {
+        // EJS variable and server-side variable
+        moment: moment,
+        community: community,
+        communityMap: communityMap,
+        newPosts: newPosts,
+        totalNumPosts: totalNumPosts,
+        user: user,
+        account_server: config.account_server_domain.slice(8),
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN
+    });
+});
+
 router.get('/:communityID/:type', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     if(req.params.communityID === 'announcements')

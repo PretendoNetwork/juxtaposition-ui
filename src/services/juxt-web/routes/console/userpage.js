@@ -58,7 +58,7 @@ router.get('/show', async function (req, res) {
     let parentUser = await database.getUserByPID(req.pid);
     let user = await database.getUserByPID(userID);
     if(user === null)
-        res.sendStatus(404);
+        return res.sendStatus(404);
     if(parentUser === user)
         res.redirect('/users/me');
     let newPosts = await database.getNumberUserPostsByID(user.pid, 10);
