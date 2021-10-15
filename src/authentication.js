@@ -147,12 +147,18 @@ let methods = {
             }
         });
 
-        const cryptoConfig = token.subarray(0, 0x90);
-        const signature = token.subarray(0x90, 0xA4);
-        const encryptedBody = token.subarray(0xA4);
+        const cryptoConfig = token.subarray(0, 0x82);
+        const signature = token.subarray(0x82, 0x96);
+        const encryptedBody = token.subarray(0x96);
 
         const encryptedAESKey = cryptoConfig.subarray(0, 128);
-        const iv = cryptoConfig.subarray(128);
+        const point1 = cryptoConfig.readInt8(0x80);
+        const point2 = cryptoConfig.readInt8(0x81);
+
+        const iv = Buffer.concat([
+            Buffer.from(encryptedAESKey.subarray(point1, point1 + 8)),
+            Buffer.from(encryptedAESKey.subarray(point2, point2 + 8))
+        ]);
 
         const decryptedAESKey = privateKey.decrypt(encryptedAESKey);
 
@@ -160,12 +166,15 @@ let methods = {
 
         let decryptedBody = decipher.update(encryptedBody);
         decryptedBody = Buffer.concat([decryptedBody, decipher.final()]);
+
         const hmac = crypto.createHmac('sha1', cryptoOptions.hmac_secret).update(decryptedBody);
         const calculatedSignature = hmac.digest();
-        if (!calculatedSignature.equals(signature)) {
+
+        if (calculatedSignature !== signature) {
             console.log('Token signature did not match');
             return null;
         }
+
         return decryptedBody;
     },
     processPainting: async function (painting, isTGA) {
@@ -205,15 +214,17 @@ let methods = {
         }
     },
     nintendoPasswordHash: function(password, pid) {
-        const pidBuffer = Buffer.alloc(4);
-        pidBuffer.writeUInt32LE(pid);
+    const pidBuffer = Buffer.alloc(4);
+    pidBuffer.writeUInt32LE(pid);
 
-        const unpacked = Buffer.concat([
-            pidBuffer,
-            Buffer.from('\x02\x65\x43\x46'),
-            Buffer.from(password)
-        ]);
-        return crypto.createHash('sha256').update(unpacked).digest().toString('hex');
+    const unpacked = Buffer.concat([
+        pidBuffer,
+        Buffer.from('\x02\x65\x43\x46'),
+        Buffer.from(password)
+    ]);
+    const hashed = crypto.createHash('sha256').update(unpacked).digest().toString('hex');
+
+    return hashed;
     },
     getCommunityHash: function() {
         return communityMap;
