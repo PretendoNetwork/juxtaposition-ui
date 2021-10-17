@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-//just testing pull requests
+
 const PostSchema = new Schema({
     title_id: String,
     screen_name: String,
@@ -23,8 +23,8 @@ const PostSchema = new Schema({
     feeling_id: Number,
     id: String,
     is_autopost: {
-      type: Number,
-      default: 0
+        type: Number,
+        default: 0
     },
     is_community_private_autopost: {
         type: Number,
@@ -65,6 +65,10 @@ const PostSchema = new Schema({
         default: false
     },
     parent: {
+        type: String,
+        default: null
+    },
+    message_to_pid: {
         type: String,
         default: null
     }

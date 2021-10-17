@@ -112,12 +112,12 @@ let methods = {
         }
         catch(e)
         {
+            console.log(e)
             return null;
         }
 
     },
     decryptToken: function(token) {
-
         // Access and refresh tokens use a different format since they must be much smaller
         // Assume a small length means access or refresh token
         if (token.length <= 32) {
@@ -133,6 +133,7 @@ let methods = {
 
             return decryptedBody;
         }
+
         const cryptoPath = `${__dirname}/certs/access`;
 
         const cryptoOptions = {
@@ -170,7 +171,7 @@ let methods = {
         const hmac = crypto.createHmac('sha1', cryptoOptions.hmac_secret).update(decryptedBody);
         const calculatedSignature = hmac.digest();
 
-        if (calculatedSignature !== signature) {
+        if (Buffer.compare(calculatedSignature, signature) !== 0) {
             console.log('Token signature did not match');
             return null;
         }
@@ -222,9 +223,7 @@ let methods = {
         Buffer.from('\x02\x65\x43\x46'),
         Buffer.from(password)
     ]);
-    const hashed = crypto.createHash('sha256').update(unpacked).digest().toString('hex');
-
-    return hashed;
+        return crypto.createHash('sha256').update(unpacked).digest().toString('hex');
     },
     getCommunityHash: function() {
         return communityMap;

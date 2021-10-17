@@ -5,6 +5,7 @@ const { ENDPOINT } = require('./models/endpoint');
 const { COMMUNITY } = require('./models/communities');
 const { POST } = require('./models/post');
 const { USER } = require('./models/user');
+const { CONVERSATION } = require('./models/conversation');
 const { uri, database, options } = mongooseConfig;
 
 let connection;
@@ -303,6 +304,23 @@ async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
+async function getConversations(pid) {
+    verifyConnected();
+    return CONVERSATION.find({
+        pids: pid
+    });
+}
+
+async function getConversation(pid, pid2) {
+    verifyConnected();
+    return CONVERSATION.find({
+        $and: [
+            {pids: pid},
+            {pids: pid2}
+        ],
+    });
+}
+
 module.exports = {
     connect,
     getCommunities,
@@ -337,5 +355,7 @@ module.exports = {
     getNewsFeed,
     getNewsFeedAfterTimestamp,
     getFollowingUsers,
-    getFollowedUsers
+    getFollowedUsers,
+    getConversations,
+    getConversation,
 };
