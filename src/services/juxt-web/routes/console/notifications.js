@@ -14,7 +14,7 @@ router.get('/', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang
     });
-    user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
+        user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
         notification.read = true;
     });
     user.markModified('notification_list');

@@ -4,6 +4,10 @@
 <p>If you believe this is an issue, contact @Jemma#6508 on Discord</p>
 <p>Error: <%=error%></p>
 </body>
+<script>
+    wiiuErrorViewer.openByCodeAndMessage(5980020, '<%=error%>\n\nIf you have any questions contact the developers in the Discord server.');
+    wiiuBrowser.closeApplication();
+</script>
 <%} else {%>
 <script>
     <%if(user.account_status === 1) {%>

@@ -9,7 +9,7 @@ const  ConversationSchema = new Schema({
         type: String,
         default: 0
     },
-    pids: [Number],
+    pids: [Object],
 });
 
 ConversationSchema.methods.addUser = async function(pid) {

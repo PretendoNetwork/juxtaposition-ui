@@ -588,6 +588,40 @@ td.messages-list-wrapper.end  {
     -webkit-border-radius: 20px;
 }
 
+.message-page-verified-user-badge {
+    position: absolute;
+    min-width: 18px;
+    height: 18px;
+    margin-left: -35px;
+    margin-top: -15px;
+    padding: 6px 6px 4px 5px;
+    border: 3px solid #673DB6;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAALCAYAAABPhbxiAAAABHNCSVQICAgIfAhkiAAAAI5JREFUKFOV0lERgzAQRdH7FBQpSKgTpgrQgIPioE7AAg4qAQfLLE0YyBBC+cgH2TObt4n44zOzCmiBXnddQANQA90tmKAJeBbhKZJmhY1GUp8eO4e8zuE7BP5IekV8hSL0sCPwAFZcQiv0xcwOOEzO//0GIc1pjG04Cfa6LNo67nLFzt9cp1hbvI7cA1kA5mlGowbMjrkAAAAASUVORK5CYII=');
+    background-color: #673DB6;
+    background-position:  6px 8px;
+    background-size: 65%;
+    background-repeat: no-repeat !important;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 18px;
+    -webkit-border-radius: 20px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
+}
+
+.message-list-title {
+    margin-top: -5px;
+    display: inline-block;
+    height: 60px;
+}
+
+
+.message-list-preview {
+    position: absolute;
+    margin-top: -45px;
+}
+
 .message-list-icon {
     width: 75px;
     border-radius: 10px;
@@ -595,8 +629,10 @@ td.messages-list-wrapper.end  {
 }
 
 .message-list-timestamp {
+    margin-top: 15px;
     white-space: nowrap;
     text-align: left;
+    display: inline-block;
 }
 
 .message-list-content {

@@ -321,6 +321,15 @@ async function getConversation(pid, pid2) {
     });
 }
 
+async function getLatestMessage(pid, pid2) {
+    return POST.findOne({
+        $or: [
+            {pid: pid, message_to_pid: pid2},
+            {pid: pid2, message_to_pid: pid}
+        ]
+    })
+}
+
 module.exports = {
     connect,
     getCommunities,
@@ -358,4 +367,5 @@ module.exports = {
     getFollowedUsers,
     getConversations,
     getConversation,
+    getLatestMessage,
 };
