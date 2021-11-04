@@ -52,7 +52,7 @@ router.get('/announcements', async function (req, res) {
 router.get('/:communityID', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     if(req.params.communityID === 'announcements')
-        res.redirect('/communities/announcements')
+        return res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
     if(community === null && req.query.title_id)
         community = await database.getCommunityByTitleID(req.query.title_id)
