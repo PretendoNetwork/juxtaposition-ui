@@ -47,7 +47,7 @@
                             <%}%>
                         </td>
                         <td>
-                            <h2 class="message-list-title"><%= message.screen_name %> </h2>
+                            <h2 class="message-list-title"><%= userMap.get(message) %> </h2>
                             <h4 class="message-list-timestamp"> - <%= moment(message.created_at).fromNow() %></h4>
                         </td>
                     </tr>

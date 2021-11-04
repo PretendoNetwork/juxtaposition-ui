@@ -16,7 +16,8 @@ router.get('/', upload.none(), async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     res.render('admin/admin_home.ejs', {
         user: user,
-        account_server: config.account_server_domain.slice(8)
+        account_server: config.account_server_domain.slice(8),
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -64,6 +65,7 @@ router.get('/discovery', upload.none(), async function (req, res) {
     res.render('admin/admin_discovery.ejs', {
         user: user,
         account_server: config.account_server_domain.slice(8),
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -76,6 +78,7 @@ router.get('/communities', upload.none(), async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         communities: communities,
         moment: moment,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -84,6 +87,7 @@ router.get('/audit', upload.none(), async function (req, res) {
     res.render('admin/admin_audit.ejs', {
         user: user,
         account_server: config.account_server_domain.slice(8),
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -99,6 +103,7 @@ router.get('/announcements', upload.none(), async function (req, res) {
         totalNumPosts: totalNumPosts,
         user: user,
         account_server: config.account_server_domain.slice(8),
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -108,7 +113,8 @@ router.get('/communities/new', upload.none(), async function (req, res) {
     res.render('admin/admin_new_community.ejs', {
         user: user,
         account_server: config.account_server_domain.slice(8),
-        communityID: communityID
+        communityID: communityID,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -124,6 +130,7 @@ router.get('/communities/:communityID', upload.none(), async function (req, res)
         totalNumPosts: totalNumPosts,
         user: user,
         account_server: config.account_server_domain.slice(8),
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -134,6 +141,7 @@ router.get('/communities/:communityID/edit', upload.none(), async function (req,
         user: user,
         account_server: config.account_server_domain.slice(8),
         community: community,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -146,7 +154,8 @@ router.get('/communities/:communityID/sub', upload.none(), async function (req, 
         account_server: config.account_server_domain.slice(8),
         communities: communities,
         moment: moment,
-        communityID: req.params.communityID.toString()
+        communityID: req.params.communityID.toString(),
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -157,6 +166,7 @@ router.get('/communities/:communityID/sub/new', upload.none(), async function (r
         user: user,
         account_server: config.account_server_domain.slice(8),
         community: community,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -167,7 +177,8 @@ router.get('/users', upload.none(), async function (req, res) {
         user: user,
         account_server: config.account_server_domain.slice(8),
         users: users,
-        moment: moment
+        moment: moment,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -188,6 +199,7 @@ router.get('/users/:userID', upload.none(), async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         newPosts: newPosts,
         numPosts: numPosts,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -206,6 +218,7 @@ router.get('/users/:userID/edit', upload.none(), async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         newPosts: newPosts,
         numPosts: numPosts,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -217,6 +230,7 @@ router.get('/posts/new', upload.none(), async function (req, res) {
         community: community,
         user: user,
         account_server: config.account_server_domain.slice(8),
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 

@@ -9,6 +9,7 @@ var router = express.Router();
 router.get('/', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let conversations = await database.getConversations(user.pid);
+    let userMap = await util.data.getUserHash();
     let recentMessages = [];
     for (let recentMessage of conversations) {
         let pid = recentMessage.pids.indexOf(user.pid) === 0 ? recentMessage.pids[1] : recentMessage.pids[0];
@@ -24,6 +25,7 @@ router.get('/', async function (req, res) {
         conversations: conversations,
         recentMessages: recentMessages,
         cdnURL: config.CDN_domain,
+        userMap: userMap,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN
     });

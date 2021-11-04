@@ -59,8 +59,8 @@ router.get('/show', async function (req, res) {
     let user = await database.getUserByPID(userID);
     if(user === null)
         return res.sendStatus(404);
-    if(parentUser === user)
-        res.redirect('/users/me');
+    if(parentUser.pid === user.pid)
+        return res.redirect('/users/me');
     let newPosts = await database.getNumberUserPostsByID(user.pid, 10);
     let numPosts = await database.getTotalPostsByUserID(user.pid);
     let communityMap = await util.data.getCommunityHash();

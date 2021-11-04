@@ -378,7 +378,7 @@ router.post('/posts/new', upload.none(), async function(req, res) {
             language_id: req.body.language_id,
             mii: user.mii,
             mii_face_url: user.pfp_uri,
-            pid: pid,
+            pid: req.body.pid,
             platform_id: 0,
             region_id: 2,
             verified: user.official

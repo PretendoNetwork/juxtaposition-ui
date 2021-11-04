@@ -6,8 +6,8 @@
 
 @font-face {
     font-family: 'Conv_Poppins-Light';
-    src: url('https://portal.cdn.olv.pretendo.cc/fonts/Poppins-Light.eot');
-    src: local('☺'), url('http://portal.cdn.pretendo.cc/fonts/Poppins-Light.woff') format('woff'), url('http://portal.cdn.pretendo.cc/fonts/Poppins-Light.ttf') format('truetype'), url('http://portal.cdn.olv.pretendo.cc/fonts/Poppins-Light.svg') format('svg');
+    src: url('https://cdn.olv.olv.pretendo.cc/fonts/Poppins-Light.eot');
+    src: local('☺'), url('http://cdn.olv.pretendo.cc/fonts/Poppins-Light.woff') format('woff'), url('http://cdn.olv.pretendo.cc/fonts/Poppins-Light.ttf') format('truetype'), url('http://cdn.olv.olv.pretendo.cc/fonts/Poppins-Light.svg') format('svg');
     font-weight: normal;
     font-style: normal;
 }

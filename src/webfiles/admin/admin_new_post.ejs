@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h2 style="display: inline-block; margin-left: 20px">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="http://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+<h2 style="display: inline-block; margin-left: 20px">Juxt Admin Panel - <%= user.user_id %></h2> <img style="width: 57px; display: inline-block; position: absolute; right: 8px;" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
 
 <div class="row">
     <div class="left" style="background-color:#bbb;max-width: 10%;">
@@ -27,9 +27,10 @@
             <table>
                 <tr>
                     <td>
-                        <img class="post-user-icon" src="https://mii-images.cdn.<%= account_server %>/<%= user.pid %>/normal_face.png">
+                        <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
                         <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
                         <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
+                        <input type="hidden" id="pid" name="pid" value="<%= user.pid %>">
                         <input type="hidden" id="_post_type" name="_post_type" value="body">
                     </td>
                     <td>
@@ -63,17 +64,17 @@
                     </td>
                     <td>
                         <label class="checkbox-container checkbox-post">Spoilers
-                            <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);">
+                            <input type="checkbox" id="spoiler" name="spoiler" value="true">
                             <span class="checkmark"></span>
                         </label>
                         <div class="post-screenshot-picker" onclick="loadScreenshots()">
                             <div class="post-screenshot-picker-icon"></div>
-                            <div class="post-screenshot-picker-dropdown">
+                            <!--<div class="post-screenshot-picker-dropdown">
                                 <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true);"></div>
                                 <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false);"></div>
                                 <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
                                 <input type="hidden" id="screenshot-value" name="screenshot" value="">
-                            </div>
+                            </div>-->
                         </div>
                     </td>
                 </tr>
@@ -91,7 +92,7 @@
                 </tr>
                 <tr style="height: 70px">
                     <td>
-                        <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
+                        <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;">
                     </td>
                 </tr>
             </table>
@@ -99,5 +100,36 @@
         <iframe name="formSubmitFrame"></iframe>
     </div>
 </div>
+<script>
+    function changeMiiImageReaction(element) {
+        if(element.checked) {
+            var pfp = document.getElementsByClassName('post-user-icon')[0];
+            var newPfp;
+            switch (element.value) {
+                case '1':
+                    newPfp = 'smile_open_mouth.png'
+                    break;
+                case '2':
+                    newPfp = 'wink_left.png'
+                    break;
+                case '3':
+                    newPfp = 'surprise_open_mouth.png'
+                    break;
+                case '4':
+                    newPfp = 'frustrated.png'
+                    break;
+                case '5':
+                    newPfp = 'sorrow.png'
+                    break;
+                default:
+                    newPfp = 'normal_face.png'
+                    break;
+            }
+            pfp.src = pfp.src.substring(0, pfp.src.lastIndexOf('/') + 1) + newPfp;
+        }
+
+
+    }
+</script>
 </body>
 </html>
