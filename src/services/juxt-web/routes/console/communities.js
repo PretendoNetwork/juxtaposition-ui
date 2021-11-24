@@ -59,7 +59,7 @@ router.get('/:communityID', async function (req, res) {
     if(community === null)
         return res.sendStatus(404);
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, 5);
+    let newPosts = await database.getNumberNewCommunityPostsByID(community, 10);
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
     res.render(req.directory + '/community.ejs', {
         // EJS variable and server-side variable
@@ -82,7 +82,7 @@ router.get('/:communityID/:type', async function (req, res) {
         res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, 5);
+    let newPosts = await database.getNumberNewCommunityPostsByID(community, 10);
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
     res.render(req.directory + '/community.ejs', {
         // EJS variable and server-side variable

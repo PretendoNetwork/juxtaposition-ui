@@ -29,6 +29,7 @@
     "memory-cache": "^0.2.0",
     "moment": "^2.29.1",
     "mongoose": "^5.10.14",
+    "mongoose-unique-validator": "^3.0.0",
     "morgan": "^1.10.0",
     "node-rsa": "^1.1.1",
     "node-snowflake": "0.0.1",

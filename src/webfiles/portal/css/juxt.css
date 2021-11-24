@@ -582,10 +582,11 @@ td.messages-list-wrapper.end  {
     position: absolute;
     min-width: 2px;
     height: 2px;
-    margin-left: 20px;
+    margin-left: 12px;
     border: 3px solid #673DB6;
     background-color: #673DB6;
     -webkit-border-radius: 20px;
+    margin-top: -13px;
 }
 
 .message-page-verified-user-badge {
@@ -611,15 +612,15 @@ td.messages-list-wrapper.end  {
 }
 
 .message-list-title {
-    margin-top: -5px;
+    margin-top: 0;
     display: inline-block;
-    height: 60px;
+    height: 75px;
 }
 
 
 .message-list-preview {
     position: absolute;
-    margin-top: -45px;
+    margin-top: -70px;
 }
 
 .message-list-icon {
@@ -643,20 +644,21 @@ td.messages-list-wrapper.end  {
 }
 
 #message-viewer {
-    display: none;
     margin-top: 50px;
     margin-bottom: 50px;
+    margin-left: -13px;
 }
 
 .message-viewer-top-banner {
     top: 0;
-    width: 975px;
+    width: 1060px;
     background-color: rgba(255,255,255,1);
     border: 1.5px solid #d6d2d2;
     margin-top: 15px;
     margin-left: 15px;
     position: fixed;
     z-index: 10;
+    border-radius: 10px;
 }
 
 .message-viewer-top-banner-back-button {
@@ -685,7 +687,7 @@ td.messages-list-wrapper.end  {
 
 .message-viewer-bottom-banner {
     bottom: 0;
-    width: 975px;
+    width: 1060px;
     min-height: 75px;
     background-color: rgba(255,255,255,1);
     border: 1.5px solid #d6d2d2;
@@ -699,8 +701,8 @@ td.messages-list-wrapper.end  {
 .message-viewer-top-cover {
     background-color: rgba(232,236,236,1);
     position: fixed;
-    height: 15px;
-    width: 1053px;
+    height: 25px;
+    width: 1065px;
     z-index: 10;
     margin-top: -135px;
     margin-left: 15px;
@@ -709,8 +711,8 @@ td.messages-list-wrapper.end  {
 .message-viewer-bottom-cover {
     background-color: rgba(232,236,236,1);
     position: fixed;
-    height: 20px;
-    width: 1053px;
+    height: 30px;
+    width: 1065px;
     z-index: 1;
     margin-top: 565px;
     margin-left: 15px;
@@ -739,7 +741,7 @@ td.messages-list-wrapper.end  {
 }
 
 .message-viewer-bubble-receive-timestamp {
-    left: -860px;
+    left: -945px;
     font-weight: bold;
     margin-top: -15px;
     text-align: right;
@@ -747,7 +749,7 @@ td.messages-list-wrapper.end  {
 }
 
 .message-viewer-bubble-sent {
-    left: 470px;
+    left: 555px;
     background-color: #673DB6;
     border: 3px solid #673DB6;
     border-radius: 10px;
@@ -770,7 +772,7 @@ td.messages-list-wrapper.end  {
 }
 
 .message-viewer-bubble-sent-timestamp {
-    left: -65px;
+    left: -30px;
     font-weight: bold;
     margin-top: -15px;
     text-align: right;
@@ -809,7 +811,7 @@ td.messages-list-wrapper.end  {
     margin-top:20px;
     font-size: 25px;
     white-space: nowrap;
-    width: 800px;
+    width: 890px;
     height: 65px;
 }
 
@@ -1219,6 +1221,7 @@ h4 {
     background-color: #8f8e8e;
     box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
 }
 
 .community-page-post-user-icon.verified{

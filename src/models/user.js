@@ -11,6 +11,7 @@ const  UserSchema = new Schema({
     pid: Number,
     created_at: Date,
     user_id: String,
+    pnid: String,
     birthday: Date,
     country: String,
     pfp_uri: String,

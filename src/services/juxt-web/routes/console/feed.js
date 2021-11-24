@@ -9,7 +9,7 @@ var router = express.Router();
 router.get('/', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let communityMap = await util.data.getCommunityHash();
-    let posts = await database.getNewsFeed(user, 3);
+    let posts = await database.getNewsFeed(user, 10);
     res.render(req.directory + '/feed.ejs', {
         moment: moment,
         user: user,

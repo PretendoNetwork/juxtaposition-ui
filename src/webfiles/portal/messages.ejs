@@ -27,34 +27,31 @@
                 <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
             <%} else { %>
                 <% conversations.forEach(function(conversation) { %>
+                    <%
+                        var position = conversation.pid1.pid === user.pid.toString() ? conversation.pid2 : conversation.pid1;
+                    %>
                     <tr class="message-wrapper" onclick="showMessage('<%= conversation.id %>')">
                         <td class="messages-unread-badge-wrapper">
-                            <div class="unread-badge"></div>
+                            <%if(!position.read) {%><div class="unread-badge"></div><%}%>
                         </td>
                         <td>
-                            <%
-                                var position = conversation.pids.indexOf(user.pid) === 0 ? 1 : 0;
-                                var message = recentMessages.filter(message => {
-                                    return (message.pid.toString() === user.pid.toString() && message.message_to_pid === conversation.pids[position]) || (message.pid.toString() === conversation.pids[position] && message.message_to_pid === user.pid.toString());
-                                })
-                            %>
-                            <%if(message.verified) {%>
-                                <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= conversation.pids[position] %>/normal_face.png">
+                            <%if(position.official) {%>
+                                <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
                                 <span class="message-page-verified-user-badge community-page-verified" style=""></span>
                             <%} else {%>
-                                <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= conversation.pids[position] %>/normal_face.png">
+                                <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
                                 <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
                             <%}%>
                         </td>
                         <td>
-                            <h2 class="message-list-title"><%= userMap.get(message) %> </h2>
-                            <h4 class="message-list-timestamp"> - <%= moment(message.created_at).fromNow() %></h4>
+                            <h2 class="message-list-title"><%= position.screen_name %></h2>
+                            <h4 class="message-list-timestamp"> - <%= moment(conversation.last_message_sent).fromNow() %></h4>
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td></td>
-                        <td colspan="2" class="message-list-preview"><%= message.body %></td>
+                        <td colspan="2" class="message-list-preview"><%= conversation.message_preview %></td>
                     </tr>
                 <% }); %>
             <%}%>

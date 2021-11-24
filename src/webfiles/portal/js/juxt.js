@@ -329,174 +329,60 @@ function followUser(user) {
 
     }
 }
-function loadMessagesTab() {
-    alert('Not Implemented. Check back soon!');
-    /*wiiuBrowser.showLoadingIcon(!0)
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            document.getElementById("main").innerHTML = this.responseText;
-            loadMessages()
-        }
-    };
-    xhttp.open("GET", "/messages.html" + '?ajax=true', true);
-    xhttp.send();
-
-    document.getElementById('nav-bar-profile').classList.remove('selected')
-    document.getElementById('nav-bar-activity-feed').classList.remove('selected')
-    document.getElementById('nav-bar-communities').classList.remove('selected')
-    document.getElementById('nav-bar-messages').classList.remove('selected')
-    document.getElementById('nav-bar-news').classList.remove('selected')
-
-    document.getElementById('nav-bar-messages').classList.add('selected')
-
-    wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
-    wiiuBrowser.showLoadingIcon(!1)*/
-}
-function loadMessages() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            var notificationObj = JSON.parse(this.responseText);
-            /**/
-            var messagesTable = '';
-            var messagePreview = '';
-            var readIndicator = '';
-            for(var i = 0; i < notificationObj.messages.length; i++) {
-                if(notificationObj.messages[i].message_content.length > 64) {
-                    messagePreview = notificationObj.messages[i].message_content.substring(0, 61) + '...';
-                }
-                else
-                    messagePreview = notificationObj.messages[i].message_content;
-                if(notificationObj.messages[i].is_read) {
-                    readIndicator =
-                        '                <td class="messages-unread-badge-wrapper">\n' +
-                        '                    <div></div>\n' +
-                        '                </td>\n'
-                }
-                else {
-                    readIndicator =
-                        '                <td class="messages-unread-badge-wrapper">\n' +
-                        '                    <div class="unread-badge"></div>\n' +
-                        '                </td>\n'
-                }
-                if(i === 0) {
-                    messagesTable +=
-                        '<tr class="message-wrapper" onclick="showMessage(' + notificationObj.messages[i].id + ')">\n' +
-                                        readIndicator +
-                        '                <td class="messages-list-wrapper top">\n' +
-                        '                    <img class="message-list-icon" src="/icons/mario-kart.jpg">\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper top"></td>\n' +
-                        '                <td class="messages-list-wrapper top">\n' +
-                        '                    <h2 class="post-username">' + notificationObj.messages[i].screen_name + '</h2>\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper top"></td>\n' +
-                        '                <td class="messages-list-wrapper top message-list-timestamp">\n' +
-                        '                    <h4>' + notificationObj.messages[i].created_at.substring(0, notificationObj.messages[i].created_at.indexOf(" ")) +'</h4>\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper top"></td>\n' +
-                        '                <td class="messages-list-wrapper top">\n' +
-                        '                    <h3 class="message-list-content">' + messagePreview + '</h3>\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper top end"></td>\n' +
-                        '            </tr>'
-                }
-                else {
-                    messagesTable +=
-                        '<tr class="message-wrapper" onclick="showMessage(' + notificationObj.messages[i].id + ')">\n' +
-                                        readIndicator +
-                        '                <td class="messages-list-wrapper">\n' +
-                        '                    <img class="message-list-icon" src="/icons/mario-kart.jpg">\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper"></td>\n' +
-                        '                <td class="messages-list-wrapper">\n' +
-                        '                    <h2 class="post-username">' + notificationObj.messages[i].screen_name + '</h2>\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper"></td>\n' +
-                        '                <td class="messages-list-wrapper message-list-timestamp">\n' +
-                        '                    <h4>' + notificationObj.messages[i].created_at.substring(0, notificationObj.messages[i].created_at.indexOf(" ")) +'</h4>\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper"></td>\n' +
-                        '                <td class="messages-list-wrapper">\n' +
-                        '                    <h3 class="message-list-content">' + messagePreview + '</h3>\n' +
-                        '                </td>\n' +
-                        '                <td class="messages-list-wrapper end"></td>\n' +
-                        '            </tr>'
-                }
-
-            }
-            document.getElementById('messages-list').innerHTML = messagesTable;
-        }
-    };
-    xhttp.open("GET", "/notifications.json", true);
-    xhttp.send();
-}
 function showMessage(messageID) {
+    var scrollHeight = document.body.scrollHeight;
+    pjax.loadUrl('/messages/' + messageID);
     wiiuBrowser.showLoadingIcon(!0)
-    wiiuSound.playSoundByName('SE_OLV_OK', 1)
-    storeScrollPosition();
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            var messageOBJ = JSON.parse(this.responseText);
-            var threadContents = '';
-            for(var i = 0; i < messageOBJ.messages.length; i++) {
-                if(messageOBJ.messages[i].received) {
-                    threadContents +=
-                        '<div class="message-viewer-bubble-receive">\n' +
-                        '            <p class="message-viewer-bubble-receive-text">' + messageOBJ.messages[i].message_content + '</p>\n' +
-                        '        </div>\n' +
-                        '<div class="message-viewer-bubble-receive-timestamp"><p>' + messageOBJ.messages[i].created_at + '</p></div>\n';
-                }
-                else {
-                    threadContents +=
-                        '<div class="message-viewer-bubble-sent">\n' +
-                        '            <p class="message-viewer-bubble-sent-text">' + messageOBJ.messages[i].message_content + '</p>\n' +
-                        '        </div>\n' +
-                        '<div class="message-viewer-bubble-sent-timestamp"><p>' + messageOBJ.messages[i].created_at + '</p></div>\n';
-                }
-            }
-            document.getElementById('message-viewer-content').innerHTML = threadContents;
-            document.getElementById("message-viewer-name").innerHTML = messageOBJ.screen_name;
-            document.getElementById('message-viewer-content').style.display = 'block';
-            document.getElementById('message-viewer').style.display = 'block';
-            document.getElementById('title').style.display = 'none';
-            document.getElementById('messages-list-wrapper').style.display = 'none';
-            window.scrollTo(0,document.body.scrollHeight);
-            wiiuBrowser.showLoadingIcon(!1)
+    wiiuSound.playSoundByName('SE_OLV_OK', 1);
+    var interval = setInterval(function () {
+        if(document.body.scrollHeight !== scrollHeight) {
+            window.scroll(0, document.body.scrollHeight);
+            clearInterval(interval);
         }
-    };
-    xhttp.open("GET", "/message_thread.json?id=" + messageID, true);
-    xhttp.send();
+    }, 100);
+
 }
-function hideMessage() {
-    document.getElementById('message-viewer-content').style.display = 'none';
-    document.getElementById('message-viewer').style.display = 'none';
-    document.getElementById('title').style.display = 'block';
-    document.getElementById('messages-list-wrapper').style.display = 'block';
-    restoreLastScrollPosition()
-    wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
-}
-function sendMessage() {
+function sendMessage(conversationID, pid) {
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     var dateTime = date +' '+time;
     var messageContents = document.getElementById("message-viewer-input").value;
+    if(messageContents.length === 0)
+        return;
     var currentThread = document.getElementById('message-viewer-content').innerHTML;
     var newMessage =
         '\n<div class="message-viewer-bubble-sent">\n' +
         '            <p class="message-viewer-bubble-sent-text">' + messageContents + '</p>\n' +
         '        </div>\n' +
     '<div class="message-viewer-bubble-sent-timestamp"><p>' + dateTime + '</p></div>\n';
-    document.getElementById("message-viewer-input").value = '';
-    document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage
-    window.scrollTo(0,document.body.scrollHeight);
+    var params = "conversationID=" + conversationID + "&message_to_pid=" + pid + "&body=" + messageContents;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", '/messages/new', true);
+    xhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            var scrollHeight = document.body.scrollHeight;
+            document.getElementById("message-viewer-input").value = '';
+            document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage
+            var interval = setInterval(function () {
+                if(document.body.scrollHeight > scrollHeight) {
+                    window.scroll(0, document.body.scrollHeight);
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+        if (this.readyState === 4 && (this.status === 423 || this.status === 404)) {
+            wiiuErrorViewer.openByCodeAndMessage(5986000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+        }
+    }
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(params);
+
 }
-function sendPainting() {
+function sendPainting(conversationID, pid) {
     wiiuMemo.open(false);
-    var drawing = wiiuMemo.getImage(false)
+    var drawing = wiiuMemo.getImage(false);
+    var rawDrawing = wiiuMemo.getImage(true);
     if(drawing !== blankMemo) {
         if(confirm("Send the Drawing?")) {
             var today = new Date();
@@ -508,11 +394,30 @@ function sendPainting() {
                 '\n<div class="message-viewer-bubble-sent">\n' +
                 '            <img class="message-viewer-bubble-sent-memo" src="data:image/bmp;base64,' + drawing + '" >\n' +
                 '        </div>\n' +
-                '<div class="message-viewer-bubble-sent-timestamp"><p>' + dateTime + '</p></div>\n' +
-                '<img src=\'\' onerror=\'window.scrollTo(0,document.body.scrollHeight);\'>';
+                '<div class="message-viewer-bubble-sent-timestamp"><p>' + dateTime + '</p></div>\n';
+            var scrollHeight = document.body.scrollHeight;
             document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage;
             wiiuMemo.reset();
-            alert('Sent!');
+            var params = "conversationID=" + conversationID + "&message_to_pid=" + pid + "&raw=" + rawDrawing + "&&drawing=" + drawing;
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '/messages/new', true);
+            xhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    document.getElementById("message-viewer-input").value = '';
+                    document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage
+                    var interval = setInterval(function () {
+                        if(document.body.scrollHeight > scrollHeight) {
+                            window.scroll(0, document.body.scrollHeight);
+                            clearInterval(interval);
+                        }
+                    }, 100);
+                }
+                if (this.readyState === 4 && (this.status === 423 || this.status === 404)) {
+                    wiiuErrorViewer.openByCodeAndMessage(5986000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+                }
+            }
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhr.send(params);
         }
         else
             alert('Canceled');
@@ -629,7 +534,7 @@ function loadFeedPosts() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
+            document.getElementById('community-posts-inner-body').innerHTML += this.responseText;
             initCommunityUsers();
         }
         else if(this.readyState === 4 && this.status === 204)

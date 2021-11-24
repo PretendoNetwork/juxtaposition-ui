@@ -4,9 +4,6 @@ const fs = require('fs-extra');
 const database = require('./database');
 const logger = require('./logger');
 const config = require('./config.json');
-const xmlParser = require('xml2json');
-const request = require("request");
-const moment = require('moment');
 const { USER } = require('./models/user');
 const translations = require('./translations')
 var HashMap = require('hashmap');
@@ -14,9 +11,6 @@ let TGA = require('tga');
 let pako = require('pako');
 let PNG = require('pngjs').PNG;
 var bmp = require("bmp-js");
-const { toImage } = require('indexed-image-converter');
-const imagePixels = require('image-pixels');
-
 let communityMap = new HashMap();
 let userMap = new HashMap();
 
@@ -53,43 +47,26 @@ function nameCache() {
 }
 
 let methods = {
-    create_user: function(pid, experience, notifications, region) {
-        return new Promise(function(resolve, reject) {
-            database.connect().then(async fun => {
-                    await request({
-                        url: "http://" + config.account_server_domain + "/v1/api/miis?pids=" + pid,
-                        headers: {
-                            'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
-                            'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"]
-                        }
-                    }, function (error, response, body) {
-                        if (!error && response.statusCode === 200) {
-                            let xml = xmlParser.toJson(body, {object: true});
-                            const newUsr = {
-                                pid: pid,
-                                created_at: new Date(),
-                                user_id: xml.miis.mii.user_id,
-                                account_status: 0,
-                                mii: xml.miis.mii.data,
-                                game_skill: experience,
-                                notifications: notifications,
-                                official: false,
-                                country: region,
-                            };
-                            const newUsrObj = new USER(newUsr);
-                            newUsrObj.save();
-                            resolve(newUsr);
-                        }
-                        else
-                        {
-                            console.log('fail');
-                            reject();
-                        }
-
-                    });
-
-            });
-        });
+    create_user: async function(pid, experience, notifications, region) {
+        const pnid = await database.getPNID(pid);
+        if(!pnid)
+            return;
+        const newUsr = {
+            pid: pid,
+            created_at: new Date(),
+            user_id: pnid.mii.name,
+            pnid: pnid.username,
+            birthday: new Date(pnid.birthdate),
+            account_status: 0,
+            mii: pnid.mii.data,
+            game_skill: experience,
+            notifications: notifications,
+            official: pnid.access_level === 3,
+            country: region,
+        };
+        const newUsrObj = new USER(newUsr);
+        await newUsrObj.save();
+        console.log(newUsrObj);
     },
     decodeParamPack: function (paramPack) {
         /*  Decode base64 */

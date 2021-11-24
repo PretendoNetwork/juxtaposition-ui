@@ -76,7 +76,7 @@
                 <td>
                     <div class="community-page-shaded-info-container">
                         <h4 class="community-page-table-label"><%= lang.user_page.birthday %></h4>
-                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%>N/A<%}else {%>Private<%}%></h4>
+                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%>Private<%}%></h4>
                     </div>
                 </td>
                 <td>

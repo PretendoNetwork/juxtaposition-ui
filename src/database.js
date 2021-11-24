@@ -1,19 +1,23 @@
 const mongoose = require('mongoose');
 const { mongoose: mongooseConfig } = require('./config.json');
-const { TOPIC } = require('./models/topic');
 const { ENDPOINT } = require('./models/endpoint');
 const { COMMUNITY } = require('./models/communities');
 const { POST } = require('./models/post');
 const { USER } = require('./models/user');
 const { CONVERSATION } = require('./models/conversation');
 const { uri, database, options } = mongooseConfig;
+const {PNID} = require('./models/pnid');
+const logger = require('./logger');
+const accountDB = require('./accountdb');
 
 let connection;
 
 async function connect() {
     await mongoose.connect(`${uri}/${database}`, options);
-
     connection = mongoose.connection;
+    connection.on('connected', function () {
+        logger.info(`MongoDB connected ${this.name}`);
+    });
     connection.on('error', console.error.bind(console, 'connection error:'));
     connection.on('close', () => {
         connection.removeAllListeners();
@@ -26,28 +30,10 @@ function verifyConnected() {
     }
 }
 
-async function getTopicByName(topicName) {
-    verifyConnected();
-
-    if (typeof topicName !== 'string') {
-        return null;
+function verifyAccConnected() {
+    if (!PNID) {
+        accountDB.connect();
     }
-
-    return TOPIC.findOne({
-        name: topicName
-    });
-}
-
-async function getTopicByCommunityID(communityID) {
-    verifyConnected();
-
-    if (typeof communityID !== 'string') {
-        return null;
-    }
-
-    return TOPIC.findOne({
-        community_id: communityID
-    });
 }
 
 async function getCommunities(numberOfCommunities) {
@@ -272,7 +258,7 @@ async function getUserByUsername(user_id) {
     verifyConnected();
 
     return USER.findOne({
-        user_id: new RegExp(`^${user_id}$`, 'i')
+        pnid: new RegExp(`^${user_id}$`, 'i')
     });
 }
 
@@ -322,12 +308,25 @@ async function getConversation(pid, pid2) {
 }
 
 async function getLatestMessage(pid, pid2) {
+    verifyConnected();
     return POST.findOne({
         $or: [
             {pid: pid, message_to_pid: pid2},
             {pid: pid2, message_to_pid: pid}
         ]
     })
+}
+
+async function getPNIDS() {
+    verifyAccConnected();
+    return await PNID.find({});
+}
+
+async function getPNID(pid) {
+    verifyAccConnected();
+    return await PNID.findOne({
+        pid: pid
+    });
 }
 
 module.exports = {
@@ -368,4 +367,6 @@ module.exports = {
     getConversations,
     getConversation,
     getLatestMessage,
+    getPNID,
+    getPNIDS
 };

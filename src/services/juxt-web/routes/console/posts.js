@@ -68,7 +68,7 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
     let painting = "", paintingURI = "";
     if (req.body.painting && req.body.painting !== 'eJztwTEBACAMA7DCNRlIQRbu4ZoEviTJTNvjZNUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL55fYLL3w==') {
         painting = req.body.painting.replace(/\0/g, "").trim();
-        paintingURI = await util.data.processPainting(painting);
+        paintingURI = await util.data.processPainting(painting, true);
     }
     let screenshot = "";
     if (req.body.screenshot) {

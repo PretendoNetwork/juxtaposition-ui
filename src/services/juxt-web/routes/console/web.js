@@ -106,6 +106,8 @@ router.get('/drawing/:image_id.png', async function (req, res) {
 
 router.get('/notifications.json', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
+    if(!user)
+        return res.sendStatus(403);
     if(user.notification_list) {
         res.send(
             {
