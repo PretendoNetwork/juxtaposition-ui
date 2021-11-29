@@ -528,14 +528,14 @@ function loadCommunityPosts(typeCheck) {
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
-function loadFeedPosts() {
+function loadFeedPosts(element) {
+    var offset = Number(element.getAttribute('data-offset'));
+    //alert(offset)
     wiiuBrowser.showLoadingIcon(!0);
-    var postID = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             document.getElementById('community-posts-inner-body').innerHTML += this.responseText;
-            initCommunityUsers();
         }
         else if(this.readyState === 4 && this.status === 204)
         {
@@ -545,9 +545,10 @@ function loadFeedPosts() {
             wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
         }
     };
-    xhttp.open("GET", '/activity-feed/loadposts?postID=' + postID, true);
+    xhttp.open("GET", '/activity-feed/loadposts?offset=' + offset, true);
     xhttp.send();
 
+    element.dataset.offset = offset + 10
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }

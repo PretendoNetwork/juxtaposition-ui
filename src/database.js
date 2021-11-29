@@ -284,6 +284,17 @@ async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
+async function getNewsFeedOffset(user, limit, offset) {
+    verifyConnected();
+    return POST.find({
+        $or: [
+            {pid: user.followed_users},
+            {pid: user.pid}
+        ],
+        parent: null
+    }).skip(offset).limit(limit).sort({ created_at: -1});
+}
+
 async function getConversations(pid) {
     verifyConnected();
     return CONVERSATION.find({
@@ -356,6 +367,7 @@ module.exports = {
     pushNewNotificationToAll,
     getNewsFeed,
     getNewsFeedAfterTimestamp,
+    getNewsFeedOffset,
     getFollowingUsers,
     getFollowedUsers,
     getConversations,

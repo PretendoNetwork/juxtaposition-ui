@@ -23,13 +23,14 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/loadposts', async function (req, res) {
-    let post = await database.getPostByID(req.query.postID);
+    let offset = parseInt(req.query.offset);
     let user = await database.getUserByPID(req.pid);
     let communityMap = await util.data.getCommunityHash();
     let posts;
-    if(post !== null)
-        posts = await database.getNewsFeedAfterTimestamp(user, 3, post);
-
+    if(offset !== null)
+        posts = await database.getNewsFeedOffset(user, 10, offset);
+    if(posts === undefined)
+        return res.sendStatus(204);
     if(posts.length > 0)
     {
         res.render(req.directory + '/more_posts.ejs', {
