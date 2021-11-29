@@ -39,10 +39,9 @@ function auth(request, response, next) {
             let pid = util.data.processServiceToken(request.headers["x-nintendo-servicetoken"]);
             let paramPackData = util.data.decodeParamPack(request.headers["x-nintendo-parampack"]);
             if(pid === null) {
-                console.log('Invalid Token: ' + request.headers["x-nintendo-servicetoken"])
                 return response.render('portal/ban_notification.ejs', {
                     user: null,
-                    error: "Unable to parse service token. Are you using a NNID?"
+                    error: "Unable to parse service token. Are you using a Nintendo Network ID?"
                 });
             }
 

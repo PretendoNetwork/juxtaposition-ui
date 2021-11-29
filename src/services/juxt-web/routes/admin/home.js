@@ -282,11 +282,9 @@ router.post('/login', upload.none(), async function (req, res) {
         port = 'https://'
     let user_id = req.body.user_id;
     let user = await database.getUserByUsername(user_id);
-    let pnid = await database.getPNID(user.pid)
-    console.log(user.pid)
     let password = req.body.password;
-    if(user !== null && password !== null && pnid !== null) {
-        if(pnid.access_level !== 3) {
+    if(user !== null && password !== null) {
+        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] is not authorized to access the application');
             throw new Error('User is not authorized to access the application');
         }
@@ -310,6 +308,7 @@ router.post('/login', upload.none(), async function (req, res) {
                 res.send(body);
             }
             else {
+                console.log(body)
                 res.statusCode = 403;
                 let response = {
                     error_code: 403,
@@ -319,14 +318,8 @@ router.post('/login', upload.none(), async function (req, res) {
             }
         });
     }
-    else {
-        res.statusCode = 403;
-        let response = {
-            error_code: 403,
-            message: 'Invalid account ID or password'
-        };
-        res.send(response);
-    }
+    else
+        throw new Error('Invalid account ID or password');
 });
 
 module.exports = router;

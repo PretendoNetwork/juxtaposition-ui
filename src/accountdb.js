@@ -10,32 +10,35 @@ function connect() {
         pnidConnection = makeNewConnection(`${uri}/${database}`, options);
 }
 
+function verifyConnected() {
+    if (!pnidConnection) {
+        throw new Error('Cannot make database requests without being connected');
+    }
+}
+
 function makeNewConnection(uri) {
-    //const db = mongoose.createConnection(`${uri}/${database}`, options);
-    const db = mongoose.createConnection(uri, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    });
+    pnidConnection = mongoose.createConnection(uri, options);
 
-    db.on('error', function (error) {
+    pnidConnection.on('error', function (error) {
         logger.error(`MongoDB connection ${this.name} ${JSON.stringify(error)}`);
-        db.close().catch(() => console.log(`MongoDB :: failed to close connection ${this.name}`));
+        pnidConnection.close().catch(() => logger.error(`MongoDB failed to close connection ${this.name}`));
     });
 
-    db.on('connected', function () {
+    pnidConnection.on('connected', function () {
         logger.info(`MongoDB connected ${this.name} / ${uri}`);
     });
 
-    db.on('disconnected', function () {
+    pnidConnection.on('disconnected', function () {
         logger.info(`MongoDB disconnected ${this.name}`);
     });
 
-    return db;
+    return pnidConnection;
 }
 
 pnidConnection = makeNewConnection(`${uri}/${database}`, options);
 
 module.exports = {
     pnidConnection,
-    connect
+    connect,
+    verifyConnected
 };

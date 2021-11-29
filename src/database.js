@@ -6,7 +6,7 @@ const { POST } = require('./models/post');
 const { USER } = require('./models/user');
 const { CONVERSATION } = require('./models/conversation');
 const { uri, database, options } = mongooseConfig;
-const {PNID} = require('./models/pnid');
+const { PNID } = require('./models/pnid');
 const logger = require('./logger');
 const accountDB = require('./accountdb');
 
@@ -27,12 +27,6 @@ async function connect() {
 function verifyConnected() {
     if (!connection) {
         connect();
-    }
-}
-
-function verifyAccConnected() {
-    if (!PNID) {
-        accountDB.connect();
     }
 }
 
@@ -318,12 +312,12 @@ async function getLatestMessage(pid, pid2) {
 }
 
 async function getPNIDS() {
-    verifyAccConnected();
+    accountDB.verifyConnected();
     return await PNID.find({});
 }
 
 async function getPNID(pid) {
-    verifyAccConnected();
+    accountDB.verifyConnected();
     return await PNID.findOne({
         pid: pid
     });

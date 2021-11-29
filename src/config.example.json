@@ -8,7 +8,15 @@
     "X-Nintendo-Client-Secret": "",
     "mongoose": {
         "uri": "mongodb://localhost:27017",
-        "database": "Miiverse",
+        "database": "name",
+        "options": {
+            "useNewUrlParser": true,
+            "useUnifiedTopology": true
+        }
+    },
+    "account_db": {
+        "uri": "mongodb://localhost:27017",
+        "database": "name",
         "options": {
             "useNewUrlParser": true,
             "useUnifiedTopology": true

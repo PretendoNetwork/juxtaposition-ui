@@ -1,10 +1,10 @@
 <div class="posts-wrapper" id="<%= post.id %>">
     <div class="post-user-info-wrapper" id="<%= post.id %>">
         <%if(post.verified) {%>
-            <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
+            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
             <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
         <%} else {%>
-            <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= post.pid %>/<% if(post.feeling_id === 1) {%>smile_open_mouth.png<%} else if(post.feeling_id === 2 ) {%>wink_left.png<%} else if(post.feeling_id === 3 ) {%>surprise_open_mouth.png<%} else if(post.feeling_id === 4 ) {%>frustrated.png<%} else if(post.feeling_id === 5 ) {%>sorrow.png<%} else {%>normal_face.png<%}%>" data-pjax="/users/show?pid=<%= post.pid %>">
+            <img class="community-page-post-user-icon" src="%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
             <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
         <%}%>
         <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
@@ -40,12 +40,14 @@
                 <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
             <%}%>
             <% if(post.url) { %>
-                <h3 style="font-weight: bolder; color: #4F279B">Video Playback is not yet supported on the 3DS</h3>
+                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <%}%>
-            <% if(post.body) { %>
+            <% if(post.screenshot !== '' && post.body.size <= 50) { %>
                 <div class="community-page-post-text-overlay">
                     <h3><%= post.body %></h3>
                 </div>
+            <%} else {%>
+                <h3><%= post.body %></h3>
             <%}%>
         <%}%>
     </div>

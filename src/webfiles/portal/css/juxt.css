@@ -1133,6 +1133,11 @@ h4 {
     width: 760px;
 }
 
+.community-page-post-wrapper > h3 {
+    padding-left: 0;
+    overflow-wrap: break-word;
+}
+
 .community-page-post-screenshot {
     width: 760px;
     border-radius: 10px;
