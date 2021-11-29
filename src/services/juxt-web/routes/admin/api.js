@@ -14,9 +14,10 @@ var upload = multer({ storage: storage });
 
 router.get('/communities/all', async function(req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+        if(pnid.access_level !== 3)
             throw new Error('Invalid credentials supplied');
         res.send(await database.getCommunities(-1))
     }
@@ -26,9 +27,10 @@ router.get('/communities/all', async function(req, res) {
 
 router.get('/communities/:communityID', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+        if(pnid.access_level !== 3)
             throw new Error('Invalid credentials supplied');
         res.send(await database.getCommunityByID(req.params.communityID))
     }
@@ -38,9 +40,10 @@ router.get('/communities/:communityID', async function (req, res) {
 
 router.post('/communities/:communityID/delete', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+        if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to delete a community and is not authorized');
             throw new Error('Invalid credentials supplied');
         }
@@ -59,9 +62,10 @@ router.post('/communities/:communityID/delete', async function (req, res) {
 
 router.post('/communities/:communityID/update', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), async function(req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+        if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to update a community and is not authorized');
             throw new Error('Invalid credentials supplied');
         }
@@ -113,10 +117,11 @@ router.post('/communities/:communityID/update', upload.fields([{name: 'browserIc
 
 router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), async function(req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
 
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+        if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
             throw new Error('Invalid credentials supplied');
         }
@@ -160,10 +165,11 @@ router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1
 
 router.post('/communities/:communityID/sub/new', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), async function(req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
 
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+        if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
             throw new Error('Invalid credentials supplied');
         }
@@ -216,10 +222,11 @@ router.post('/communities/:communityID/sub/new', upload.fields([{name: 'browserI
 
 router.post('/discovery/update', upload.none(), async function(req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
 
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+        if(pnid.access_level !== 3)
             throw new Error('Invalid credentials supplied');
         let endpoint = await database.getServerConfig();
         endpoint.has_error = req.body.has_error;
@@ -232,10 +239,11 @@ router.post('/discovery/update', upload.none(), async function(req, res) {
 
 router.get('/users/all', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
 
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+        if(pnid.access_level !== 3)
             throw new Error('Invalid credentials supplied');
 
         res.send(await database.getUsers(-1))
@@ -246,10 +254,11 @@ router.get('/users/all', async function (req, res) {
 
 router.get('/users/loadPosts', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
 
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+        if(pnid.access_level !== 3)
             throw new Error('Invalid credentials supplied');
 
         let post = await database.getPostByID(req.query.postID);
@@ -276,10 +285,11 @@ router.get('/users/loadPosts', async function (req, res) {
 
 router.get('/users/:userID', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
 
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1)
+        if(pnid.access_level !== 3)
             throw new Error('Invalid credentials supplied');
 
         res.send(await database.getUserByPID(req.params.userID))
@@ -310,9 +320,10 @@ router.post('/users/:userID/update', upload.none(), async function(req, res) {
 
 router.post('/posts/:postID/delete', async function(req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+        if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to delete a post and is not authorized');
             throw new Error('Invalid credentials supplied');
         }
@@ -338,10 +349,11 @@ router.get('/notifications', async function(req, res) {
 
 router.post('/posts/new', upload.none(), async function(req, res) {
     let user = await database.getUserByPID(req.pid);
+    let pnid = await database.getPNID(req.pid)
 
     if(user !== null)
     {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+        if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] attempted to create a community and is not authorized');
             throw new Error('Invalid credentials supplied');
         }
@@ -386,7 +398,7 @@ router.post('/posts/new', upload.none(), async function(req, res) {
         const newPost = new POST(document);
         newPost.save();
         res.sendStatus(200);
-        logger.audit('[' + user.user_id + ' - ' + user.pid + '] posed to the announcements community');
+        logger.audit(`[${user.pnid} - ${user.pid}] posed to the ${community.name} community.`);
     }
     else
         throw new Error('Invalid account ID or password');

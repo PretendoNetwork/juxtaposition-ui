@@ -12,7 +12,6 @@ var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
 
 router.get('/', upload.none(), async function (req, res) {
-    console.log(req.cookies.token)
     let user = await database.getUserByPID(req.pid);
     res.render('admin/admin_home.ejs', {
         user: user,
@@ -282,11 +281,19 @@ router.post('/login', upload.none(), async function (req, res) {
         port = 'https://'
     let user_id = req.body.user_id;
     let user = await database.getUserByUsername(user_id);
+    let pnid = await database.getPNID(user.pid)
+    console.log(pnid)
+    console.log(user.pid)
     let password = req.body.password;
-    if(user !== null && password !== null) {
-        if(config.authorized_PNIDs.indexOf(user.pid) === -1) {
+    if(user !== null && password !== null && pnid !== null) {
+        if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] is not authorized to access the application');
-            throw new Error('User is not authorized to access the application');
+            res.statusCode = 403;
+            let response = {
+                error_code: 403,
+                message: 'You are not authorized to access this application'
+            };
+            return res.send(response);
         }
         let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
         await request.post({
@@ -305,21 +312,26 @@ router.post('/login', upload.none(), async function (req, res) {
         }, function (error, response, body) {
             if (!error && response.statusCode === 200) {
                 logger.audit('[' + user.user_id + ' - ' + user.pid + '] signed into the application');
-                res.send(body);
+                return res.send(body);
             }
             else {
-                console.log(body)
                 res.statusCode = 403;
                 let response = {
                     error_code: 403,
                     message: 'Invalid account ID or password'
                 };
-                res.send(response);
+                return res.send(response);
             }
         });
     }
-    else
-        throw new Error('Invalid account ID or password');
+    else {
+        res.statusCode = 403;
+        let response = {
+            error_code: 403,
+            message: 'Invalid account ID or password'
+        };
+        return res.send(response);
+    }
 });
 
 module.exports = router;
