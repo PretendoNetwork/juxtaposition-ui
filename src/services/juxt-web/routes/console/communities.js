@@ -33,7 +33,7 @@ router.get('/announcements', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let community = await database.getCommunityByID('announcements');
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, 25);
+    let newPosts = await database.getNumberNewCommunityPostsByID(community, 10);
     let totalNumPosts = await database.getTotalPostsByCommunity(community);
     res.render(req.directory + '/announcements.ejs', {
         moment: moment,
@@ -100,25 +100,23 @@ router.get('/:communityID/:type', async function (req, res) {
 });
 
 router.get('/:communityID/:type/loadPosts', async function (req, res) {
-    let post = await database.getPostByID(req.query.postID);
+    let offset = parseInt(req.query.offset);
     let user = await database.getUserByPID(req.pid);
     let communityMap = await util.data.getCommunityHash();
     let posts;
-    if(post !== null)
-        posts = await database.getCommunityPostsAfterTimestamp(post, 1);
-    else {
-        let community = await database.getCommunityByID(req.params.communityID)
-        switch (req.params.type) {
-            case 'popular':
-                posts = await database.getNumberPopularCommunityPostsByID(community, 10);
-                break;
-            case 'verified':
-                posts = await database.getNumberVerifiedCommunityPostsByID(community, 10);
-                break;
-            default:
-                posts = await database.getNewPostsByCommunity(community, 10);
-                break;
-        }
+    let community = await database.getCommunityByID(req.params.communityID)
+    if(!offset)
+        offset = 0;
+    switch (req.params.type) {
+        case 'popular':
+            posts = await database.getNumberPopularCommunityPostsByID(community, 10, offset);
+            break;
+        case 'verified':
+            posts = await database.getNumberVerifiedCommunityPostsByID(community, 10, offset);
+            break;
+        default:
+            posts = await database.getNewPostsByCommunity(community, 10, offset);
+            break;
     }
     if(posts.length > 0)
     {

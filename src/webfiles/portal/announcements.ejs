@@ -38,7 +38,7 @@
             <% if(totalNumPosts === 0) {%>
                 <p class="no-posts-text"><%= lang.global.no_posts %></p>
             <%} else { %>
-                <button id="load-more-posts-button" onclick="loadCommunityPosts(true)">Load More Posts</button>
+                    <button id="load-more-posts-button" data-offset="10"  onclick="loadCommunityPosts(this, true)"><%= lang.global.more %></button>
                 <% newPosts.forEach(function(post) { %>
                     <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
                 <% }); %>

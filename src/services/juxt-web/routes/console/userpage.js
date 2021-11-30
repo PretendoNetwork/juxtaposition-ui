@@ -80,14 +80,14 @@ router.get('/show', async function (req, res) {
 });
 
 router.get('/loadPosts', async function (req, res) {
-    let post = await database.getPostByID(req.query.postID);
-    let user = await database.getUserByPID(req.pid);
-    let newPosts = '';
-    if(post !== null)
-        newPosts = await database.getUserPostsAfterTimestamp(post, 10);
+    let offset = parseInt(req.query.offset);
+    let pid;
+    if(req.query.pid)
+        pid = req.query.pid
     else
-        newPosts = await database.getNumberUserPostsByID(req.query.pid, 10);
-
+        pid = req.pid
+    let user = await database.getUserByPID(pid);
+    let newPosts = await database.getUserPostsOffset(pid, 10, offset);
     let communityMap = await util.data.getCommunityHash();
     if(newPosts.length > 0)
     {

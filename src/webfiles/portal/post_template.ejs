@@ -42,7 +42,7 @@
             <% if(post.url) { %>
                     <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <%}%>
-            <% if(post.screenshot !== '' && post.body.size <= 50) { %>
+            <% if(post.screenshot !== '' && post.body && post.body.size <= 50) { %>
                 <div class="community-page-post-text-overlay">
                     <h3><%= post.body %></h3>
                 </div>

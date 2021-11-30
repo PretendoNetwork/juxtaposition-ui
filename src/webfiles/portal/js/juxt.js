@@ -475,9 +475,9 @@ function loadPosts(type) {
 
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
 }
-function loadUserPosts() {
+function loadUserPosts(element, pid) {
     wiiuBrowser.showLoadingIcon(!0);
-    var id = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var offset = Number(element.getAttribute('data-offset'));
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -491,15 +491,16 @@ function loadUserPosts() {
             wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
         }
     };
-    xhttp.open("GET", "/users/loadPosts" + '?postID=' + id, true);
+    xhttp.open("GET", "/users/loadPosts" + '?offset=' + offset + '&pid=' + pid, true);
     xhttp.send();
 
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
-function loadCommunityPosts(typeCheck) {
+function loadCommunityPosts(element, typeCheck) {
     wiiuBrowser.showLoadingIcon(!0);
-    var postID = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var offset = Number(element.getAttribute('data-offset'));
     var id = document.getElementsByClassName('community-page-follow-button-text')[0].id
     var xhttp = new XMLHttpRequest();
     var type = 'new';
@@ -522,15 +523,15 @@ function loadCommunityPosts(typeCheck) {
             wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
         }
     };
-    xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?postID=' + postID, true);
+    xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?offset=' + offset, true);
     xhttp.send();
 
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
 function loadFeedPosts(element) {
     var offset = Number(element.getAttribute('data-offset'));
-    //alert(offset)
     wiiuBrowser.showLoadingIcon(!0);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -548,7 +549,7 @@ function loadFeedPosts(element) {
     xhttp.open("GET", '/activity-feed/loadposts?offset=' + offset, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 10
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }

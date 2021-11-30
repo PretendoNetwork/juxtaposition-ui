@@ -140,21 +140,21 @@ async function getNumberNewCommunityPostsByID(community, number) {
     }).sort({ created_at: -1}).limit(number);
 }
 
-async function getNumberPopularCommunityPostsByID(community, number) {
+async function getNumberPopularCommunityPostsByID(community, limit, offset) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
         parent: null
-    }).sort({ empathy_count: -1}).limit(number);
+    }).sort({ empathy_count: -1}).skip(offset).limit(limit);
 }
 
-async function getNumberVerifiedCommunityPostsByID(community, number) {
+async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
         verified: true,
         parent: null
-    }).sort({ created_at: -1}).limit(number);
+    }).sort({ created_at: -1}).skip(offset).limit(limit);
 }
 
 async function getPostsByCommunity(community, numberOfPosts) {
@@ -174,12 +174,12 @@ async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
     }).limit(numberOfPosts);
 }
 
-async function getNewPostsByCommunity(community, numberOfPosts) {
+async function getNewPostsByCommunity(community, limit, offset) {
     verifyConnected();
     return POST.find({
         community_id: community.community_id,
         parent: null
-    }).sort({ created_at: -1 }).limit(numberOfPosts);
+    }).sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
 async function getUserPostsAfterTimestamp(post, numberOfPosts) {
@@ -189,6 +189,14 @@ async function getUserPostsAfterTimestamp(post, numberOfPosts) {
         created_at: { $lt: post.created_at },
         parent: null
     }).limit(numberOfPosts);
+}
+
+async function getUserPostsOffset(pid, limit, offset) {
+    verifyConnected();
+    return POST.find({
+        pid: pid,
+        parent: null
+    }).sort({ created_at: -1}).skip(offset).limit(limit);
 }
 
 async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
@@ -361,6 +369,7 @@ module.exports = {
     getUserByPID,
     getUserByUsername,
     getUserPostsAfterTimestamp,
+    getUserPostsOffset,
     getCommunityPostsAfterTimestamp,
     getServerConfig,
     pushNewNotificationByPID,
