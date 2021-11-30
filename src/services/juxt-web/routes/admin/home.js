@@ -70,7 +70,7 @@ router.get('/discovery', upload.none(), async function (req, res) {
 
 router.get('/communities', upload.none(), async function (req, res) {
     let user = await database.getUserByPID(req.pid);
-    let communities = await database.getCommunities(100)
+    let communities = await database.getCommunities(500)
 
     res.render('admin/admin_communities.ejs', {
         user: user,
@@ -93,7 +93,7 @@ router.get('/audit', upload.none(), async function (req, res) {
 router.get('/announcements', upload.none(), async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let community = await database.getCommunityByID('announcements');
-    let newPosts = await database.getNewPostsByCommunity(community, 100);
+    let newPosts = await database.getNewPostsByCommunity(community, 500);
     let totalNumPosts = await database.getTotalPostsByCommunity(community);
 
     res.render('admin/admin_announcements.ejs', {
@@ -120,7 +120,7 @@ router.get('/communities/new', upload.none(), async function (req, res) {
 router.get('/communities/:communityID', upload.none(), async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let community = await database.getCommunityByID(req.params.communityID.toString());
-    let newPosts = await database.getNewPostsByCommunity(community, 100);
+    let newPosts = await database.getNewPostsByCommunity(community, 500);
     let totalNumPosts = await database.getTotalPostsByCommunity(community);
 
     res.render('admin/admin_community.ejs', {
@@ -171,7 +171,7 @@ router.get('/communities/:communityID/sub/new', upload.none(), async function (r
 
 router.get('/users', upload.none(), async function (req, res) {
     let user = await database.getUserByPID(req.pid);
-    let users = await database.getUsers(100);
+    let users = await database.getUsers(500);
     res.render('admin/admin_users.ejs', {
         user: user,
         account_server: config.account_server_domain.slice(8),
@@ -186,7 +186,7 @@ router.get('/users/:userID', upload.none(), async function (req, res) {
     let parentUser =  await database.getUserByPID(req.pid)
     if(user === null)
         res.sendStatus(404);
-    let newPosts = await database.getNumberUserPostsByID(req.params.userID, 50);
+    let newPosts = await database.getNumberUserPostsByID(req.params.userID, 500);
     let numPosts = await database.getTotalPostsByUserID(req.params.userID);
     let communityMap = await util.data.getCommunityHash();
 
