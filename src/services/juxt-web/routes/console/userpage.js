@@ -200,7 +200,10 @@ router.post('/follow', upload.none(), async function (req, res) {
         userToFollow.addToFollowers(user.pid);
         user.addToUsers(userToFollow.pid);
         res.sendStatus(200);
-        await database.pushNewNotificationByPID(userToFollow.pid, user.user_id + ' ' + req.lang.notifications.new_follower, '/users/show?pid=' + user.pid)
+        let content = user.user_id + ' ' + req.lang.notifications.new_follower;
+        var picked = userToFollow.notification_list.find(o => o.content === content);
+        if(picked === undefined)
+            await database.pushNewNotificationByPID(userToFollow.pid, content, '/users/show?pid=' + user.pid)
     }
     else if(req.body.type === 'false' && user !== null  && user.followed_users.indexOf(userToFollow.pid) !== -1)
     {

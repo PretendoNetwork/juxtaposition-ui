@@ -1136,6 +1136,10 @@ h4 {
 .community-page-post-wrapper > h3 {
     padding-left: 0;
     overflow-wrap: break-word;
+    width: 760px;
+    max-width: 760px;
+    line-break: anywhere;
+    line-height: 20px;
 }
 
 .community-page-post-screenshot {

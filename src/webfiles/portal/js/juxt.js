@@ -287,8 +287,6 @@ function followUser(user) {
     var userWrapper = user.parentElement;
     var followersElement = document.getElementById('user-page-followers-tab');
     var followers = followersElement.innerHTML.trim().substr(0, followersElement.innerHTML.indexOf(' ') + 1);
-    alert(followersElement.innerHTML)
-    alert('"' + followers + '"')
     if (userWrapper.classList.contains("selected")) {
         userWrapper.classList.remove("selected");
         user.style.color = '#673DB6';

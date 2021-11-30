@@ -40,7 +40,7 @@
                 <img id="<%= post.id%>" class="community-page-post-painting" src="<%= post.painting_uri %>">
             <%}%>
             <% if(post.url) { %>
-                    <iframe width="760" height="427.5" src="<%= post.url %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <%}%>
             <% if(post.screenshot !== '' && post.body && post.body.size <= 50) { %>
                 <div class="community-page-post-text-overlay">
