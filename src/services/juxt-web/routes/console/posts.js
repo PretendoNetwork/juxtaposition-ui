@@ -75,7 +75,8 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
     }
 
     let miiFace;
-    switch (req.body.emotion) {
+    console.log(parseInt(req.body.emotion))
+    switch (parseInt(req.body.emotion)) {
         case 1:
             miiFace = 'smile_open_mouth.png';
             break;
@@ -156,7 +157,8 @@ router.post('/new', upload.none(), async function (req, res, next) {
     }
 
     let miiFace;
-    switch (req.body.emotion) {
+    console.log(parseInt(req.body.emotion))
+    switch (parseInt(req.body.emotion)) {
         case 1:
             miiFace = 'smile_open_mouth.png';
             break;

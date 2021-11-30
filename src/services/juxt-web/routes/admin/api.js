@@ -371,6 +371,29 @@ router.post('/posts/new', upload.none(), async function(req, res) {
         if (req.body.screenshot) {
             screenshot = req.body.screenshot.replace(/\0/g, "").trim();
         }
+
+        let miiFace;
+        switch (parseInt(req.body.emotion)) {
+            case 1:
+                miiFace = 'smile_open_mouth.png';
+                break;
+            case 2:
+                miiFace = 'wink_left.png';
+                break;
+            case 3:
+                miiFace = 'surprise_open_mouth.png';
+                break;
+            case 4:
+                miiFace = 'frustrated.png';
+                break;
+            case 5:
+                miiFace = 'sorrow.png';
+                break;
+            default:
+                miiFace = 'normal_face.png';
+                break;
+        }
+
         const document = {
             title_id: community.title_id[0],
             community_id: community.community_id,
@@ -389,7 +412,7 @@ router.post('/posts/new', upload.none(), async function(req, res) {
             is_app_jumpable: req.body.is_app_jumpable,
             language_id: req.body.language_id,
             mii: user.mii,
-            mii_face_url: user.pfp_uri,
+            mii_face_url: `https://mii.olv.pretendo.cc/mii/${user.pid}/${miiFace}`,
             pid: req.body.pid,
             platform_id: 0,
             region_id: 2,
