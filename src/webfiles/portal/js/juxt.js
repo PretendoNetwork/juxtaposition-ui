@@ -205,7 +205,7 @@ function hideReplyScreen() {
 }
 function yeah(postNode, postID) {
     var yeahCountElement = document.getElementById('yeah-' + postID);
-    var yeahcount = yeahCountElement.innerHTML.replace(' Yeahs', '');
+    var yeahcount = yeahCountElement.innerHTML.substr(0, yeahCountElement.innerHTML.indexOf(' '));
     if (postNode.classList.contains("selected")) {
         postNode.classList.remove("selected");
         var params = "postID=" + postID + "&type=down";
@@ -214,7 +214,7 @@ function yeah(postNode, postID) {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(params);
         if(yeahcount > 0) {
-            yeahCountElement.innerHTML = --yeahcount + ' Yeahs';
+            yeahCountElement.innerHTML = --yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
             wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
         }
 
@@ -229,11 +229,11 @@ function yeah(postNode, postID) {
 
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                yeahCountElement.innerHTML = ++yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
             if (this.readyState === 4 && this.status === 423) {
-                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                yeahCountElement.innerHTML = ++yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
         }
@@ -284,11 +284,11 @@ function followCommunity(community) {
     }
 }
 function followUser(user) {
-    //user-page-followers-tab
     var userWrapper = user.parentElement;
-    //var userWrapper = document.getElementsByClassName('user-page-follow-button-wrapper')[0];
     var followersElement = document.getElementById('user-page-followers-tab');
-    var followers = followersElement.innerHTML.replace(' Followers', '');
+    var followers = followersElement.innerHTML.trim().substr(0, followersElement.innerHTML.indexOf(' ') + 1);
+    alert(followersElement.innerHTML)
+    alert('"' + followers + '"')
     if (userWrapper.classList.contains("selected")) {
         userWrapper.classList.remove("selected");
         user.style.color = '#673DB6';
@@ -299,7 +299,7 @@ function followUser(user) {
         xhttp.send(params);
 
         user.innerHTML = 'Follow User';
-        followersElement.innerText = --followers + ' Followers'
+        followersElement.innerText = --followers + followersElement.innerHTML.trim().substr(followersElement.innerHTML.indexOf(' '));
         wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
     }
     else {
@@ -314,7 +314,7 @@ function followUser(user) {
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
                 user.innerHTML = 'Following';
-                followersElement.innerText = ++followers + ' Followers'
+                followersElement.innerText = ++followers + followersElement.innerHTML.trim().substr(followersElement.innerHTML.indexOf(' '));
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
             if (this.readyState === 4 && (this.status === 423 || this.status === 404)) {
@@ -322,11 +322,7 @@ function followUser(user) {
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
         }
-
-
         xhttp.send(params);
-
-
     }
 }
 function showMessage(messageID) {

@@ -412,7 +412,7 @@ router.post('/posts/new', upload.none(), async function(req, res) {
             is_app_jumpable: req.body.is_app_jumpable,
             language_id: req.body.language_id,
             mii: user.mii,
-            mii_face_url: `https://mii.olv.pretendo.cc/mii/${user.pid}/${miiFace}`,
+            mii_face_url: `http://mii.olv.pretendo.cc/mii/${user.pid}/${miiFace}`,
             pid: req.body.pid,
             platform_id: 0,
             region_id: 2,
