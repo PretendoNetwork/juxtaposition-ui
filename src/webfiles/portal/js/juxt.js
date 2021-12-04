@@ -276,11 +276,7 @@ function followCommunity(community) {
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
         }
-
-
         xhttp.send(params);
-
-
     }
 }
 function followUser(user) {
@@ -488,7 +484,7 @@ function loadUserPosts(element, pid) {
     xhttp.open("GET", "/users/loadPosts" + '?offset=' + offset + '&pid=' + pid, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 10;
+    element.dataset.offset = offset + 20;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
@@ -520,7 +516,7 @@ function loadCommunityPosts(element, typeCheck) {
     xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?offset=' + offset, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 10;
+    element.dataset.offset = offset + 20;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
@@ -543,7 +539,7 @@ function loadFeedPosts(element) {
     xhttp.open("GET", '/activity-feed/loadposts?offset=' + offset, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 10;
+    element.dataset.offset = offset + 20;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
