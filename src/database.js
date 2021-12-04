@@ -274,7 +274,8 @@ async function getNewsFeed(user, numberOfPosts) {
     return POST.find({
         $or: [
             {pid: user.followed_users},
-            {pid: user.pid}
+            {pid: user.pid},
+            {community_id: user.followed_communities},
         ],
         parent: null
     }).limit(numberOfPosts).sort({ created_at: -1});
@@ -285,7 +286,8 @@ async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
     return POST.find({
         $or: [
             {pid: user.followed_users},
-            {pid: user.pid}
+            {pid: user.pid},
+            {community_id: user.followed_communities},
         ],
         created_at: { $lt: post.created_at },
         parent: null
@@ -297,7 +299,8 @@ async function getNewsFeedOffset(user, limit, offset) {
     return POST.find({
         $or: [
             {pid: user.followed_users},
-            {pid: user.pid}
+            {pid: user.pid},
+            {community_id: user.followed_communities},
         ],
         parent: null
     }).skip(offset).limit(limit).sort({ created_at: -1});
@@ -332,15 +335,17 @@ async function getLatestMessage(pid, pid2) {
 
 async function getPNIDS() {
     accountDB.verifyConnected();
-    return await PNID.find({});
+    return PNID.find({});
 }
 
 async function getPNID(pid) {
     accountDB.verifyConnected();
-    return await PNID.findOne({
+    return PNID.findOne({
         pid: pid
     });
 }
+
+
 
 module.exports = {
     connect,

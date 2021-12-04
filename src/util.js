@@ -66,7 +66,6 @@ let methods = {
         };
         const newUsrObj = new USER(newUsr);
         await newUsrObj.save();
-        console.log(newUsrObj);
     },
     decodeParamPack: function (paramPack) {
         /*  Decode base64 */

@@ -1,7 +1,7 @@
 var express = require('express');
 const database = require('../../../../database');
 const logger = require('../../../../logger');
-const util = require('../../../../authentication');
+const util = require('../../../../util');
 const config = require('../../../../config.json');
 const { COMMUNITY } = require('../../../../models/communities');
 const { POST } = require('../../../../models/post');

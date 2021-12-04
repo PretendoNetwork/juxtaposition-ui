@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var xml = require('object-to-xml');
 const database = require('../../../../database');
-const util = require('../../../../authentication');
+const util = require('../../../../util');
 var path = require('path');
 
 router.get('/css/:filename', function (req, res) {

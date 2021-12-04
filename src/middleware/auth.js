@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const util = require('../authentication');
+const util = require('../util');
 
 function auth(request, response, next) {
     if(request.path.includes('/css/') || request.path.includes('/fonts/')

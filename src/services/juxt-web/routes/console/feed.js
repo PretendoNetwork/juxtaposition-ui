@@ -1,7 +1,7 @@
 var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
-const util = require('../../../../authentication');
+const util = require('../../../../util');
 const config = require('../../../../config.json');
 var moment = require('moment');
 var router = express.Router();
@@ -9,7 +9,7 @@ var router = express.Router();
 router.get('/', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let communityMap = await util.data.getCommunityHash();
-    let posts = await database.getNewsFeed(user, 10);
+    let posts = await database.getNewsFeed(user, config.post_limit);
     res.render(req.directory + '/feed.ejs', {
         moment: moment,
         user: user,
@@ -28,7 +28,7 @@ router.get('/loadposts', async function (req, res) {
     let communityMap = await util.data.getCommunityHash();
     let posts;
     if(offset !== null)
-        posts = await database.getNewsFeedOffset(user, 10, offset);
+        posts = await database.getNewsFeedOffset(user, config.post_limit, offset);
     if(posts === undefined)
         return res.sendStatus(204);
     if(posts.length > 0)

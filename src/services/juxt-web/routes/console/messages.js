@@ -1,7 +1,7 @@
 var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
-const util = require('../../../../authentication');
+const util = require('../../../../util');
 const config = require('../../../../config.json');
 const { CONVERSATION } = require('../../../../models/conversation');
 const { POST } = require('../../../../models/post');
@@ -82,7 +82,8 @@ router.post('/new', async function (req, res, next) {
 });
 
 router.get('/:message_id', async function (req, res) {
-    let conversation = await database.getConversationByID(req.params.message_id.toString())
+    return res.sendStatus(404);
+    /*let conversation = await database.getConversationByID(req.params.message_id.toString())
     if(!conversation) {
         return res.sendStatus(404);
     }
@@ -100,11 +101,11 @@ router.get('/:message_id', async function (req, res) {
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN
     });
-    /*user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
+    user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
         notification.read = true;
     });
-    user.markModified('notification_list');*/
-    user.save();
+    user.markModified('notification_list');
+    user.save();*/
 });
 
 module.exports = router;

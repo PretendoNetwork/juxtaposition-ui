@@ -1,7 +1,7 @@
 var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
-const util = require('../../../../authentication');
+const util = require('../../../../util');
 const config = require('../../../../config.json');
 var multer  = require('multer');
 var moment = require('moment');
@@ -33,7 +33,7 @@ router.get('/announcements', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let community = await database.getCommunityByID('announcements');
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, 10);
+    let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
     let totalNumPosts = await database.getTotalPostsByCommunity(community);
     res.render(req.directory + '/announcements.ejs', {
         moment: moment,
@@ -59,7 +59,7 @@ router.get('/:communityID', async function (req, res) {
     if(community === null)
         return res.sendStatus(404);
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, 10);
+    let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
     res.render(req.directory + '/community.ejs', {
         // EJS variable and server-side variable
@@ -82,7 +82,7 @@ router.get('/:communityID/:type', async function (req, res) {
         res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, 10);
+    let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
     res.render(req.directory + '/community.ejs', {
         // EJS variable and server-side variable
@@ -109,13 +109,13 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
         offset = 0;
     switch (req.params.type) {
         case 'popular':
-            posts = await database.getNumberPopularCommunityPostsByID(community, 10, offset);
+            posts = await database.getNumberPopularCommunityPostsByID(community, config.post_limit, offset);
             break;
         case 'verified':
-            posts = await database.getNumberVerifiedCommunityPostsByID(community, 10, offset);
+            posts = await database.getNumberVerifiedCommunityPostsByID(community, config.post_limit, offset);
             break;
         default:
-            posts = await database.getNewPostsByCommunity(community, 10, offset);
+            posts = await database.getNewPostsByCommunity(community, config.post_limit, offset);
             break;
     }
     if(posts.length > 0)
