@@ -8,7 +8,7 @@
     "notifications": "通知",
     "go_back": "戻る",
     "back": "戻る",
-    "yeahs": "そうだね！",
+    "yeahs": "そうだね!",
     "more": "もっと読み込む",
     "no_posts": "ポストなし",
     "private": "非公開",
@@ -20,7 +20,7 @@
   "all_communities": {
     "text": "すべてのコミュニティ",
     "announcements": "お知らせ",
-    "ann_string": "最近のお知らせを見るにはここをクリック！",
+    "ann_string": "最近のお知らせを見るにはここをクリック!",
     "popular_places": "人気の場所",
     "new_communities": "新しいコミュニティ",
     "show_all": "全て表示する",
@@ -35,12 +35,12 @@
     "recent": "最近のポスト",
     "popular": "人気のポスト",
     "verified": "承認されたポスト",
-    "new": "新しいポスト"
+    "new": "新規ポスト"
   },
   "user_page": {
     "country": "出身国",
     "birthday": "誕生日",
-    "game_experience": "ゲーム経験",
+    "game_experience": "ゲーム経験度",
     "posts": "ポスト",
     "friends": "フレンド",
     "following": "フォロー中",
@@ -55,38 +55,38 @@
     "no_followers": "フォロワーなし"
   },
   "user_settings": {
-    "profile_settings": "Profile Settings",
-    "show_country": "Show Country on Profile",
-    "show_birthday": "Show Birthday on Profile",
-    "show_game": "Show Game Experience on Profile",
-    "show_comment": "Show Comment on Profile",
-    "profile_comment": "Profile Comment",
-    "swearing": "Profile comment cannot contain explicit language."
+    "profile_settings": "プロフィール設定",
+    "show_country": "プロフィールで出身国を見せる",
+    "show_birthday": "プロフィールで誕生日を見せる",
+    "show_game": "プロフィールでゲーム経験度を見せる",
+    "show_comment": "プロフィールでコメントを見せる",
+    "profile_comment": "プロフィールのコメント",
+    "swearing": "プロフィールのコメントは露骨的な表現を含めません。"
   },
   "activity_feed": {
-    "empty": "It's empty here. Try following someone!"
+    "empty": "空っぽです。誰かをフォローしてみて下さい!"
   },
   "notifications": {
-    "none": "No notifications.",
-    "new_follower": "followed you!"
+    "none": "通知がありません。",
+    "new_follower": "があなたをフォローしました!"
   },
   "new_post": {
-    "new_post_text": "New Post",
-    "post_to": "Post to",
-    "text_hint": "Tap here to make a post.",
-    "swearing": "Post cannot contain explicit language."
+    "new_post_text": "新規ポスト",
+    "post_to": "に掲示する",
+    "text_hint": "ここをタップしてポストを作ってください。",
+    "swearing": "ポストは露骨的な表現を含めません。"
   },
   "messages": {
-    "coming_soon": "Messages isn't ready yet. Check back soon!"
+    "coming_soon": "メッセージはまだ準備できていません。後でまた見に来て下さい!"
   },
   "setup": {
-    "welcome": "Welcome to Juxtaposition!",
-    "welcome_text": "Juxt is a gaming community that connects people from all over the world using Mii characters. Use Juxt to share your gaming experiences and meet people from around the world.",
-    "beta": "Beta Disclaimer",
+    "welcome": "Juxtapositionへようこそ!",
+    "welcome_text": "JuxtはMiiを使って全世界の人々を繋ぐゲームコミュニティです。Juxtを使ってゲームの経験を共有したり、世界の人々に会えます。",
+    "beta": "ベータに関する注意",
     "beta_text": {
-      "first": "You are about to try out the first public beta of Juxt. This means that a lot is still up in the air, and a lot can change at any time.",
-      "second": "This can and may include a total wipe of the database at the conclusion or during the beta period.",
-      "third": "The website, its software and all content found on it are provided on an “as is” and “as available” basis. The Pretendo Network does not give any warranties, whether express or implied, as to the suitability or usability of the website, its software or any of its content."
+      "first": "あなたはJuxtのはじめてのパブリックベータに参加しようとしています。まだ多くの機能が臨時であり、多くがいつでも変わる可能性があります。",
+      "second": "これはベータ期間中や終了後、データベースの完全な消去に繋がることがあります。",
+      "third": "このウェブサイト、そのソフトウェア及びその中のすべての内容は”そのまま“、”利用できる状態で“提供されます。Pretendo Networkは、ウェブサイト、ソフトウェア及びその中のコンテンツの適切性や有用性についてどんな明示的、黙示的保証もしません。"
     },
     "info": "What is Juxtaposition?",
     "info_text": "Juxt is a user-driven gaming community where you can interact with people\n                all over the world. You can write or draw posts in game communities or send messages directly to your friends.",
