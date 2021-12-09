@@ -101,26 +101,26 @@
       "seventh": "Juxtで誰かを知ることは実際の人生でその誰かを知ることと全く違うことを心に残して下さい。絶対にあなたのメールアドレス、住所、職場名や学校名の他、自分のことを特定できる情報をJuxt上の誰にも教えず、他人のものも絶対教えないようにして下さい。追加的に、もしJuxtの誰かが実際の世界で会うことを勧めてきたら、承諾しないでください。Juxtはオンライン上のコミュニティであり、実際世界のミーティングの招集サービスではありません。",
       "eighth": "ネタバレは掲示しない",
       "ninth": "ユーザーの中にはゲームの技術や情報を探しにJuxtに来ることもありますが、他の人々は自分でゲームの秘密を探し出したいと思います。ゲームの秘密やストーリーを明かすポストのことを\"ネタバレ\"と言います。もしゲームのネタバレになりそうなものを掲示しようとしている場合は、ネタバレのチェックを入れてから掲示することをお願いします。こうすると、ネタバレされたくない人々はあなたのポストを見ようとしません。",
-      "tenth": "Code of Conduct Violations",
-      "eleventh": "Our goal is to keep Juxt fun and enjoyable for everyone. In the event that someone violates the Juxt Code of Conduct, we will take appropriate action, up to and including blocking the offending user or console.",
-      "twelfth": "Have You Played That Game?",
-      "thirteenth": "If you're posting in the community for a game you've played, your posts will have an icon indicating that you've played it."
+      "tenth": "行動規範違反",
+      "eleventh": "私たちの目標はJuxtが楽しく過ごせるところであることを維持することです。もし誰かがJuxt行動規範を破った場合は、その状況にあった対処をします。最悪、破ったユーザーやコンソールをブロックすることも有り得ますのでご注意ください。",
+      "twelfth": "あのゲーム、やってみた?",
+      "thirteenth": "もしあなたがプレイしたことがあるゲームのコミュニティにポストを掲示する時、あなたがプレイしたことがある、ということを表すマークが表示されます。"
     },
-    "experience": "Game Experience",
+    "experience": "ゲーム経験度",
     "experience_text": {
-      "info": "Please tell us how you would describe your level of experience with games. You can change this setting later.",
-      "beginner": "Beginner",
-      "intermediate": "Intermediate",
-      "expert": "Expert"
+      "info": "あなたのゲームの経験を下記のどれかで教えてください。跡からも変えられます。",
+      "beginner": "初心者",
+      "intermediate": "中級者",
+      "expert": "上級者"
     },
     "google": "Google Analytics",
-    "google_text": "Juxtaposition uses Google Analytics in order to track how users are using our service. The data collected includes but is not limited to time of visit, pages visited, and time spent on the site. This data is not attached to you in any way, and is not used for advertisements by us or Google.",
-    "ready": "Ready to Start Using Juxt",
-    "ready_text": "First check out some communities and see what people from all over the world are posting about. Take this opportunity to familiarize yourself with Juxt. You might make some new discoveries along the way!",
-    "done": "Have fun in Juxt!",
-    "done_button": "Let's Go!",
-    "guest": "Guest Mode",
-    "guest_text": "We can't verify your account at the moment, which likely means your are currently logging in with a Nintendo Network account. You will still be able to browse Juxt, but you will not be able to Yeah! posts or make posts of your own till you log in with a Pretendo Network account. For more information check the Discord server.",
-    "guest_button": "I Understand"
+    "google_text": "Juxtapositionはユーザーたちがどう私たちのサービスを使っているかを収集するためにGoogle Analyticsを使用しています。収集したデータは訪問回数、訪れたページ、サイトで過ごした時間を含み、それに限りません。このデータはあなたとどの方法でも結び付かれてなく、私たちやGoogleの広告にも使われません。",
+    "ready": "Juxt利用準備完了",
+    "ready_text": "まずはコミュニティをいくつか確認して世界中の人々がどんなポストを掲示しているか確認してみてください。この機会にJuxtに慣れておきましょう。道中新たな発見をするかもしれません!",
+    "done": "Juxtで良い時間を!",
+    "done_button": "行きましょう!",
+    "guest": "ゲストモード",
+    "guest_text": "現在あなたのアカウントを照会できません。ということは、おそらくニンテンドーネットワークIDでログインしているということです。まだJuxtを見ることはできますが、プレテンドーネットワークIDでログインするまでポストにそうだね!をつけたり、自分のポストを作れません。Discordサーバーでより詳しい内容を確認してください。",
+    "guest_button": "OK"
   }
 }
