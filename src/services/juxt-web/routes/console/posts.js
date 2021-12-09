@@ -137,6 +137,8 @@ router.post('/new', upload.none(), async function (req, res, next) {
         throw new Error('User not allowed to post')
     }
     let community = await database.getCommunityByID(req.body.olive_community_id);
+    if(community.community_id === 'announcements')
+        return res.sendStatus(403)
     if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
         res.status(422);
         return res.redirect('/communities/' + community.community_id + '/new');
