@@ -54,7 +54,9 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
     if(user.account_status !== 0 || req.body.olive_community_id === 'announcements') {
         throw new Error('User not allowed to post')
     }
-    let parentPost = await database.getPostByID(req.params.post_id.toString())
+    let parentPost = await database.getPostByID(req.params.post_id.toString());
+    if(!parentPost)
+        return res.sendStatus(403);
     let community = await database.getCommunityByID(req.body.olive_community_id);
     if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
         res.status(422);
