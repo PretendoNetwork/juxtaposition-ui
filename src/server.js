@@ -22,6 +22,7 @@ app.set('views', __dirname + '/webfiles');
 // Create router
 logger.info('Setting up Middleware');
 app.use(morgan('dev'));
+app.enable("trust proxy");
 app.use(express.json());
 
 app.use(express.urlencoded({

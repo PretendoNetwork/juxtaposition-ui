@@ -122,7 +122,7 @@
                                 <div class="post-close-button" onclick="hideReplyScreen();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
                             </td>
                             <td>
-                                <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
+                                <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuBrowser.lockUserOperation(true);wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
                             </td>
                         </tr>
                     </table>

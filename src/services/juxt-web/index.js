@@ -7,7 +7,6 @@ const router = express.Router();
 
 const console = express.Router();
 const admin = express.Router();
-const web_api = express.Router();
 
 // Create subdomains
 logger.info('[JUXT-WEB] Creating \'Wii U\' subdomain');

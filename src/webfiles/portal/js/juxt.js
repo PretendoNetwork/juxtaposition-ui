@@ -75,7 +75,7 @@ document.addEventListener("pjax:complete", function() {
     console.log("Event: pjax:complete", arguments);
 });
 document.addEventListener("pjax:error", function() {
-    wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send code to Jemma on Discord with what you were doing');
+    wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send the error code and what you were doing in');
 });
 document.addEventListener("pjax:success", function() {
     console.log("Event: pjax:success", arguments);
@@ -204,6 +204,7 @@ function hideReplyScreen() {
     wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
 }
 function yeah(postNode, postID) {
+    wiiuBrowser.lockUserOperation(true);
     var yeahCountElement = document.getElementById('yeah-' + postID);
     var yeahcount = yeahCountElement.innerHTML.substr(0, yeahCountElement.innerHTML.indexOf(' '));
     if (postNode.classList.contains("selected")) {
@@ -216,12 +217,12 @@ function yeah(postNode, postID) {
         if(yeahcount > 0) {
             yeahCountElement.innerHTML = --yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
             wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+            wiiuBrowser.lockUserOperation(false);
         }
 
     }
     else {
         postNode.classList.add("selected");
-
         var params = "postID=" + postID + "&type=up";
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/posts/empathy', true);
@@ -231,15 +232,15 @@ function yeah(postNode, postID) {
             if (this.readyState === 4 && this.status === 200) {
                 yeahCountElement.innerHTML = ++yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+                wiiuBrowser.lockUserOperation(false);
             }
             if (this.readyState === 4 && this.status === 423) {
                 yeahCountElement.innerHTML = ++yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+                wiiuBrowser.lockUserOperation(false);
             }
         }
         xhttp.send(params);
-
-
     }
 }
 function followCommunity(community) {
@@ -362,7 +363,7 @@ function sendMessage(conversationID, pid) {
             }, 100);
         }
         if (this.readyState === 4 && (this.status === 423 || this.status === 404)) {
-            wiiuErrorViewer.openByCodeAndMessage(5986000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+            wiiuErrorViewer.openByCodeAndMessage(5986000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in');
         }
     }
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -403,7 +404,7 @@ function sendPainting(conversationID, pid) {
                     }, 100);
                 }
                 if (this.readyState === 4 && (this.status === 423 || this.status === 404)) {
-                    wiiuErrorViewer.openByCodeAndMessage(5986000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+                    wiiuErrorViewer.openByCodeAndMessage(5986000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in');
                 }
             }
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -454,7 +455,7 @@ function loadPosts(type) {
         }
         else if (this.readyState === 4){
             wiiuBrowser.showLoadingIcon(false);
-            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in');
         }
     };
     xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts', true);
@@ -478,7 +479,7 @@ function loadUserPosts(element, pid) {
             document.getElementById('load-more-posts-button').style.display = 'none';
         }
         else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in');
         }
     };
     xhttp.open("GET", "/users/loadPosts" + '?offset=' + offset + '&pid=' + pid, true);
@@ -510,7 +511,7 @@ function loadCommunityPosts(element, typeCheck) {
             document.getElementById('load-more-posts-button').style.display = 'none';
         }
         else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in');
         }
     };
     xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?offset=' + offset, true);
@@ -533,7 +534,7 @@ function loadFeedPosts(element) {
             document.getElementById('load-more-posts-button').style.display = 'none';
         }
         else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in');
         }
     };
     xhttp.open("GET", '/activity-feed/loadposts?offset=' + offset, true);
@@ -583,7 +584,7 @@ function switchUserPageTabs(type, id) {
             document.getElementsByClassName('community-page-post-box')[0].innerHTML = this.responseText;
         }
         else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
+            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in #bug-reports');
         }
     };
     xhttp.open("GET", "/users/" + typeDomain + '?pid=' + id, true);

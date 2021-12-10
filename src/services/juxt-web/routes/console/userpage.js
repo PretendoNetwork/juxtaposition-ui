@@ -104,6 +104,7 @@ router.get('/loadPosts', async function (req, res) {
     }
     else
     {
+        res.status(204)
         res.send('<p class="no-posts-text">' + req.lang.global.no_posts + '</p>')
     }
 });
@@ -137,7 +138,6 @@ router.get('/following', async function (req, res) {
     }
     else
     {
-        res.status(204);
         res.send('<p class="no-posts-text">' + req.lang.user_page.no_following + '</p>')
     }
 });

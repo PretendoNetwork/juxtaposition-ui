@@ -100,6 +100,17 @@ async function getPostReplies(postID, number) {
     }).limit(number);
 }
 
+async function getDuplicatePosts(pid, post) {
+    verifyConnected();
+    return POST.findOne({
+        pid: pid,
+        body: post.body,
+        painting: post.painting,
+        screenshot: post.screenshot,
+        parent: null
+    });
+}
+
 async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
     verifyConnected();
     return POST.find({
@@ -241,6 +252,7 @@ async function getFollowingUsers(user) {
         pid: user.following_users
     });
 }
+
 async function getFollowedUsers(user) {
     verifyConnected();
     return USER.find({
@@ -370,6 +382,7 @@ module.exports = {
     getNumberUserPostsByID,
     getTotalPostsByUserID,
     getPostByID,
+    getDuplicatePosts,
     getUsers,
     getUserByPID,
     getUserByUsername,

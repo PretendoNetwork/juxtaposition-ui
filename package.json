@@ -44,6 +44,7 @@
   "devDependencies": {
     "bmp-js": "^0.1.0",
     "ejs": "^3.1.5",
+    "express-slow-down": "^1.4.0",
     "express-subdomain": "^1.0.5",
     "multer": "^1.4.2",
     "object-to-xml": "^2.0.0",
