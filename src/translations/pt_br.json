@@ -13,7 +13,7 @@
     "no_Postagens": "Sem Postagens",
     "private": "Privado",
     "close": "Fechar",
-    "save": "Salvarr",
+    "save": "Salvar",
     "exit": "Sair",
     "next": "Proxímo"
   },
@@ -35,7 +35,7 @@
     "recent": "Postagens mais Recentes",
     "popular": "Postagens Populares",
     "verified": "Postagens Verificadas",
-    "new": "Novo Post"
+    "new": "Nova Postagem"
   },
   "user_page": {
     "country": "País",
@@ -94,7 +94,7 @@
     "rules_text": {
       "first": "Estas são algumas regras que permitem que Juxt seja uma experiência divertida para todos. O código de conduta contém informação detalhada, por isso leia com atenção.",
       "second": "Publicações podem ser vistas em todo o mundo",
-      "third": "O Juxt contém várias comunidades de jogadores onde pessoas de todo o mundo podem compartilhar as suas ideias. Quando você posta numa comunidade, lembre-se que todos podem ver suas publicações, por isso se expresse de uma maneira que possa ser divertida para todos. Usa o senso comum e pense antes de postar. Juxt é um serviço que também está acessível pela Internet, por isso pessoas que não usam Juxt também podem ver as suas publicações. Adicionalmente, quaisquer comentários que faças em publicações de amigos são visíveis não só por estes, mas também por pessoas de todo o mundo. Tem isto em consideração.",
+      "third": "O Juxt contém várias comunidades de jogadores onde pessoas de todo o mundo podem compartilhar as suas ideias. Quando você posta numa comunidade, lembre-se que todos podem ver suas postagens, por isso se expresse de uma maneira que possa ser divertida para todos. Usa o senso comum e pense antes de postar. Juxt é um serviço que também está acessível pela Internet, por isso pessoas que não usam Juxt também podem ver as suas publicações. Adicionalmente, quaisquer comentários que faças em publicações de amigos são visíveis não só por estes, mas também por pessoas de todo o mundo. Tem isto em consideração.",
       "fourth": "Seja simpático com os outros",
       "fifth": "De forma a mantermos Juxt um lugar divertido para todos, pedimos que pense nas outras pessoas. Ajude-nos a manter Juxt uma boa experiência ao não fazer publicações impróprias ou ofensivas.",
       "sixth": "Não compartilhe informações pessoas suas nem de ninguém",
@@ -108,7 +108,7 @@
     },
     "experience": "Experiência em Jogos",
     "experience_text": {
-      "info": "Fala-nos um pouco da tua experiência com jogos. Podes alterar estas definições mais tarde.",
+      "info": "Fale-nos um pouco da sua experiência com jogos. Você pode alterar estas definições mais tarde.",
       "beginner": "Iniciante",
       "intermediate": "Mediano",
       "expert": "Avançado"
@@ -120,7 +120,7 @@
     "done": "Diverte-se com Juxt!",
     "done_button": "Pronto",
     "guest": "Modo de convidado",
-    "guest_text": "Não nos foi possível verificar a sua conta de momento, o que provavelmente significa que você uma conta Nintendo Network. Podera explorar o Juxt, mas não te será possível marcar postagens com Joinha! ou fazer Postagens até entrar em conta Pretendo Network. Para mais informações visita o nosso servidor Discord.",
+    "guest_text": "Não foi possível verificar a sua conta de momento, o que provavelmente significa que você uma conta Nintendo Network. Podera explorar o Juxt, mas não te será possível marcar postagens com Joinha! ou fazer Postagens até entrar em conta Pretendo Network. Para mais informações visite o nosso servidor Discord.",
     "guest_button": "Compreendo"
   }
 }
