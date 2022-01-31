@@ -35,7 +35,7 @@
                         <tr>
                             <td>
                                 <div class="community-list-wrapper bottom" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
-                                    <img class="community-list-icon" src="<%= popularCommunities[i].browser_thumbnail %>">
+                                    <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].community_id %>.png">
                                     <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                                     <h4><%= popularCommunities[i].followers %> followers</h4>
                                 </div>
@@ -45,7 +45,7 @@
                         <tr>
                             <td>
                                 <div class="community-list-wrapper" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
-                                    <img class="community-list-icon" src="<%= popularCommunities[i].browser_thumbnail %>">
+                                    <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].community_id %>.png">
                                     <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
                                     <h4><%= popularCommunities[i].followers %> followers</h4>
                                 </div>

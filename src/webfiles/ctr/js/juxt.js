@@ -710,6 +710,7 @@ function followCommunity(communityWrapper) {
     }
 }
 function yeah(postNode, postID) {
+    cave.transition_begin();
     var yeahCountElement = document.getElementById('yeah-' + postID);
     var yeahcount = yeahCountElement.innerHTML.replace(' Yeahs', '');
     if (postNode.className.indexOf("selected") !== -1) {
@@ -719,8 +720,9 @@ function yeah(postNode, postID) {
         xhr.open("POST", '/posts/empathy', true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(params);
-        yeahCountElement.innerHTML = --yeahcount + ' Yeahs';
+        yeahCountElement.innerHTML = --yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
         cave.snd_playSe('SE_OLV_CANCEL');
+        cave.transition_end();
     }
     else {
         postNode.className += " selected";
@@ -732,18 +734,21 @@ function yeah(postNode, postID) {
 
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                //yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                yeahCountElement.innerHTML = ++yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
                 cave.snd_playSe('SE_OLV_MII_ADD');
+                cave.transition_end();
             }
             if (this.readyState === 4 && this.status === 423) {
-                yeahCountElement.innerHTML = ++yeahcount + ' Yeahs';
+                yeahCountElement.innerHTML = ++yeahcount + yeahCountElement.innerHTML.substr(yeahCountElement.innerHTML.indexOf(' '));
                 cave.snd_playSe('SE_OLV_MII_ADD');
+                cave.transition_end();
             }
         }
         xhttp.send(params);
-
     }
 }
+
 function loadPosts(type) {
     cave.transition_begin();
     document.getElementById('recent-tab').className = 'community-page-posts-header-tab';
@@ -810,9 +815,9 @@ function loadUserPosts() {
     cave.snd_playSe("SE_OLV_OK");
     cave.transition_end();
 }
-function loadCommunityPosts() {
+function loadCommunityPosts(element) {
     cave.transition_begin();
-    var postID = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var offset = Number(element.getAttribute('data-offset'));
     var id = document.getElementsByClassName('community-page-follow-button')[0].id
     var xhttp = new XMLHttpRequest();
     var type = 'null';
@@ -835,20 +840,22 @@ function loadCommunityPosts() {
             cave.error_callFreeErrorViewer(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
         }
     };
-    xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?postID=' + postID, true);
+    xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?offset=' + offset, true);
     xhttp.send();
 
+    element.setAttribute('data-offset', offset + 10);
     cave.snd_playSe("SE_OLV_OK");
     cave.transition_end();
 }
-function loadFeedPosts() {
+
+
+function loadFeedPosts(element) {
     cave.transition_begin();
-    var postID = document.getElementsByClassName('post-user-info-wrapper')[document.getElementsByClassName('post-user-info-wrapper').length - 1].id
+    var offset = Number(element.getAttribute('data-offset'));
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementsByClassName('community-page-posts-wrapper')[0].innerHTML += this.responseText;
-            initCommunityUsers();
+            document.getElementById('community-posts-inner-body').innerHTML += this.responseText;
         }
         else if(this.readyState === 4 && this.status === 204)
         {
@@ -858,12 +865,14 @@ function loadFeedPosts() {
             cave.error_callFreeErrorViewer(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send code to Jemma on Discord with what you were doing');
         }
     };
-    xhttp.open("GET", '/activity-feed/loadposts?postID=' + postID, true);
+    xhttp.open("GET", '/activity-feed/loadposts?offset=' + offset, true);
     xhttp.send();
 
+    element.setAttribute('data-offset', offset + 10);
     cave.snd_playSe("SE_OLV_OK");
     cave.transition_end();
 }
+
 function newPainting(reset) {
     if(reset)
         cave.memo_clear()

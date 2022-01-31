@@ -485,7 +485,7 @@ function loadUserPosts(element, pid) {
     xhttp.open("GET", "/users/loadPosts" + '?offset=' + offset + '&pid=' + pid, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 20;
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
@@ -517,7 +517,7 @@ function loadCommunityPosts(element, typeCheck) {
     xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?offset=' + offset, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 20;
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
@@ -540,7 +540,7 @@ function loadFeedPosts(element) {
     xhttp.open("GET", '/activity-feed/loadposts?offset=' + offset, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 20;
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }

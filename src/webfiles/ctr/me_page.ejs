@@ -20,9 +20,9 @@
     </div>
     <div class="bottom-screen">
         <%if(user.profile_comment_visibility && user.profile_comment){%>
-            <div class="communities-wrapper" id="popular-communities" style="margin-top: 10px">
-                <p class="communities-header"><%=user.profile_comment%></p>
-            </div>
+        <div class="communities-wrapper" id="popular-communities" style="margin-top: 10px">
+            <p class="communities-header"><%=user.profile_comment%></p>
+        </div>
         <%}%>
         <table class="community-page-table-wrapper">
             <tbody>
@@ -71,6 +71,6 @@
         </div>
         <div class="toolbar-padding"></div>
     </div>
-<body onload="onStart()"></body>
+    <body onload="onStart()"></body>
 </body>
 </html>
