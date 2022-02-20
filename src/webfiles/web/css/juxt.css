@@ -1,0 +1,202 @@
+:root {
+    --background: #1B1F3B;
+    --background-alt: #2a2f50;
+    --text: white;
+    --text-secondary: #A1A8D9;
+    --btn: #673DB6;
+    --btn-secondary: #333960;
+    --theme: var(--btn);
+    --theme-light: #A185D6;
+    --text-secondary-2: #8990C1;
+    --border: rgba(255, 255, 255, 0.1);
+}
+
+button {
+    cursor: pointer;
+    background: #383f6b;
+    border: none;
+    border-radius: 1em;
+    color: var(--text);
+    font-weight: bold;
+    padding: 1em;
+}
+
+a {
+    color: unset;
+    text-decoration: none;
+}
+
+a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#title {
+    color: var(--text);
+}
+
+#nav-bar {
+    display: flex;
+    background: -webkit-gradient(linear, left top, right top, from(#ffffff), to(#fff5f5));
+    list-style: none;
+    user-select: none;
+}
+body {
+    background-color: var(--background);
+    background-repeat: no-repeat !important;
+    /*! background: #eeeeee url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPAAAADwBAMAAADMe/ShAAAAHlBMVEX29vb09PTy8vL19fXz8/Px8fHw8PDv7+/u7u739/dHdNvrAAACSElEQVR4AezYNX7DMBiGcafcKTRlC0hdy7T1Z7iAcS5YOkEl38DeQlNOW24YX63fsxr+Ztm2RmvjMiu2bWbOXPmjtW2A7S8YKlfMCK4lKPzeMoJvYhROHYIJno9gggkmmGCCCSaYYIIJJphgggkmGP/PZQZf4XDHCK5JFFYtE7hXkwWYap0awEMPh8NHA7jPNQprv2EAH5zh8MsTDo9vY/xGxuCeLXFYsVMY7nNZwCm/AcM3scZhnTooPBwfafBYP4JwiZvBfgWDh7Xxkc71DmXjY916hOAbLrMxK7ZuTOfKdxC4ZMf6z1Ui2iEh/2Sdssru8L4dy+zXFVGbuVtntyPxK+cqZRc7wr1Ll0v95/qser1DVZv/yVr5bv10Bczq+ML4Rl/als/ww4WfJptbwuACMbgwhaUVfkvgt6LU1icpdkAAAADAEEz/1EKshHOBgMAnwZ7gNgG9DEwybTKpyZiLRCT6ItqUCJuIYqKoosaJlEsMJBki+ZOElwRfkpqSuElcS9Qnd4LcGN3enRUACMRQDFSDJRzg3wIKuNnNzygYA83rGbx9g1cwGAwGg8FgMBgMBoPBYDAYDAaDwWAwGAwGg8FgMBgMBoPB/bFgfx7ZH4TWJ7DB0W9w5hwcdgen7MHxfp8r9IFGkKQEEU6WHWWhVZaWZTFdlg9mwWSdiAZRbJABB+FzkHoHcXuQ82cDBtlkQzVSkc1yZEMk2fRKNjZTzetkg0LlhJK1KjAYDAaDwWAwGAwGg8FgcAD3L/H6J4DLS/j67eEOl9GYoKbAV2YAAAAASUVORK5CYII='); */
+    margin: 0;
+    font-family: 'Conv_Poppins-Light', sans-serif;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    margin-top: 35px;
+}
+header a {
+    text-decoration: none;
+}
+header .logo-link, header .logo-link svg {
+    display: block;
+    width: 5em;
+}
+header nav a:first-child {
+    margin-left: 40px;
+}
+header nav a {
+    color: var(--text-secondary);
+    margin: 0 17px;
+    text-decoration: none;
+}
+
+#main {
+    width: 95%;
+    max-width: 1590px;
+    margin: 0 auto;
+}
+
+.post-meta-wrapper {
+    display: flex;
+    color: var(--text);
+    align-items: center;
+    margin-left: 0.5em;
+    height: 2em;
+    margin-bottom: 0;
+}
+
+.post-meta-wrapper > h3 > a {
+    text-decoration: none;
+    color: var(--text);
+}
+
+.post-meta-wrapper > h3 > a:hover {
+    text-decoration: underline;
+}
+
+.post-meta-wrapper > h4:last-child {
+    padding-left: 0.5em;
+    color: var(--text-secondary);
+}
+
+.post-user-info-wrapper {
+    display: flex;
+    height: 2em;
+}
+#community-posts-inner-body {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+.posts-wrapper {
+    width: 600px;
+    color: var(--text);
+    background: var(--background-alt);
+    margin-bottom: 1em;
+    padding: 1em;
+    border-radius: 1em;
+}
+.user-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 100%;
+    background: var(--text-secondary);
+}
+
+.painting {
+    image-rendering: pixelated;
+    border-radius: 1em;
+}
+
+.screenshot {
+  border-radius: 1em;
+}
+
+.post-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 74px;
+}
+
+.post-content > h4 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+    font-weight: lighter;
+}
+
+.spoiler-overlay {
+  margin-left: 74px;
+}
+.spoiler-overlay > button {
+  width: 100%;
+  padding: 12px 48px;
+}
+
+.post-buttons-wrapper {
+    margin-top: 1em;
+    display: flex;
+    justify-content: space-between;
+}
+
+.post-buttons-wrapper > span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.25em;
+}
+
+.post-buttons-wrapper > span:hover {
+    cursor: pointer;
+    background: rgba(255, 0, 0, 0.25);
+    border-radius: 0.75em;
+}
+
+.post-buttons-wrapper > span > h4 {
+    padding-left: 0.5em;
+    margin: 0;
+}
+
+@media screen and (max-width: 900px) {
+    .posts-wrapper {
+        width: 90vw;
+    }
+    .post-content {
+        margin-top: 0.25em;
+        margin-left: 2.5em;
+    }
+    .spoiler-overlay {
+        margin-top: 0.25em;
+        margin-left: 2.5em;
+    }
+    .user-icon {
+        width: 2em;
+        height: 2em;
+    }
+    .post-buttons-wrapper {
+        margin-top: 0.5em;
+        margin-bottom: -0.5em;
+        margin-left: 2.5em;
+    }
+}

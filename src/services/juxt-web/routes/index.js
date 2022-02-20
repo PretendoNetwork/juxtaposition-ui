@@ -9,4 +9,5 @@ module.exports = {
 	PORTAL_MESSAGES: require('./console/messages'),
 	WEB_ADMIN: require('./admin/home'),
 	WEB_API: require('./admin/api'),
+	WEB_LOGIN: require('./web/login'),
 };

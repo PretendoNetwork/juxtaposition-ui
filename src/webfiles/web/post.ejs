@@ -1,0 +1,49 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
+    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
+    <script src="<%= cdnURL %>/js/juxt.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-195842548-1');
+    </script>
+    <meta content="<%= post.screen_name %>" property="og:title" />
+    <meta content="<%= post.body %>" property="og:description" />
+    <meta content="https://juxt.pretendo.cc/posts/<%= post.id %>" property="og:url" />
+    <meta content="#1F8A42" data-react-helmet="true" name="theme-color" />
+    <meta content="<%= community.name %> - <%= post.empathy_count%> Yeahs!" property="og:site_name">
+    <meta name="twitter:card" content="summary_large_image" />
+    <% if(post.screenshot !== '') { %>
+        <meta property="og:image" content="https://portal.cdn.pretendo.cc/screenshot/<%= post.id %>.png" />
+    <%}%>
+    <% if(post.painting !== '') { %>
+        <meta property="og:image" content="https://portal.cdn.pretendo.cc/drawing/<%= post.id %>.png" />
+    <%}%>
+</head>
+<body>
+<div id="main">
+    <%- include('nav_bar', { selection: 1 }); %>
+    <h1 id="title" class="page-header">Post</h1>
+    <div class="community-page-post-box">
+        <div id="community-posts-inner-body">
+            <div id="community-posts-inner-body">
+                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
+                <span class="replies-line"></span>
+                <% replies.forEach(function(post) { %>
+                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+                    <span class="replies-line"></span>
+                <% }); %>
+            </div>
+        </div>
+    </div>
+
+    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
+</div>
+<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
+</body>
+</html>

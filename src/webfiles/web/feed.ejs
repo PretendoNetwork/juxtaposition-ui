@@ -1,0 +1,38 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
+    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
+    <script src="<%= cdnURL %>/js/juxt.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-195842548-1');
+    </script>
+
+</head>
+<body>
+<div id="main">
+    <%- include('nav_bar', { selection: 1 }); %>
+    <h1 id="title" class="page-header"><%= lang.global.activity_feed %></h1>
+    <div class="community-page-post-box">
+        <div id="community-posts-inner-body">
+            <% if(posts.length === 0) {%>
+                <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
+            <%} else { %>
+                <% posts.forEach(function(post) { %>
+                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                <% }); %>
+                <button id="load-more-posts-button" data-offset="20" onclick="loadFeedPosts(this)"><%= lang.global.more %></button>
+            <%}%>
+        </div>
+    </div>
+
+    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
+</div>
+<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
+</body>
+</html>

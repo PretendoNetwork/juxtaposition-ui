@@ -248,14 +248,16 @@ router.get('/token', upload.none(), async function (req, res) {
         port = 'http://'
     else
         port = 'https://'
+    let headers = {
+        'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
+        'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"],
+        'X-Nintendo-Title-ID': req.headers['x-nintendo-title-id'],
+        'authorization': req.headers['authorization'],
+    }
+    console.log(headers);
     request.get({
         url: port + config.account_server_domain + "/v1/api/provider/service_token/@me",
-        headers: {
-            'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
-            'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"],
-            'X-Nintendo-Title-ID': req.headers['x-nintendo-title-id'],
-            'authorization': req.headers['authorization'],
-        }
+        headers: headers
     }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             res.send(body);
@@ -275,17 +277,18 @@ router.get('/token', upload.none(), async function (req, res) {
 
 router.post('/login', upload.none(), async function (req, res) {
     let port;
-    if(req.hostname.includes('miiverse'))
+    /*if(req.hostname.includes('miiverse'))
         port = 'http://'
     else
-        port = 'https://'
+        port = 'https://'*/
+    port = 'https://';
     let user_id = req.body.user_id;
     let user = await database.getUserByUsername(user_id);
     let pnid = await database.getPNID(user.pid)
     console.log(pnid)
     console.log(user.pid)
     let password = req.body.password;
-    if(user !== null && password !== null && pnid !== null) {
+    if(password !== null && pnid !== null) {
         if(pnid.access_level !== 3) {
             logger.audit('[' + user.user_id + ' - ' + user.pid + '] is not authorized to access the application');
             res.statusCode = 403;
@@ -318,7 +321,7 @@ router.post('/login', upload.none(), async function (req, res) {
                 res.statusCode = 403;
                 let response = {
                     error_code: 403,
-                    message: 'Invalid account ID or password'
+                    message: 'Invalid account ID or passwordrrrrrrr'
                 };
                 return res.send(response);
             }
@@ -328,7 +331,7 @@ router.post('/login', upload.none(), async function (req, res) {
         res.statusCode = 403;
         let response = {
             error_code: 403,
-            message: 'Invalid account ID or password'
+            message: 'Invalid account ID or passwordddddd'
         };
         return res.send(response);
     }
