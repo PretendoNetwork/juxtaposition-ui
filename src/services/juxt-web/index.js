@@ -35,6 +35,7 @@ console.use('/news', routes.PORTAL_NEWS);
 console.use('/', routes.PORTAL_WEB);
 console.use('/login', routes.WEB_LOGIN);
 console.use('/robots.txt', routes.ROBOTS);
+console.use('/web', routes.PWA);
 
 admin.use('/', routes.WEB_ADMIN);
 admin.use('/v1/', routes.WEB_API);

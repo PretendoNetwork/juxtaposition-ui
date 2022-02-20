@@ -28,6 +28,7 @@ a {
 
 a:hover {
     cursor: pointer;
+    text-decoration: underline;
 }
 
 #title {
@@ -260,6 +261,11 @@ header > a > p {
     margin-bottom: 1em;
 }
 
+iframe {
+    width: 100%;
+    height: fit-content;
+}
+
 @media screen and (max-width: 1350px) { 
     .communities-wrapper {
         max-width: 600px;
@@ -314,6 +320,10 @@ header > a > p {
 
     header a {
         padding: 0.25em 1em 0.25em 1em;
+    }
+    
+    header svg {
+        scale: 0.75;
     }
 
     #load-more-posts-button {

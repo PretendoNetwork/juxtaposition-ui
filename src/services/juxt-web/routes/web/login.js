@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
             res.statusCode = 403;
             let response = {
                 error_code: 403,
-                message: 'Invalid account ID or passwordrrrrrrr'
+                message: 'Invalid account ID or password'
             };
             return res.send(response);
         }
