@@ -10,4 +10,5 @@ module.exports = {
 	WEB_ADMIN: require('./admin/home'),
 	WEB_API: require('./admin/api'),
 	WEB_LOGIN: require('./web/login'),
+	ROBOTS: require('./web/robots'),
 };
