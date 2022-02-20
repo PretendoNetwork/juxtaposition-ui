@@ -3,7 +3,7 @@ const util = require('../util');
 
 function auth(request, response, next) {
     if(request.path.includes('/css/') || request.path.includes('/fonts/')
-        || request.path.includes('/js/') || request.path.includes('/icons/') || request.path.includes('/banner/')) {
+        || request.path.includes('/js/') || request.path.includes('/icons/') || request.path.includes('/banner/') || request.path.includes('/posts/')) {
         if(request.subdomains.indexOf('juxt') !== -1) {
             request.directory = 'web';
         }

@@ -254,7 +254,6 @@ router.get('/token', upload.none(), async function (req, res) {
         'X-Nintendo-Title-ID': req.headers['x-nintendo-title-id'],
         'authorization': req.headers['authorization'],
     }
-    console.log(headers);
     request.get({
         url: port + config.account_server_domain + "/v1/api/provider/service_token/@me",
         headers: headers
@@ -285,8 +284,6 @@ router.post('/login', upload.none(), async function (req, res) {
     let user_id = req.body.user_id;
     let user = await database.getUserByUsername(user_id);
     let pnid = await database.getPNID(user.pid)
-    console.log(pnid)
-    console.log(user.pid)
     let password = req.body.password;
     if(password !== null && pnid !== null) {
         if(pnid.access_level !== 3) {
