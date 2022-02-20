@@ -3,8 +3,8 @@
     <title>Post by <%= post.screen_name %></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
+    <script src="https://cdn.olv.pretendo.cc/js/pjax.min.js"></script>
+    <script src="https://cdn.olv.pretendo.cc/js/juxt.js"></script>
     <!-- Global site tag (gtag.js) - Google Analytics Testing-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
     <script>
@@ -49,10 +49,10 @@
 <body>
 <div id="main">
     <%- include('nav_bar', { selection: 1 }); %>
-    <h1 id="title" class="page-header">Post</h1>
     <div class="community-page-post-box">
-        <div id="community-posts-inner-body">
-            <div id="community-posts-inner-body">
+        <div id="wrapper">
+            <h1 id="title" class="page-header">Post</h1>
+            <div id="wrapper">
                 <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
                 <span class="replies-line"></span>
                 <% replies.forEach(function(post) { %>

@@ -444,13 +444,13 @@ function loadPosts(type) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementById('community-posts-inner-body').innerHTML = this.responseText;
+            document.getElementById('wrapper').innerHTML = this.responseText;
             wiiuBrowser.showLoadingIcon(false);
             initCommunityUsers();
         }
         else if(this.readyState === 4 && this.status === 204)
         {
-            document.getElementById('community-posts-inner-body').innerHTML = '<p class="no-posts-text">No Posts</p>';
+            document.getElementById('wrapper').innerHTML = '<p class="no-posts-text">No Posts</p>';
             wiiuBrowser.showLoadingIcon(false);
         }
         else if (this.readyState === 4){
@@ -527,7 +527,7 @@ function loadFeedPosts(element) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementById('community-posts-inner-body').innerHTML += this.responseText;
+            document.getElementById('wrapper').innerHTML += this.responseText;
         }
         else if(this.readyState === 4 && this.status === 204)
         {

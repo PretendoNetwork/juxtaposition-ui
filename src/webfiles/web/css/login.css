@@ -86,7 +86,7 @@ form.account input {
     border-radius: 4px;
     padding: 12px;
     color: var(--text);
-    width: 100%;
+    width: 93%;
 }
 
 form.account input:focus {

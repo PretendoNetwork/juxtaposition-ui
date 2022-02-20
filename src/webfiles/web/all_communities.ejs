@@ -1,0 +1,35 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
+    <script src="https://cdn.olv.pretendo.cc/js/pjax.min.js"></script>
+    <script src="https://cdn.olv.pretendo.cc/js/juxt.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-195842548-1');
+    </script>
+
+</head>
+<body>
+<div id="main">
+    <%- include('nav_bar', { selection: 1 }); %>
+    <div id="toast"></div>
+    <div id="wrapper">
+        <h2 id="title" class="page-header"><%= lang.all_communities.text %></h2>
+        <div id="popular" class="communities-wrapper">
+            <% for(var i = 0; i < communities.length; i++) {%>
+                <div class="community-list-wrapper" data-pjax="/communities/<%= communities[i].community_id %>/new">
+                    <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= communities[i].community_id %>.png">
+                    <h2 class="community-list-title"><%= communities[i].name %></h2>
+                    <h4 class="community-list-followers"><%= communities[i].followers %> followers</h4>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+</body>
+</html>

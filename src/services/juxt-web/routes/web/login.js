@@ -71,14 +71,6 @@ router.post('/', async (req, res) => {
             return res.send(response);
         }
     });
-
-    /*const tokens = apiResponse.body;
-
-    response.cookie('refresh_token', tokens.refresh_token, { domain : '.pretendo.cc' });
-    response.cookie('access_token', tokens.access_token, { domain : '.pretendo.cc' });
-    response.cookie('token_type', tokens.token_type, { domain : '.pretendo.cc' });
-
-    response.redirect('/account');*/
 });
 
 
