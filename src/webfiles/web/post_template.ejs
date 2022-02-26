@@ -1,10 +1,10 @@
 <div class="posts-wrapper" id="<%= post.id %>">
     <div class="post-user-info-wrapper" id="<%= post.id %>">
         <%if(post.verified) {%>
-            <img class="user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
+            <img class="user-icon verified" src="https://pretendo-cdn.b-cdn.net<%= post.mii_face_url.substr(26) %>" data-pjax="/users/show?pid=<%= post.pid %>">
             <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
         <%} else {%>
-            <img class="user-icon" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
+            <img class="user-icon" src="https://pretendo-cdn.b-cdn.net<%= post.mii_face_url.substr(26) %>" data-pjax="/users/show?pid=<%= post.pid %>">
             <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
         <%}%>
         <div class="post-meta-wrapper">

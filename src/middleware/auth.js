@@ -4,9 +4,8 @@ const util = require('../util');
 function auth(request, response, next) {
     if(request.path.includes('/css/') || request.path.includes('/fonts/')
         || request.path.includes('/js/') || request.path.includes('/icons/')
-        || request.path.includes('/banner/') || request.path.includes('/posts/')
-        || request.path.includes('/drawing/') || request.path.includes('/screenshot/')
-        || request.path.includes('/web/')) {
+        || request.path.includes('/banner/') || request.path.includes('/drawing/')
+        || request.path.includes('/screenshot/') || request.path.includes('/web/')) {
         if(request.subdomains.indexOf('juxt') !== -1) {
             request.directory = 'web';
             request.lang = util.data.processLanguage();
@@ -19,7 +18,8 @@ function auth(request, response, next) {
 
     if(request.subdomains.indexOf('juxt') !== -1) {
         request.directory = 'web';
-        if(request.path === '/login' || request.path === '/favicon.ico') {
+        if(request.path === '/login' || request.path === '/favicon.ico' || request.path.includes('/posts/')) {
+            request.lang = util.data.processLanguage();
             return next()
         }
         else {
