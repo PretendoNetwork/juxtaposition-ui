@@ -41,6 +41,16 @@ a:hover {
     list-style: none;
     user-select: none;
 }
+
+.badge {
+    position: absolute;
+    background: var(--btn);
+    padding: 3px 8px;
+    border-radius: 1em;
+    color: var(--text);
+    margin-left: 1.25em;
+}
+
 body {
     background-color: var(--background);
     margin: 0;
@@ -55,9 +65,11 @@ header {
     flex-direction: column;
     position: fixed;
 }
-header a {
+
+header > a, header > a:hover {
     text-decoration: none;
 }
+
 header .logo-link, header .logo-link svg {
     display: block;
     width: 5em;
@@ -83,10 +95,22 @@ header > a > p {
     padding-left: 1em;
 }
 
+header > .selected {
+        background: var(--background-alt);
+        border-radius: 1em;
+        font-weight: bold;
+        color: var(--theme-light);
+    }
+
+    header > .selected > svg {
+        stroke: var(--theme-light);
+    }
+
 #main {
     width: 95%;
     max-width: 1300px;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .post-meta-wrapper {
@@ -137,6 +161,20 @@ header > a > p {
     height: 64px;
     border-radius: 100%;
     background: var(--text-secondary);
+}
+
+.user-icon.verified {
+    border: solid 4px var(--btn);
+    width: 60px;
+    height: 60px;
+}
+
+.verified-badge {
+    background: var(--btn);
+    padding: 1px 5px;
+    border-radius: 1em;
+    color: var(--text);
+    margin-left: 0.25em;
 }
 
 .painting {
@@ -225,7 +263,6 @@ header > a > p {
     display: grid;
     grid-template-areas: 'icon main' 'icon footer';
     gap: 0;
-    width: fit-content;
     cursor: pointer;
     background: var(--background-alt);
     padding: 1em;
@@ -263,7 +300,45 @@ header > a > p {
 
 iframe {
     width: 100%;
-    height: fit-content;
+    height: 20em;
+    border-radius: 1em;
+    margin-top: 1em;
+}
+
+
+.notifications-list-content {
+    background: var(--background-alt);
+    width: 600px;
+    min-height: 4em;
+    margin: 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-bottom: 2px solid var(--btn-secondary);
+    user-select: none;
+    cursor: pointer;
+}
+
+.notifications-list-content:hover {
+    text-decoration: none;
+    background: var(--btn-secondary);
+}
+
+.notifications-list-content:first-of-type {
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.notifications-list-content:last-of-type {
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+}
+
+.unread-badge {
+    padding: 0.25em;
+    border-radius: 1em;
+    margin: 1em;
+    background-color: var(--btn);
 }
 
 @media screen and (max-width: 1350px) { 
@@ -296,6 +371,13 @@ iframe {
         width: 2em;
         height: 2em;
     }
+
+    .user-icon.verified {
+        border: none;
+        width: 2em;
+        height: 2em;
+    }
+    
     .post-buttons-wrapper {
         margin-top: 0.5em;
         margin-bottom: -0.5em;
@@ -310,6 +392,7 @@ iframe {
         bottom: 0;
         border-top: 1px solid var(--text-secondary);
     }
+    
     header > a:first-child {
         display: none;
     }
@@ -324,6 +407,17 @@ iframe {
     
     header svg {
         scale: 0.75;
+    }
+      
+    header > .selected {
+        background: var(--background-alt);
+        border-radius: 1em;
+        font-weight: bold;
+        color: var(--theme-light);
+    }
+
+    header > .selected > svg {
+        stroke: var(--theme-light);
     }
 
     #load-more-posts-button {
@@ -346,5 +440,10 @@ iframe {
         grid-template-columns: auto;
         grid-row-gap: 10px;
         grid-column-gap: 10px;
+    }
+
+    .notifications-list-content {
+        width: 90vw;
+        min-height: 4em;
     }
 }

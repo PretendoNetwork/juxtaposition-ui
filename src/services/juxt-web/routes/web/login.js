@@ -16,7 +16,7 @@ router.post('/', async (req, res) => {
     const { username, password } = req.body;
     let user = await database.getUserByUsername(username);
     if(!user) {
-        res.cookie('error', 'User not found.', { domain: '.pretendo.cc' });
+        res.cookie('error', 'User not found.', { domain: '.miiverse.cc' });
         return res.redirect('/account/login');
     }
     let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
@@ -51,7 +51,7 @@ router.post('/', async (req, res) => {
                     if (!error && response.statusCode === 200) {
                         parseString(body, async function (err, result) {
                             token = result.service_token.token[0];
-                            res.cookie('access_token', token, { domain : '.pretendo.cc' });
+                            res.cookie('access_token', token, { domain : '.miiverse.cc' });
                             res.redirect('/activity-feed');
                         });
                     }
