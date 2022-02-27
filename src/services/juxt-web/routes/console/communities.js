@@ -80,6 +80,7 @@ router.get('/:communityID/:type', async function (req, res) {
     if(req.params.communityID === 'announcements')
         res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
+    if(!community) return res.sendStatus(404);
     let communityMap = await util.data.getCommunityHash();
     let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
@@ -104,6 +105,7 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
     let communityMap = await util.data.getCommunityHash();
     let posts;
     let community = await database.getCommunityByID(req.params.communityID)
+    if(!community) return res.sendStatus(404);
     if(!offset)
         offset = 0;
     switch (req.params.type) {
