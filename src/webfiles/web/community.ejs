@@ -38,7 +38,7 @@
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
-    <%- include('nav_bar', { selection: 0 }); %>
+    <%- include('nav_bar', { selection: 2 }); %>
     <div id="toast"></div>
     <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
@@ -97,7 +97,7 @@
         </tbody>
     </table>-->
     <div id="wrapper">
-        <button id="load-more-posts-button" data-offset="20" onclick="loadCommunityPosts(this)"><%= lang.global.more %></button>
+        <button id="load-more-posts-button" data-offset="20" onclick="loadCommunityPosts(this, true)"><%= lang.global.more %></button>
     </div>
 </div>
 <script>
