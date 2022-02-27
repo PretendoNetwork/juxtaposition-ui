@@ -46,13 +46,22 @@
             <div class="community-info">
                 <img class="user-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
                 <h2 class="community-title"><%= community.name %></h2>
+                <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>
+                    <div class="community-page-follow-button-wrapper selected">
+                        <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF"><%= lang.community.following %></p>
+                    </div>
+                <%} else {%>
+                <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
+                    <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>
+                </div>
+                <%}%>
             </div>
             <h4 class="community-description"><%= community.description %></h4>
             <span class="community-page-follow-button-text" id="<%= community.community_id %>"></span>
             <div class="info-boxes-wrapper">
                 <div>
                     <h4><%= lang.community.followers %></h4>
-                    <h4><%= community.followers %></h4>
+                    <h4 class="community-page-table-text"><%= community.followers %></h4>
                 </div>
                 <div>
                     <h4><%= lang.community.posts %></h4>

@@ -45,6 +45,15 @@
             <div class="community-info">
                 <img class="user-icon <%if(user.official) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= user.pid %>/normal_face.png">
                 <h2 class="community-title"><%= user.user_id %> (<%= user.pnid %>)<span class="verified-badge" style="<%if(!user.official) {%>display: none;<%}%>">✓</span></h2>
+                <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
+                <div class="community-page-follow-button-wrapper user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+                    <p class="community-page-follow-button-text user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)" style="color: #FFFFFF"><%= lang.user_page.following_user %></p>
+                </div>
+                <%} else {%>
+                <div class="community-page-follow-button-wrapper user-page-follow-button-wrapper" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+                    <p class="community-page-follow-button-text user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)"><%= lang.user_page.follow_user %></p>
+                </div>
+                <%}%>
             </div>
             <h4 class="community-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
             <div class="info-boxes-wrapper">
@@ -75,8 +84,8 @@
                     </h4>
                 </div>
                 <div>
-                    <h4><%= lang.global.yeahs %></h4>
-                    <h4>0</h4>
+                    <h4><%= lang.user_page.followers %></h4>
+                    <h4 id="user-page-followers-tab"><%= user.followers %></h4>
                 </div>
             </div>
         </div>
