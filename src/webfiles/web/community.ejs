@@ -17,13 +17,13 @@
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="Juxt - <%= community.name %>">
     <%if(user.profile_comment_visibility){%><meta itemprop="description" content="<%= community.description %>"> <%}%>
-    <meta itemprop="image" content="https://cdn.olv.pretendo.cc/icons/<%= community.community_id %>.png">
+    <meta itemprop="image" content="<%= cdnURL %>/icons/<%= community.community_id %>.png">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Juxt - <%= community.name %>"/>
     <%if(user.profile_comment_visibility){%><meta property="og:description" content="<%= community.description %>"/><%}%>
     <meta property="og:url" content="https://juxt.pretendo.cc/communities/<%= community.community_id %>/new"/>
-    <meta property="og:image" content="https://cdn.olv.pretendo.cc/icons/<%= community.community_id %>.png"/>
+    <meta property="og:image" content="<%= cdnURL %>/icons/<%= community.community_id %>.png"/>
     <meta property="og:site_name" content="Juxtaposition" />
 
     <!-- Twitter Meta Tags -->
@@ -31,7 +31,7 @@
     <meta name="twitter:title" content="Juxt - <%= community.name %>"/>
     <%if(user.profile_comment_visibility){%><meta name="twitter:description" content="<%= community.description %>"/><%}%>
     <meta name="twitter:site" content="@PretendoNetwork"/>
-    <meta name="twitter:image" content="https://cdn.olv.pretendo.cc/icons/<%= community.community_id %>.png"/>
+    <meta name="twitter:image" content="<%= cdnURL %>/icons/<%= community.community_id %>.png"/>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
 
 </head>
@@ -42,8 +42,9 @@
     <div id="wrapper" class="community-page-post-box">
         <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
         <div class="community-top">
+            <image class="banner" src="<%= cdnURL %>/banner/<%= community.community_id %>.png">
             <div class="community-info">
-                <img class="user-icon" src="https://cdn.olv.pretendo.cc/icons/<%= community.community_id %>.png">
+                <img class="user-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
                 <h2 class="community-title"><%= community.name %></h2>
             </div>
             <h4 class="community-description"><%= community.description %></h4>
@@ -71,7 +72,7 @@
             <% }); %>
         <%}%>
     </div>
-    <table class="community-page-posts-header switcher">
+    <!--<table class="community-page-posts-header switcher">
         <tbody>
         <tr>
             <td>
@@ -85,7 +86,7 @@
             </td>
         </tr>
         </tbody>
-    </table>
+    </table>-->
     <div id="wrapper">
         <button id="load-more-posts-button" data-offset="20" onclick="loadCommunityPosts(this)"><%= lang.global.more %></button>
     </div>

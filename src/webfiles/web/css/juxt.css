@@ -351,6 +351,7 @@ iframe {
       padding: 1em;
       border-radius: 1em;
       width: 600px;
+      overflow: hidden;
     }
 
 .community-info {
@@ -385,6 +386,11 @@ iframe {
 
 .community-title {
     padding-left: 0.5em;
+}
+
+.banner {
+  width: 110%;
+  margin: -1em;
 }
 
 @media screen and (max-width: 1350px) { 
