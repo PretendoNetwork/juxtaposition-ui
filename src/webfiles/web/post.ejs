@@ -49,11 +49,11 @@
 </head>
 <body>
 <div id="main">
+    <h1 id="title" class="page-header">Post</h1>
     <%- include('nav_bar', { selection: 1 }); %>
     <div id="toast"></div>
     <div class="community-page-post-box">
         <div id="wrapper">
-            <h1 id="title" class="page-header">Post</h1>
             <div id="wrapper">
                 <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
                 <span class="replies-line"></span>

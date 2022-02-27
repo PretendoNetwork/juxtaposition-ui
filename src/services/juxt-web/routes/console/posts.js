@@ -13,6 +13,8 @@ var router = express.Router();
 router.post('/empathy', rateLimit, async function (req, res) {
     let post = await database.getPostByID(req.body.postID);
     let user = await database.getUserByPID(req.pid);
+    if(!user)
+        return res.sendStatus(423);
     if(req.body.type === 'up' && user.likes.indexOf(post.id) === -1 && user.id !== post.pid)
     {
         post.upEmpathy();

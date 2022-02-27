@@ -37,10 +37,10 @@
 </head>
 <body>
 <div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
     <%- include('nav_bar', { selection: 0 }); %>
     <div id="toast"></div>
     <div id="wrapper" class="community-page-post-box">
-        <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
         <div class="community-top">
             <image class="banner" src="<%= cdnURL %>/banner/<%= community.community_id %>.png">
             <div class="community-info">

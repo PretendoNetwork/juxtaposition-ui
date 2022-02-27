@@ -17,10 +17,10 @@
 </head>
 <body>
 <div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.activity_feed %></h2>
     <%- include('nav_bar', { selection: 1 }); %>
     <div id="toast"></div>
     <div id="wrapper">
-        <h2 id="title" class="page-header"><%= lang.global.activity_feed %></h2>
         <% if(posts.length === 0) {%>
             <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
         <%} else { %>

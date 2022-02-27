@@ -34,6 +34,8 @@ a:hover {
 
 #title {
     color: var(--text);
+    display: flex;
+    justify-content: center;
 }
 
 #nav-bar {
@@ -110,7 +112,7 @@ header > .selected {
 
 #main {
     width: 95%;
-    max-width: 1300px;
+    max-width: 1400px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -226,6 +228,14 @@ header > .selected {
     padding: 0.5em;
 }
 
+.post-buttons-wrapper > span:nth-of-type(2):hover {
+    background: rgba(0, 255, 0, 0.25);
+}
+
+.post-buttons-wrapper > span:last-child:hover {
+    background: rgba(0, 150, 255, 0.25);
+}
+
 .post-buttons-wrapper > span:hover {
     cursor: pointer;
     background: rgba(255, 0, 0, 0.25);
@@ -235,6 +245,11 @@ header > .selected {
 .post-buttons-wrapper > span > h4 {
     padding-left: 0.5em;
     margin: 0;
+}
+
+.post-buttons-wrapper > span.selected > svg {
+  fill: red;
+  stroke: red;
 }
 
 #load-more-posts-button {
@@ -321,6 +336,7 @@ iframe {
     border-bottom: 2px solid var(--btn-secondary);
     user-select: none;
     cursor: pointer;
+    font-size: small;
 }
 
 .notifications-list-content:hover {
@@ -386,6 +402,7 @@ iframe {
 
 .community-title {
     padding-left: 0.5em;
+    font-size: larger;
 }
 
 .banner {
@@ -448,6 +465,18 @@ iframe {
     header > a:first-child {
         display: none;
     }
+    
+    header > a:nth-of-type(2) {
+        position: fixed;
+        top: 2px;
+        left: 4px;
+        border-radius: 100%;
+        width: 3em;
+        height: 3em;
+        padding: 0;
+        justify-content: center;
+        z-index: 20;
+    }
 
     header > a > p {
         display: none;
@@ -484,8 +513,15 @@ iframe {
         display: flex;
         justify-content: center;
         border-bottom: 1px solid var(--text-secondary);
-        margin-top: 0.5em;
+        padding-top: 0.5em;
         padding-bottom: 0.5em;
+        position: fixed;
+        background: var(--background);
+        margin-top: 0;
+    }
+    
+    #wrapper {
+        margin-top: 4em;
     }
     
     .communities-wrapper {

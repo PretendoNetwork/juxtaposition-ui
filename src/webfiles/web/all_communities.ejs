@@ -16,10 +16,10 @@
 </head>
 <body>
 <div id="main">
+    <h2 id="title" class="page-header"><%= lang.all_communities.text %></h2>
     <%- include('nav_bar', { selection: 2 }); %>
     <div id="toast"></div>
     <div id="wrapper">
-        <h2 id="title" class="page-header"><%= lang.all_communities.text %></h2>
         <div id="popular" class="communities-wrapper">
             <% for(var i = 0; i < communities.length; i++) {%>
                 <div class="community-list-wrapper" data-pjax="/communities/<%= communities[i].community_id %>/new">

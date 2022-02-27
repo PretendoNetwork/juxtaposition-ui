@@ -17,20 +17,37 @@
 </head>
 <body>
 <div id="main">
-    <h2 id="title" class="page-header"><%= lang.global.notifications %></h2>
-    <%- include('nav_bar', { selection: 4 }); %>
+    <h2 id="title" class="page-header"><%= lang.global.messages %></h2>
+    <%- include('nav_bar', { selection: 3 }); %>
     <div id="toast"></div>
     <div id="wrapper">
-        <% if(user.notification_list.length === 0) {%>
-            <p class="no-posts-text"><%= lang.notifications.none %></p>
+        <% if(conversations.length === 0) {%>
+            <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
         <%} else { %>
-            <% for(let i = user.notification_list.length - 1; i >= 0; i--) { %>
-                <% var content; if(user.notification_list[i].content.indexOf('NEW_FOLLOWER') !== -1) content = user.notification_list[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = user.notification_list[i].content %>
+            <% conversations.forEach(function(conversation) { %>
                 <a class="notifications-list-content" href="<%=user.notification_list[i].link%>">
-                    <div class="unread-badge" <%if(user.notification_list[i].read) {%>style="background-color: unset"<%}%>></div>
-                    <h3><%= content %><span style="color: var(--text-secondary)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
+                    <div class="unread-badge" <%if(!position.read) {%>style="background-color: unset"<%}%>></div>
+                    <td>
+                        <%if(position.official) {%>
+                            <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
+                            <span class="message-page-verified-user-badge community-page-verified" style=""></span>
+                        <%} else {%>
+                            <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
+                            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+                        <%}%>
+                    </td>
+                    <td>
+                        <h2 class="message-list-title"><%= position.screen_name %></h2>
+                        <h4 class="message-list-timestamp"> - <%= moment(conversation.last_message_sent).fromNow() %></h4>
+                    </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td colspan="2" class="message-list-preview"><%= conversation.message_preview %></td>
+                    </tr>
                 </a>
-            <%}%>
+            <%});%>
         <%}%>
     </div>
 </div>
@@ -56,5 +73,6 @@
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
     }
 </script>
+
 </body>
 </html>

@@ -37,10 +37,10 @@
 </head>
 <body>
 <div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.user_page %></h2>
     <%- include('nav_bar', { selection: 0 }); %>
     <div id="toast"></div>
     <div id="wrapper">
-        <h2 id="title" class="page-header"><%= lang.global.user_page %></h2>
         <div class="community-top">
             <div class="community-info">
                 <img class="user-icon <%if(user.official) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= user.pid %>/normal_face.png">

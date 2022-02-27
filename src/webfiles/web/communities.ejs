@@ -17,10 +17,10 @@
 </head>
 <body>
 <div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
     <%- include('nav_bar', { selection: 2 }); %>
     <div id="toast"></div>
     <div id="wrapper">
-        <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
         <h3 class="communities-header"><%= lang.all_communities.popular_places %></h3>
         <div id="popular" class="communities-wrapper">
             <% for(var i = 0; i < popularCommunities.length; i++) {%>
