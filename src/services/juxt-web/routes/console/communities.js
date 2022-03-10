@@ -9,15 +9,19 @@ var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
 
 router.get('/', async function (req, res) {
+    console.log('recieved')
     let popularCommunities = await database.getMostPopularCommunities(9);
+    console.log('popular')
     let newCommunities = await database.getNewCommunities(6);
+    console.log('new')
     res.render(req.directory + '/communities.ejs', {
-        // EJS variable and server-side variable
+        cache: true,
         popularCommunities: popularCommunities,
         newCommunities: newCommunities,
         cdnURL: config.CDN_domain,
         lang: req.lang
     });
+    console.log('rendered')
 });
 
 router.get('/all', async function (req, res) {
@@ -81,6 +85,7 @@ router.get('/:communityID/:type', async function (req, res) {
     if(req.params.communityID === 'announcements')
         res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
+    if(!community) return res.sendStatus(404);
     let communityMap = await util.data.getCommunityHash();
     let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
@@ -105,6 +110,7 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
     let communityMap = await util.data.getCommunityHash();
     let posts;
     let community = await database.getCommunityByID(req.params.communityID)
+    if(!community) return res.sendStatus(404);
     if(!offset)
         offset = 0;
     switch (req.params.type) {

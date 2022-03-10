@@ -1,0 +1,126 @@
+<html>
+<head>
+    <title>Juxt - <%= community.name %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
+    <script src="https://portal.cdn.pretendo.cc/js/pjax.min.js"></script>
+    <script src="https://portal.cdn.pretendo.cc/js/juxt.js"></script>
+    <link rel="manifest" href="/web/manifest.json">
+    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-195842548-1');
+    </script>
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Juxt - <%= community.name %>">
+    <%if(user.profile_comment_visibility){%><meta itemprop="description" content="<%= community.description %>"> <%}%>
+    <meta itemprop="image" content="<%= cdnURL %>/icons/<%= community.community_id %>.png">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Juxt - <%= community.name %>"/>
+    <%if(user.profile_comment_visibility){%><meta property="og:description" content="<%= community.description %>"/><%}%>
+    <meta property="og:url" content="https://juxt.pretendo.cc/communities/<%= community.community_id %>/new"/>
+    <meta property="og:image" content="<%= cdnURL %>/icons/<%= community.community_id %>.png"/>
+    <meta property="og:site_name" content="Juxtaposition" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Juxt - <%= community.name %>"/>
+    <%if(user.profile_comment_visibility){%><meta name="twitter:description" content="<%= community.description %>"/><%}%>
+    <meta name="twitter:site" content="@PretendoNetwork"/>
+    <meta name="twitter:image" content="<%= cdnURL %>/icons/<%= community.community_id %>.png"/>
+    <meta name="twitter:creator" content="@PretendoNetwork"/>
+
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
+    <%- include('nav_bar', { selection: 2 }); %>
+    <div id="toast"></div>
+    <div id="wrapper" class="community-page-post-box">
+        <div class="community-top">
+            <image class="banner" src="<%= cdnURL %>/banner/<%= community.community_id %>.png">
+            <div class="community-info">
+                <img class="user-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
+                <h2 class="community-title"><%= community.name %></h2>
+                <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>
+                    <div class="community-page-follow-button-wrapper selected">
+                        <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF"><%= lang.community.following %></p>
+                    </div>
+                <%} else {%>
+                <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
+                    <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>
+                </div>
+                <%}%>
+            </div>
+            <h4 class="community-description"><%= community.description %></h4>
+            <span class="community-page-follow-button-text" id="<%= community.community_id %>"></span>
+            <div class="info-boxes-wrapper">
+                <div>
+                    <h4><%= lang.community.followers %></h4>
+                    <h4 class="community-page-table-text"><%= community.followers %></h4>
+                </div>
+                <div>
+                    <h4><%= lang.community.posts %></h4>
+                    <h4><%=totalNumPosts%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.community.tags %></h4>
+                    <h4>N/A</h4>
+                </div>
+            </div>
+        </div>
+        <% if(newPosts.length === 0) {%>
+            <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
+        <%} else { %>
+            <% newPosts.forEach(function(post) { %>
+                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+            <% }); %>
+        <%}%>
+    </div>
+    <!--<table class="community-page-posts-header switcher">
+        <tbody>
+        <tr>
+            <td>
+                <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
+            </td>
+            <td>
+                <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
+            </td>
+            <td>
+                <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
+            </td>
+        </tr>
+        </tbody>
+    </table>-->
+    <div id="wrapper">
+        <button id="load-more-posts-button" data-offset="20" onclick="loadCommunityPosts(this, true)"><%= lang.global.more %></button>
+    </div>
+</div>
+<script>
+    window.onscroll = function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            document.getElementById('load-more-posts-button').click();
+        }
+    };
+    function copyToClipboard(text) {
+        let inputc = document.getElementsByTagName("header")[0].appendChild(document.createElement("input"));
+        inputc.value = text;
+        inputc.focus();
+        inputc.select();
+        document.execCommand('copy');
+        inputc.parentNode.removeChild(inputc);
+        Toast("Copied to clipboard.");
+    }
+    function Toast(text) {
+        var x = document.getElementById("toast");
+        x.innerText = text;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
+</body>
+</html>

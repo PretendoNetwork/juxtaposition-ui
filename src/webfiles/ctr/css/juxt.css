@@ -746,7 +746,7 @@ h4 {
     position: absolute;
     text-align: right;
     height: 33px;
-    margin-left: 180px;
+    right: 65px
 }
 
 .community-page-post-user-info-wrapper {

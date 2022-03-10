@@ -5,6 +5,10 @@ const database = require('../../../../database');
 const util = require('../../../../util');
 var path = require('path');
 
+router.get('/', function (req, res) {
+    res.redirect('/activity-feed')
+});
+
 router.get('/css/:filename', function (req, res) {
     res.set("Content-Type", "text/css");
     res.sendFile('/css/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});

@@ -444,13 +444,13 @@ function loadPosts(type) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementById('community-posts-inner-body').innerHTML = this.responseText;
+            document.getElementById('wrapper').innerHTML = this.responseText;
             wiiuBrowser.showLoadingIcon(false);
             initCommunityUsers();
         }
         else if(this.readyState === 4 && this.status === 204)
         {
-            document.getElementById('community-posts-inner-body').innerHTML = '<p class="no-posts-text">No Posts</p>';
+            document.getElementById('wrapper').innerHTML = '<p class="no-posts-text">No Posts</p>';
             wiiuBrowser.showLoadingIcon(false);
         }
         else if (this.readyState === 4){
@@ -485,7 +485,7 @@ function loadUserPosts(element, pid) {
     xhttp.open("GET", "/users/loadPosts" + '?offset=' + offset + '&pid=' + pid, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 20;
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
@@ -517,7 +517,7 @@ function loadCommunityPosts(element, typeCheck) {
     xhttp.open("GET", '/communities/' + id + '/' + type + '/loadposts?offset=' + offset, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 20;
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
@@ -527,7 +527,7 @@ function loadFeedPosts(element) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            document.getElementById('community-posts-inner-body').innerHTML += this.responseText;
+            document.getElementById('wrapper').innerHTML += this.responseText;
         }
         else if(this.readyState === 4 && this.status === 204)
         {
@@ -540,7 +540,7 @@ function loadFeedPosts(element) {
     xhttp.open("GET", '/activity-feed/loadposts?offset=' + offset, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 20;
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }

@@ -15,7 +15,7 @@
                 <% community.description %>
             </p>
         </div>
-        <div id="" class="header-icon"><img class="community-page-info-icon" src="<%= community.browser_thumbnail %>"></div>
+        <div id="" class="header-icon"><img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png"></div>
         <h2 class="header-title"><%= community.name %></h2>
     </div>
     <div class="bottom-screen">
@@ -148,12 +148,12 @@
                 </tbody>
             </table>
 
-            <div id="community-posts-inner-body">
+            <div id="wrapper">
 
                 <% if(totalNumPosts === 0) {%>
                     <p class="no-posts-text">No Posts</p>
                 <%} else { %>
-                    <button id="load-more-posts-button" onclick="loadCommunityPosts()" style="background: #1F8A42">Load More Posts</button>
+                        <button id="load-more-posts-button" data-offset="20" onclick="loadCommunityPosts(this)"><%= lang.global.more %></button>
                         <% newPosts.forEach(function(post) { %>
                             <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
                         <% }); %>
