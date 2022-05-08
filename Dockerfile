@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . ./
 
-VOLUME [ "/app/config.json" ]
+VOLUME [ "/app/config.json", "/app/certs" ]
 
 CMD ["sh", "entrypoint.sh"]
