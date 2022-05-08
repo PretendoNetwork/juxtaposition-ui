@@ -1,7 +1,7 @@
 var express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require('../../../../config.json');
+const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
 const rateLimit = require('../../../../middleware/ratelimit');
 var multer  = require('multer');

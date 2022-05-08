@@ -1,6 +1,6 @@
 #!/bin/sh
 
-files='config.json'
+files='config.json certs/access/private.pem certs/access/aes.key'
 
 for file in $files; do
     if [ ! -f $file ]; then
