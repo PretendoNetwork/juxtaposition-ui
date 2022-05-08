@@ -4,7 +4,7 @@ var parseString = require('xml2js').parseString;
 const database = require('../../../../database');
 const util = require('../../../../util');
 var path = require('path');
-const config = require("../../../../config.json");
+const config = require("../../../../../config.json");
 const request = require("request");
 const logger = require("../../../../logger");
 

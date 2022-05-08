@@ -2,7 +2,7 @@ var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require('../../../../config.json');
+const config = require('../../../../../config.json');
 
 var moment = require('moment');
 var router = express.Router();

@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const config = require('../../config.json');
 const util = require('../util');
 
 function auth(request, response, next) {
