@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser');
 const auth = require('./middleware/auth');
 const database = require('./database');
 const logger = require('./logger');
-const config = require('./config.json');
+const config = require('../config.json');
 
 const { http: { port } } = config;
 const app = express();
