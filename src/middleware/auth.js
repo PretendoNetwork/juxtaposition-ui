@@ -67,15 +67,20 @@ function auth(request, response, next) {
         }
     }
     else {
-        if(!request.headers["x-nintendo-parampack"] || !request.headers["x-nintendo-servicetoken"]) {
+        let token = request.cookies.token || request.headers["x-nintendo-servicetoken"];
+        if(!token) {
             return response.render('portal/ban_notification.ejs', {
                 user: null,
                 error: "Missing auth headers"
             });
         }
         else {
-            let pid = util.data.processServiceToken(request.headers["x-nintendo-servicetoken"]);
-            let paramPackData = util.data.decodeParamPack(request.headers["x-nintendo-parampack"]);
+            let pid = util.data.processServiceToken(token);
+            let paramPackData;
+            if(request.headers["x-nintendo-parampack"])
+                paramPackData = util.data.decodeParamPack(request.headers["x-nintendo-parampack"]);
+            else
+                paramPackData = null;
             if(pid === null) {
                 return response.render('portal/ban_notification.ejs', {
                     user: null,
@@ -85,7 +90,8 @@ function auth(request, response, next) {
 
             else {
                 response.header('X-Nintendo-WhiteList', config.whitelist);
-                request.lang = util.data.processLanguage(request.headers["x-nintendo-parampack"]);
+                let paramPack = request.headers["x-nintendo-parampack"] || undefined;
+                request.lang = util.data.processLanguage(paramPack);
                 request.pid = pid;
                 request.paramPackData = paramPackData;
                 request.directory = request.subdomains[1];
