@@ -743,6 +743,24 @@ var bButtonCheck = setInterval(function() {
     }
 
 }, 250);
+
+
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+    var scrollPrompt = document.getElementById("scroll-prompt");
+    if (document.body.scrollTop > 450 || document.documentElement.scrollTop > 450) {
+        scrollPrompt.style.display = "block";
+    } else {
+        scrollPrompt.style.display = "none";
+    }
+}
+
+function topFunction() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
+}
+
 /*Debugging*/
 if (typeof wiiu === 'undefined') {
     window.wiiu = {

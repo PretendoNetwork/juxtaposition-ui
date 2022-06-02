@@ -244,10 +244,6 @@ router.get('/login', upload.none(), async function (req, res) {
 
 router.get('/token', upload.none(), async function (req, res) {
     let port;
-    if(req.hostname.includes('miiverse'))
-        port = 'http://'
-    else
-        port = 'https://'
     let headers = {
         'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
         'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"],
@@ -255,7 +251,7 @@ router.get('/token', upload.none(), async function (req, res) {
         'authorization': req.headers['authorization'],
     }
     request.get({
-        url: port + config.account_server_domain + "/v1/api/provider/service_token/@me",
+        url: 'https://' + config.account_server_domain + "/v1/api/provider/service_token/@me",
         headers: headers
     }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
@@ -266,7 +262,7 @@ router.get('/token', upload.none(), async function (req, res) {
             res.statusCode = 400;
             let response = {
                 error_code: 400,
-                message: 'Invalid account ID or password'
+                message: body
             };
             res.send(response);
         }
@@ -275,12 +271,6 @@ router.get('/token', upload.none(), async function (req, res) {
 });
 
 router.post('/login', upload.none(), async function (req, res) {
-    let port;
-    /*if(req.hostname.includes('miiverse'))
-        port = 'http://'
-    else
-        port = 'https://'*/
-    port = 'https://';
     let user_id = req.body.user_id;
     let user = await database.getUserByUsername(user_id);
     let pnid = await database.getPNID(user.pid)
@@ -297,7 +287,7 @@ router.post('/login', upload.none(), async function (req, res) {
         }
         let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
         await request.post({
-            url: port + config.account_server_domain + "/v1/api/oauth20/access_token/generate",
+            url: 'https://' + config.account_server_domain + "/v1/api/oauth20/access_token/generate",
             headers: {
                 'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
                 'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"],
@@ -318,7 +308,7 @@ router.post('/login', upload.none(), async function (req, res) {
                 res.statusCode = 403;
                 let response = {
                     error_code: 403,
-                    message: 'Invalid account ID or passwordrrrrrrr'
+                    message: body
                 };
                 return res.send(response);
             }

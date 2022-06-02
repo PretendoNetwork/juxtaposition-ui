@@ -3,17 +3,6 @@
     <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
     <script src="<%= cdnURL %>/js/pjax.min.js"></script>
     <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-195842548-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
     <meta content="<%= user.user_id %> - Juxtaposition User" property="og:title" />
     <meta content="<%= user.profile_comment %>" property="og:description" />
     <meta content="<%= user.followers%> Followers" property="og:site_name">
