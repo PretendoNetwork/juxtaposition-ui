@@ -299,9 +299,11 @@ ul, ol, menu, li {
 }
 
 .post-user-info-wrapper {
-    margin-bottom: 50px;
-    margin-left: 15px;
-    min-width: 520px;
+    margin-bottom: 25px;
+    margin-left: 25px;
+    width: 740px;
+    margin-top: 25px;
+    height: 70px;
 }
 
 #post-user-icon {
@@ -1042,29 +1044,40 @@ h4 {
 }
 
 .community-page-follow-button-wrapper {
-    width: 250px;
-    height: 61px;
-    margin-left: 772px;
+    width: 40px;
+    height: 40px;
+    margin-left: 916px;
     margin-top: 15px;
     position: absolute;
     background-size: 100% !important;
-    background-repeat: no-repeat !important;
     cursor: pointer;
-    background: url('data:image/png;base64,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');
+    background-color: #e3ebef;
+    border-radius: 30px;
 }
 
 .community-page-follow-button-wrapper.selected {
-    background: url('data:image/png;base64,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');
-    background-repeat: no-repeat !important;
+    background-color: #dacff9;
+}
+
+.community-page-follow-button-wrapper.selected > svg {
+    fill: #592692;
+    stroke: #592692;
+}
+
+.community-page-follow-button-wrapper > svg {
+    position: absolute;
+    padding-top: 10.5px;
+    padding-left: 10px;
 }
 
 .community-page-follow-button-text {
-    padding-left: 60px;
-    margin-top: 10px;
-    color: #1F8A42;
+    padding-left: 47px;
+    margin-top: 7px;
     font-size: 17px;
     font-weight: bold;
     -webkit-user-select: none;
+    color: white;
+    width: 140px;
 }
 
 .community-page-info-icon {
@@ -1076,9 +1089,9 @@ h4 {
     background-color: #8f8e8e;
     box-shadow: 0 3px 20px 2px rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 0 3px 20px 2px rgba(0, 0, 0, 0.5);
-    margin-left: 50px;
+    margin-left: 60px;
     margin-top: -50px;
-    border: 10px solid white;
+    border: 5px solid white;
 }
 
 .community-page-title {
@@ -1133,9 +1146,9 @@ h4 {
 }
 
 .community-page-post-wrapper {
-    margin-left: 15px;
+    margin-left: 25px;
     margin-bottom: 0;
-    width: 760px;
+    width: 740px;
 }
 
 .community-page-post-wrapper > h3 {
@@ -1148,25 +1161,20 @@ h4 {
 }
 
 .community-page-post-screenshot {
-    width: 760px;
+    width: 740px;
     border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
 }
 
 .community-page-post-painting {
-    width: 760px;
-    height: 285px;
+    width: 740px;
+    height: 265px;
     border-radius: 10px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
     image-rendering: pixelated;
 }
 
 .community-page-post-time-stamp {
     margin-top: 0;
+    font-size: small;
 }
 
 .community-page-post-time-stamp > p {
@@ -1175,48 +1183,59 @@ h4 {
 
 .community-page-post-yeah-button-wrapper {
     position: absolute;
-    right: 148px;
-    margin-top: -70px;
+    right: 160px;
+    margin-top: -65px;
     margin-bottom: 0;
+    width: 40px;
+    height: 40px;
+    margin-left: 916px;
+    background-size: 100% !important;
+    cursor: pointer;
+    background-color: #e3ebef;
+    border-radius: 30px;
+}
+
+.community-page-post-yeah-button-wrapper.selected {
+    background-color: #dacff9;
+}
+
+.community-page-post-yeah-button-wrapper.selected > svg {
+    fill: #592692;
+    stroke: #592692;
 }
 
 .community-page-post-yeah-button-wrapper > svg {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
-    height: 55px;
-    border-radius: 8px;
-}
-
-.community-page-post-yeah-button-wrapper.selected > svg > #Group_101 > #Rectangle_49 {
-    fill: #673DB6;
-}
-
-.community-page-post-yeah-button-wrapper.selected > svg > #Group_101 > #Group_82 > path {
-    fill: #673DB6;
-    stroke: white;
+    position: absolute;
+    padding-top: 10.5px;
+    padding-left: 10px;
 }
 
 .community-page-post-yeah-button {
     cursor: pointer;
     position: absolute;
-    height: 57px;
-    width: 61px;
-    margin-top: -57px;
+    height: 40px;
+    width: 40px;
+    margin-top: 0;
     margin-bottom: 0;
     padding-bottom: 0;
+    border-radius: 30px;
 }
 
 .community-page-post-yeah-count {
-    color: #673DB6;
+    color: #716e74;
     margin-left: 440px;
     margin-bottom: 0;
-    margin-top: -50px;
+    margin-top: -58px;
     font-weight: bold;
     font-size: large;
     position: absolute;
     text-align: right;
     height: 33px;
     width: 250px;
+}
+
+.community-page-post-yeah-count.selected {
+    color: #592692;
 }
 
 .community-page-post-user-info-wrapper {
@@ -1227,15 +1246,12 @@ h4 {
 }
 
 .community-page-post-user-icon {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     border-radius: 10px;
     margin-right: 15px;
     float: left;
-    background-color: #8f8e8e;
-    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
+    background-color: #e6eaf1;
 }
 
 .community-page-post-user-icon.verified{
@@ -1273,10 +1289,12 @@ h4 {
 }
 
 .community-page-post-username {
-    padding-top: 20px;
+    padding-top: 10px;
     margin-bottom: 0;
     min-width: 140px;
     max-width: 500px;
+    font-size: larger;
+    font-weight: bold;
 }
 
 .community-page-post-text-overlay {
@@ -1506,16 +1524,22 @@ iframe {
 #community-new-post-wrapper {
     position: fixed;
     z-index: 10;
-    right: 0;
-    bottom: 0;
-    width: 250px;
-    height: 100px;
-    border-top-left-radius: 15px;
-    background-color: #1F8A42;
+    right: 45px;
+    bottom: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: #2d1769;
     color: white;
     text-align: center;
     font-size: xx-large;
     display: table;
+    cursor: pointer;
+}
+
+#community-new-post-wrapper > svg {
+    margin-top: 9px;
+    margin-left: 9px;
 }
 
 .new-post-button-text {
@@ -1886,14 +1910,17 @@ iframe {
 }
 
 .posts-wrapper {
-    /* background-color: rgba(255,255,255,1); */
-    background: -webkit-linear-gradient(#ffffff, #f9f9f9);
-    border: 1.5px solid #d6d2d2;
+    background-color: white;
+    border: 2px solid #eaeaea;
     border-radius: 10px;
     margin-bottom: 30px;
     margin-left: 135px;
     width: 790px;
-    box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 10px 15px -8px rgb(0 0 0 / 25%);
+}
+
+.posts-wrapper.selected {
+    border: 2px solid #dacff9;
 }
 
 .reply-banner > svg {

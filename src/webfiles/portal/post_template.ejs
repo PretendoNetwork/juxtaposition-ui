@@ -1,4 +1,4 @@
-<div class="posts-wrapper" id="<%= post.id %>">
+<div class="posts-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>" id="<%= post.id %>">
     <div class="post-user-info-wrapper" id="<%= post.id %>">
         <%if(post.verified) {%>
             <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
@@ -11,20 +11,10 @@
         <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <a onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);pjax.loadUrl('/communities/<%= post.community_id %>/new')"><%= communityMap.get(post.community_id) %></a></h4>
 
         <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 33 30">
-                <g id="Group_101" data-name="Group 101" transform="translate(-687.416 -110)">
-                    <g id="Rectangle_49" data-name="Rectangle 49" transform="translate(687.416 110)" fill="none" stroke="#673db6" stroke-width="2">
-                        <rect width="33" height="30" rx="3" stroke="none"/>
-                        <rect x="1" y="1" width="31" height="28" rx="2" fill="none"/>
-                    </g>
-                    <g id="Group_82" data-name="Group 82" transform="translate(696.98 119.326)">
-                        <path id="Icon_feather-heart" data-name="Icon feather-heart" d="M15.38,5.588a3.723,3.723,0,0,0-5.266,0L9.4,6.306,8.68,5.588a3.724,3.724,0,1,0-5.266,5.266l.717.717L9.4,16.837l5.266-5.266.717-.717a3.723,3.723,0,0,0,0-5.266Z" transform="translate(-2.323 -4.497)" fill="none" stroke="#4f279b" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
-                    </g>
-                </g>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 30 30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
             <div class="community-page-post-yeah-button" onclick="<%if(user.pid !== 1000000000) {%>yeah(this.parentNode, '<%= post.id %>')<%}%>"></div>
         </div>
-        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
+        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
     </div>
     <div class="spoiler-overlay" <% if(post.is_spoiler === 0) {%>style="display: none"<%}%>>
         <button onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1); this.parentElement.style.display = 'none'; document.getElementById('post-content-<%= post.id%>').style.display = 'block'">Click to Show Spoiler</button>

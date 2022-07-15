@@ -128,21 +128,14 @@
             </div>
         </div>
     </div>
-    <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
-        <div class="new-post-button-text" onclick="showNewPostScreen()">
-            + <%= lang.new_post.new_post_text %>
-        </div>
+    <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
     </div>
     <div class="community-page-info-container">
-        <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>
-            <div class="community-page-follow-button-wrapper selected">
-                <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF"><%= community.followers %> <%= lang.community.followers %></p>
-            </div>
-        <%} else {%>
-        <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
-            <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= community.followers %> <%= lang.community.followers %></p>
+        <div class="community-page-follow-button-wrapper <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>selected<%}%>" onclick="followCommunity()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 30 30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            <p class="community-page-follow-button-text" id="<%= community.community_id %>"><%= community.followers %> <%= lang.community.followers %></p>
         </div>
-        <%}%>
         <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
         <h2 class="community-page-title"><%= community.name %></h2>
         <h4 class="community-page-description"><%= community.description %></h4>

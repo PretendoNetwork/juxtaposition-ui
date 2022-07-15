@@ -206,9 +206,13 @@ function hideReplyScreen() {
 function yeah(postNode, postID) {
     wiiuBrowser.lockUserOperation(true);
     var yeahCountElement = document.getElementById('yeah-' + postID);
+    var postElement = document.getElementById(postID);
+    yeahCountElement.classList.remove("selected");
+    postNode.classList.remove("selected");
+    postElement.classList.remove("selected");
     var yeahcount = yeahCountElement.innerHTML.substr(0, yeahCountElement.innerHTML.indexOf(' '));
     if (postNode.classList.contains("selected")) {
-        postNode.classList.remove("selected");
+        yeahCountElement.classList.remove("selected");
         var params = "postID=" + postID + "&type=down";
         var xhr = new XMLHttpRequest();
         xhr.open("POST", '/posts/empathy', true);
@@ -223,6 +227,8 @@ function yeah(postNode, postID) {
     }
     else {
         postNode.classList.add("selected");
+        yeahCountElement.classList.add("selected");
+        postElement.classList.add("selected");
         var params = "postID=" + postID + "&type=up";
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/posts/empathy', true);
@@ -243,33 +249,33 @@ function yeah(postNode, postID) {
         xhttp.send(params);
     }
 }
-function followCommunity(community) {
-    var communityWrapper = document.getElementsByClassName('community-page-follow-button-wrapper')[0];
-    var followers = document.getElementsByClassName('community-page-table-text')[0];
-    if (communityWrapper.classList.contains("selected")) {
-        communityWrapper.classList.remove("selected");
-        community.style.color = '#1F8A42';
-        var params = "communityID=" + community.id + "&type=false";
+function followCommunity() {
+    var community = document.getElementsByClassName('community-page-follow-button-wrapper')[0];
+    var followers = document.getElementsByClassName('community-page-follow-button-text')[0];
+    let text = followers.innerText.substring(0, followers.innerText.indexOf(' '));
+    let localText = followers.innerText.substring(followers.innerText.indexOf(' '));
+    console.log(text)
+    console.log(localText)
+    if (community.classList.contains("selected")) {
+        community.classList.remove("selected");
+        var params = "communityID=" + followers.id + "&type=false";
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/communities/follow', true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send(params);
-        followers.innerHTML = --followers.innerHTML;
-        community.innerHTML = 'Follow Community';
+        followers.innerHTML = --text + localText;
         wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
     }
     else {
-        var params = "communityID=" + community.id + "&type=true";
+        var params = "communityID=" + followers.id + "&type=true";
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/communities/follow', true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                communityWrapper.classList.add("selected");
-                community.style.color = '#FFFFFF';
-                community.innerHTML = 'Following';
-                followers.innerHTML = ++followers.innerHTML;
+                community.classList.add("selected");
+                followers.innerHTML = ++text + localText;
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
             if (this.readyState === 4 && this.status === 423) {

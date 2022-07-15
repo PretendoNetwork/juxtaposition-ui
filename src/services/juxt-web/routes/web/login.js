@@ -51,7 +51,9 @@ router.post('/', async (req, res) => {
                     if (!error && response.statusCode === 200) {
                         parseString(body, async function (err, result) {
                             token = result.service_token.token[0];
-                            res.cookie('access_token', token, { domain : '.pretendo.cc' });
+                            console.log(req.hostname);
+                            let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.cc';
+                            res.cookie('access_token', token, { domain : cookieDomain });
                             res.redirect('/activity-feed');
                         });
                     }
