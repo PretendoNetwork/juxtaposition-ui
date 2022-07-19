@@ -108,7 +108,7 @@
                         </tr>
                         <tr style="height: 70px">
                             <td class="post-close-button-wrapper" colspan="2">
-                                <div class="post-close-button" onclick="hideReplyScreen();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
+                                <div class="post-close-button" onclick="toggleOverlay();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
                             </td>
                             <td>
                                 <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuBrowser.lockUserOperation(true);wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
@@ -119,23 +119,22 @@
             </div>
         </div>
     </div>
-    <div class="community-page-back-button" onclick="window.history.back()">
-        <p class="user-page-back-button-text">Go back</p>
-    </div>
-    <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
-        <div class="new-post-button-text" onclick="showReplyScreen()">
-            +  Reply
-        </div>
-    </div>
-    <div class="community-page-post-box">
-        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
-        <span class="replies-line"></span>
-        <% replies.forEach(function(post) { %>
-            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+    <div id="overlay-filter">
+        <%if(user.pid !== 1000000000 && user.account_status === 0) {%>
+            <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </div>
+        <%}%>
+        <div class="community-page-post-box">
+            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
             <span class="replies-line"></span>
-        <% }); %>
+            <% replies.forEach(function(post) { %>
+                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+                <span class="replies-line"></span>
+            <% }); %>
+        </div>
+        <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
     </div>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
 <body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>

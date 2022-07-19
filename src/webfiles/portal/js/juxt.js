@@ -125,94 +125,47 @@ function back() {
     wiiuBrowser.showLoadingIcon(!0);
     window.history.back();
 }
-function showOverlay() {
-    wiiuSound.playSoundByName('SE_OLV_OK', 1)
-    wiiuSound.playSoundByName('BGM_OLV_SETTING', 3)
-    document.getElementById('windowOverlay').style.display = 'block';
-    document.getElementById('nav-bar').style.display = 'none';
-    document.getElementsByClassName('community-page-header')[0].style.display = 'none';
-    document.getElementsByClassName('user-page-back-button')[0].style.display = 'none';
-    document.getElementsByClassName('community-page-info-container')[0].style.display = 'none';
-    document.getElementsByClassName('community-page-post-box')[0].style.display = 'none';
-    document.getElementsByClassName('user-page-tab-table')[0].style.display = 'none';
-    document.getElementById('main').style.marginLeft = '14vh';
-    document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";
+function toggleOverlay() {
+    var element = document.getElementById('windowOverlay');
+    if(element.style.display === 'block') {
+        wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
+        wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
+
+        element.style.display = 'none';
+        document.getElementById('overlay-filter').style.display = '';
+        document.getElementById('main').style.marginLeft = '190px';
+        document.getElementById('nav-bar').style.display = '';
+    }
+    else {
+        wiiuSound.playSoundByName('SE_OLV_OK', 1)
+        wiiuSound.playSoundByName('BGM_OLV_SETTING', 3)
+
+        element.style.display = 'block';
+        document.getElementById('overlay-filter').style.display = 'none';
+        document.getElementById('main').style.marginLeft = '110px';
+        document.getElementById('nav-bar').style.display = 'none';
+    }
 }
-function hideOverlay() {
-    wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
-    document.getElementById('windowOverlay').style.display = 'none';
-    document.getElementById('nav-bar').style.display = 'block';
-    document.getElementsByClassName('community-page-header')[0].style.display = '';
-    document.getElementsByClassName('user-page-back-button')[0].style.display = '';
-    document.getElementsByClassName('community-page-info-container')[0].style.display = '';
-    document.getElementsByClassName('community-page-post-box')[0].style.display = '';
-    document.getElementsByClassName('user-page-tab-table')[0].style.display = '';
-    document.getElementById('main').style.marginLeft = '';
-    document.body.style.backgroundColor = "rgba(232,236,236,1)";
-    wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
+
+function loadScreenShotData() {
+    document.getElementById('post-top-screen-preview').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(true);
+    document.getElementById('post-bottom-screen-preview').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(false);
 }
+
 function showNewPostScreen() {
-    wiiuSound.playSoundByName('SE_OLV_OK', 1)
-    wiiuSound.playSoundByName('BGM_OLV_SETTING', 3)
-    document.getElementById('windowOverlay').style.display = 'block';
-    document.getElementById('nav-bar').style.display = 'none';
-    document.getElementsByClassName('community-page-header')[0].style.display = 'none';
-    document.getElementsByClassName('community-page-back-button')[0].style.display = 'none';
-    document.getElementsByClassName('community-page-info-container')[0].style.display = 'none';
-    document.getElementsByClassName('community-page-post-box')[0].style.display = 'none';
-    document.getElementsByClassName('community-page-header-overlay')[0].style.display = 'none';
-    document.getElementById('community-new-post-wrapper').style.display = 'none';
-    document.getElementById('main').style.marginLeft = '14vh';
-    document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";
-    document.getElementById('post-top-screen-preview').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(true);
-    document.getElementById('post-bottom-screen-preview').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(false);
+    toggleOverlay();
+    loadScreenShotData();
 }
-function hideNewPostScreen() {
-    wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
-    document.getElementById('windowOverlay').style.display = 'none';
-    document.getElementById('nav-bar').style.display = 'block';
-    document.getElementsByClassName('community-page-header')[0].style.display = '';
-    document.getElementsByClassName('community-page-back-button')[0].style.display = '';
-    document.getElementsByClassName('community-page-info-container')[0].style.display = '';
-    document.getElementsByClassName('community-page-post-box')[0].style.display = '';
-    document.getElementsByClassName('community-page-header-overlay')[0].style.display = '';
-    document.getElementById('community-new-post-wrapper').style.display = '';
-    document.getElementById('main').style.marginLeft = '';
-    document.body.style.backgroundColor = "rgba(232,236,236,1)";
-    wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
-}
-function showReplyScreen() {
-    wiiuSound.playSoundByName('SE_OLV_OK', 1)
-    wiiuSound.playSoundByName('BGM_OLV_SETTING', 3)
-    document.getElementById('windowOverlay').style.display = 'block';
-    document.getElementById('nav-bar').style.display = 'none';
-    document.getElementsByClassName('community-page-post-box')[0].style.display = 'none';
-    document.getElementById('community-new-post-wrapper').style.display = 'none';
-    document.getElementById('main').style.marginLeft = '15vh';
-    document.body.style.backgroundColor = "rgba(0,0,0, 0.5)";
-    document.getElementById('post-top-screen-preview').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(true);
-    document.getElementById('post-bottom-screen-preview').src = 'data:image/png;base64,' + wiiuMainApplication.getScreenShot(false);
-}
-function hideReplyScreen() {
-    wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
-    document.getElementById('windowOverlay').style.display = 'none';
-    document.getElementById('nav-bar').style.display = '';
-    document.getElementsByClassName('community-page-post-box')[0].style.display = '';
-    document.getElementById('community-new-post-wrapper').style.display = '';
-    document.getElementById('main').style.marginLeft = '190px';
-    document.body.style.backgroundColor = "rgba(232,236,236,1)";
-    wiiuSound.playSoundByName('SE_OLV_CANCEL', 1)
-}
+
 function yeah(postNode, postID) {
     wiiuBrowser.lockUserOperation(true);
     var yeahCountElement = document.getElementById('yeah-' + postID);
     var postElement = document.getElementById(postID);
-    yeahCountElement.classList.remove("selected");
-    postNode.classList.remove("selected");
-    postElement.classList.remove("selected");
     var yeahcount = yeahCountElement.innerHTML.substr(0, yeahCountElement.innerHTML.indexOf(' '));
     if (postNode.classList.contains("selected")) {
+        postNode.classList.remove("selected");
         yeahCountElement.classList.remove("selected");
+        postElement.classList.remove("selected");
         var params = "postID=" + postID + "&type=down";
         var xhr = new XMLHttpRequest();
         xhr.open("POST", '/posts/empathy', true);

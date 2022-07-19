@@ -13,6 +13,7 @@
 }
 body {
     background: rgba(232, 236, 236, 1) url('/css/background.png');
+    background-size: 1380px;
     margin: 0;
     font-family: 'Conv_Poppins-Light', sans-serif;
 }
@@ -317,7 +318,7 @@ ul, ol, menu, li {
     width: 90px;
     margin-right: 15px;
     float: left;
-    border: 5px solid #673DB6;
+    border: 5px solid #673DB6 !important;
     border-radius: 10px;
 }
 
@@ -995,7 +996,7 @@ h4 {
     background: #2d1769 url('/css/splash-background.png');
     margin-left: -30px;
     background-position: right;
-    background-size: 60%;
+    background-size: 92%;
     background-repeat: no-repeat;
 }
 
@@ -1003,8 +1004,8 @@ h4 {
     border-top: #D6D2D2;
     border-width: 5px;
     position: absolute;
-    padding-top: 115px;
-    margin-left: 17px;
+    padding-top: 35px;
+    margin-left: 57px;
     line-height: 20px;
 }
 
@@ -1018,7 +1019,6 @@ h4 {
     color: black;
     padding-left: 15px;
     margin-top: -15px;
-    font-size: large;
 }
 
 .community-page-margin-line {
@@ -1034,7 +1034,7 @@ h4 {
 .community-page-shaded-info-container {
     z-index: 3;
     width: 240px;
-    height: 60px;
+    height: 30px;
     margin-right: 5px;
     background-color: rgb(233, 233, 233);
     border: 1.5px solid #e9e9e9;
@@ -1108,6 +1108,7 @@ h4 {
     line-height: 20px;
     overflow: hidden;
     color: #bdaaed;
+    font-size: smaller;
 }
 
 .community-page-posts-wrapper {
@@ -1135,14 +1136,14 @@ h4 {
     margin-bottom: 7px;
     color: #bdaaed;
     border-radius: 40px;
-    padding: 10px 50px 10px 50px;
+    text-align: center;
+    padding: 10px 20px;
 }
 
 .community-page-posts-header-tab.active {
     color: #4d4d4d;
     background: #ffffff;
     border-radius: 40px;
-    padding: 10px 50px 10px 50px;
 }
 
 .community-page-post-wrapper {
@@ -1153,7 +1154,7 @@ h4 {
 
 .community-page-post-wrapper > h3 {
     padding-left: 0;
-    overflow-wrap: break-word;
+    overflow-wrap: anywhere;
     width: 760px;
     max-width: 760px;
     line-break: anywhere;
@@ -1255,28 +1256,26 @@ h4 {
 }
 
 .community-page-post-user-icon.verified{
-    width: 90px;
-    height: 90px;
+    width: 68px;
+    height: 68px;
     margin-right: 15px;
     float: left;
-    border: 5px solid #673DB6;
+    border: 2px solid #673DB6;
     border-radius: 10px;
-    background-color: #8f8e8e;
-    box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.5);
-    -webkit-box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.5);
+    background-color: #e6eaf1;
 }
 
 .community-page-verified-user-badge {
     position: absolute;
-    min-width: 18px;
-    height: 18px;
+    min-width: 6px;
+    height: 6px;
     margin-left: 80px;
     margin-top: -15px;
     padding: 6px 6px 4px 5px;
     border: 3px solid #673DB6;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAALCAYAAABPhbxiAAAABHNCSVQICAgIfAhkiAAAAI5JREFUKFOV0lERgzAQRdH7FBQpSKgTpgrQgIPioE7AAg4qAQfLLE0YyBBC+cgH2TObt4n44zOzCmiBXnddQANQA90tmKAJeBbhKZJmhY1GUp8eO4e8zuE7BP5IekV8hSL0sCPwAFZcQiv0xcwOOEzO//0GIc1pjG04Cfa6LNo67nLFzt9cp1hbvI7cA1kA5mlGowbMjrkAAAAASUVORK5CYII=');
     background-color: #673DB6;
-    background-position:  6px 8px;
+    background-position: 3px 4px;
     background-size: 65%;
     background-repeat: no-repeat !important;
     font-size: 20px;
@@ -1284,8 +1283,6 @@ h4 {
     text-align: center;
     line-height: 18px;
     -webkit-border-radius: 20px;
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0);
 }
 
 .community-page-post-username {
@@ -1336,18 +1333,16 @@ iframe {
 }
 
 .user-page-follow-button-wrapper {
-    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPgAAAA8CAYAAABLqHepAAAABHNCSVQICAgIfAhkiAAABLJJREFUeF7tnMFSUzEUQG+KjuJG/AL7B9ado2WsS9qF+AXgQmAnfoH4BcIO6kL9AnHRugSH6rizn1D+AFcigy/eFIqobU1bpq/JO10xkjxyz80xvJsEI3wgAIFoCZhoIyMwCEBAEJxJAIGICSB4xMklNAggOHMAAhETQPCIk0toEEBw5gAEIiaA4BEnl9AggODMAQhETADBI04uoUEAwZkDEIiYAIJHnFxCgwCCMwcgEDEBBI84uYQGAQRnDkAgYgIIHnFyCQ0CCM4cgEDEBBA84uQSGgQQnDkAgYgJIHjEySU0CEyU4CuztUVrzYI1tmDEHIiVljWyUd0rb5MqCEBgcAITIfhiaWfmyvH3d/oHpErdQrBWto8uTT9+s/vgYPAQ6QGB7BKYCMGXZ2u6QpuH1tp9MWb1aGp69+rh4YxcTkqJmHUd5HVdzTe2GuXV7KaKyCEwOIHUBV+arc/rIN5ZkW8qdv7vVXrlzod8ctk2neTJT3v71edKc/Aw6QGBbBJIXfDlYn1dfzV/ahN5Vv1UXu+WhrM21r6oNipr2UwVUUNgcAKpC75UrO8aI/eNNQ82G3O73ULorPIi9v3WXmV+8DDpAYFsEkhd8LP3b5FHvarlS/fqqyYnL/u9hz+5WyuYKdlxbVjlszmZifpfAqkLvlSsrRljnrtKebVRftR1Be+s8mIfb+5V3nRrs1L8UNLttR19zkd9TtdqPBMAAlkjkLrg54toYu3qVqOycT4J596/948uXSv02ipD8KxNXeL1IZC64G6Q7QMuYl67r3WrTKvkuW0xdkYH59638+7fu72jO6kTkfsn35e8ruCLYk1Li3Ynq7welKl+mnvrA4I2EIiRwEQI3pbcyWrsdnvP+9zH7Y1rhX2+2/bYcrHW1H3zW/0Sw9ZajNOWmHwJTIzgbsDuRNvV48NCIklJV+KDnDHNXpV1195V13XJL5ys1iavK/eC+w9Bq/KnK7g56LX15guIdhAImcBECT4KSN7BR6FH31gJIHismSUuCCiBVAV3e9e5nBbJjBTav2L3+xjb0qJZ0xzn3m9+mWv93bT9rCnzlTPrzGsI/CaQmuCd7a9hkqFXSteqjbkXw/SlDwSyRCAVwf+4PSZaENNiWk6Lav1X8CSvN8tKOuCFdk2Nc+lZmqfEOiSBsQt+dntMT5zpHe/5Qe94d4ppLt5+59eH5EE3CERFYPyCnx471euhPc+e/49w53gr79v/I8X3s04gBcFrLT17fvPH1PSNQVfvTrLYEsv6tCV+XwJjF3x5tq6Lt8jWXnmkn31Rz/EFRTsIhEhgJMmGCfiixLyo5wwTA30gEAqBsQuuRbZ2tVzvfs+MAskJ7o6l6t3v/CjPoS8EYiYwdsHd+7MD2u+MuQ9wdwNNbK416nN8fhZtIBAqgbELHiooxg2BEAkgeIhZY8wQ8CSA4J6gaAaBEAkgeIhZY8wQ8CSA4J6gaAaBEAkgeIhZY8wQ8CSA4J6gaAaBEAkgeIhZY8wQ8CSA4J6gaAaBEAkgeIhZY8wQ8CSA4J6gaAaBEAkgeIhZY8wQ8CSA4J6gaAaBEAkgeIhZY8wQ8CSA4J6gaAaBEAkgeIhZY8wQ8CTwC54KcEyIRkodAAAAAElFTkSuQmCC') -5px -4px;
-    background-repeat: no-repeat !important;
-    background-color: white;
-    border: 2px solid #673DB6;
-    border-radius: 5px;
+    background-color: #e3ebef;
+    border-radius: 20px;
     cursor: pointer;
-    min-width: 150px;
+    width: 40px;
     height: 40px;
     background-size: 200px !important;
     display: inline;
     float: left;
     margin-left: 10px;
+    position: relative;
 }
 
 .user-page-follow-button-wrapper.selected {
@@ -1903,10 +1898,14 @@ iframe {
     z-index: 3;
     border: 1.5px solid #ffffff00;
     border-radius: 10px;
-    margin-top: 40px;
+    margin-top: 140px;
     margin-bottom: 55px;
     width: 1060px;
     min-height: 190px;
+}
+
+.community-page-post-box.feed {
+    margin-top: unset;
 }
 
 .posts-wrapper {
@@ -1924,16 +1923,19 @@ iframe {
 }
 
 .reply-banner > svg {
-    margin-left: 30px;
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin-left: 25px;
+    margin-top: 0;
+    margin-bottom: 10px;
+    width: 25px;
+    height: 25px;
 }
 
 .reply-banner > h2 {
     color: #4F279B;
     position: absolute;
-    margin-top: -50px;
-    margin-left: 89px;
+    margin-top: -35px;
+    margin-left: 60px;
+    font-size: large;
 }
 
 .community-page-posts-header.switcher {
@@ -1941,10 +1943,16 @@ iframe {
     background-color: #412a7f;
     height: 4px !important;
     border-radius: 93px;
-    margin-top: 15px;
-    margin-bottom: 60px;
+    margin-top: 25px;
+    margin-bottom: 30px;
     box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     color: #bdaaed;
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    left: 50%;
+    transform: translate(-40%, -50%);
 }
 
 .overlay-content {
@@ -2038,4 +2046,11 @@ iframe {
     display: inline;
     padding: unset;
     margin: unset;
+}
+
+svg.feather.feather-settings {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
