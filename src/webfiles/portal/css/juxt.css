@@ -13,7 +13,7 @@
 }
 body {
     background: rgba(232, 236, 236, 1) url('/css/background.png');
-    background-size: 1380px;
+    background-size: 1385px;
     margin: 0;
     font-family: 'Conv_Poppins-Light', sans-serif;
 }
@@ -988,16 +988,16 @@ h4 {
 .community-page-info-container {
     position: absolute;
     z-index: 3;
-    width: 1110px;
+    width: 1150px;
     height: 190px;
     -webkit-box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.5);
     margin-top: -100px;
     margin-bottom: 15px;
     background: #2d1769 url('/css/splash-background.png');
-    margin-left: -30px;
-    background-position: right;
-    background-size: 92%;
+    margin-left: -60px;
+    background-size: 90%;
     background-repeat: no-repeat;
+    background-position-x: 111px;
 }
 
 .community-page-table-wrapper {
@@ -1044,12 +1044,11 @@ h4 {
 }
 
 .community-page-follow-button-wrapper {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     margin-left: 916px;
     margin-top: 15px;
     position: absolute;
-    background-size: 100% !important;
     cursor: pointer;
     background-color: #e3ebef;
     border-radius: 30px;
@@ -1066,18 +1065,19 @@ h4 {
 
 .community-page-follow-button-wrapper > svg {
     position: absolute;
-    padding-top: 10.5px;
-    padding-left: 10px;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
 }
 
 .community-page-follow-button-text {
-    padding-left: 47px;
-    margin-top: 7px;
-    font-size: 17px;
+    padding-left: 70px;
+    margin-top: 15px;
     font-weight: bold;
     -webkit-user-select: none;
     color: white;
     width: 140px;
+    font-size: larger;
 }
 
 .community-page-info-icon {
@@ -1098,6 +1098,7 @@ h4 {
     margin-bottom: 0;
     color: #fefefd;
     font-weight: bold;
+    font-size: x-large;
 }
 
 .community-page-description {
@@ -1108,7 +1109,7 @@ h4 {
     line-height: 20px;
     overflow: hidden;
     color: #bdaaed;
-    font-size: smaller;
+    font-size: large;
 }
 
 .community-page-posts-wrapper {
@@ -1334,14 +1335,11 @@ iframe {
 
 .user-page-follow-button-wrapper {
     background-color: #e3ebef;
-    border-radius: 20px;
+    border-radius: 30px;
     cursor: pointer;
-    width: 40px;
-    height: 40px;
-    background-size: 200px !important;
-    display: inline;
+    width: 60px;
+    height: 60px;
     float: left;
-    margin-left: 10px;
     position: relative;
 }
 
@@ -1952,7 +1950,8 @@ iframe {
     top: 50%;
     width: auto;
     left: 50%;
-    transform: translate(-40%, -50%);
+    transform: translate(-35%, -20%);
+    -webkit-transform: translate(-35%, -20%);
 }
 
 .overlay-content {
@@ -2052,5 +2051,5 @@ svg.feather.feather-settings {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
 }

@@ -205,8 +205,8 @@ function yeah(postNode, postID) {
 function followCommunity() {
     var community = document.getElementsByClassName('community-page-follow-button-wrapper')[0];
     var followers = document.getElementsByClassName('community-page-follow-button-text')[0];
-    let text = followers.innerText.substring(0, followers.innerText.indexOf(' '));
-    let localText = followers.innerText.substring(followers.innerText.indexOf(' '));
+    var text = followers.innerText.substring(0, followers.innerText.indexOf(' '));
+    var localText = followers.innerText.substring(followers.innerText.indexOf(' '));
     console.log(text)
     console.log(localText)
     if (community.classList.contains("selected")) {
