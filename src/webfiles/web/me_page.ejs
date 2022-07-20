@@ -78,6 +78,9 @@
                     <h4><%= lang.global.yeahs %></h4>
                     <h4>0</h4>
                 </div>
+                <div>
+                    <h4><a onclick="downloadURI('/downloadUserData.json', '<%= user.pid %>.json')">Download Data</a></h4>
+                </div>
             </div>
         </div>
         <% if(newPosts.length === 0) {%>
@@ -108,10 +111,19 @@
         Toast("Copied to clipboard.");
     }
     function Toast(text) {
-        var x = document.getElementById("toast");
+        let x = document.getElementById("toast");
         x.innerText = text;
         x.className = "show";
         setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+    function downloadURI(uri, name) {
+        let link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
     }
 </script>
 </body>

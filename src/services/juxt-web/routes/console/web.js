@@ -204,4 +204,15 @@ router.get('/:post_id/oembed.json', async function (req, res) {
     res.send(doc)
 });
 
+router.get('/downloadUserData.json', async function (req, res) {
+    res.set("Content-Type", "text/json");
+    let posts = await database.getUserPostsOffset(req.pid, 100000, 0);
+    let user = await database.getUserByPID(req.pid);
+    let doc = {
+        "user": user,
+        "content": posts,
+    }
+    res.send(doc)
+});
+
 module.exports = router;

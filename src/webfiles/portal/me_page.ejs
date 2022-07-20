@@ -146,16 +146,16 @@
                 <tbody>
                 <tr>
                     <td>
-                        <h4 id="recent-tab" onclick="switchUserPageTabs(0, '<%= user.pid %>')" class="community-page-posts-header-tab active"><%=numPosts%> <%= lang.user_page.posts %></h4>
+                        <h4 id="user-page-posts-tab" onclick="switchUserPageTabs(0, '<%= user.pid %>')" class="community-page-posts-header-tab active"><%=numPosts%> <%= lang.user_page.posts %></h4>
                     </td>
                     <td>
-                        <h4 id="popular-tab" onclick="switchUserPageTabs(1, '<%= user.pid %>')" class="community-page-posts-header-tab">0 <%= lang.user_page.friends %></h4>
+                        <h4 id="user-page-friends-tab" onclick="switchUserPageTabs(1, '<%= user.pid %>')" class="community-page-posts-header-tab">0 <%= lang.user_page.friends %></h4>
                     </td>
                     <td>
-                        <h4 id="popular-tab" onclick="switchUserPageTabs(2, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.following %> <%= lang.user_page.following %></h4>
+                        <h4 id="user-page-following-tab" onclick="switchUserPageTabs(2, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.following %> <%= lang.user_page.following %></h4>
                     </td>
                     <td>
-                        <h4 id="verified-tab" onclick="switchUserPageTabs(3, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.followers %> <%= lang.user_page.followers %></h4>
+                        <h4 id="user-page-followers-tab" onclick="switchUserPageTabs(3, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.followers %> <%= lang.user_page.followers %></h4>
                     </td>
                 </tr>
                 </tbody>

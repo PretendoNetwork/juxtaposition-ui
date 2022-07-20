@@ -52,9 +52,6 @@ function initNotifications() {
 }
 function initCommunityUsers() {
     var users = document.querySelectorAll("img[data-pjax], span[data-pjax], h2[data-pjax]");
-    /*users.push(document.querySelectorAll(""));
-    users.push(document.querySelectorAll(""));*/
-    console.log(users)
     if (!users)
         return;
     for (var i = 0; i < users.length; i++) {
@@ -222,8 +219,6 @@ function followCommunity() {
     var followers = document.getElementsByClassName('community-page-follow-button-text')[0];
     var text = followers.innerText.substring(0, followers.innerText.indexOf(' '));
     var localText = followers.innerText.substring(followers.innerText.indexOf(' '));
-    console.log(text)
-    console.log(localText)
     if (community.classList.contains("selected")) {
         community.classList.remove("selected");
         var params = "communityID=" + followers.id + "&type=false";
@@ -515,34 +510,26 @@ function loadFeedPosts(element) {
 }
 function switchUserPageTabs(type, id) {
     var typeDomain = '';
-    document.getElementById('user-page-posts-tab').classList.remove('selected');
-    document.getElementById('user-page-friends-tab').classList.remove('selected');
-    document.getElementById('user-page-following-tab').classList.remove('selected');
-    document.getElementById('user-page-followers-tab').classList.remove('selected');
+    document.getElementById('user-page-posts-tab').classList.remove('active');
+    document.getElementById('user-page-friends-tab').classList.remove('active');
+    document.getElementById('user-page-following-tab').classList.remove('active');
+    document.getElementById('user-page-followers-tab').classList.remove('active');
 
-    document.getElementById('user-page-posts-triangle').classList.remove('selected');
-    document.getElementById('user-page-friends-triangle').classList.remove('selected');
-    document.getElementById('user-page-following-triangle').classList.remove('selected');
-    document.getElementById('user-page-followers-triangle').classList.remove('selected');
     switch (type) {
         case 0:
-            document.getElementById("user-page-posts-tab").classList.add('selected');
-            document.getElementById("user-page-posts-triangle").classList.add('selected');
+            document.getElementById("user-page-posts-tab").classList.add('active');
             typeDomain = 'loadPosts';
             break;
         case 1:
-            document.getElementById("user-page-friends-tab").classList.add('selected');
-            document.getElementById("user-page-friends-triangle").classList.add('selected');
+            document.getElementById("user-page-friends-tab").classList.add('active');
             typeDomain = 'friends';
             break;
         case 2:
-            document.getElementById("user-page-following-tab").classList.add('selected');
-            document.getElementById("user-page-following-triangle").classList.add('selected');
+            document.getElementById("user-page-following-tab").classList.add('active');
             typeDomain = 'following';
             break;
         case 3:
-            document.getElementById("user-page-followers-tab").classList.add('selected');
-            document.getElementById("user-page-followers-triangle").classList.add('selected');
+            document.getElementById("user-page-followers-tab").classList.add('active');
             typeDomain = 'followers';
             break;
 
@@ -627,7 +614,6 @@ function searchCommunities() {
             td = tr[i].getElementsByTagName("td")[j].children[0].children[1];
             if (td) {
                 txtValue = td.textContent || td.innerText;
-                console.log(txtValue + '  ' + txtValue.toUpperCase().indexOf(filter))
                 if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     tr[i].getElementsByTagName("td")[j].style.display = "";
                 } else {

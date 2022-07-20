@@ -9,11 +9,8 @@ var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
 
 router.get('/', async function (req, res) {
-    console.log('recieved')
     let popularCommunities = await database.getMostPopularCommunities(9);
-    console.log('popular')
     let newCommunities = await database.getCommunities(6);
-    console.log('new')
     res.render(req.directory + '/communities.ejs', {
         cache: true,
         popularCommunities: popularCommunities,
@@ -21,7 +18,6 @@ router.get('/', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang
     });
-    console.log('rendered')
 });
 
 router.get('/all', async function (req, res) {

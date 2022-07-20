@@ -62,7 +62,6 @@ router.get('/show', async function (req, res) {
     if(parentUser.pid === user.pid)
         return res.redirect('/users/me');
     let newPosts = await database.getNumberUserPostsByID(user.pid, config.post_limit);
-    console.log('first load total: ' + newPosts.length)
     let numPosts = await database.getTotalPostsByUserID(user.pid);
     let communityMap = await util.data.getCommunityHash();
     res.render(req.directory + '/user_page.ejs', {
@@ -82,7 +81,6 @@ router.get('/show', async function (req, res) {
 
 router.get('/loadPosts', async function (req, res) {
     let offset = parseInt(req.query.offset);
-    console.log('offset: ' + offset)
     let pid;
     if(req.query.pid)
         pid = req.query.pid
@@ -90,7 +88,6 @@ router.get('/loadPosts', async function (req, res) {
         pid = req.pid
     let user = await database.getUserByPID(pid);
     let newPosts = await database.getUserPostsOffset(pid, config.post_limit, offset);
-    console.log('num posts: ' + newPosts.length)
     let communityMap = await util.data.getCommunityHash();
     if(newPosts.length > 0)
     {
