@@ -207,7 +207,7 @@ async function getUserPostsOffset(pid, limit, offset) {
     return POST.find({
         pid: pid,
         parent: null
-    }).sort({ created_at: -1}).skip(offset).limit(limit);
+    }).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
 async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {

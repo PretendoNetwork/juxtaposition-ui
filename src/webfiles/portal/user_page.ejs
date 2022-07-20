@@ -14,34 +14,24 @@
 <%- include('nav_bar', { selection: -1 }); %>
 <div id="main">
     <div class="community-page-header" style="background: #673DB6;margin-left: -150px;"></div>
-    <div class="user-page-back-button" onclick="back()">
-        <p class="user-page-back-button-text"><%= lang.global.go_back %></p>
-    </div>
     <div class="community-page-info-container">
         <div class="community-page-action-button-wrapper">
-            <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
-            <div class="user-page-follow-button-wrapper friend selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="" style="color: #FFFFFF"><%= lang.user_page.unfriend %></p>
-            </div>
-            <%} else if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
-            <div class="user-page-follow-button-wrapper friend selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="" style="color: #FFFFFF"><%= lang.user_page.pending %></p>
-            </div>
-            <%} else {%>
-            <div class="user-page-follow-button-wrapper friend" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick=""><%= lang.user_page.befriend %></p>
-            </div>
-            <%}%>
-
-            <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>
+            <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ /*Is Friend*/%>
             <div class="user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)" style="color: #FFFFFF"><%= lang.user_page.following_user %></p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
             </div>
-            <%} else {%>
+            <%} else if(parentUser.followed_users.indexOf(user.pid) !== -1){ /*Pending Friend*/%>
+            <div class="user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-x"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
+            </div>
+            <%} else { /*Add Friend*/%>
             <div class="user-page-follow-button-wrapper" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" id="<%= user.pid %>" onclick="followUser(this)"><%= lang.user_page.follow_user %></p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
             </div>
             <%}%>
+            <div class="user-page-follow-button-wrapper  <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>selected<%}%>" id="<%= user.pid %>" <%if(user.pid !== 1000000000) {%>onclick="followUser(this)"<%}%>>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+            </div>
         </div>
         <%if(user.official) {%>
             <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
@@ -51,43 +41,96 @@
             <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
         <%}%>
         <h2 class="community-page-title"><%= user.user_id %> (<%= user.pnid %>)</h2>
-        <h4 class="community-page-description"><%= user.profile_comment %></h4>
-        <div class="community-page-margin-line"></div>
+        <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
         <table class="community-page-table-wrapper">
             <tbody>
             <tr>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.user_page.country %></h4>
-                        <h4 class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%>Private<%}%></h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.user_page.birthday %></h4>
-                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%>Private<%}%></h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.user_page.game_experience %></h4>
-                        <h4 class="community-page-table-text">
-                            <%if(user.game_skill === 0) {%>
-                                <%= lang.setup.experience_text.beginner %>
-                            <%} else if(user.game_skill === 1) {%>
-                                <%= lang.setup.experience_text.intermediate %>
-                            <%} else if(user.game_skill === 2) {%>
-                                <%= lang.setup.experience_text.expert %>
-                            <%} else {%>
-                                N/A
-                            <%}%>
+                        <h4>
+                            <span class="community-page-table-label"><%= lang.user_page.country %>:</span>
+                            <span class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%><%= lang.global.private %><%}%></span>
                         </h4>
                     </div>
                 </td>
                 <td>
                     <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.global.yeahs %></h4>
-                        <h4 class="community-page-table-text">N/A</h4>
+                        <h4>
+                            <span class="community-page-table-label"><%= lang.user_page.birthday %>:</span>
+                            <span class="community-page-table-text"><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></span>
+                        </h4>
+                    </div>
+                </td>
+                <td>
+                    <div class="community-page-shaded-info-container">
+                        <h4>
+                            <span class="community-page-table-label"><%= lang.user_page.game_experience %>:</span>
+                            <span class="community-page-table-text">
+                                <%if(user.game_skill_visibility){%>
+                                <%if(user.game_skill === 0) {%>
+                                    <%= lang.setup.experience_text.beginner %>
+                                <%} else if(user.game_skill === 1) {%>
+                                    <%= lang.setup.experience_text.intermediate %>
+                                <%} else if(user.game_skill === 2) {%>
+                                    <%= lang.setup.experience_text.expert %>
+                                <%} else {%>
+                                    N/A
+                                <%}%>
+                                <%}else {%>
+                                    <%= lang.global.private %>
+                                <%}%>
+                            </span>
+                        </h4>
+                    </div>
+                </td>
+                <td>
+                    <div class="community-page-shaded-info-container">
+                        <h4>
+                            <span class="community-page-table-label"><%= lang.global.yeahs %>:</span>
+                            <span class="community-page-table-text">0</span>
+                        </h4>
+                    </div>
+                </td>
+                <td>
+                    <div class="supporter-star mario">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                </td>
+                <td>
+                    <div class="supporter-star super">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                </td>
+                <td>
+                    <div class="supporter-star mega">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                </td>
+                <td>
+                    <div class="supporter-star dev">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool">
+                            <defs>
+                                <linearGradient id="rainbow">
+                                    <stop offset="16%" stop-color="red" />
+                                    <stop offset="32%" stop-color="orange" />
+                                    <stop offset="48%" stop-color="yellow" />
+                                    <stop offset="64%" stop-color="green" />
+                                    <stop offset="80%" stop-color="blue" />
+                                    <stop offset="96%" stop-color="purple" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                </td>
+                <td>
+                    <div class="supporter-star admin">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                </td>
+                <td>
+                    <div class="supporter-star tester">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
                     </div>
                 </td>
             </tr>
@@ -95,32 +138,20 @@
         </table>
     </div>
     <div>
-        <table class="user-page-tab-table">
+        <table class="community-page-posts-header switcher">
             <tbody>
             <tr>
-                <td onclick="switchUserPageTabs(0, '<%= user.pid %>')">
-                    <div class="user-page-tab left selected" id="user-page-posts-tab">
-                        <%=numPosts%> <%= lang.user_page.posts %>
-                    </div>
-                    <div class="user-page-tab-triangle selected" id="user-page-posts-triangle"></div>
+                <td>
+                    <h4 id="recent-tab" onclick="switchUserPageTabs(0, '<%= user.pid %>')" class="community-page-posts-header-tab active"><%=numPosts%> <%= lang.user_page.posts %></h4>
                 </td>
-                <td onclick="switchUserPageTabs(1, '<%= user.pid %>')">
-                    <div class="user-page-tab" id="user-page-friends-tab">
-                        0 <%= lang.user_page.friends %>
-                    </div>
-                    <div class="user-page-tab-triangle" id="user-page-friends-triangle"></div>
+                <td>
+                    <h4 id="popular-tab" onclick="switchUserPageTabs(1, '<%= user.pid %>')" class="community-page-posts-header-tab">0 <%= lang.user_page.friends %></h4>
                 </td>
-                <td onclick="switchUserPageTabs(2, '<%= user.pid %>')">
-                    <div class="user-page-tab" id="user-page-following-tab">
-                        <%= user.following %> <%= lang.user_page.following %>
-                    </div>
-                    <div class="user-page-tab-triangle" id="user-page-following-triangle"></div>
+                <td>
+                    <h4 id="popular-tab" onclick="switchUserPageTabs(2, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.following %> <%= lang.user_page.following %></h4>
                 </td>
-                <td onclick="switchUserPageTabs(3, '<%= user.pid %>')">
-                    <div class="user-page-tab right" id="user-page-followers-tab">
-                        <%= user.followers %> <%= lang.user_page.followers %>
-                    </div>
-                    <div class="user-page-tab-triangle" id="user-page-followers-triangle"></div>
+                <td>
+                    <h4 id="user-page-followers-tab" onclick="switchUserPageTabs(3, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.followers %> <%= lang.user_page.followers %></h4>
                 </td>
             </tr>
             </tbody>

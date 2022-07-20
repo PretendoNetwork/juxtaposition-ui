@@ -73,6 +73,14 @@ document.addEventListener("pjax:send", function() {
 });
 document.addEventListener("pjax:complete", function() {
     console.log("Event: pjax:complete", arguments);
+    if(wiiuBrowser.canHistoryBack()) {
+        document.getElementById('nav-bar-back').style.display = 'initial';
+        document.getElementById('nav-bar-exit').style.display = 'none';
+    }
+    else {
+        document.getElementById('nav-bar-back').style.display = 'none';
+        document.getElementById('nav-bar-exit').style.display = 'initial';
+    }
 });
 document.addEventListener("pjax:error", function() {
     wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send the error code and what you were doing in');
@@ -123,7 +131,14 @@ function exit() {
 function back() {
     wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
     wiiuBrowser.showLoadingIcon(!0);
-    window.history.back();
+    document.getElementById('nav-bar-back').classList.add('selected')
+    if(wiiuBrowser.canHistoryBack()) {
+        window.history.back();
+    }
+    else {
+        document.getElementById('nav-bar-back').style.display = 'none';
+        document.getElementById('nav-bar-exit').style.display = 'initial';
+    }
 }
 function toggleOverlay() {
     var element = document.getElementById('windowOverlay');
@@ -240,25 +255,21 @@ function followCommunity() {
     }
 }
 function followUser(user) {
-    var userWrapper = user.parentElement;
     var followersElement = document.getElementById('user-page-followers-tab');
     var followers = followersElement.innerHTML.trim().substr(0, followersElement.innerHTML.indexOf(' ') + 1);
-    if (userWrapper.classList.contains("selected")) {
-        userWrapper.classList.remove("selected");
-        user.style.color = '#673DB6';
+    if (user.classList.contains("selected")) {
+        user.classList.remove("selected");
         var params = "userID=" + user.id + "&type=false";
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", '/users/follow', true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhttp.send(params);
 
-        user.innerHTML = 'Follow User';
         followersElement.innerText = --followers + followersElement.innerHTML.trim().substr(followersElement.innerHTML.indexOf(' '));
         wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
     }
     else {
-        userWrapper.classList.add("selected");
-        user.style.color = '#FFFFFF';
+        user.classList.add("selected");
 
         var params = "userID=" + user.id + "&type=true";
         var xhttp = new XMLHttpRequest();
@@ -267,12 +278,11 @@ function followUser(user) {
 
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                user.innerHTML = 'Following';
                 followersElement.innerText = ++followers + followersElement.innerHTML.trim().substr(followersElement.innerHTML.indexOf(' '));
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
             if (this.readyState === 4 && (this.status === 423 || this.status === 404)) {
-                userWrapper.classList.remove("selected");
+                user.classList.remove("selected");
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
         }
@@ -444,7 +454,7 @@ function loadUserPosts(element, pid) {
     xhttp.open("GET", "/users/loadPosts" + '?offset=' + offset + '&pid=' + pid, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 10;
+    element.dataset.offset = offset + 20;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }
