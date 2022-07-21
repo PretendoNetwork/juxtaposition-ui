@@ -775,6 +775,10 @@ td.messages-list-wrapper.end {
     margin-bottom:15px
 }
 
+.communities-wrapper > table:last-of-type {
+    padding-bottom: 15px;
+}
+
 .communities-header {
     padding-left:3vh;
     padding-top:20px
@@ -1046,13 +1050,16 @@ h4 {
 
 .community-page-description {
     margin-top:5px;
-    position:absolute;
-    margin-left:190px;
+    position:
+            absolute;
+    margin-left: 175px;
     max-width:725px;
     line-height:20px;
-    overflow:hidden;
+    overflow:
+            hidden;
     color:#bdaaed;
-    font-size:large
+    font-size:
+            large
 }
 
 .community-page-posts-wrapper {
