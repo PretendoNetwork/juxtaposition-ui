@@ -8,17 +8,7 @@
 <body>
 <%- include('nav_bar', { selection: 2 }); %>
 <div id="main">
-    <div onclick="topFunction()" id="scroll-prompt" title="Go to top">
-        <div class="scroll-wrapper">
-            <div>
-                <h2><%= community.name %></h2>
-            </div>
-            <div>
-                <h3>^</h3>
-                <h3>Go back up</h3>
-            </div>
-        </div>
-    </div>
+    <%- include('scroll_wrapper', { text: community.name, lang: lang }); %>
     <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
     <div class="community-page-follow-button-wrapper" style="display: none">
         <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>

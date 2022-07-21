@@ -2,12 +2,11 @@
     <div class="post-user-info-wrapper" id="<%= post.id %>">
         <%if(post.verified) {%>
             <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
-            <span class="community-page-verified-user-badge community-page-verified" style="" data-pjax="/users/show?pid=<%= post.pid %>"></span>
+            <h2 class="community-page-post-username verified-badge" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
         <%} else {%>
             <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
-            <span class="community-page-verified-user-badge community-page-verified" style="display: none;" data-pjax="/users/show?pid=<%= post.pid %>"></span>
+                <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
         <%}%>
-        <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
         <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <a onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);pjax.loadUrl('/communities/<%= post.community_id %>/new')"><%= communityMap.get(post.community_id) %></a></h4>
 
         <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">

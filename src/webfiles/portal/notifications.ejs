@@ -7,18 +7,8 @@
 <body>
 <%- include('nav_bar', { selection: 4 }); %>
 <div id="main">
-    <h1 id="title" class="page-header">Notifications</h1>
-    <div onclick="topFunction()" id="scroll-prompt" title="Go to top">
-        <div class="scroll-wrapper">
-            <div>
-                <h2>Notifications</h2>
-            </div>
-            <div>
-                <h3>^</h3>
-                <h3>Go back up</h3>
-            </div>
-        </div>
-    </div>
+    <h1 id="title" class="page-header"><%= lang.global.notifications %></h1>
+    <%- include('scroll_wrapper', { text: lang.global.notifications, lang: lang }); %>
     <div class="community-page-posts-wrapper">
         <table cellspacing="0">
             <tbody id="messages-list">

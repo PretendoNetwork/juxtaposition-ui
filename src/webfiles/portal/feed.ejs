@@ -8,17 +8,7 @@
 <%- include('nav_bar', { selection: 1 }); %>
 <div id="main">
     <h1 id="title" class="page-header"><%= lang.global.activity_feed %></h1>
-    <div onclick="topFunction()" id="scroll-prompt" title="Go to top">
-        <div class="scroll-wrapper">
-            <div>
-                <h2><%= lang.global.activity_feed %></h2>
-            </div>
-            <div>
-                <h3>^</h3>
-                <h3>Go back up</h3>
-            </div>
-        </div>
-    </div>
+    <%- include('scroll_wrapper', { text: lang.global.activity_feed, lang: lang }); %>
     <div class="community-page-post-box feed" style="margin-top: 0px;">
         <div id="wrapper">
             <% if(posts.length === 0) {%>

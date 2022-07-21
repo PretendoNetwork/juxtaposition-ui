@@ -71,12 +71,12 @@ document.addEventListener("pjax:send", function() {
 document.addEventListener("pjax:complete", function() {
     console.log("Event: pjax:complete", arguments);
     if(wiiuBrowser.canHistoryBack()) {
-        document.getElementById('nav-bar-back').style.display = 'initial';
+        document.getElementById('nav-bar-back').style.display = 'list-item';
         document.getElementById('nav-bar-exit').style.display = 'none';
     }
     else {
         document.getElementById('nav-bar-back').style.display = 'none';
-        document.getElementById('nav-bar-exit').style.display = 'initial';
+        document.getElementById('nav-bar-exit').style.display = 'list-item';
     }
 });
 document.addEventListener("pjax:error", function() {

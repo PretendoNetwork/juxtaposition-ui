@@ -14,6 +14,7 @@
 <%- include('nav_bar', { selection: -1 }); %>
 <div id="main">
     <div class="community-page-header" style="background: #673DB6;"></div>
+    <%- include('scroll_wrapper', { text: user.user_id, lang: lang }); %>
     <div class="community-page-info-container" style="height: 220px;">
         <div class="community-page-action-button-wrapper">
             <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ /*Is Friend*/%>
@@ -35,12 +36,12 @@
         </div>
         <%if(user.official) {%>
             <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
-            <span class="community-page-verified-user-badge community-page-verified" style="margin-left: 110px;margin-top: 5px;"></span>
+            <h2 class="user-page-title verified-badge"><%= user.user_id %></h2>
         <%} else {%>
             <img class="community-page-info-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
-            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
+            <h2 class="user-page-title"><%= user.user_id %></h2>
         <%}%>
-        <h2 class="community-page-title"><%= user.user_id %> (<%= user.pnid %>)</h2>
+        <h2 class="user-page-subtitle">@<%= user.pnid %></h2>
         <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
         <table class="community-page-table-wrapper">
             <tbody>
