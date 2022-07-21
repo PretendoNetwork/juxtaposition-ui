@@ -13,8 +13,8 @@
 <body>
 <%- include('nav_bar', { selection: -1 }); %>
 <div id="main">
-    <div class="community-page-header" style="background: #673DB6;margin-left: -150px;"></div>
-    <div class="community-page-info-container">
+    <div class="community-page-header" style="background: #673DB6;"></div>
+    <div class="community-page-info-container" style="height: 220px;">
         <div class="community-page-action-button-wrapper">
             <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ /*Is Friend*/%>
             <div class="user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
@@ -91,7 +91,7 @@
                         </h4>
                     </div>
                 </td>
-                <td>
+                <!--<td>
                     <div class="supporter-star mario">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     </div>
@@ -132,13 +132,13 @@
                     <div class="supporter-star tester">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
                     </div>
-                </td>
+                </td>-->
             </tr>
             </tbody>
         </table>
     </div>
     <div>
-        <table class="community-page-posts-header switcher">
+        <table class="community-page-posts-header switcher" style="-webkit-transform: translate(-35%, 25%) !important;">
             <tbody>
             <tr>
                 <td>
@@ -157,7 +157,7 @@
             </tbody>
         </table>
     </div>
-    <div class="community-page-post-box">
+    <div class="community-page-post-box" style="margin-top: 160px;">
         <% if(numPosts === 0) {%>
             <p class="no-posts-text"><%= lang.global.no_posts %></p>
         <%} else { %>

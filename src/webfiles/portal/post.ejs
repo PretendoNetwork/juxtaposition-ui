@@ -125,7 +125,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             </div>
         <%}%>
-        <div class="community-page-post-box">
+        <div class="community-page-post-box" style="margin-top: 75px">
             <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
             <span class="replies-line"></span>
             <% replies.forEach(function(post) { %>
