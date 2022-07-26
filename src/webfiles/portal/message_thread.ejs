@@ -60,12 +60,12 @@
                         <div id="message-viewer-attach-button" onclick="sendPainting('<%= conversation.id %>', '<%= user2.pid %>')"></div>
                     </td>
                     <td>
-                        <form action="javascript:sendMessage('<%= conversation.id %>', '<%= user2.pid %>')">
+                        <form action="javascript:sendMessage('<%= conversation.community_id %>', '<%= user2.pid %>')">
                             <input id="message-viewer-input" type="text" placeholder="Send message..." name="message">
                         </form>
                     </td>
                     <td>
-                        <div id="message-viewer-submit-button" onclick="sendMessage('<%= conversation.id %>', '<%= user2.pid %>')"></div>
+                        <div id="message-viewer-submit-button" onclick="sendMessage('<%= conversation.community_id %>', '<%= user2.pid %>')"></div>
                     </td>
                 </tr>
                 </tbody>

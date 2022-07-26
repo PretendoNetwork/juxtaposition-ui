@@ -16,24 +16,25 @@
             <%} else { %>
                 <% conversations.forEach(function(conversation) { %>
                     <%
-                        var position = conversation.pid1.pid === user.pid.toString() ? conversation.pid2 : conversation.pid1;
+                        // get the PID of the opposite user
+                        var userObj = conversation.users[0] === user.pid ? conversation.users[0] : conversation.users[1];
                     %>
-                    <tr class="message-wrapper" onclick="showMessage('<%= conversation.id %>')">
+                    <tr class="message-wrapper" onclick="showMessage('<%= conversation.community_id %>')">
                         <td class="messages-unread-badge-wrapper">
-                            <%if(!position.read) {%><div class="unread-badge"></div><%}%>
+                            <%if(false) {%><div class="unread-badge"></div><%}%>
                         </td>
                         <td>
-                            <%if(position.official) {%>
-                                <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
+                            <%if(false) {%>
+                                <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= userObj %>/normal_face.png">
                                 <span class="message-page-verified-user-badge community-page-verified" style=""></span>
                             <%} else {%>
-                                <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
+                                <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= userObj %>/normal_face.png">
                                 <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
                             <%}%>
                         </td>
                         <td>
-                            <h2 class="message-list-title"><%= position.screen_name %></h2>
-                            <h4 class="message-list-timestamp"> - <%= moment(conversation.last_message_sent).fromNow() %></h4>
+                            <h2 class="message-list-title"><%= usersMap.get(userObj) %></h2>
+                            <h4 class="message-list-timestamp"> - <%= moment(conversation.last_updated_at).fromNow() %></h4>
                         </td>
                     </tr>
                     <tr>

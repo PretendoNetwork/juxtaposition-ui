@@ -12,6 +12,7 @@ const  CommunitySchema = new Schema({
      * 0: Main Community
      * 1: Sub-Community
      * 2: Announcement Community
+     * 3: Private Community
      */
     type: {
       type: Number,
@@ -25,8 +26,16 @@ const  CommunitySchema = new Schema({
         type: [String],
         default: undefined
     },
+    users: {
+        type: [String],
+        default: undefined
+    },
     created_at: {
       type: Date,
+        default: new Date(),
+    },
+    last_updated_at: {
+        type: Date,
         default: new Date(),
     },
     empathy_count: {

@@ -18,7 +18,7 @@ const  ConversationSchema = new Schema({
         type: String,
         default: ""
     },
-    pid1: {
+    parent_pid: {
         pid: String,
         official: {
             type: Boolean,
@@ -27,7 +27,7 @@ const  ConversationSchema = new Schema({
         screen_name: String,
         read: Boolean
     },
-    pid2: {
+    child_pid: {
         pid: String,
         official: {
             type: Boolean,

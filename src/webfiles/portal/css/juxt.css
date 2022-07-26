@@ -201,10 +201,11 @@ ul,ol,menu,li {
 }
 
 .overlay {
-    display:none;
-    overflow:hidden;
-    margin-top:13px;
-    margin-bottom:0
+    display: none;
+    overflow: hidden;
+    margin-top: 13px;
+    margin-bottom: 0;
+    width: 1065px;
 }
 
 .overlay .closebtn {

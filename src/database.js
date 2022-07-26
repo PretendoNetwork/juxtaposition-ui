@@ -33,19 +33,19 @@ function verifyConnected() {
 async function getCommunities(numberOfCommunities) {
     verifyConnected();
     if(numberOfCommunities === -1)
-        return COMMUNITY.find({ parent: null });
+        return COMMUNITY.find({ parent: null, type: 0 });
     else
-        return COMMUNITY.find({ parent: null }).limit(numberOfCommunities);
+        return COMMUNITY.find({ parent: null, type: 0 }).limit(numberOfCommunities);
 }
 
 async function getMostPopularCommunities(numberOfCommunities) {
     verifyConnected();
-    return COMMUNITY.find({ parent: null }).sort({followers: -1}).limit(numberOfCommunities);
+    return COMMUNITY.find({ parent: null, type: 0 }).sort({followers: -1}).limit(numberOfCommunities);
 }
 
 async function getNewCommunities(numberOfCommunities) {
     verifyConnected();
-    return COMMUNITY.find({ parent: null }).sort([['created_at', -1]]).limit(numberOfCommunities);
+    return COMMUNITY.find({ parent: null, type: 0 }).sort([['created_at', -1]]).limit(numberOfCommunities);
 }
 
 async function getSubCommunities(communityID) {
@@ -115,7 +115,8 @@ async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
     verifyConnected();
     return POST.find({
         parent: post.pid,
-        created_at: { $lt: post.created_at }
+        created_at: { $lt: post.created_at },
+        message_to_pid: null
     }).limit(numberOfPosts);
 }
 
@@ -123,7 +124,8 @@ async function getNumberUserPostsByID(userID, number) {
     verifyConnected();
     return POST.find({
         pid: userID,
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).sort({ created_at: -1}).limit(number);
 }
 
@@ -198,7 +200,8 @@ async function getUserPostsAfterTimestamp(post, numberOfPosts) {
     return POST.find({
         pid: post.pid,
         created_at: { $lt: post.created_at },
-        parent: null
+        parent: null,
+        message_to_pid: null,
     }).limit(numberOfPosts);
 }
 
@@ -206,7 +209,8 @@ async function getUserPostsOffset(pid, limit, offset) {
     verifyConnected();
     return POST.find({
         pid: pid,
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
@@ -289,7 +293,8 @@ async function getNewsFeed(user, numberOfPosts) {
             {pid: user.pid},
             {community_id: user.followed_communities},
         ],
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
@@ -302,7 +307,8 @@ async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
             {community_id: user.followed_communities},
         ],
         created_at: { $lt: post.created_at },
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
@@ -314,24 +320,40 @@ async function getNewsFeedOffset(user, limit, offset) {
             {pid: user.pid},
             {community_id: user.followed_communities},
         ],
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
 async function getConversations(pid) {
     verifyConnected();
-    return CONVERSATION.find({
-        pids: pid
+    return COMMUNITY.find({
+        type: 3,
+        users: pid
+    }).sort({ last_updated_at: -1});
+}
+
+async function getConversationByID(community_id) {
+    verifyConnected();
+    return COMMUNITY.findOne({
+        type: 3,
+        community_id: community_id
     });
 }
 
-async function getConversation(pid, pid2) {
+async function getConversationMessages(community_id, limit, offset) {
     verifyConnected();
-    return CONVERSATION.find({
-        $and: [
-            {pids: pid},
-            {pids: pid2}
-        ],
+    return POST.find({
+        community_id: community_id,
+        parent: null
+    }).sort({created_at: 1}).skip(offset).limit(limit);
+}
+
+async function getConversationByUsers(pids) {
+    verifyConnected();
+    return COMMUNITY.findOne({
+        type: 3,
+        users: pids
     });
 }
 
@@ -398,7 +420,9 @@ module.exports = {
     getFollowingUsers,
     getFollowedUsers,
     getConversations,
-    getConversation,
+    getConversationByID,
+    getConversationByUsers,
+    getConversationMessages,
     getLatestMessage,
     getPNID,
     getPNIDS

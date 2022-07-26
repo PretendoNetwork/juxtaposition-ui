@@ -3,20 +3,22 @@ var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const { CONVERSATION } = require('../../../../models/conversation');
 const { POST } = require('../../../../models/post');
 var moment = require('moment');
+const {COMMUNITY} = require("../../../../models/communities");
 const snowflake = require('node-snowflake').Snowflake;
 var router = express.Router();
 
 router.get('/', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let conversations = await database.getConversations(user.pid.toString());
+    let usersMap = await util.data.getUserHash();
     res.render(req.directory + '/messages.ejs', {
         moment: moment,
         user: user,
         conversations: conversations,
         cdnURL: config.CDN_domain,
+        usersMap: usersMap,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN
     });
@@ -24,43 +26,28 @@ router.get('/', async function (req, res) {
 
 router.post('/new', async function (req, res, next) {
     let conversation = await database.getConversationByID(req.body.conversationID);
+    if(req.body.conversationID === 0)
+        return res.sendStatus(404);
     if(!conversation) {
         let user = await database.getUserByPID(req.pid);
         let user2 = await database.getUserByPID(req.body.message_to_pid);
         if(!user || !user2)
             return res.sendStatus(422)
-        let doc = {
-            message_preview: req.body.body,
-            pids: [
-                {
-                    pid: user.pid.toString(),
-                    official: user.official,
-                    screen_name: user.user_id,
-                    read: true
-                },
-                {
-                    pid: user2.pid.toString(),
-                    official: user2.official,
-                    screen_name: user2.user_id,
-                    read: false
-                }
-            ]
-        }
-        const newConversation = new CONVERSATION(doc);
-        await newConversation.save();
+        const document = {
+            type: 3,
+            community_id: snowflake.nextId(),
+            created_at: moment(new Date()),
+            last_updated: moment(new Date()),
+            name: `Group DM ${user.pid} & ${user2.pid}`,
+            users: [ user.pid, user2.pid]
+        };
+        const newCommunity = new COMMUNITY(document);
+        await newCommunity.save();
+        console.log(newCommunity);
     }
-    else {
-        let messageType = '';
-        if(req.body.screenshot)
-            messageType = '(Screenshot)';
-        else if(req.body.drawing)
-            messageType = '(Drawing)';
-        else
-            messageType = req.body.body;
-        await conversation.newMessage(messageType, req.pid.toString())
-    }
-    conversation = await database.getConversation(req.pid.toString(), req.body.message_to_pid.toString())
+    conversation = await database.getConversationByUsers([req.pid.toString(), req.body.message_to_pid.toString()])
     let user = await database.getUserByPID(req.pid);
+    console.log(conversation.community_id);
     const document = {
         screen_name: user.user_id,
         body: req.body.body,
@@ -73,8 +60,8 @@ router.post('/new', async function (req, res, next) {
         pid: user.pid,
         verified: user.official,
         parent: null,
-        message_to_pid: req.body.message_to_pid,
-        conversation_id: conversation.id
+        community_id: conversation.community_id,
+        message_to_pid: req.body.message_to_pid
     };
     const newPost = new POST(document);
     newPost.save();
@@ -82,15 +69,14 @@ router.post('/new', async function (req, res, next) {
 });
 
 router.get('/:message_id', async function (req, res) {
-    return res.sendStatus(404);
-    /*let conversation = await database.getConversationByID(req.params.message_id.toString())
+    let conversation = await database.getConversationByID(req.params.message_id.toString());
     if(!conversation) {
         return res.sendStatus(404);
     }
-    let position = conversation.pids[0].pid === req.pid.toString() ? 1 : 0;
     let user = await database.getUserByPID(req.pid);
-    let user2 = await database.getUserByPID(conversation.pids[position].pid);
-    let messages = await database.getMessagesByID(conversation.id, 100)
+    let otherUserPid = conversation.users[0] === user.pid ? conversation.users[0] : conversation.users[1];
+    let user2 = await database.getUserByPID(otherUserPid);
+    let messages = await database.getConversationMessages(conversation.community_id, 100, 0)
     res.render(req.directory + '/message_thread.ejs', {
         moment: moment,
         user: user,
@@ -101,11 +87,6 @@ router.get('/:message_id', async function (req, res) {
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN
     });
-    user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
-        notification.read = true;
-    });
-    user.markModified('notification_list');
-    user.save();*/
 });
 
 module.exports = router;
