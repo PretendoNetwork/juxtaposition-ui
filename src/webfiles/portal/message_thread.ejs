@@ -28,7 +28,7 @@
             </table>
 
         </div>
-        <div id="message-viewer-content" style="display: block;">
+        <div id="message-viewer-content" style="">
             <% messages.forEach(function(message) { %>
                 <%if(message.pid === user.pid) {%>
                 <div class="message-viewer-bubble-sent">
@@ -39,7 +39,7 @@
                     <%}%>
                 </div>
                 <div class="message-viewer-bubble-sent-timestamp"><p><%= moment(message.created_at).fromNow()%></p></div>
-                <%} else if(message.pid === user2.pid) {%>
+                <%} else {%>
                 <div class="message-viewer-bubble-receive">
                     <%if(message.painting) {%>
                         <img class="message-viewer-bubble-sent-memo" src="data:image/bmp;base64,<%= message.painting_uri %>">
@@ -57,7 +57,7 @@
                 <tbody>
                 <tr>
                     <td>
-                        <div id="message-viewer-attach-button" onclick="sendPainting('<%= conversation.id %>', '<%= user2.pid %>')"></div>
+                        <div id="message-viewer-attach-button" onclick="sendPainting('<%= conversation.community_id %>', '<%= user2.pid %>')"></div>
                     </td>
                     <td>
                         <form action="javascript:sendMessage('<%= conversation.community_id %>', '<%= user2.pid %>')">

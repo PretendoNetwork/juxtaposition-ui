@@ -327,17 +327,16 @@ async function getNewsFeedOffset(user, limit, offset) {
 
 async function getConversations(pid) {
     verifyConnected();
-    return COMMUNITY.find({
-        type: 3,
-        users: pid
+    return CONVERSATION.find({
+        "users.pid": pid
     }).sort({ last_updated_at: -1});
 }
 
 async function getConversationByID(community_id) {
     verifyConnected();
-    return COMMUNITY.findOne({
+    return CONVERSATION.findOne({
         type: 3,
-        community_id: community_id
+        id: community_id
     });
 }
 
@@ -351,8 +350,7 @@ async function getConversationMessages(community_id, limit, offset) {
 
 async function getConversationByUsers(pids) {
     verifyConnected();
-    return COMMUNITY.findOne({
-        type: 3,
+    return CONVERSATION.findOne({
         users: pids
     });
 }

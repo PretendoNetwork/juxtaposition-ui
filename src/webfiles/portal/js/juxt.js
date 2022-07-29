@@ -664,7 +664,7 @@ function checkForUpdates() {
                 document.getElementById("messages-badge").innerHTML = notificationObj.message_count;
                 document.getElementById("messages-badge").style.display = "block";
             }
-            else if(notificationObj.messages >= 99) {
+            else if(notificationObj.message_count >= 99) {
                 document.getElementById("messages-badge").innerHTML = "99+";
                 document.getElementById("messages-badge").style.display = "block";
             }

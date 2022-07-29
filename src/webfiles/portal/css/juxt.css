@@ -317,7 +317,8 @@ img.verified {
     margin-right:15px;
     float:left;
     border:5px solid #673DB6!important;
-    border-radius:10px
+    border-radius:10px;
+    height: 90px;
 }
 
 .comment-user-icon {
@@ -571,7 +572,7 @@ td.messages-list-wrapper.end {
 
 .message-list-preview {
     position:absolute;
-    margin-top:-70px
+    margin-top:-60px;
 }
 
 .message-list-icon {

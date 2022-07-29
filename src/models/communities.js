@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const moment = require("moment");
 
 const  CommunitySchema = new Schema({
     platform_id: Number,
@@ -26,16 +27,8 @@ const  CommunitySchema = new Schema({
         type: [String],
         default: undefined
     },
-    users: {
-        type: [String],
-        default: undefined
-    },
     created_at: {
       type: Date,
-        default: new Date(),
-    },
-    last_updated_at: {
-        type: Date,
         default: new Date(),
     },
     empathy_count: {
@@ -71,7 +64,7 @@ const  CommunitySchema = new Schema({
     browser_icon: String,
     browser_thumbnail: String,
     CTR_browser_header: String,
-    WiiU_browser_header: String
+    WiiU_browser_header: String,
 });
 
 CommunitySchema.methods.upEmpathy = async function() {
