@@ -18,10 +18,10 @@
                         <div class="message-viewer-top-banner-back-button" onclick="back()"></div>
                     </td>
                     <td>
-                        <img id="message-viewer-icon" src="<%= mii_image_CDN %>/<%= user2.pid %>/normal_face.png">
+                        <img id="message-viewer-icon" class="community-page-post-user-icon <%if(user2.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= user2.pid %>/normal_face.png">
                     </td>
                     <td>
-                        <h2 id="message-viewer-name"><%= user2.user_id %></h2>
+                        <h2 id="message-viewer-name" class="<%if(user2.official) {%>verified-badge<%}%>"><%= user2.user_id %></h2>
                     </td>
                 </tr>
                 </tbody>
@@ -72,7 +72,7 @@
             </table>
         </div>
     </div>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);">
+    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1); scrollToBottom();">
 </div>
 <body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>

@@ -77,8 +77,10 @@ router.post('/new', async function (req, res, next) {
     let postPreviewText;
     if(document.painting)
         postPreviewText = 'sent a Drawing'
-    else
+    else if(document.body.length > 25)
         postPreviewText = document.body.substring(0, 25) + '...';
+    else
+        postPreviewText = document.body;
     await conversation.newMessage(postPreviewText, document.message_to_pid);
 });
 
@@ -101,6 +103,7 @@ router.get('/:message_id', async function (req, res) {
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN
     });
+    await conversation.markAsRead(req.pid);
 });
 
 module.exports = router;

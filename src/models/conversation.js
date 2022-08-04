@@ -37,17 +37,31 @@ const  ConversationSchema = new Schema({
 ConversationSchema.methods.newMessage = async function(message, fromPid) {
     const users = this.get('users');
     if(users[0].pid === fromPid) {
-        users[0].read = true
-        users[1].read = false
+        users[0].read = false;
+        users[1].read = true;
     }
     else {
-        users[0].read = false
-        users[1].read = true
+        users[0].read = true;
+        users[1].read = false;
     }
     this.set('users', users);
-    this.set('last_message_sent', moment(new Date()));
+    this.set('last_updated', moment(new Date()));
     this.set('message_preview', message);
     await this.save();
+}
+
+ConversationSchema.methods.markAsRead = async function(pid) {
+    let users = this.get('users');
+    console.log(pid);
+    console.log(users);
+    if(users[0].pid === pid)
+        users[0].read = true;
+    else
+        users[1].read = true;
+    this.set('users', users)
+    this.markModified('users');
+    await this.save();
+    console.log(this.get('users'))
 }
 
 const CONVERSATION = model('CONVERSATION', ConversationSchema);

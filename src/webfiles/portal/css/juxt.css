@@ -588,6 +588,10 @@ td.messages-list-wrapper.end {
     display:inline-block
 }
 
+.message-list-timestamp.verified {
+    margin-left: 30px;
+}
+
 .message-list-content {
     margin-left:-385px;
     margin-top:60px;
@@ -625,8 +629,9 @@ td.messages-list-wrapper.end {
 
 #message-viewer-icon {
     width:75px;
+    height: 75px;
     border-radius:10px;
-    margin:10px 10px 10px 15px
+    margin:10px 10px 10px 15px;
 }
 
 #message-viewer-name {

@@ -17,25 +17,24 @@
                 <% conversations.forEach(function(conversation) { %>
                     <%
                         // get the PID of the opposite user
-                        var userObj = conversation.users[0].toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];
+                        var userObj /*= conversation.users[0].toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];*/
+                        if(conversation.users[0].toString() === user.pid.toString())
+                            userObj = conversation.users[1];
+                        else
+                            userObj = conversation.users[0];
                         var me = conversation.users[0].toString() === user.pid.toString() ? conversation.users[0] : conversation.users[1];
                     %>
                     <tr class="message-wrapper" onclick="showMessage('<%= conversation.id %>')">
                         <td class="messages-unread-badge-wrapper">
-                            <%if(me.read) {%><div class="unread-badge"></div><%}%>
+                            <%if(!me.read) {%><div class="unread-badge"></div><%}%>
                         </td>
                         <td>
-                            <%if(userObj.official) {%>
-                                <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= userObj.pid %>/normal_face.png">
+                                <img class="community-page-post-user-icon <%if(userObj.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= userObj.pid %>/normal_face.png">
                                 <span class="message-page-verified-user-badge community-page-verified" style=""></span>
-                            <%} else {%>
-                                <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= userObj.pid %>/normal_face.png">
-                                <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
-                            <%}%>
                         </td>
                         <td>
-                            <h2 class="message-list-title"><%= usersMap.get(userObj.pid) %></h2>
-                            <h4 class="message-list-timestamp"> - <%= moment(conversation.last_updated).fromNow() %></h4>
+                            <h2 class="message-list-title <%if(userObj.official) {%>verified-badge<%}%>"><%= usersMap.get(userObj.pid) %></h2>
+                            <h4 class="message-list-timestamp <%if(userObj.official) {%>verified<%}%>"> - <%= moment(conversation.last_updated).fromNow() %></h4>
                         </td>
                     </tr>
                     <tr>

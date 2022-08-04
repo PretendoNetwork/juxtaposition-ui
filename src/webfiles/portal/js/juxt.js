@@ -284,18 +284,21 @@ function followUser(user) {
         xhttp.send(params);
     }
 }
-function showMessage(messageID) {
+
+function scrollToBottom() {
     var scrollHeight = document.body.scrollHeight;
-    pjax.loadUrl('/messages/' + messageID);
-    wiiuBrowser.showLoadingIcon(!0)
-    wiiuSound.playSoundByName('SE_OLV_OK', 1);
     var interval = setInterval(function () {
         if(document.body.scrollHeight !== scrollHeight) {
             window.scroll(0, document.body.scrollHeight);
             clearInterval(interval);
         }
     }, 100);
+}
 
+function showMessage(messageID) {
+    pjax.loadUrl('/messages/' + messageID);
+    wiiuBrowser.showLoadingIcon(!0)
+    wiiuSound.playSoundByName('SE_OLV_OK', 1);
 }
 function sendMessage(conversationID, pid) {
     var today = new Date();
@@ -305,12 +308,10 @@ function sendMessage(conversationID, pid) {
     var messageContents = document.getElementById("message-viewer-input").value;
     if(messageContents.length === 0)
         return;
+    if(wiiuFilter.checkWord(messageContents) === -2) { this.value = ''; alert('Message cannot contain explicit language.');}
     var currentThread = document.getElementById('message-viewer-content').innerHTML;
     var newMessage =
-        '\n<div class="message-viewer-bubble-sent">\n' +
-        '            <p class="message-viewer-bubble-sent-text">' + messageContents + '</p>\n' +
-        '        </div>\n' +
-    '<div class="message-viewer-bubble-sent-timestamp"><p>' + dateTime + '</p></div>\n';
+        `<div class="message-viewer-bubble-sent"><p class="message-viewer-bubble-sent-text">${messageContents}</p></div><div class="message-viewer-bubble-sent-timestamp"><p>${dateTime}</p></div>`;
     var params = "conversationID=" + conversationID + "&message_to_pid=" + pid + "&body=" + messageContents;
     var xhr = new XMLHttpRequest();
     xhr.open("POST", '/messages/new', true);
@@ -736,6 +737,14 @@ if (typeof wiiuSound === 'undefined') {
             console.log('Play sound ' + name);
         }
     };
+}
+
+if( typeof wiiuFilter === 'undefined') {
+    window.wiiuFilter = {
+        checkWord: function(string) {
+            return 0;
+        }
+    }
 }
 if (typeof wiiuBrowser === 'undefined') {
     window.wiiuBrowser = {

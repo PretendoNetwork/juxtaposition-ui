@@ -329,7 +329,7 @@ async function getConversations(pid) {
     verifyConnected();
     return CONVERSATION.find({
         "users.pid": pid
-    }).sort({ last_updated_at: -1});
+    }).sort({ last_updated: -1});
 }
 
 async function getConversationByID(community_id) {
