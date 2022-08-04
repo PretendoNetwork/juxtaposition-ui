@@ -26,6 +26,7 @@ router.get('/', async function (req, res) {
 
 router.post('/new', async function (req, res, next) {
     let conversation = await database.getConversationByID(req.body.conversationID);
+    console.log(req.body.conversationID)
     let user = await database.getUserByPID(req.pid);
     let user2 = await database.getUserByPID(req.body.message_to_pid);
     if(req.body.conversationID === 0)
@@ -50,8 +51,10 @@ router.post('/new', async function (req, res, next) {
         };
         const newConversations = new CONVERSATION(document);
         await newConversations.save();
-        conversation = await database.getConversationByID(document.community_id);
+        conversation = await database.getConversationByID(document.id);
     }
+    if(!conversation)
+        return res.sendStatus(404);
     const document = {
         screen_name: user.user_id,
         body: req.body.body,
@@ -68,6 +71,7 @@ router.post('/new', async function (req, res, next) {
         message_to_pid: req.body.message_to_pid
     };
     const newPost = new POST(document);
+    console.log(newPost);
     newPost.save();
     res.sendStatus(200);
     let postPreviewText;
@@ -86,7 +90,7 @@ router.get('/:message_id', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     let otherUserPid = conversation.users[0].pid.toString() === user.pid.toString() ? conversation.users[1].pid : conversation.users[0].pid;
     let user2 = await database.getUserByPID(otherUserPid);
-    let messages = await database.getConversationMessages(conversation.community_id, 100, 0)
+    let messages = await database.getConversationMessages(conversation.id, 100, 0)
     res.render(req.directory + '/message_thread.ejs', {
         moment: moment,
         user: user,
