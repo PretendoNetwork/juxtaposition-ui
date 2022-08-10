@@ -17,7 +17,10 @@ const PostSchema = new Schema({
         type: [String],
         default: undefined
     },
-    community_id: String,
+    community_id: {
+        type: String,
+        default: undefined
+    },
     country_id: Number,
     created_at: Date,
     feeling_id: Number,
@@ -69,10 +72,6 @@ const PostSchema = new Schema({
         default: null
     },
     message_to_pid: {
-        type: String,
-        default: null
-    },
-    conversation_id: {
         type: String,
         default: null
     }
