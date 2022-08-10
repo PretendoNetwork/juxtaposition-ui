@@ -1,5 +1,5 @@
 var scrollPosition, pjax;
-var updateCheck = setInterval(checkForUpdates, 30000);
+var updateCheck = setInterval(checkForUpdates, 10000);
 
 /* global Pjax */
 function initNavBar() {
@@ -342,7 +342,7 @@ function sendPainting(conversationID, pid) {
     wiiuMemo.open(false);
     var drawing = wiiuMemo.getImage(false);
     var rawDrawing = wiiuMemo.getImage(true);
-    if(drawing !== blankMemo) {
+    if(drawing) {
         if(confirm("Send the Drawing?")) {
             var today = new Date();
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
