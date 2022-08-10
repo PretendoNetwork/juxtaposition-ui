@@ -52,9 +52,9 @@ ConversationSchema.methods.newMessage = async function(message, fromPid) {
 
 ConversationSchema.methods.markAsRead = async function(pid) {
     let users = this.get('users');
-    if(users[0].pid === pid)
+    if(users[0].pid === pid.toString())
         users[0].read = true;
-    else
+    else if(users[1].pid === pid.toString())
         users[1].read = true;
     this.set('users', users)
     this.markModified('users');

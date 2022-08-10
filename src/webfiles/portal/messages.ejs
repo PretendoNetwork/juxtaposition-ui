@@ -17,12 +17,16 @@
                 <% conversations.forEach(function(conversation) { %>
                     <%
                         // get the PID of the opposite user
-                        var userObj /*= conversation.users[0].toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];*/
-                        if(conversation.users[0].pid.toString() === user.pid.toString())
+                        var userObj, me /*= conversation.users[0].toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];*/
+                        if(conversation.users[0].pid.toString() === user.pid.toString()) {
                             userObj = conversation.users[1];
-                        else if(conversation.users[1].pid.toString() === user.pid.toString())
+                            me = conversation.users[0];
+                        }
+                        else if(conversation.users[1].pid.toString() === user.pid.toString()) {
                             userObj = conversation.users[0];
-                        var me = conversation.users[0].toString() === user.pid.toString() ? conversation.users[0] : conversation.users[1];
+                            me = conversation.users[1];
+                        }
+
                     %>
                     <tr class="message-wrapper" onclick="showMessage('<%= conversation.id %>')">
                         <td class="messages-unread-badge-wrapper">

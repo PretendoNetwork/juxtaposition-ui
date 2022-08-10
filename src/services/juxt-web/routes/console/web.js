@@ -112,10 +112,11 @@ router.get('/notifications.json', async function (req, res) {
     let user = await database.getUserByPID(req.pid);
     if(!user)
         return res.sendStatus(403);
+    let messagesCount = await database.getUnreadConversationCount(req.pid);
     if(user.notification_list) {
         res.send(
             {
-                message_count: 0,
+                message_count: messagesCount,
                 notification_count: user.notification_list.filter(notification => notification.read === false).length,
             }
         )

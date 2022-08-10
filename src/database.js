@@ -333,6 +333,17 @@ async function getConversations(pid) {
     }).sort({ last_updated: -1});
 }
 
+async function getUnreadConversationCount(pid) {
+    verifyConnected();
+    return CONVERSATION.find({
+        "users": { $elemMatch: {
+                'pid': pid,
+                'read': false
+            }}
+
+    }).countDocuments();
+}
+
 async function getConversationByID(community_id) {
     verifyConnected();
     return CONVERSATION.findOne({
@@ -425,6 +436,7 @@ module.exports = {
     getConversationByID,
     getConversationByUsers,
     getConversationMessages,
+    getUnreadConversationCount,
     getLatestMessage,
     getPNID,
     getPNIDS
