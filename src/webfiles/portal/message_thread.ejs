@@ -18,10 +18,10 @@
                         <div class="message-viewer-top-banner-back-button" onclick="back()"></div>
                     </td>
                     <td>
-                        <img id="message-viewer-icon" class="community-page-post-user-icon <%if(user2.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= user2.pid %>/normal_face.png">
+                        <img id="message-viewer-icon" onclick="window.scroll(0, 0);" data-pjax="/users/show?pid=<%= user2.pid %>" class="community-page-post-user-icon <%if(user2.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= user2.pid %>/normal_face.png">
                     </td>
                     <td>
-                        <h2 id="message-viewer-name" class="<%if(user2.official) {%>verified-badge<%}%>"><%= user2.user_id %></h2>
+                        <h2 id="message-viewer-name" onclick="window.scroll(0, 0);" data-pjax="/users/show?pid=<%= user2.pid %>" class="<%if(user2.official) {%>verified-badge<%}%>"><%= user2.user_id %></h2>
                     </td>
                 </tr>
                 </tbody>

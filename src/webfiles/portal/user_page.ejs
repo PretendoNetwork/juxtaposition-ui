@@ -31,8 +31,8 @@
             </div>
             <%}%>
 
-            <%if(parentUser.followed_users.indexOf(user.pid) !== -1 && user.followed_users.indexOf(parentUser.pid)) { /*Is mutual*/%>
-            <div class="user-page-follow-button-wrapper  <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>selected<%}%>" id="<%= user.pid %>" onclick="createNewMessage()">
+            <%if(parentUser.followed_users.indexOf(user.pid) !== -1 && user.followed_users.indexOf(parentUser.pid) !== -1) { /*Is mutual*/%>
+            <div class="user-page-follow-button-wrapper  <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>selected<%}%>" id="<%= user.pid %>" onclick="createNewMessage('<%=user.pid%>')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <%}%>
@@ -169,7 +169,7 @@
         <% if(numPosts === 0) {%>
             <p class="no-posts-text"><%= lang.global.no_posts %></p>
         <%} else { %>
-                <button id="load-more-posts-button" data-offset="20" onclick="loadUserPosts(this, '<%= user.pid %>')"><%= lang.global.more %></button>
+                <button id="load-more-posts-button" data-offset="10" onclick="loadUserPosts(this, '<%= user.pid %>')"><%= lang.global.more %></button>
             <% newPosts.forEach(function(post) { %>
                 <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, user: parentUser, reply: false  }); %>
             <% }); %>

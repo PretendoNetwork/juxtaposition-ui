@@ -133,7 +133,8 @@ async function getTotalPostsByUserID(userID) {
     verifyConnected();
     return POST.find({
         pid: userID,
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).countDocuments();
 }
 
@@ -351,7 +352,10 @@ async function getConversationMessages(community_id, limit, offset) {
 async function getConversationByUsers(pids) {
     verifyConnected();
     return CONVERSATION.findOne({
-        users: pids
+        $and: [
+            {'users.pid': pids[0]},
+            {'users.pid': pids[1]}
+        ]
     });
 }
 

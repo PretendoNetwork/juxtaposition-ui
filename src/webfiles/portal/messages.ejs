@@ -18,9 +18,9 @@
                     <%
                         // get the PID of the opposite user
                         var userObj /*= conversation.users[0].toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];*/
-                        if(conversation.users[0].toString() === user.pid.toString())
+                        if(conversation.users[0].pid.toString() === user.pid.toString())
                             userObj = conversation.users[1];
-                        else
+                        else if(conversation.users[1].pid.toString() === user.pid.toString())
                             userObj = conversation.users[0];
                         var me = conversation.users[0].toString() === user.pid.toString() ? conversation.users[0] : conversation.users[1];
                     %>

@@ -295,11 +295,20 @@ function scrollToBottom() {
     }, 100);
 }
 
+function createNewMessage(pid) {
+    pjax.loadUrl('/messages/new/' + pid);
+    wiiuBrowser.showLoadingIcon(!0)
+    wiiuSound.playSoundByName('SE_OLV_OK', 1);
+    scrollToBottom();
+}
+
 function showMessage(messageID) {
     pjax.loadUrl('/messages/' + messageID);
     wiiuBrowser.showLoadingIcon(!0)
     wiiuSound.playSoundByName('SE_OLV_OK', 1);
+    scrollToBottom();
 }
+
 function sendMessage(conversationID, pid) {
     var today = new Date();
     var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -335,6 +344,7 @@ function sendMessage(conversationID, pid) {
     xhr.send(params);
 
 }
+
 function sendPainting(conversationID, pid) {
     wiiuMemo.open(false);
     var drawing = wiiuMemo.getImage(false);
@@ -379,6 +389,7 @@ function sendPainting(conversationID, pid) {
             alert('Canceled');
     }
 }
+
 function storeScrollPosition() {
     scrollPosition = document.body.scrollTop;
 }
@@ -450,7 +461,7 @@ function loadUserPosts(element, pid) {
     xhttp.open("GET", "/users/loadPosts" + '?offset=' + offset + '&pid=' + pid, true);
     xhttp.send();
 
-    element.dataset.offset = offset + 20;
+    element.dataset.offset = offset + 10;
     wiiuSound.playSoundByName("SE_WAVE_MENU", 1);
     wiiuBrowser.showLoadingIcon(!1);
 }

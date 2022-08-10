@@ -52,8 +52,6 @@ ConversationSchema.methods.newMessage = async function(message, fromPid) {
 
 ConversationSchema.methods.markAsRead = async function(pid) {
     let users = this.get('users');
-    console.log(pid);
-    console.log(users);
     if(users[0].pid === pid)
         users[0].read = true;
     else
@@ -61,7 +59,6 @@ ConversationSchema.methods.markAsRead = async function(pid) {
     this.set('users', users)
     this.markModified('users');
     await this.save();
-    console.log(this.get('users'))
 }
 
 const CONVERSATION = model('CONVERSATION', ConversationSchema);
