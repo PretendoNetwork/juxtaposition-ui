@@ -17,12 +17,12 @@
                 <% conversations.forEach(function(conversation) { %>
                     <%
                         // get the PID of the opposite user
-                        var userObj, me /*= conversation.users[0].toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];*/
-                        if(conversation.users[0].pid.toString() === user.pid.toString()) {
+                        var userObj, me;
+                        if(conversation.users[0].pid.toString() === pid) {
                             userObj = conversation.users[1];
                             me = conversation.users[0];
                         }
-                        else if(conversation.users[1].pid.toString() === user.pid.toString()) {
+                        else if(conversation.users[1].pid.toString() === pid) {
                             userObj = conversation.users[0];
                             me = conversation.users[1];
                         }

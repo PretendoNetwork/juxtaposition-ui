@@ -1,12 +1,15 @@
 const mongoose = require('mongoose');
 const { mongoose: mongooseConfig } = require('../config.json');
-const { ENDPOINT } = require('./models/endpoint');
 const { COMMUNITY } = require('./models/communities');
-const { POST } = require('./models/post');
-const { USER } = require('./models/user');
+const { CONTENT } = require('./models/content');
 const { CONVERSATION } = require('./models/conversation');
-const { uri, database, options } = mongooseConfig;
+const { ENDPOINT } = require('./models/endpoint');
+const { NOTIFICATIONS } = require('./models/notifications');
 const { PNID } = require('./models/pnid');
+const { POST } = require('./models/post');
+const { SETTINGS } = require('./models/settings');
+
+const { uri, database, options } = mongooseConfig;
 const logger = require('./logger');
 const accountDB = require('./accountdb');
 
@@ -79,7 +82,6 @@ async function getTotalPostsByCommunity(community) {
 
 async function getPostByID(postID) {
     verifyConnected();
-
     return POST.findOne({
         id: postID
     });
@@ -224,88 +226,78 @@ async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
     }).limit(numberOfPosts);
 }
 
-async function pushNewNotificationByPID(PID, content, link) {
+async function getEndpoints() {
     verifyConnected();
-    return USER.update(
-        { pid: PID }, { $push: { notification_list: { content: content, link: link, read: false, created_at: Date() }}});
+    return ENDPOINT.find({});
 }
 
-async function pushNewNotificationToAll(content, link) {
-    verifyConnected();
-    return USER.updateMany(
-        {}, { $push: { notification_list: { content: content, link: link, read: false, created_at: Date() }}});
-}
-
-async function getDiscoveryHosts() {
-    verifyConnected();
-    return ENDPOINT.findOne({
-        version: 1
-    });
-}
-
-async function getUsers(numberOfUsers) {
+async function getUsersSettings(numberOfUsers) {
     verifyConnected();
     if(numberOfUsers === -1)
-        return USER.find({});
+        return SETTINGS.find({});
     else
-        return USER.find({}).limit(numberOfUsers);
+        return SETTINGS.find({}).limit(numberOfUsers);
 }
 
-async function getFollowingUsers(user) {
+async function getUsersContent(numberOfUsers) {
     verifyConnected();
-    return USER.find({
-        pid: user.following_users
+    if(numberOfUsers === -1)
+        return SETTINGS.find({});
+    else
+        return SETTINGS.find({}).limit(numberOfUsers);
+}
+
+async function getUserSettings(pid) {
+    verifyConnected();
+        return SETTINGS.findOne({pid: pid});
+}
+
+async function getUserContent(pid) {
+    verifyConnected();
+    return CONTENT.findOne({pid: pid});
+}
+
+async function getFollowingUsers(content) {
+    verifyConnected();
+    return SETTINGS.find({
+        pid: content.following_users
     });
 }
 
-async function getFollowedUsers(user) {
+async function getFollowedUsers(content) {
     verifyConnected();
-    return USER.find({
-        pid: user.followed_users
-    });
-}
-
-async function getUserByPID(PID) {
-    verifyConnected();
-
-    return USER.findOne({
-        pid: PID
+    return SETTINGS.find({
+        pid: content.followed_users
     });
 }
 
 async function getUserByUsername(user_id) {
     verifyConnected();
-
-    return USER.findOne({
-        pnid: new RegExp(`^${user_id}$`, 'i')
+    return PNID.findOne({
+        "mii.name": new RegExp(`^${user_id}$`, 'i')
     });
 }
 
-async function getServerConfig() {
-    verifyConnected();
-    return ENDPOINT.findOne();
-}
-
-async function getNewsFeed(user, numberOfPosts) {
+async function getNewsFeed(content, numberOfPosts) {
     verifyConnected();
     return POST.find({
         $or: [
-            {pid: user.followed_users},
-            {pid: user.pid},
-            {community_id: user.followed_communities},
+            {pid: content.followed_users},
+            {pid: content.pid},
+            {community_id: content.followed_communities},
         ],
         parent: null,
         message_to_pid: null
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
-async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
+async function getNewsFeedAfterTimestamp(content, numberOfPosts, post) {
     verifyConnected();
     return POST.find({
         $or: [
-            {pid: user.followed_users},
-            {pid: user.pid},
-            {community_id: user.followed_communities},
+            {pid: content.followed_users},
+            {pid: content.pid},
+            {community_id: content.followed_communities},
         ],
         created_at: { $lt: post.created_at },
         parent: null,
@@ -313,13 +305,13 @@ async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
-async function getNewsFeedOffset(user, limit, offset) {
+async function getNewsFeedOffset(content, limit, offset) {
     verifyConnected();
     return POST.find({
         $or: [
-            {pid: user.followed_users},
-            {pid: user.pid},
-            {community_id: user.followed_communities},
+            {pid: content.followed_users},
+            {pid: content.pid},
+            {community_id: content.followed_communities},
         ],
         parent: null,
         message_to_pid: null
@@ -392,6 +384,29 @@ async function getPNID(pid) {
     });
 }
 
+async function getNotifications(pid, limit, offset) {
+    verifyConnected();
+    return NOTIFICATIONS.find({
+        pid: pid,
+    }).sort({created_at: 1}).skip(offset).limit(limit);
+}
+
+async function getNotification(pid, type, reference_id) {
+    verifyConnected();
+    return NOTIFICATIONS.findOne({
+        pid: pid,
+        type: type,
+        reference_id: reference_id
+    })
+}
+
+async function getUnreadNotificationCount(pid) {
+    verifyConnected();
+    return NOTIFICATIONS.find({
+        pid: pid,
+        read: false
+    }).countDocuments();
+}
 
 
 module.exports = {
@@ -403,7 +418,6 @@ module.exports = {
     getCommunityByTitleID,
     getCommunityByID,
     getTotalPostsByCommunity,
-    getDiscoveryHosts,
     getPostsByCommunity,
     getHotPostsByCommunity,
     getNumberNewCommunityPostsByID,
@@ -418,15 +432,11 @@ module.exports = {
     getTotalPostsByUserID,
     getPostByID,
     getDuplicatePosts,
-    getUsers,
-    getUserByPID,
+    getEndpoints,
     getUserByUsername,
     getUserPostsAfterTimestamp,
     getUserPostsOffset,
     getCommunityPostsAfterTimestamp,
-    getServerConfig,
-    pushNewNotificationByPID,
-    pushNewNotificationToAll,
     getNewsFeed,
     getNewsFeedAfterTimestamp,
     getNewsFeedOffset,
@@ -439,5 +449,12 @@ module.exports = {
     getUnreadConversationCount,
     getLatestMessage,
     getPNID,
-    getPNIDS
+    getPNIDS,
+    getUsersSettings,
+    getUsersContent,
+    getUserSettings,
+    getUserContent,
+    getNotifications,
+    getUnreadNotificationCount,
+    getNotification
 };

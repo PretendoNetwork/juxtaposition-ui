@@ -4,9 +4,10 @@ var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../util');
 var path = require('path');
+const {data} = require("../../../../util");
 
 router.get('/', function (req, res) {
-    res.redirect('/activity-feed')
+    res.redirect('/titles/show')
 });
 
 router.get('/css/:filename', function (req, res) {
@@ -109,18 +110,14 @@ router.get('/drawing/:image_id.png', async function (req, res) {
 });
 
 router.get('/notifications.json', async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
-    if(!user)
-        return res.sendStatus(403);
+    let notifications = await database.getUnreadNotificationCount(req.pid);
     let messagesCount = await database.getUnreadConversationCount(req.pid);
-    if(user.notification_list) {
-        res.send(
-            {
-                message_count: messagesCount,
-                notification_count: user.notification_list.filter(notification => notification.read === false).length,
-            }
-        )
-    }
+    res.send(
+        {
+            message_count: messagesCount,
+            notification_count: notifications,
+        }
+    )
 });
 
 router.get('/:post_id/oembed.json', async function (req, res) {

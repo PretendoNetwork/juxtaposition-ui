@@ -51,7 +51,7 @@ const PostSchema = new Schema({
     pid: Number,
     platform_id: Number,
     region_id: Number,
-    parent_post: String,
+    parent: String,
     reply_count: {
         type: Number,
         default: 0

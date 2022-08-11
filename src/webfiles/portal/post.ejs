@@ -32,7 +32,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
+                                <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= userContent.pid %>/normal_face.png">
                                 <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
                                 <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
                                 <input type="hidden" id="_post_type" name="_post_type" value="body">
@@ -121,7 +121,7 @@
     </div>
     <div id="overlay-filter">
         <%- include('scroll_wrapper', { text: "Post", lang: lang }); %>
-        <%if(user.pid !== 1000000000 && user.account_status === 0) {%>
+        <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0) {%>
             <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             </div>

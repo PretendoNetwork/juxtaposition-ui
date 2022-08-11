@@ -26,7 +26,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
+                                <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= userContent.pid %>/normal_face.png">
                                 <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
                                 <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
                                 <input type="hidden" id="_post_type" name="_post_type" value="body">
@@ -116,13 +116,13 @@
     <div id="overlay-filter">
         <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
         <%- include('scroll_wrapper', { text: community.name, lang: lang }); %>
-        <%if(user.pid !== 1000000000 && user.account_status === 0) {%>
+        <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0) {%>
             <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             </div>
         <%}%>
         <div class="community-page-info-container"  style="height: 170px;">
-            <div class="community-page-follow-button-wrapper <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>selected<%}%>" <%if(user.pid !== 1000000000) {%>onclick="followCommunity()"<%}%>>
+            <div class="community-page-follow-button-wrapper <%if(userContent.followed_communities.indexOf(community.community_id) !== -1){ %>selected<%}%>" <%if(userContent.pid !== 1000000000) {%>onclick="followCommunity()"<%}%>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                 <p class="community-page-follow-button-text" id="<%= community.community_id %>"><%= community.followers %> <%= lang.community.followers %></p>
             </div>

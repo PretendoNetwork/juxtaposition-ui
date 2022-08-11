@@ -1,24 +1,20 @@
 var express = require('express');
-var xml = require('object-to-xml');
 const database = require('../../../../database');
-const util = require('../../../../util');
 const config = require('../../../../../config.json');
 var moment = require('moment');
 var router = express.Router();
 
 router.get('/', async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
+    let notifications = await database.getNotifications(req.pid, 25, 0);
     res.render(req.directory + '/notifications.ejs', {
         moment: moment,
-        user: user,
+        notifications: notifications,
         cdnURL: config.CDN_domain,
         lang: req.lang
     });
-        user.notification_list.filter(noti => noti.read === false).forEach(function(notification) {
-        notification.read = true;
+    notifications.filter(noti => noti.read === false).forEach(function(notification) {
+        notification.markRead();
     });
-    user.markModified('notification_list');
-    user.save();
 });
 
 module.exports = router;

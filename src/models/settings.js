@@ -2,6 +2,13 @@ const { Schema, model } = require('mongoose');
 
 const SettingsSchema = new Schema({
     pid: String,
+    screen_name: String,
+    account_status: {
+        type: Number,
+        default: 0
+    },
+    ban_lift_date: Date,
+    ban_reason: String,
     profile_comment: {
         type: String,
         default: undefined
@@ -34,6 +41,10 @@ const SettingsSchema = new Schema({
         type: Boolean,
         default: true
     },
+    receive_notifications: {
+        type: Boolean,
+        default: true
+    }
 });
 
 SettingsSchema.methods.updateComment = async function(comment) {

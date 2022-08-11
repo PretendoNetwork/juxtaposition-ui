@@ -4,15 +4,25 @@ const fs = require('fs-extra');
 const database = require('./database');
 const logger = require('./logger');
 const config = require('../config.json');
-const { USER } = require('./models/user');
+const { SETTINGS } = require('./models/settings');
+const { CONTENT } = require('./models/content');
+const { NOTIFICATIONS } = require('./models/notifications');
 const translations = require('./translations')
 var HashMap = require('hashmap');
 let TGA = require('tga');
 let pako = require('pako');
 let PNG = require('pngjs').PNG;
 var bmp = require("bmp-js");
+const aws = require('aws-sdk');
 let communityMap = new HashMap();
 let userMap = new HashMap();
+
+const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
+const s3 = new aws.S3({
+    endpoint: spacesEndpoint,
+    accessKeyId: config.aws.spaces.key,
+    secretAccessKey: config.aws.spaces.secret
+});
 
 nameCache();
 
@@ -30,8 +40,8 @@ function nameCache() {
                 }
             }
         }
-        logger.success('Created community index')
-        let users = await database.getUsers(1000);
+        logger.success('Created community index of ' + communities.length + ' communities')
+        let users = await database.getUsersSettings(-1);
         if(users !== null) {
             for(let i = 0; i < users.length; i++ ) {
                 if(users[i].pid !== null) {
@@ -39,7 +49,7 @@ function nameCache() {
                 }
             }
         }
-        logger.success('Created user index of ' + users.length + ' user(s)')
+        logger.success('Created user index of ' + users.length + ' users')
 
     }).catch(error => {
         logger.error(error);
@@ -51,21 +61,22 @@ let methods = {
         const pnid = await database.getPNID(pid);
         if(!pnid)
             return;
-        const newUsr = {
+        let newSettings = {
             pid: pid,
-            created_at: new Date(),
-            user_id: pnid.mii.name,
-            pnid: pnid.username,
-            birthday: new Date(pnid.birthdate),
-            account_status: 0,
-            mii: pnid.mii.data,
+            screen_name: pnid.mii.name,
             game_skill: experience,
-            notifications: notifications,
-            official: pnid.access_level === 3,
-            country: region,
-        };
-        const newUsrObj = new USER(newUsr);
-        await newUsrObj.save();
+            receive_notifications: notifications,
+        }
+        let newContent = {
+            pid: pid
+        }
+        const newSettingsObj = new SETTINGS(newSettings);
+        await newSettingsObj.save();
+
+        const newContentObj = new CONTENT(newContent);
+        await newContentObj.save();
+
+        this.setName(pid, pnid.mii.name);
     },
     decodeParamPack: function (paramPack) {
         /*  Decode base64 */
@@ -169,8 +180,8 @@ let methods = {
                 height: tga.height
             });
             png.data = tga.pixels;
-            let pngBuffer = PNG.sync.write(png);
-            return `data:image/png;base64,${pngBuffer.toString('base64')}`;
+            return PNG.sync.write(png);
+            //return `data:image/png;base64,${pngBuffer.toString('base64')}`;
         }
         else {
             let paintingBuffer = Buffer.from(painting, 'base64');
@@ -209,6 +220,12 @@ let methods = {
     },
     refreshCache: function () {
       nameCache();
+    },
+    setName: function (pid, name) {
+        if(!pid || !name)
+            return;
+        userMap.delete(pid);
+        userMap.set(pid, name);
     },
     resizeImage: function (file, width, height) {
         sharp(file)
@@ -279,6 +296,27 @@ let methods = {
             default:
                 return translations.EN
         }
+    },
+    uploadCDNAsset: async function(bucket, key, data, acl) {
+        const awsPutParams = {
+            Body: data,
+            Key: key,
+            Bucket: bucket,
+            ACL: acl
+        };
+
+        await s3.putObject(awsPutParams).promise();
+    },
+    newNotification: async function(pid, type, content, reference_id, link) {
+        let notification = {
+            pid: pid,
+            type: type,
+            content: content,
+            reference_id: reference_id,
+            link: link,
+        }
+        let newNotification = new NOTIFICATIONS(notification);
+        await newNotification.save();
     }
 };
 exports.data = methods;

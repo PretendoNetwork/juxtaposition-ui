@@ -16,7 +16,7 @@ router.get('/', async function (req, res) {
             });
         }
         else {
-            let user = await database.getUserByPID(req.pid);
+            let user = await database.getUserSettings(req.pid);
             if(user === null)
             {
                 res.render(req.directory + '/first_run.ejs', {
@@ -36,7 +36,7 @@ router.get('/', async function (req, res) {
                  * 2 - Temporary Ban
                  * 3 - Forever Ban
                  */
-                if(user.account_status !== 0)
+                if(user.access_level === -1)
                 {
                     res.render(req.directory + '/ban_notification.ejs', {
                         user: user,
@@ -79,12 +79,11 @@ router.post('/newUser', async function (req, res) {
     }
     else
     {
-        let user = await database.getUserByPID(req.pid);
+        let user = await database.getUserSettings(req.pid);
         if(user === null)
         {
             await util.data.create_user(req.pid, req.body.experience, req.body.notifications, req.body.region);
-            util.data.refreshCache();
-            if(await database.getUserByPID(req.pid) !== null)
+            if(await database.getUserSettings(req.pid) !== null)
                 res.sendStatus(200);
             else
                 res.sendStatus(504);

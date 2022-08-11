@@ -10,12 +10,11 @@ const snowflake = require('node-snowflake').Snowflake;
 var router = express.Router();
 
 router.get('/', async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
-    let conversations = await database.getConversations(user.pid.toString());
+    let conversations = await database.getConversations(req.pid.toString());
     let usersMap = await util.data.getUserHash();
     res.render(req.directory + '/messages.ejs', {
         moment: moment,
-        user: user,
+        pid: req.pid,
         conversations: conversations,
         cdnURL: config.CDN_domain,
         usersMap: usersMap,
@@ -26,8 +25,8 @@ router.get('/', async function (req, res) {
 
 router.post('/new', async function (req, res, next) {
     let conversation = await database.getConversationByID(req.body.conversationID);
-    let user = await database.getUserByPID(req.pid);
-    let user2 = await database.getUserByPID(req.body.message_to_pid);
+    let user = await database.getPNID(req.pid);
+    let user2 = await database.getPNID(req.body.message_to_pid);
     if(req.body.conversationID === 0)
         return res.sendStatus(404);
     if(!conversation) {
@@ -38,12 +37,12 @@ router.post('/new', async function (req, res, next) {
             users: [
                 {
                     pid: user.pid,
-                    official: user.official,
+                    official: (user.access_level === 2 || user.access_level === 3),
                     read: true
                 },
                 {
                     pid: user2.pid,
-                    official: user2.official,
+                    official: (user2.access_level === 2 || user2.access_level === 3),
                     read: false
                 },
             ]
@@ -55,16 +54,16 @@ router.post('/new', async function (req, res, next) {
     if(!conversation)
         return res.sendStatus(404);
     let document = {
-        screen_name: user.user_id,
+        screen_name: user.username,
         body: req.body.body,
         painting: req.body.raw,
         painting_uri: req.body.drawing,
         created_at: new Date(),
         id: snowflake.nextId(),
-        mii: user.mii,
+        mii: user.mii.data,
         mii_face_url: `https://mii.olv.pretendo.cc/${user.pid}/normal_face.png`,
         pid: user.pid,
-        verified: user.official,
+        verified: (user.access_level === 2 || user.access_level === 3),
         parent: null,
         community_id: conversation.id,
         message_to_pid: req.body.message_to_pid
@@ -83,12 +82,11 @@ router.post('/new', async function (req, res, next) {
 });
 
 router.get('/new/:pid', async function (req, res, next) {
-    let user = await database.getUserByPID(req.pid);
-    let user2 = await database.getUserByPID(req.params.pid.toString());
+    let user = await database.getPNID(req.pid);
+    let user2 = await database.getPNID(req.params.pid.toString());
     if(!user || !user2)
         return res.sendStatus(422)
     let conversation = await database.getConversationByUsers([user.pid, user2.pid]);
-    console.log(conversation);
     if(conversation)
         return res.redirect(`/messages/${conversation.id}`);
     let document = {
@@ -96,12 +94,12 @@ router.get('/new/:pid', async function (req, res, next) {
         users: [
             {
                 pid: user.pid,
-                official: user.official,
+                official: (user.access_level === 2 || user.access_level === 3),
                 read: true
             },
             {
                 pid: user2.pid,
-                official: user2.official,
+                official: (user2.access_level === 2 || user2.access_level === 3),
                 read: false
             },
         ]
@@ -111,23 +109,23 @@ router.get('/new/:pid', async function (req, res, next) {
     conversation = await database.getConversationByID(document.id);
     if(!conversation)
         return res.sendStatus(404);
-    let body = `${user.user_id} started a new chat!`;
+    let body = `${user.mii.name} started a new chat!`;
     let newMessage = {
-        screen_name: user.user_id,
+        screen_name: user.mii.name,
         body: body,
         created_at: new Date(),
         id: snowflake.nextId(),
-        mii: user.mii,
+        mii: user.mii.data,
         mii_face_url: `https://mii.olv.pretendo.cc/${user.pid}/normal_face.png`,
         pid: user.pid,
-        verified: user.official,
+        verified: (user.access_level === 2 || user.access_level === 3),
         parent: null,
         community_id: conversation.id,
         message_to_pid: user2.pid
     };
     const newPost = new POST(newMessage);
     newPost.save();
-    await conversation.newMessage(`${user.user_id} started a new chat!`, newMessage.message_to_pid);
+    await conversation.newMessage(`${user.mii.name} started a new chat!`, newMessage.message_to_pid);
     res.redirect(`/messages/${conversation.id}`);
 });
 

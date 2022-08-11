@@ -12,27 +12,27 @@
     <div class="community-page-posts-wrapper">
         <table cellspacing="0">
             <tbody id="messages-list">
-            <% if(user.notification_list.length === 0) {%>
+            <% if(notifications.length === 0) {%>
                 <p class="no-posts-text"><%= lang.notifications.none %></p>
             <%} else { %>
-                <% for(let i = user.notification_list.length - 1; i >= 0; i--) { %>
-                    <% var content; if(user.notification_list[i].content.indexOf('NEW_FOLLOWER') !== -1) content = user.notification_list[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = user.notification_list[i].content %>
-                    <% if(i === user.notification_list.length - 1) { %>
-                    <tr class="message-wrapper" data-pjax="<%=user.notification_list[i].link%>">
+                <% for(let i = notifications.length - 1; i >= 0; i--) { %>
+                    <% var content; if(notifications[i].content.indexOf('NEW_FOLLOWER') !== -1) content = notifications[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = notifications[i].content %>
+                    <% if(i === notifications.length - 1) { %>
+                    <tr class="message-wrapper" data-pjax="<%=notifications[i].link%>">
                         <td class="messages-unread-badge-wrapper top">
-                            <%if(!user.notification_list[i].read) {%><div class="unread-badge"></div><%}%>
+                            <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
                         </td>
                         <td class="messages-list-wrapper top">
-                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
+                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
                         </td>
                     </tr>
                     <%} else {%>
-                    <tr class="message-wrapper" data-pjax="<%=user.notification_list[i].link%>">
+                    <tr class="message-wrapper" data-pjax="<%=notifications[i].link%>">
                         <td class="messages-unread-badge-wrapper">
-                            <%if(!user.notification_list[i].read) {%><div class="unread-badge"></div><%}%>
+                            <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
                         </td>
                         <td class="messages-list-wrapper">
-                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
+                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
                         </td>
                     </tr>
                     <%}%>

@@ -3,53 +3,53 @@
     <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
     <script src="<%= cdnURL %>/js/pjax.min.js"></script>
     <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <meta content="<%= user.user_id %> - Juxtaposition User" property="og:title" />
-    <meta content="<%= user.profile_comment %>" property="og:description" />
-    <meta content="<%= user.followers%> Followers" property="og:site_name">
-    <meta content="https://portal.olv.pretendo.cc/users/show?pid=<%= user.pid %>" property="og:url" />
-    <meta content="https://mii-images.cdn.pretendo.cc/<%= user.pid %>/normal_face.png" property="og:image" />
+    <meta content="<%= pnid.mii.name() %> - Juxtaposition User" property="og:title" />
+    <meta content="<%= userSettings.profile_comment %>" property="og:description" />
+    <meta content="<%= userContent.followers%> Followers" property="og:site_name">
+    <meta content="https://portal.olv.pretendo.cc/users/show?pid=<%= userContent.pid %>" property="og:url" />
+    <meta content="https://mii-images.cdn.pretendo.cc/<%= userContent.pid %>/normal_face.png" property="og:image" />
     <meta content="#673DB6" data-react-helmet="true" name="theme-color" />
 </head>
 <body>
 <%- include('nav_bar', { selection: -1 }); %>
 <div id="main">
     <div class="community-page-header" style="background: #673DB6;"></div>
-    <%- include('scroll_wrapper', { text: user.user_id, lang: lang }); %>
+    <%- include('scroll_wrapper', { text: pnid.mii.name, lang: lang }); %>
     <div class="community-page-info-container" style="height: 220px;">
         <div class="community-page-action-button-wrapper">
-            <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ /*Is Friend*/%>
-            <div class="user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+            <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ /*Is Friend*/%>
+            <div class="user-page-follow-button-wrapper selected" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
             </div>
-            <%} else if(parentUser.followed_users.indexOf(user.pid) !== -1){ /*Pending Friend*/%>
-            <div class="user-page-follow-button-wrapper selected" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+            <%} else if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ /*Pending Friend*/%>
+            <div class="user-page-follow-button-wrapper selected" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-x"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="18" y1="8" x2="23" y2="13"/><line x1="23" y1="8" x2="18" y2="13"/></svg>
             </div>
             <%} else { /*Add Friend*/%>
-            <div class="user-page-follow-button-wrapper" <%if(parentUser.pid === 1000000000) {%> style="display: none" <%}%>>
+            <div class="user-page-follow-button-wrapper" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
             </div>
             <%}%>
 
-            <%if(parentUser.followed_users.indexOf(user.pid) !== -1 && user.followed_users.indexOf(parentUser.pid) !== -1) { /*Is mutual*/%>
-            <div class="user-page-follow-button-wrapper  <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>selected<%}%>" id="<%= user.pid %>" onclick="createNewMessage('<%=user.pid%>')">
+            <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1 && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
+            <div class="user-page-follow-button-wrapper  <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" id="<%= userContent.pid %>" onclick="createNewMessage('<%=userContent.pid%>')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <%}%>
 
-            <div class="user-page-follow-button-wrapper  <%if(parentUser.followed_users.indexOf(user.pid) !== -1){ %>selected<%}%>" id="<%= user.pid %>" <%if(user.pid !== 1000000000) {%>onclick="followUser(this)"<%}%>>
+            <div class="user-page-follow-button-wrapper  <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" id="<%= userContent.pid %>" <%if(userContent.pid !== 1000000000) {%>onclick="followUser(this)"<%}%>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
             </div>
         </div>
-        <%if(user.official) {%>
-            <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
-            <h2 class="user-page-title verified-badge"><%= user.user_id %></h2>
+        <%if(pnid.access_level >= 2) {%>
+            <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= userContent.pid %>/normal_face.png">
+            <h2 class="user-page-title verified-badge"><%= pnid.mii.name %></h2>
         <%} else {%>
-            <img class="community-page-info-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
-            <h2 class="user-page-title"><%= user.user_id %></h2>
+            <img class="community-page-info-icon" src="<%= mii_image_CDN %>/<%= userContent.pid %>/normal_face.png">
+            <h2 class="user-page-title"><%= pnid.mii.name %></h2>
         <%}%>
-        <h2 class="user-page-subtitle">@<%= user.pnid %></h2>
-        <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
+        <h2 class="user-page-subtitle">@<%= pnid.username %></h2>
+        <h4 class="community-page-description"><%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
         <table class="community-page-table-wrapper">
             <tbody>
             <tr>
@@ -57,7 +57,7 @@
                     <div class="community-page-shaded-info-container">
                         <h4>
                             <span class="community-page-table-label"><%= lang.user_page.country %>:</span>
-                            <span class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%><%= lang.global.private %><%}%></span>
+                            <span class="community-page-table-text"><%if(userSettings.country_visibility){%><%=pnid.country%><%}else {%><%= lang.global.private %><%}%></span>
                         </h4>
                     </div>
                 </td>
@@ -65,7 +65,7 @@
                     <div class="community-page-shaded-info-container">
                         <h4>
                             <span class="community-page-table-label"><%= lang.user_page.birthday %>:</span>
-                            <span class="community-page-table-text"><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></span>
+                            <span class="community-page-table-text"><%if(userSettings.birthday_visibility){%><%=moment.utc(pnid.birthdate).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></span>
                         </h4>
                     </div>
                 </td>
@@ -74,12 +74,12 @@
                         <h4>
                             <span class="community-page-table-label"><%= lang.user_page.game_experience %>:</span>
                             <span class="community-page-table-text">
-                                <%if(user.game_skill_visibility){%>
-                                <%if(user.game_skill === 0) {%>
+                                <%if(userSettings.game_skill_visibility){%>
+                                <%if(userSettings.game_skill === 0) {%>
                                     <%= lang.setup.experience_text.beginner %>
-                                <%} else if(user.game_skill === 1) {%>
+                                <%} else if(userSettings.game_skill === 1) {%>
                                     <%= lang.setup.experience_text.intermediate %>
-                                <%} else if(user.game_skill === 2) {%>
+                                <%} else if(userSettings.game_skill === 2) {%>
                                     <%= lang.setup.experience_text.expert %>
                                 <%} else {%>
                                     N/A
@@ -113,7 +113,8 @@
                     <div class="supporter-star mega">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     </div>
-                </td>
+                </td>-->
+                <%if(pnid.access_level === 3) {%>
                 <td>
                     <div class="supporter-star dev">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool">
@@ -131,16 +132,21 @@
                         </svg>
                     </div>
                 </td>
+                <%}%>
+                <%if(pnid.access_level === 2) {%>
                 <td>
                     <div class="supporter-star admin">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                     </div>
                 </td>
+                <%}%>
+                <%if(pnid.access_level === 1) {%>
                 <td>
                     <div class="supporter-star tester">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
                     </div>
-                </td>-->
+                </td>
+                <%}%>
             </tr>
             </tbody>
         </table>
@@ -150,16 +156,16 @@
             <tbody>
             <tr>
                 <td>
-                    <h4 id="user-page-posts-tab" onclick="switchUserPageTabs(0, '<%= user.pid %>')" class="community-page-posts-header-tab active"><%=numPosts%> <%= lang.user_page.posts %></h4>
+                    <h4 id="user-page-posts-tab" onclick="switchUserPageTabs(0, '<%= userContent.pid %>')" class="community-page-posts-header-tab active"><%=numPosts%> <%= lang.user_page.posts %></h4>
                 </td>
                 <td>
-                    <h4 id="user-page-friends-tab" onclick="switchUserPageTabs(1, '<%= user.pid %>')" class="community-page-posts-header-tab">0 <%= lang.user_page.friends %></h4>
+                    <h4 id="user-page-friends-tab" onclick="switchUserPageTabs(1, '<%= userContent.pid %>')" class="community-page-posts-header-tab">0 <%= lang.user_page.friends %></h4>
                 </td>
                 <td>
-                    <h4 id="user-page-following-tab" onclick="switchUserPageTabs(2, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.following %> <%= lang.user_page.following %></h4>
+                    <h4 id="user-page-following-tab" onclick="switchUserPageTabs(2, '<%= userContent.pid %>')" class="community-page-posts-header-tab"><%= userContent.followed_users.length - 1 %> <%= lang.user_page.following %></h4>
                 </td>
                 <td>
-                    <h4 id="user-page-followers-tab" onclick="switchUserPageTabs(3, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.followers %> <%= lang.user_page.followers %></h4>
+                    <h4 id="user-page-followers-tab" onclick="switchUserPageTabs(3, '<%= userContent.pid %>')" class="community-page-posts-header-tab"><%= userContent.following_users.length - 1 %> <%= lang.user_page.followers %></h4>
                 </td>
             </tr>
             </tbody>
@@ -169,7 +175,7 @@
         <% if(numPosts === 0) {%>
             <p class="no-posts-text"><%= lang.global.no_posts %></p>
         <%} else { %>
-                <button id="load-more-posts-button" data-offset="10" onclick="loadUserPosts(this, '<%= user.pid %>')"><%= lang.global.more %></button>
+                <button id="load-more-posts-button" data-offset="10" onclick="loadUserPosts(this, '<%= userContent.pid %>')"><%= lang.global.more %></button>
             <% newPosts.forEach(function(post) { %>
                 <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, user: parentUser, reply: false  }); %>
             <% }); %>

@@ -30,7 +30,8 @@ router.get('/all', async function (req, res) {
 });
 
 router.get('/announcements', async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
+    let userSettings = await database.getUserSettings(req.pid);
+    let userContent = await database.getUserContent(req.pid);
     let community = await database.getCommunityByID('announcements');
     let communityMap = await util.data.getCommunityHash();
     let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
@@ -40,7 +41,8 @@ router.get('/announcements', async function (req, res) {
         community: community,
         newPosts: newPosts,
         communityMap: communityMap,
-        user: user,
+        userSettings: userSettings,
+        userContent: userContent,
         totalNumPosts: totalNumPosts,
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
@@ -50,7 +52,8 @@ router.get('/announcements', async function (req, res) {
 });
 
 router.get('/:communityID', async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
+    let userSettings = await database.getUserSettings(req.pid);
+    let userContent = await database.getUserContent(req.pid);
     if(req.params.communityID === 'announcements')
         return res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
@@ -68,7 +71,8 @@ router.get('/:communityID', async function (req, res) {
         communityMap: communityMap,
         newPosts: newPosts,
         totalNumPosts: totalNumPosts,
-        user: user,
+        userSettings: userSettings,
+        userContent: userContent,
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
@@ -77,7 +81,8 @@ router.get('/:communityID', async function (req, res) {
 });
 
 router.get('/:communityID/:type', async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
+    let userSettings = await database.getUserSettings(req.pid);
+    let userContent = await database.getUserContent(req.pid);
     if(req.params.communityID === 'announcements')
         res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
@@ -92,7 +97,8 @@ router.get('/:communityID/:type', async function (req, res) {
         communityMap: communityMap,
         newPosts: newPosts,
         totalNumPosts: totalNumPosts,
-        user: user,
+        userSettings: userSettings,
+        userContent: userContent,
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
@@ -102,7 +108,8 @@ router.get('/:communityID/:type', async function (req, res) {
 
 router.get('/:communityID/:type/loadPosts', async function (req, res) {
     let offset = parseInt(req.query.offset);
-    let user = await database.getUserByPID(req.pid);
+    let userSettings = await database.getUserSettings(req.pid);
+    let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
     let posts;
     let community = await database.getCommunityByID(req.params.communityID)
@@ -126,7 +133,8 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
             communityMap: communityMap,
             moment: moment,
             database: database,
-            user: user,
+            userSettings: userSettings,
+            userContent: userContent,
             newPosts: posts,
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
@@ -142,17 +150,17 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
 
 router.post('/follow', upload.none(), async function (req, res) {
     let community = await database.getCommunityByID(req.body.communityID);
-    let user = await database.getUserByPID(req.pid);
-    if(req.body.type === 'true' && user !== null && user.followed_communities.indexOf(community.community_id) === -1)
+    let userContent = await database.getUserContent(req.pid);
+    if(req.body.type === 'true' && userContent !== null && userContent.followed_communities.indexOf(community.community_id) === -1)
     {
         community.upFollower();
-        user.addToCommunities(community.community_id);
+        userContent.addToCommunities(community.community_id);
         res.sendStatus(200);
     }
-    else if(req.body.type === 'false' && user !== null  && user.followed_communities.indexOf(community.community_id) !== -1)
+    else if(req.body.type === 'false' && userContent !== null  && userContent.followed_communities.indexOf(community.community_id) !== -1)
     {
         community.downFollower();
-        user.removeFromCommunities(community.community_id);
+        userContent.removeFromCommunities(community.community_id);
         res.sendStatus(200);
     }
     else
