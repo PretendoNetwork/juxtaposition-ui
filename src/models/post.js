@@ -1,14 +1,13 @@
 const { Schema, model } = require('mongoose');
 
 const PostSchema = new Schema({
+    id: String,
     title_id: String,
     screen_name: String,
     body: String,
     app_data: String,
     painting: String,
-    painting_uri: String,
     screenshot: String,
-    url: String,
     search_key: {
         type: [String],
         default: undefined
@@ -21,10 +20,8 @@ const PostSchema = new Schema({
         type: String,
         default: undefined
     },
-    country_id: Number,
     created_at: Date,
     feeling_id: Number,
-    id: String,
     is_autopost: {
         type: Number,
         default: 0
@@ -51,10 +48,6 @@ const PostSchema = new Schema({
     },
     mii: String,
     mii_face_url: String,
-    number: {
-        type: Number,
-        default: 1
-    },
     pid: Number,
     platform_id: Number,
     region_id: Number,
@@ -66,10 +59,6 @@ const PostSchema = new Schema({
     verified: {
         type: Boolean,
         default: false
-    },
-    parent: {
-        type: String,
-        default: null
     },
     message_to_pid: {
         type: String,

@@ -20,7 +20,6 @@ const PNIDSchema = new mongoose.Schema({
 		minlength: 6,
 		maxlength: 16
 	},
-	password: String,
 	birthdate: String,
 	country: String,
 	language: String,
