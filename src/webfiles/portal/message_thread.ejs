@@ -21,7 +21,7 @@
                         <img id="message-viewer-icon" onclick="window.scroll(0, 0);" data-pjax="/users/show?pid=<%= user2.pid %>" class="community-page-post-user-icon <%if(user2.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= user2.pid %>/normal_face.png">
                     </td>
                     <td>
-                        <h2 id="message-viewer-name" onclick="window.scroll(0, 0);" data-pjax="/users/show?pid=<%= user2.pid %>" class="<%if(user2.official) {%>verified-badge<%}%>"><%= user2.user_id %></h2>
+                        <h2 id="message-viewer-name" onclick="window.scroll(0, 0);" data-pjax="/users/show?pid=<%= user2.pid %>" class="<%if(user2.official) {%>verified-badge<%}%>"><%= userMap.get(user2.pid) %></h2>
                     </td>
                 </tr>
                 </tbody>
@@ -30,7 +30,7 @@
         </div>
         <div id="message-viewer-content" style="">
             <% messages.forEach(function(message) { %>
-                <%if(message.pid === user.pid) {%>
+                <%if(message.pid === pid) {%>
                 <div class="message-viewer-bubble-sent">
                     <%if(message.painting) {%>
                     <img class="message-viewer-bubble-sent-memo" src="data:image/bmp;base64,<%= message.painting_uri %>">

@@ -5,6 +5,7 @@ const util = require('../../../../util');
 const config = require('../../../../../config.json');
 
 var moment = require('moment');
+const {data} = require("../../../../util");
 var router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -55,6 +56,10 @@ router.get('/', async function (req, res) {
                         cdnURL: config.CDN_domain,
                         lang: req.lang
                     });
+                    let pnid = await database.getPNID(req.pid);
+                    let usrMii = await database.getUserContent(req.pid);
+                    if(pnid.mii.name !== usrMii.screen_name)
+                        util.data.setName(req.pid)
                 }
             }
 

@@ -274,7 +274,7 @@ async function getFollowedUsers(content) {
 async function getUserByUsername(user_id) {
     verifyConnected();
     return PNID.findOne({
-        "mii.name": new RegExp(`^${user_id}$`, 'i')
+        "username": new RegExp(`^${user_id}$`, 'i')
     });
 }
 

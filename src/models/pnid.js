@@ -14,33 +14,12 @@ const PNIDSchema = new mongoose.Schema({
 		type: Number,
 		unique: true
 	},
-	username: {
-		type: String,
-		unique: true,
-		minlength: 6,
-		maxlength: 16
-	},
+	username: String,
 	birthdate: String,
 	country: String,
-	language: String,
-	region: Number,
 	mii: {
 		name: String,
-		primary: Boolean,
 		data: String,
-		id: {
-			type: Number,
-			unique: true
-		},
-		hash: {
-			type: String,
-			unique: true
-		},
-		image_url: String,
-		image_id: {
-			type: Number,
-			unique: true
-		},
 	},
 });
 

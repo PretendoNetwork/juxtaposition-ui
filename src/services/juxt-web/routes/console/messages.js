@@ -54,7 +54,7 @@ router.post('/new', async function (req, res, next) {
     if(!conversation)
         return res.sendStatus(404);
     let document = {
-        screen_name: user.username,
+        screen_name: user.mii.name,
         body: req.body.body,
         painting: req.body.raw,
         painting_uri: req.body.drawing,
@@ -134,16 +134,16 @@ router.get('/:message_id', async function (req, res) {
     if(!conversation) {
         return res.sendStatus(404);
     }
-    let user = await database.getUserByPID(req.pid);
-    let otherUserPid = conversation.users[0].pid.toString() === user.pid.toString() ? conversation.users[1].pid : conversation.users[0].pid;
-    let user2 = await database.getUserByPID(otherUserPid);
-    let messages = await database.getConversationMessages(conversation.id, 100, 0)
+    let user2 = conversation.users[0].pid.toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];
+    let messages = await database.getConversationMessages(conversation.id, 100, 0);
+    let userMap = await util.data.getUserHash();
     res.render(req.directory + '/message_thread.ejs', {
         moment: moment,
-        user: user,
+        pid: req.pid,
         user2: user2,
         conversation: conversation,
         messages: messages,
+        userMap: userMap,
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN

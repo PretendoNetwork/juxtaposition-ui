@@ -12,7 +12,7 @@ var upload = multer({ dest: 'uploads/' });
 var router = express.Router();
 
 router.get('/', upload.none(), async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
+    let user = await database.getUserSettings(req.pid);
     res.render('admin/admin_home.ejs', {
         user: user,
         account_server: config.account_server_domain.slice(8),
@@ -273,6 +273,7 @@ router.get('/token', upload.none(), async function (req, res) {
 router.post('/login', upload.none(), async function (req, res) {
     let user_id = req.body.user_id;
     let user = await database.getUserByUsername(user_id);
+    console.log(user)
     let pnid = await database.getPNID(user.pid)
     let password = req.body.password;
     if(password !== null && pnid !== null) {
