@@ -64,12 +64,12 @@ router.get('/show', async function (req, res) {
     let pnid = await database.getPNID(userID);
     let userContent = await database.getUserContent(userID);
     let userSettings = await database.getUserSettings(userID);
-    if(user === null)
+    if(!userContent || !userSettings)
         return res.sendStatus(404);
-    if(parentUserContent.pid === user.pid)
+    if(parentUserContent.pid === userContent.pid)
         return res.redirect('/users/me');
-    let newPosts = await database.getNumberUserPostsByID(user.pid, config.post_limit);
-    let numPosts = await database.getTotalPostsByUserID(user.pid);
+    let newPosts = await database.getNumberUserPostsByID(userContent.pid, config.post_limit);
+    let numPosts = await database.getTotalPostsByUserID(userContent.pid);
     let communityMap = await util.data.getCommunityHash();
     res.render(req.directory + '/user_page.ejs', {
         // EJS variable and server-side variable
@@ -155,10 +155,7 @@ router.get('/followers', async function (req, res) {
     let communities = [];
     let userMap = await util.data.getUserHash();
 
-    if(followers[0] === '0')
-        followers.splice(0, 1);
-
-    if(user.followers > 0)
+    if(followers.length > 0)
     {
         res.render(req.directory + '/following_list.ejs', {
             moment: moment,

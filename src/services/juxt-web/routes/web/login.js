@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
         }
     }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            logger.audit('[' + user.user_id + ' - ' + user.pid + '] signed into the application');
+            logger.audit('[' + user.username + ' - ' + user.pid + '] signed into the application');
             parseString(body, async function (err, result) {
                 auth = result.OAuth20.access_token[0].token[0];
                 await request.get({

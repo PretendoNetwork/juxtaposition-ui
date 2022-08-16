@@ -79,7 +79,7 @@
         var date = new Date();
         date.setTime(date.getTime() + (60 * 60 * 1000));
         var expires = "expires="+ date.toUTCString();
-        let domain = document.location.host.indexOf('miiverse.cc') === -1 ? 'domain=pretendo.cc;' : 'domain=miiverse.cc;';
+        var domain = document.location.host.indexOf('miiverse.cc') === -1 ? 'domain=pretendo.cc;' : 'domain=miiverse.cc;';
         document.cookie = cname + "=" + cvalue + ";" + domain +  expires + date.toGMTString();
     }
     function getCookie(cname) {

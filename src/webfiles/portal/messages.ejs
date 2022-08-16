@@ -18,15 +18,14 @@
                     <%
                         // get the PID of the opposite user
                         var userObj, me;
-                        if(conversation.users[0].pid.toString() === pid) {
+                        if(conversation.users[0].pid === pid) {
                             userObj = conversation.users[1];
                             me = conversation.users[0];
                         }
-                        else if(conversation.users[1].pid.toString() === pid) {
+                        else if(conversation.users[1].pid === pid) {
                             userObj = conversation.users[0];
                             me = conversation.users[1];
                         }
-
                     %>
                     <tr class="message-wrapper" onclick="showMessage('<%= conversation.id %>')">
                         <td class="messages-unread-badge-wrapper">

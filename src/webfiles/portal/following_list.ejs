@@ -17,7 +17,7 @@
                 <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
                 <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
             <%}%>
-            <h2 class="community-page-post-username" style="padding-top: 13px;" data-pjax="/users/show?pid=<%= user.pid %>"><%= user.user_id %></h2>
+            <h2 class="community-page-post-username" style="padding-top: 13px;" data-pjax="/users/show?pid=<%= user.pid %>"><%= user.screen_name %></h2>
             <h4 class="community-page-post-time-stamp" style="width: 400px;white-space: nowrap;overflow: hidden;"><% if(user.profile_comment_visibility){%><%=user.profile_comment%><%}%></h4>
         </div>
     </div>

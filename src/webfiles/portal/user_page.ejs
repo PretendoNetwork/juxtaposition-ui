@@ -177,7 +177,7 @@
         <%} else { %>
                 <button id="load-more-posts-button" data-offset="10" onclick="loadUserPosts(this, '<%= userContent.pid %>')"><%= lang.global.more %></button>
             <% newPosts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, user: parentUser, reply: false  }); %>
+                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, user: parentUserContent, reply: false  }); %>
             <% }); %>
         <%}%>
     </div>

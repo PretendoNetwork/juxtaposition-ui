@@ -45,7 +45,7 @@ function nameCache() {
         if(users !== null) {
             for(let i = 0; i < users.length; i++ ) {
                 if(users[i].pid !== null) {
-                    userMap.set(users[i].pid.toString(), users[i].user_id);
+                    userMap.set(users[i].pid.toString(), users[i].screen_name);
                 }
             }
         }
