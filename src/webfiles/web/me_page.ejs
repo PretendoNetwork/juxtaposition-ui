@@ -1,0 +1,130 @@
+<html>
+<head>
+    <title>Juxt - <%= user.user_id %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
+    <script src="https://portal.cdn.pretendo.cc/js/pjax.min.js"></script>
+    <script src="https://portal.cdn.pretendo.cc/js/juxt.js"></script>
+    <link rel="manifest" href="/web/manifest.json">
+    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-195842548-1');
+    </script>
+    <!-- Google / Search Engine Tags -->
+    <meta itemprop="name" content="Juxt - <%= user.user_id %>">
+    <%if(user.profile_comment_visibility){%><meta itemprop="description" content="<%= user.profile_comment %>"> <%}%>
+    <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net/mii/<%= user.pid %>/smile_open_mouth.png">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Juxt - <%= user.user_id %>"/>
+    <%if(user.profile_comment_visibility){%><meta property="og:description" content="<%= user.profile_comment %>"/><%}%>
+    <meta property="og:url" content="https://juxt.pretendo.cc/users/show?pid=<%= user.pid %>"/>
+    <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/mii/<%= user.pid %>/smile_open_mouth.png"/>
+    <meta property="og:site_name" content="Juxtaposition" />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Juxt - <%= user.user_id %>"/>
+    <%if(user.profile_comment_visibility){%><meta name="twitter:description" content="<%= user.profile_comment %>"/><%}%>
+    <meta name="twitter:site" content="@PretendoNetwork"/>
+    <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/mii/<%= user.pid %>/smile_open_mouth.png"/>
+    <meta name="twitter:creator" content="@PretendoNetwork"/>
+
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.user_page %></h2>
+    <%- include('nav_bar', { selection: 0 }); %>
+    <div id="toast"></div>
+    <div id="wrapper">
+        <div class="community-top">
+            <div class="community-info">
+                <img class="user-icon <%if(user.official) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= user.pid %>/normal_face.png">
+                <h2 class="community-title"><%= user.user_id %> (<%= user.pnid %>)<span class="verified-badge" style="<%if(!user.official) {%>display: none;<%}%>">✓</span></h2>
+            </div>
+            <h4 class="community-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
+            <div class="info-boxes-wrapper">
+                <div>
+                    <h4><%= lang.user_page.country %></h4>
+                    <h4><%if(user.country_visibility){%><%=user.country%><%}else {%><%= lang.global.private %><%}%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.birthday %></h4>
+                    <h4><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></h4>
+                </div>
+                <div>
+                    <h4><%= lang.user_page.game_experience %></h4>
+                    <h4>
+                        <%if(user.game_skill_visibility){%>
+                        <%if(user.game_skill === 0) {%>
+                            <%= lang.setup.experience_text.beginner %>
+                        <%} else if(user.game_skill === 1) {%>
+                            <%= lang.setup.experience_text.intermediate %>
+                        <%} else if(user.game_skill === 2) {%>
+                            <%= lang.setup.experience_text.expert %>
+                        <%} else {%>
+                            N/A
+                        <%}%>
+                        <%}else {%>
+                            <%= lang.global.private %>
+                        <%}%>
+                    </h4>
+                </div>
+                <div>
+                    <h4><%= lang.global.yeahs %></h4>
+                    <h4>0</h4>
+                </div>
+                <div>
+                    <h4><a onclick="downloadURI('/downloadUserData.json', '<%= user.pid %>.json')">Download Data</a></h4>
+                </div>
+            </div>
+        </div>
+        <% if(newPosts.length === 0) {%>
+            <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
+        <%} else { %>
+            <% newPosts.forEach(function(post) { %>
+                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+            <% }); %>
+        <%}%>
+    </div>
+    <div id="wrapper">
+        <button id="load-more-posts-button" data-offset="20" onclick="loadUserPosts(this, '<%= user.pid %>')"><%= lang.global.more %></button>
+    </div>
+</div>
+<script>
+    window.onscroll = function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            document.getElementById('load-more-posts-button').click();
+        }
+    };
+    function copyToClipboard(text) {
+        let inputc = document.getElementsByTagName("header")[0].appendChild(document.createElement("input"));
+        inputc.value = text;
+        inputc.focus();
+        inputc.select();
+        document.execCommand('copy');
+        inputc.parentNode.removeChild(inputc);
+        Toast("Copied to clipboard.");
+    }
+    function Toast(text) {
+        let x = document.getElementById("toast");
+        x.innerText = text;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+    function downloadURI(uri, name) {
+        let link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+    }
+</script>
+</body>
+</html>

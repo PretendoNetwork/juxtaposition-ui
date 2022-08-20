@@ -36,7 +36,7 @@
                 <td>
                     <div class="community-page-shaded-info-container">
                         <h4 class="community-page-table-label">Birthday</h4>
-                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%>N/A<%}else {%>Private<%}%></h4>
+                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%>Private<%}%></h4>
                     </div>
                 </td>
             </tr>
@@ -67,10 +67,7 @@
             </tbody>
         </table>
         <div class="communities-wrapper" id="popular-communities">
-            <h1 class="communities-header">Popular Places</h1>
-        </div>
-        <div class="communities-wrapper" id="new-communities">
-            <h1 class="communities-header">New Communities</h1>
+            <h1 class="communities-header">User Posts</h1>
         </div>
         <div class="toolbar-padding"></div>
     </div>

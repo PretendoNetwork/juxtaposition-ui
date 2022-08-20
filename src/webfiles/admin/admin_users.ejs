@@ -55,7 +55,7 @@
             <% for(var i = 0; i < users.length; i++) { %>
                 <tr id="<%= users[i].pid %>" onclick="location.assign('/users/' + this.id)">
                     <td><img style="width: 80px " src="<%= mii_image_CDN %>/<%= users[i].pid %>/normal_face.png"></td>
-                    <td><a><%= users[i].user_id %></a></td>
+                    <td><a><%= users[i].user_id %> (<%= users[i].pnid %>)</a></td>
                     <td><%= moment(users[i].created_at).fromNow() %></td>
                     <td><%= users[i].account_status %></td>
                     <td><%= users[i].followers %></td>

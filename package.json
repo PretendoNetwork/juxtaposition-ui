@@ -25,7 +25,6 @@
     "fs-extra": "^9.0.1",
     "hashmap": "^2.4.0",
     "image-pixels": "^2.2.2",
-    "indexed-image-converter": "github:PretendoNetwork/indexed-image-converter",
     "memory-cache": "^0.2.0",
     "moment": "^2.29.1",
     "mongoose": "^6.0.13",
@@ -38,12 +37,14 @@
     "pngjs": "^6.0.0",
     "sharp": "^0.28.1",
     "tga": "^1.0.4",
+    "xml2js": "^0.4.23",
     "xmlbuilder": "^15.1.1",
     "xmlbuilder2": "^2.4.0"
   },
   "devDependencies": {
     "bmp-js": "^0.1.0",
     "ejs": "^3.1.5",
+    "express-slow-down": "^1.4.0",
     "express-subdomain": "^1.0.5",
     "multer": "^1.4.2",
     "object-to-xml": "^2.0.0",

@@ -7,9 +7,11 @@ const router = express.Router();
 
 const console = express.Router();
 const admin = express.Router();
-const web_api = express.Router();
 
 // Create subdomains
+logger.info('[JUXT-WEB] Creating \'Web\' subdomain');
+router.use(subdomain('juxt', console));
+
 logger.info('[JUXT-WEB] Creating \'Wii U\' subdomain');
 router.use(subdomain('portal.olv', console));
 
@@ -31,6 +33,9 @@ console.use('/activity-feed', routes.PORTAL_FEED);
 console.use('/messages', routes.PORTAL_MESSAGES);
 console.use('/news', routes.PORTAL_NEWS);
 console.use('/', routes.PORTAL_WEB);
+console.use('/login', routes.WEB_LOGIN);
+console.use('/robots.txt', routes.ROBOTS);
+console.use('/web', routes.PWA);
 
 admin.use('/', routes.WEB_ADMIN);
 admin.use('/v1/', routes.WEB_API);

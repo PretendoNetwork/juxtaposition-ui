@@ -1,17 +1,20 @@
 var express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require('../../../../config.json');
+const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
+const rateLimit = require('../../../../middleware/ratelimit');
 var multer  = require('multer');
 var moment = require('moment');
 var upload = multer({ dest: 'uploads/' });
 const snowflake = require('node-snowflake').Snowflake;
 var router = express.Router();
 
-router.post('/empathy', async function (req, res) {
+router.post('/empathy', rateLimit, async function (req, res) {
     let post = await database.getPostByID(req.body.postID);
     let user = await database.getUserByPID(req.pid);
+    if(!user)
+        return res.sendStatus(423);
     if(req.body.type === 'up' && user.likes.indexOf(post.id) === -1 && user.id !== post.pid)
     {
         post.upEmpathy();
@@ -49,7 +52,7 @@ router.get('/:post_id', async function (req, res) {
     });
 });
 
-router.post('/:post_id/new', upload.none(), async function (req, res, next) {
+router.post('/:post_id/new', rateLimit, upload.none(), async function (req, res, next) {
     let user = await database.getUserByPID(req.pid);
     if(user.account_status !== 0 || req.body.olive_community_id === 'announcements') {
         throw new Error('User not allowed to post')
@@ -126,6 +129,9 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
         verified: user.official,
         parent: parentPost.id
     };
+    let duplicatePost = await database.getDuplicatePosts(req.pid, document);
+    if(duplicatePost)
+        return res.redirect('/posts/' + req.params.post_id.toString());
     const newPost = new POST(document);
     newPost.save();
     if(parentPost.pid !== user.pid)
@@ -133,7 +139,7 @@ router.post('/:post_id/new', upload.none(), async function (req, res, next) {
     res.redirect('/posts/' + req.params.post_id.toString());
 });
 
-router.post('/new', upload.none(), async function (req, res, next) {
+router.post('/new', rateLimit, upload.none(), async function (req, res, next) {
     let user = await database.getUserByPID(req.pid);
     if(user.account_status !== 0) {
         throw new Error('User not allowed to post')
@@ -206,6 +212,9 @@ router.post('/new', upload.none(), async function (req, res, next) {
         region_id: req.paramPackData.region_id,
         verified: user.official
     };
+    let duplicatePost = await database.getDuplicatePosts(req.pid, document);
+    if(duplicatePost)
+        return res.redirect('/communities/' + community.community_id + '/new');
     const newPost = new POST(document);
     newPost.save();
     res.redirect('/communities/' + community.community_id + '/new');

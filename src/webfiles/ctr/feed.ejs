@@ -20,12 +20,12 @@
     </div>
     <div class="bottom-screen">
         <div class="community-page-posts-wrapper">
-            <div id="community-posts-inner-body">
+            <div id="wrapper">
 
                 <% if(posts.length === 0) {%>
                     <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
                 <%} else { %>
-                    <button id="load-more-posts-button" onclick="loadFeedPosts()"><%= lang.global.more %></button>
+                        <button id="load-more-posts-button" data-offset="20" onclick="loadFeedPosts(this)"><%= lang.global.more %></button>
                     <% posts.forEach(function(post) { %>
                             <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
                     <% }); %>

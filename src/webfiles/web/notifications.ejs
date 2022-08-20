@@ -1,0 +1,60 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
+    <script src="https://portal.cdn.pretendo.cc/js/pjax.min.js"></script>
+    <script src="https://portal.cdn.pretendo.cc/js/juxt.js"></script>
+    <link rel="manifest" href="/web/manifest.json">
+    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-195842548-1');
+    </script>
+
+</head>
+<body>
+<div id="main">
+    <h2 id="title" class="page-header"><%= lang.global.notifications %></h2>
+    <%- include('nav_bar', { selection: 4 }); %>
+    <div id="toast"></div>
+    <div id="wrapper">
+        <% if(user.notification_list.length === 0) {%>
+            <p class="no-posts-text"><%= lang.notifications.none %></p>
+        <%} else { %>
+            <% for(let i = user.notification_list.length - 1; i >= 0; i--) { %>
+                <% var content; if(user.notification_list[i].content.indexOf('NEW_FOLLOWER') !== -1) content = user.notification_list[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = user.notification_list[i].content %>
+                <a class="notifications-list-content" href="<%=user.notification_list[i].link%>">
+                    <div class="unread-badge" <%if(user.notification_list[i].read) {%>style="background-color: unset"<%}%>></div>
+                    <h3><%= content %><span style="color: var(--text-secondary)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
+                </a>
+            <%}%>
+        <%}%>
+    </div>
+</div>
+<script>
+    window.onscroll = function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            document.getElementById('load-more-posts-button').click();
+        }
+    };
+    function copyToClipboard(text) {
+        let inputc = document.getElementsByTagName("header")[0].appendChild(document.createElement("input"));
+        inputc.value = text;
+        inputc.focus();
+        inputc.select();
+        document.execCommand('copy');
+        inputc.parentNode.removeChild(inputc);
+        Toast("Copied to clipboard.");
+    }
+    function Toast(text) {
+        var x = document.getElementById("toast");
+        x.innerText = text;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@ var express = require('express');
 var xml = require('object-to-xml');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require('../../../../config.json');
+const config = require('../../../../../config.json');
 var multer  = require('multer');
 var moment = require('moment');
 var upload = multer({ dest: 'uploads/' });
@@ -10,9 +10,9 @@ var router = express.Router();
 
 router.get('/', async function (req, res) {
     let popularCommunities = await database.getMostPopularCommunities(9);
-    let newCommunities = await database.getNewCommunities(6);
+    let newCommunities = await database.getCommunities(6);
     res.render(req.directory + '/communities.ejs', {
-        // EJS variable and server-side variable
+        cache: true,
         popularCommunities: popularCommunities,
         newCommunities: newCommunities,
         cdnURL: config.CDN_domain,
@@ -81,6 +81,7 @@ router.get('/:communityID/:type', async function (req, res) {
     if(req.params.communityID === 'announcements')
         res.redirect('/communities/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
+    if(!community) return res.sendStatus(404);
     let communityMap = await util.data.getCommunityHash();
     let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
@@ -105,6 +106,7 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
     let communityMap = await util.data.getCommunityHash();
     let posts;
     let community = await database.getCommunityByID(req.params.communityID)
+    if(!community) return res.sendStatus(404);
     if(!offset)
         offset = 0;
     switch (req.params.type) {

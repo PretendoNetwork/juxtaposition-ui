@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { account_db: mongooseConfig } = require('./config.json');
+const { account_db: mongooseConfig } = require('../config.json');
 const { uri, database, options } = mongooseConfig;
 const logger = require('./logger');
 

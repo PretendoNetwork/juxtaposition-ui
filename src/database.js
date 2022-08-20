@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { mongoose: mongooseConfig } = require('./config.json');
+const { mongoose: mongooseConfig } = require('../config.json');
 const { ENDPOINT } = require('./models/endpoint');
 const { COMMUNITY } = require('./models/communities');
 const { POST } = require('./models/post');
@@ -33,19 +33,19 @@ function verifyConnected() {
 async function getCommunities(numberOfCommunities) {
     verifyConnected();
     if(numberOfCommunities === -1)
-        return COMMUNITY.find({ parent: null });
+        return COMMUNITY.find({ parent: null, type: 0 });
     else
-        return COMMUNITY.find({ parent: null }).limit(numberOfCommunities);
+        return COMMUNITY.find({ parent: null, type: 0 }).limit(numberOfCommunities);
 }
 
 async function getMostPopularCommunities(numberOfCommunities) {
     verifyConnected();
-    return COMMUNITY.find({ parent: null }).sort({followers: -1}).limit(numberOfCommunities);
+    return COMMUNITY.find({ parent: null, type: 0 }).sort({followers: -1}).limit(numberOfCommunities);
 }
 
 async function getNewCommunities(numberOfCommunities) {
     verifyConnected();
-    return COMMUNITY.find({ parent: null }).sort([['created_at', -1]]).limit(numberOfCommunities);
+    return COMMUNITY.find({ parent: null, type: 0 }).sort([['created_at', -1]]).limit(numberOfCommunities);
 }
 
 async function getSubCommunities(communityID) {
@@ -100,11 +100,23 @@ async function getPostReplies(postID, number) {
     }).limit(number);
 }
 
+async function getDuplicatePosts(pid, post) {
+    verifyConnected();
+    return POST.findOne({
+        pid: pid,
+        body: post.body,
+        painting: post.painting,
+        screenshot: post.screenshot,
+        parent: null
+    });
+}
+
 async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
     verifyConnected();
     return POST.find({
         parent: post.pid,
-        created_at: { $lt: post.created_at }
+        created_at: { $lt: post.created_at },
+        message_to_pid: null
     }).limit(numberOfPosts);
 }
 
@@ -112,7 +124,8 @@ async function getNumberUserPostsByID(userID, number) {
     verifyConnected();
     return POST.find({
         pid: userID,
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).sort({ created_at: -1}).limit(number);
 }
 
@@ -120,7 +133,8 @@ async function getTotalPostsByUserID(userID) {
     verifyConnected();
     return POST.find({
         pid: userID,
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).countDocuments();
 }
 
@@ -187,7 +201,8 @@ async function getUserPostsAfterTimestamp(post, numberOfPosts) {
     return POST.find({
         pid: post.pid,
         created_at: { $lt: post.created_at },
-        parent: null
+        parent: null,
+        message_to_pid: null,
     }).limit(numberOfPosts);
 }
 
@@ -195,8 +210,9 @@ async function getUserPostsOffset(pid, limit, offset) {
     verifyConnected();
     return POST.find({
         pid: pid,
-        parent: null
-    }).sort({ created_at: -1}).skip(offset).limit(limit);
+        parent: null,
+        message_to_pid: null
+    }).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
 async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
@@ -241,6 +257,7 @@ async function getFollowingUsers(user) {
         pid: user.following_users
     });
 }
+
 async function getFollowedUsers(user) {
     verifyConnected();
     return USER.find({
@@ -277,7 +294,8 @@ async function getNewsFeed(user, numberOfPosts) {
             {pid: user.pid},
             {community_id: user.followed_communities},
         ],
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
@@ -290,7 +308,8 @@ async function getNewsFeedAfterTimestamp(user, numberOfPosts, post) {
             {community_id: user.followed_communities},
         ],
         created_at: { $lt: post.created_at },
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
@@ -302,24 +321,52 @@ async function getNewsFeedOffset(user, limit, offset) {
             {pid: user.pid},
             {community_id: user.followed_communities},
         ],
-        parent: null
+        parent: null,
+        message_to_pid: null
     }).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
 async function getConversations(pid) {
     verifyConnected();
     return CONVERSATION.find({
-        pids: pid
+        "users.pid": pid
+    }).sort({ last_updated: -1});
+}
+
+async function getUnreadConversationCount(pid) {
+    verifyConnected();
+    return CONVERSATION.find({
+        "users": { $elemMatch: {
+                'pid': pid,
+                'read': false
+            }}
+
+    }).countDocuments();
+}
+
+async function getConversationByID(community_id) {
+    verifyConnected();
+    return CONVERSATION.findOne({
+        type: 3,
+        id: community_id
     });
 }
 
-async function getConversation(pid, pid2) {
+async function getConversationMessages(community_id, limit, offset) {
     verifyConnected();
-    return CONVERSATION.find({
+    return POST.find({
+        community_id: community_id,
+        parent: null
+    }).sort({created_at: 1}).skip(offset).limit(limit);
+}
+
+async function getConversationByUsers(pids) {
+    verifyConnected();
+    return CONVERSATION.findOne({
         $and: [
-            {pids: pid},
-            {pids: pid2}
-        ],
+            {'users.pid': pids[0]},
+            {'users.pid': pids[1]}
+        ]
     });
 }
 
@@ -370,6 +417,7 @@ module.exports = {
     getNumberUserPostsByID,
     getTotalPostsByUserID,
     getPostByID,
+    getDuplicatePosts,
     getUsers,
     getUserByPID,
     getUserByUsername,
@@ -385,7 +433,10 @@ module.exports = {
     getFollowingUsers,
     getFollowedUsers,
     getConversations,
-    getConversation,
+    getConversationByID,
+    getConversationByUsers,
+    getConversationMessages,
+    getUnreadConversationCount,
     getLatestMessage,
     getPNID,
     getPNIDS

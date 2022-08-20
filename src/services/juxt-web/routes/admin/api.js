@@ -2,7 +2,7 @@ var express = require('express');
 const database = require('../../../../database');
 const logger = require('../../../../logger');
 const util = require('../../../../util');
-const config = require('../../../../config.json');
+const config = require('../../../../../config.json');
 const { COMMUNITY } = require('../../../../models/communities');
 const { POST } = require('../../../../models/post');
 var router = express.Router();
@@ -418,6 +418,9 @@ router.post('/posts/new', upload.none(), async function(req, res) {
             region_id: 2,
             verified: user.official
         };
+        let duplicatePost = await database.getDuplicatePosts(req.pid, document);
+        if(duplicatePost)
+            return res.redirect('/communities/' + community.community_id + '/new');
         const newPost = new POST(document);
         newPost.save();
         res.sendStatus(200);
