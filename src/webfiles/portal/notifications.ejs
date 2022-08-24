@@ -5,10 +5,10 @@
     <script src="<%= cdnURL %>/js/juxt.js"></script>
 </head>
 <body>
-<%- include('nav_bar', { selection: 4 }); %>
+<%- await include('nav_bar', { selection: 4 }); %>
 <div id="main">
     <h1 id="title" class="page-header"><%= lang.global.notifications %></h1>
-    <%- include('scroll_wrapper', { text: lang.global.notifications, lang: lang }); %>
+    <%- await include('scroll_wrapper', { text: lang.global.notifications, lang: lang }); %>
     <div class="community-page-posts-wrapper">
         <table cellspacing="0">
             <tbody id="messages-list">
@@ -17,25 +17,45 @@
             <%} else { %>
                 <% for(let i = notifications.length - 1; i >= 0; i--) { %>
                     <% var title; if(notifications[i].title.indexOf('NEW_FOLLOWER') !== -1) title = notifications[i].title.replace('NEW_FOLLOWER', lang.notifications.new_follower); else title = notifications[i].title %>
-                    <% if(i === notifications.length - 1) { %>
                     <tr class="message-wrapper" data-pjax="<%=notifications[i].link%>">
-                        <td class="messages-unread-badge-wrapper top">
-                            <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
-                        </td>
-                        <td class="messages-list-wrapper top">
-                            <h3 class="notifications-list-content"><%= title %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
-                        </td>
+                        <%if(notifications[i].type === 0) { %>
+                            <tr <%if(!notifications[i].read) {%>class="unread"<%}%>>
+                                <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
+                                    <h3><%=title%></h3>
+                                    <h4><%=notifications[i].content%></h4>
+                                </td>
+                            </tr>
+                        <%} else if(notifications[i].type === 1) {%>
+                        <tr <%if(!notifications[i].read) {%>class="unread"<%}%>>
+                            <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <h3><%=title%></h3>
+                                <h4><%=notifications[i].content%></h4>
+                            </td>
+                        </tr>
+                        <%} else if(notifications[i].type === 2) {%>
+                            <%let userContent = await database.getUserContent(notifications[i].reference_id);
+                              let userProfile = await database.getPNID(notifications[i].reference_id);
+                            %>
+                            <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <div>
+                                    <%if(pnid.access_level >= 2) {%>
+                                        <img class="community-page-info-icon verified" src="http://mii.olv.pretendo.cc/mii//<%= userContent.pid %>/normal_face.png">
+                                        <h2 class="user-page-title verified-badge"><%= pnid.mii.name %></h2>
+                                    <%} else {%>
+                                        <img class="community-page-info-icon" src="http://mii.olv.pretendo.cc/mii//<%= userContent.pid %>/normal_face.png">
+                                        <h2 class="user-page-title"><%= pnid.mii.name %></h2>
+                                    <%}%>
+                                </div>
+                            </td>
+                        <%} else {%>
+                            <td class="messages-unread-badge-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
+                            </td>
+                            <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <h3 class="notifications-list-content"><%= title %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
+                            </td>
+                        <%}%>
                     </tr>
-                    <%} else {%>
-                    <tr class="message-wrapper" data-pjax="<%=notifications[i].link%>">
-                        <td class="messages-unread-badge-wrapper">
-                            <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
-                        </td>
-                        <td class="messages-list-wrapper">
-                            <h3 class="notifications-list-content"><%= title %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
-                        </td>
-                    </tr>
-                    <%}%>
                 <%}%>
             <%}%>
             </tbody>
