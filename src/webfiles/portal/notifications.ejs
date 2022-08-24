@@ -16,14 +16,14 @@
                 <p class="no-posts-text"><%= lang.notifications.none %></p>
             <%} else { %>
                 <% for(let i = notifications.length - 1; i >= 0; i--) { %>
-                    <% var content; if(notifications[i].content.indexOf('NEW_FOLLOWER') !== -1) content = notifications[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = notifications[i].content %>
+                    <% var title; if(notifications[i].title.indexOf('NEW_FOLLOWER') !== -1) title = notifications[i].title.replace('NEW_FOLLOWER', lang.notifications.new_follower); else title = notifications[i].title %>
                     <% if(i === notifications.length - 1) { %>
                     <tr class="message-wrapper" data-pjax="<%=notifications[i].link%>">
                         <td class="messages-unread-badge-wrapper top">
                             <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
                         </td>
                         <td class="messages-list-wrapper top">
-                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
+                            <h3 class="notifications-list-content"><%= title %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
                         </td>
                     </tr>
                     <%} else {%>
@@ -32,7 +32,7 @@
                             <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
                         </td>
                         <td class="messages-list-wrapper">
-                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
+                            <h3 class="notifications-list-content"><%= title %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
                         </td>
                     </tr>
                     <%}%>

@@ -400,6 +400,13 @@ async function getNotification(pid, type, reference_id) {
     })
 }
 
+async function getLastNotification(pid) {
+    verifyConnected();
+    return NOTIFICATIONS.findOne({
+        pid: pid
+    }).sort({created_at: -1}).limit(1);
+}
+
 async function getUnreadNotificationCount(pid) {
     verifyConnected();
     return NOTIFICATIONS.find({
@@ -456,5 +463,6 @@ module.exports = {
     getUserContent,
     getNotifications,
     getUnreadNotificationCount,
-    getNotification
+    getNotification,
+    getLastNotification
 };

@@ -56,6 +56,19 @@ function nameCache() {
     });
 }
 
+async function saveNotification(pid, type, title, content, reference_id, link) {
+    let notification = {
+        pid: pid,
+        type: type,
+        title: title,
+        content: content,
+        reference_id: reference_id,
+        link: link,
+    }
+    let newNotification = new NOTIFICATIONS(notification);
+    return await newNotification.save();
+}
+
 let methods = {
     create_user: async function(pid, experience, notifications, region) {
         const pnid = await database.getPNID(pid);
@@ -307,16 +320,66 @@ let methods = {
 
         await s3.putObject(awsPutParams).promise();
     },
-    newNotification: async function(pid, type, content, reference_id, link) {
-        let notification = {
-            pid: pid,
-            type: type,
-            content: content,
-            reference_id: reference_id,
-            link: link,
+    newNotification: async function(pid, type, reference_id, origin_pid, title, content) {
+        let user = await database.getUserSettings(origin_pid);
+        /**
+         * 0 like
+         * 1 reply
+         * 2 new follower
+         * 3 other
+         */
+
+        if(type === 1)
+            return await saveNotification(pid, type, `${user.screen_name} Replied to your post.`, content, reference_id, `/posts/${reference_id}`);
+        else if(type === 2)
+            return await saveNotification(pid, type, `${user.screen_name} Followed you!`, '', reference_id, `/users/show?pid=${origin_pid}`);
+
+        let lastNotification = await database.getLastNotification(pid);
+        if(lastNotification && lastNotification.type === 0 && lastNotification.reference_id === reference_id) {
+            let post = await database.getPostByID(reference_id);
+            let newTitle = '';
+            switch (post.empathy_count) {
+                case 1:
+                    newTitle = `${user.screen_name} Yeahed your post!`;
+                    break;
+                case 2:
+                    newTitle = `${user.screen_name} and 1 other Yeahed your post!`;
+                    break;
+                default:
+                    newTitle = `${user.screen_name} and ${post.empathy_count - 1} others Yeahed your post!`;
+                    break;
+            }
+            lastNotification.title = newTitle;
+            await lastNotification.save();
         }
-        let newNotification = new NOTIFICATIONS(notification);
-        await newNotification.save();
+        else if(type === 0) {
+            let post = await database.getPostByID(reference_id);
+            let newTitle = '';
+            switch (post.empathy_count) {
+                case 1:
+                    newTitle = `${user.screen_name} Yeahed your post!`;
+                    break;
+                case 2:
+                    newTitle = `${user.screen_name} and 1 other Yeahed your post!`;
+                    break;
+                default:
+                    newTitle = `${user.screen_name} and ${post.empathy_count - 1} others Yeahed your post!`;
+                    break;
+            }
+            let newContent;
+            if(!post.body) {
+                if(post.screenshot)
+                    newContent = 'Screenshot Post';
+                else if(post.painting)
+                    newContent = 'Drawing Post';
+            }
+            else
+                newContent = post.body;
+            return await saveNotification(pid, type, newTitle, newContent, reference_id, `/posts/${post.id}`);
+        }
+        else
+            return await saveNotification(pid, type, title, content, reference_id, '');
+
     }
 };
 exports.data = methods;

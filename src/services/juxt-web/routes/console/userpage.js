@@ -64,7 +64,7 @@ router.get('/show', async function (req, res) {
     let pnid = await database.getPNID(userID);
     let userContent = await database.getUserContent(userID);
     let userSettings = await database.getUserSettings(userID);
-    if(!userContent || !userSettings)
+    if(userContent === null)
         return res.sendStatus(404);
     if(parentUserContent.pid === userContent.pid)
         return res.redirect('/users/me');
@@ -155,7 +155,10 @@ router.get('/followers', async function (req, res) {
     let communities = [];
     let userMap = await util.data.getUserHash();
 
-    if(followers.length > 0)
+    if(followers[0] === '0')
+        followers.splice(0, 1);
+
+    if(user.followers > 0)
     {
         res.render(req.directory + '/following_list.ejs', {
             moment: moment,
@@ -208,8 +211,9 @@ router.post('/follow', upload.none(), async function (req, res) {
         userContent.addToUsers(userToFollowContent.pid);
         res.sendStatus(200);
         let picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
-        if(picked === undefined)
-            await util.data.newNotification(userToFollowContent.pid, 2, `${userContent.user_id} NEW_FOLLOWER`, userContent.pid, `/users/show?pid=${userContent.pid}`)
+        //pid, type, reference_id, origin_pid, title, content
+        if(picked === null)
+            await util.data.newNotification(userToFollowContent.pid, 2, req.pid, req.pid);
     }
     else if(req.body.type === 'false' && userContent !== null  && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1)
     {

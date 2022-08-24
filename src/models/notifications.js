@@ -8,7 +8,8 @@ const  NotificationsSchema = new Schema({
      * 2 new follower
      * 3 other
      */
-    type: String,
+    type: Number,
+    title: String,
     content: String,
     reference_id: String,
     link: String,
@@ -19,7 +20,8 @@ const  NotificationsSchema = new Schema({
     read: {
         type: Boolean,
         default: false
-    }
+    },
+    origin_pid: String,
 });
 
 NotificationsSchema.methods.markRead = async function() {

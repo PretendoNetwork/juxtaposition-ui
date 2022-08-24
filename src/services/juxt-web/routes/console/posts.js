@@ -20,6 +20,8 @@ router.post('/empathy', rateLimit, async function (req, res) {
         post.upEmpathy();
         userContent.addToLikes(post.id)
         res.sendStatus(200);
+        if(req.pid !== post.pid)
+            await util.data.newNotification(post.pid, 0, post.id, req.pid);
     }
     else if(req.body.type === 'down' && userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
     {
@@ -54,7 +56,7 @@ router.get('/:post_id', async function (req, res) {
     });
 });
 
-router.post('/:post_id/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res)});
+router.post('/:post_id/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res);});
 
 router.post('/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res)});
 
@@ -84,7 +86,7 @@ async function newPost(req, res) {
     }
     if (req.body.screenshot) {
         screenshot = req.body.screenshot.replace(/\0/g, "").trim();
-        await util.data.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.png`, screenshot, 'public-read');
+        await util.data.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
     }
 
     let miiFace;
@@ -115,7 +117,7 @@ async function newPost(req, res) {
         body: req.body.body,
         app_data: appData,
         painting: painting,
-        screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.png`: "",
+        screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: "",
         country_id: req.paramPackData ? req.paramPackData.country_id : 49,
         created_at: new Date(),
         feeling_id: req.body.emotion,
@@ -137,8 +139,18 @@ async function newPost(req, res) {
         return res.redirect('/posts/' + req.params.post_id.toString());
     const newPost = new POST(document);
     newPost.save();
-    if(parentPost && (parentPost.pid !== PNID.pid))
-        await util.data.newNotification(parentPost.pid, 1, `${PNID.mii.name} replied to your post!`, parentPost.id, `/posts/${parentPost.id}`)
+    if(parentPost && (parentPost.pid !== PNID.pid)) {
+        let newContent;
+        if(!parentPost.body) {
+            if(parentPost.screenshot)
+                newContent = 'Screenshot Post';
+            else if(parentPost.painting)
+                newContent = 'Drawing Post';
+        }
+        else
+            newContent = parentPost.body;
+        await util.data.newNotification(parentPost.pid, 1, parentPost.id, req.pid, '', newContent);
+    }
     if(parentPost)
         res.redirect('/posts/' + req.params.post_id.toString());
     else

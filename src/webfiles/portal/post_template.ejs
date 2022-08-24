@@ -23,7 +23,7 @@
             <h3><%= post.body %></h3>
         <%} else { %>
             <% if(post.screenshot !== '') { %>
-                <img id="<%= post.id %>" class="community-page-post-screenshot" src="https://cdn.pretendo.cc/screenshots/<%=userContent.pid%>/<%=post.id%>.png">
+                <img id="<%= post.id %>" class="community-page-post-screenshot" src="https://cdn.pretendo.cc<%= post.screenshot %>">
             <%}%>
             <% if(post.painting !== '') { %>
                 <img id="<%= post.id%>" class="community-page-post-painting" src="https://cdn.pretendo.cc/paintings/<%=userContent.pid%>/<%=post.id%>.png">
