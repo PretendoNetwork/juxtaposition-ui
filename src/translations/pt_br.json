@@ -73,7 +73,7 @@
         "new_post_text": "Novo post",
         "post_to": "Postar em",
         "text_hint": "Clique aqui para fazer um post.",
-        "swearing": "O post não pode ter linguagem imprópria"
+        "swearing": "O post não pode ter linguagem imprópria."
     },
     "messages": {
         "coming_soon": "A funcionalidade de mensagens ainda não está disponível. Volte em breve!"
@@ -117,7 +117,7 @@
         "ready": "Pronto para usar o Juxt",
         "ready_text": "Começe por explorar algumas comunidades e ver o que as pessoas de todo o mundo estão postando. Aproveite esta oportunidade para se familiarizar com o Juxt. Pode ser que você descubra algo novo pelo caminho!",
         "done": "Diverta-se com Juxt!",
-        "done_button": "Pronto",
+        "done_button": "Pronto!",
         "guest": "Modo de convidado",
         "guest_text": "Não foi possível verificar a sua conta de momento, o que provavelmente significa que você está usando uma conta Nintendo Network. Você podera usar o Juxt, mas não será possível marcar postagens com Joinha! ou fazer Postagens até entrar em conta Pretendo Network. Para mais informações visite o nosso servidor do Discord.",
         "guest_button": "Compreendo"
