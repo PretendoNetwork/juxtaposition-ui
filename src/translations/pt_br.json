@@ -14,7 +14,8 @@
         "close": "Fechar",
         "save": "Salvar",
         "exit": "Sair",
-        "next": "Proxímo"
+        "next": "Proxímo",
+        "no_posts": "Sem postagens"
     },
     "all_communities": {
         "text": "Todas as comunidades",
