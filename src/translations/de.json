@@ -1,12 +1,12 @@
 {
     "language": "Deutsch",
     "global": {
-        "user_page": "Benutzerseite",
-        "activity_feed": "Aktivitäten-Feed",
-        "communities": "Communities",
+        "user_page": "Nutzermenü",
+        "activity_feed": "Übersicht",
+        "communities": "Communitys",
         "messages": "Nachrichten",
-        "notifications": "Benachrichtigungen",
-        "go_back": "Gehe Zurück",
+        "notifications": "Mitteilungen",
+        "go_back": "Zurück",
         "back": "Zurück",
         "yeahs": "Yeahs",
         "more": "Mehr Beiträge laden",
@@ -18,16 +18,16 @@
         "next": "Weiter"
     },
     "all_communities": {
-        "text": "Alle Communities",
+        "text": "Alle Communitys",
         "announcements": "Ankündigungen",
         "ann_string": "Klicke hier, um die neuesten Ankündigungen anzuzeigen!",
         "popular_places": "Beliebte Orte",
-        "new_communities": "Neue Communities",
-        "show_all": "Alles anzeigen",
-        "search": "Communities Suchen..."
+        "new_communities": "Neue Communitys",
+        "show_all": "Alle anzeigen",
+        "search": "Communitys suchen..."
     },
     "community": {
-        "follow": "Community Folgen",
+        "follow": "Community folgen",
         "following": "Folge ich",
         "followers": "Follower",
         "posts": "Beiträge",
@@ -52,7 +52,7 @@
         "unfriend": "Freund entfreunden",
         "no_friends": "Keine Freunde",
         "no_following": "Folgt Niemandem",
-        "no_followers": "Keine Folgenden"
+        "no_followers": "Keine Follower"
     },
     "user_settings": {
         "profile_settings": "Profileinstellungen",
@@ -72,7 +72,7 @@
     },
     "new_post": {
         "new_post_text": "Neuer Beitrag",
-        "post_to": "Beitragen zu",
+        "post_to": "Beitrag posten bei",
         "text_hint": "Tippe hier, um einen Beitrag zu erstellen.",
         "swearing": "Beitrag darf keine explizite Sprache enthalten."
     },
@@ -120,7 +120,7 @@
         "done": "Viel Spaß mit Juxt!",
         "done_button": "Los Geht's!",
         "guest": "Gastmodus",
-        "guest_text": "Wir können dein Konto im Moment nicht verifizieren, was wahrscheinlich bedeutet, dass du dich derzeit mit einem Nintendo Network-Konto anmeldest. Du kannst zwar weiterhin auf Juxt stöbern, aber nicht in der Lage sein, Yeah! posten oder eigene Posts erstellen, bis du dich mit einem Pretendo Network-Konto anmeldest. Weitere Informationen findest du auf dem Discord-Server.",
+        "guest_text": "Wir können dein Konto im Moment nicht verifizieren, was wahrscheinlich bedeutet, dass du dich derzeit mit einem Nintendo Network-Konto anmeldest. Du kannst zwar weiterhin auf Juxt stöbern, aber nicht in der Lage sein, Yeahs! zu vergeben oder eigene Posts zu erstellen, bis du dich mit einem Pretendo Network-Konto anmeldest. Weitere Informationen findest du auf dem Discord-Server.",
         "guest_button": "Verstanden"
     }
 }
