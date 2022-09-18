@@ -42,7 +42,7 @@
                 <%} else {%>
                 <div class="message-viewer-bubble-receive">
                     <%if(message.painting) {%>
-                        <img class="message-viewer-bubble-sent-memo" src="https://cdn.pretendo.cc/paintings/<%=userContent.pid%>/<%=message.id%>.png">
+                        <img class="message-viewer-bubble-sent-memo" src="https://cdn.pretendo.cc/paintings/<%=message.message_to_pid%>/<%=message.id%>.png">
                     <%}else {%>
                         <p class="message-viewer-bubble-receive-text"><%= message.body %></p>
                     <%}%>

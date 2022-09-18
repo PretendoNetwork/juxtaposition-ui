@@ -88,7 +88,7 @@
                 <h2 class="user-page-title"><%= pnid.mii.name %></h2>
             <%}%>
             <h2 class="user-page-subtitle">@<%= pnid.username %></h2>
-            <h4 class="community-page-description"><%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
+            <h4 class="user-page-description"><%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
             <table class="community-page-table-wrapper">
                 <tbody>
                 <tr>
@@ -143,7 +143,7 @@
             </table>
         </div>
         <div>
-            <table class="community-page-posts-header switcher" style="-webkit-transform: translate(-35%, 25%) !important;">
+            <table class="community-page-posts-header switcher" style="margin-top: 40px !important;">
                 <tbody>
                 <tr>
                     <td>

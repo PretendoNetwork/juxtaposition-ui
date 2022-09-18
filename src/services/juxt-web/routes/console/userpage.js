@@ -158,7 +158,7 @@ router.get('/followers', async function (req, res) {
     if(followers[0] === '0')
         followers.splice(0, 1);
 
-    if(user.followers > 0)
+    if(followers.length > 0)
     {
         res.render(req.directory + '/following_list.ejs', {
             moment: moment,

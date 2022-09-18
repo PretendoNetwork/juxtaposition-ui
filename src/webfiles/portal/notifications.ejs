@@ -17,34 +17,42 @@
             <%} else { %>
                 <% for(let i = notifications.length - 1; i >= 0; i--) { %>
                     <% var title; if(notifications[i].title.indexOf('NEW_FOLLOWER') !== -1) title = notifications[i].title.replace('NEW_FOLLOWER', lang.notifications.new_follower); else title = notifications[i].title %>
-                    <tr class="message-wrapper" data-pjax="<%=notifications[i].link%>">
+                    <tr class="message-wrapper<%if(!notifications[i].read) {%>unread<%}%>" data-pjax="<%=notifications[i].link%>">
                         <%if(notifications[i].type === 0) { %>
-                            <tr <%if(!notifications[i].read) {%>class="unread"<%}%>>
-                                <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
-                                    <h3><%=title%></h3>
-                                    <h4><%=notifications[i].content%></h4>
-                                </td>
-                            </tr>
-                        <%} else if(notifications[i].type === 1) {%>
-                        <tr <%if(!notifications[i].read) {%>class="unread"<%}%>>
+                            <td class="notification-icon <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            </td>
                             <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
                                 <h3><%=title%></h3>
                                 <h4><%=notifications[i].content%></h4>
                             </td>
-                        </tr>
+                        <%} else if(notifications[i].type === 1) {%>
+                            <td class="notification-icon <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            </td>
+                            <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <h3><%=title%></h3>
+                                <h4><%=notifications[i].content%></h4>
+                            </td>
                         <%} else if(notifications[i].type === 2) {%>
                             <%let userContent = await database.getUserContent(notifications[i].reference_id);
+                              let userSettings = await database.getUserSettings(notifications[i].reference_id)
                               let userProfile = await database.getPNID(notifications[i].reference_id);
                             %>
+                            <td class="notification-icon <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                            </td>
                             <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
+                                <h3><%=title%></h3>
                                 <div>
-                                    <%if(pnid.access_level >= 2) {%>
+                                    <%if(userProfile.access_level >= 2) {%>
                                         <img class="community-page-info-icon verified" src="http://mii.olv.pretendo.cc/mii//<%= userContent.pid %>/normal_face.png">
-                                        <h2 class="user-page-title verified-badge"><%= pnid.mii.name %></h2>
+                                        <h2 class="verified-badge" style="color: black; font-size: 20px"><%= userProfile.mii.name %></h2>
                                     <%} else {%>
                                         <img class="community-page-info-icon" src="http://mii.olv.pretendo.cc/mii//<%= userContent.pid %>/normal_face.png">
-                                        <h2 class="user-page-title"><%= pnid.mii.name %></h2>
+                                        <h4 style="color: black; font-size: 20px"><%= userProfile.mii.name %></h4>
                                     <%}%>
+                                        <h4 class="community-page-post-time-stamp"><% if(userSettings.profile_comment_visibility){%><%=userSettings.profile_comment%><%}%></h4>
                                 </div>
                             </td>
                         <%} else {%>

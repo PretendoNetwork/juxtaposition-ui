@@ -1,5 +1,5 @@
 var scrollPosition, pjax;
-var updateCheck = setInterval(checkForUpdates, 10000);
+var updateCheck = setInterval(checkForUpdates, 30000);
 
 /* global Pjax */
 function initNavBar() {
@@ -357,7 +357,8 @@ function sendPainting(conversationID, pid) {
             var scrollHeight = document.body.scrollHeight;
             document.getElementById('message-viewer-content').innerHTML = currentThread + newMessage;
             wiiuMemo.reset();
-            var params = "conversationID=" + conversationID + "&message_to_pid=" + pid + "&raw=" + rawDrawing + "&&drawing=" + drawing;
+            alert(rawDrawing.length)
+            var params = "conversationID=" + conversationID + "&message_to_pid=" + pid + "&raw=" + rawDrawing;
             var xhr = new XMLHttpRequest();
             xhr.open("POST", '/messages/new', true);
             xhr.onreadystatechange = function() {

@@ -187,7 +187,14 @@ let methods = {
             } catch (err) {
                 console.error(err);
             }
-            let tga = new TGA(Buffer.from(output));
+            let tga;
+            try {
+                tga = new TGA(Buffer.from(output));
+            }
+            catch (e) {
+                console.log(e)
+                return null;
+            }
             let png = new PNG({
                 width: tga.width,
                 height: tga.height

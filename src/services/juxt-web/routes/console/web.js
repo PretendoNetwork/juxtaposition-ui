@@ -76,7 +76,7 @@ router.get('/tip/:image_id.png', async function (req, res) {
 router.get('/banner/:image_id.png', async function (req, res) {
     res.set("Content-Type", "image/png");
     let community = await database.getCommunityByID(req.params.image_id.toString());
-    if(community !== null)
+    if(community !== null && community.WiiU_browser_header !== undefined)
         if(community.WiiU_browser_header.indexOf('data:image/png;base64,') !== -1)
             res.send(Buffer.from(community.WiiU_browser_header.replace('data:image/png;base64,',''), 'base64'));
         else

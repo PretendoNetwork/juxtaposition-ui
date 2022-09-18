@@ -53,13 +53,23 @@ router.post('/new', async function (req, res, next) {
     }
     if(!conversation)
         return res.sendStatus(404);
+    let painting, postID = snowflake.nextId();
+    if (req.body.raw && req.body.raw !== 'eJztwTEBACAMA7DCNRlIQRbu4ZoEviTJTNvjZNUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL55fYLL3w==') {
+        console.log(req.body.raw.length)
+        painting = req.body.raw.replace(/\s+/g, "").trim();
+        //console.log(painting)
+        let paintingURI = await util.data.processPainting(painting, true);
+        if(!paintingURI)
+            return res.sendStatus(400)
+        await util.data.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
+    }
     let document = {
         screen_name: user.mii.name,
         body: req.body.body,
         painting: req.body.raw,
-        painting_uri: req.body.drawing,
+        painting_uri: req.body.raw,
         created_at: new Date(),
-        id: snowflake.nextId(),
+        id: postID,
         mii: user.mii.data,
         mii_face_url: `https://mii.olv.pretendo.cc/${user.pid}/normal_face.png`,
         pid: user.pid,
