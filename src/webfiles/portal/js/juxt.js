@@ -77,7 +77,7 @@ document.addEventListener("pjax:complete", function() {
     }
 });
 document.addEventListener("pjax:error", function() {
-    wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send the error code and what you were doing in');
+    wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send the error code and what you were doing in #support');
 });
 document.addEventListener("pjax:success", function() {
     console.log("Event: pjax:success", arguments);
@@ -545,7 +545,7 @@ function switchUserPageTabs(type, id) {
             document.getElementsByClassName('community-page-post-box')[0].innerHTML = this.responseText;
         }
         else if (this.readyState === 4){
-            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in #bug-reports');
+            wiiuErrorViewer.openByCodeAndMessage(5983000 + this.status, 'Error: "' + this.statusText + '"\nPlease send the error code and what you were doing in #support');
         }
     };
     xhttp.open("GET", "/users/" + typeDomain + '?pid=' + id, true);

@@ -26,7 +26,7 @@
 <% communities.forEach(function(community) { %>
     <div class="posts-wrapper" onclick="pjax.loadUrl('/communities/<%= community %>/new')">
         <div class="post-user-info-wrapper" id="<%= community %>">
-            <img class="community-page-post-user-icon" src="<%= cdnURL %>/icons/<%= community %>.png">
+            <img class="community-page-post-user-icon" src="http://mii.olv.pretendo.cc/icons/<%= community %>/128.png">
             <h2 class="community-page-post-username" data-pjax="/communities/<%= community %>/new"><%= communityMap.get(community) %></h2>
             <h4 class="community-page-post-time-stamp" style="width: 400px;white-space: nowrap;overflow: hidden;"><%=community.description%></h4>
         </div>

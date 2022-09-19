@@ -15,20 +15,20 @@
     var experience = 0;
     var notifications = false;
     function selectExperience(type) {
-        document.getElementById('beginner').classList.remove('selected');
-        document.getElementById('intermediate').classList.remove('selected');
-        document.getElementById('expert').classList.remove('selected');
+        document.getElementById('beginner').classList.remove('active');
+        document.getElementById('intermediate').classList.remove('active');
+        document.getElementById('expert').classList.remove('active');
         switch (type) {
             case 0:
-                document.getElementById("beginner").classList.add('selected');
+                document.getElementById("beginner").classList.add('active');
                 experience = 0;
                 break;
             case 1:
-                document.getElementById("intermediate").classList.add('selected');
+                document.getElementById("intermediate").classList.add('active');
                 experience = 1;
                 break;
             case 2:
-                document.getElementById("expert").classList.add('selected');
+                document.getElementById("expert").classList.add('active');
                 experience = 2;
                 break;
         }
@@ -107,17 +107,17 @@
         <div class="about-body" style="position: relative">
             <p>
                 <%= lang.setup.rules_text.first %>
-                <h2><%= lang.setup.rules_text.second %></h2>
+                <h3><%= lang.setup.rules_text.second %></h3>
                 <%= lang.setup.rules_text.third %>
-                <h2><%= lang.setup.rules_text.fourth %></h2>
+                <h3><%= lang.setup.rules_text.fourth %></h3>
                 <%= lang.setup.rules_text.fifth %>
-                <h2><%= lang.setup.rules_text.sixth %></h2>
+                <h3><%= lang.setup.rules_text.sixth %></h3>
                 <%= lang.setup.rules_text.seventh %>
-                <h2><%= lang.setup.rules_text.eighth %></h2>
+                <h3><%= lang.setup.rules_text.eighth %></h3>
                 <%= lang.setup.rules_text.ninth %>
-                <h2><%= lang.setup.rules_text.tenth %></h2>
+                <h3><%= lang.setup.rules_text.tenth %></h3>
                 <%= lang.setup.rules_text.eleventh %>
-                <h2><%= lang.setup.rules_text.twelfth %></h2>
+                <h3><%= lang.setup.rules_text.twelfth %></h3>
                 <%= lang.setup.rules_text.thirteenth %>
             </p>
         </div>
@@ -157,7 +157,22 @@
             </p>
         </div>
         <div>
-            <table class="user-page-tab-table" style="position: absolute;margin-top: 260px; margin-left: 15px; width: 850px; z-index: 5;">
+            <table class="community-page-posts-header switcher" style="left: 45%">
+                <tbody>
+                <tr>
+                    <td>
+                        <h4 id="beginner" onclick="selectExperience(0)" class="community-page-posts-header-tab active"><%= lang.setup.experience_text.beginner %></h4>
+                    </td>
+                    <td>
+                        <h4 id="intermediate" onclick="selectExperience(1)" class="community-page-posts-header-tab"><%= lang.setup.experience_text.intermediate %></h4>
+                    </td>
+                    <td>
+                        <h4 id="expert" onclick="selectExperience(2)" class="community-page-posts-header-tab"><%= lang.setup.experience_text.expert %></h4>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <!--<table class="user-page-tab-table" style="position: absolute;margin-top: 260px; margin-left: 15px; width: 850px; z-index: 5;">
                 <tbody>
                 <tr>
                     <td onclick="selectExperience(0)">
@@ -177,7 +192,7 @@
                     </td>
                 </tr>
                 </tbody>
-            </table>
+            </table>-->
         </div>
         <button class="about-button" style="margin-left: 50px;"
                 onclick="wiiuSound.playSoundByName('SE_OLV_CANCEL', 1);
