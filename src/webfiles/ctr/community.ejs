@@ -121,12 +121,12 @@
                 Related
             </div>
         </div>
-        <%if(user.followed_communities.indexOf(community.id) !== -1){ %>
+        <%if(/*user.followed_communities.indexOf(community.id) !== -1*/true){ %>
             <div class="community-page-follow-button selected" id="<%= community.community_id %>" onclick="followCommunity(this)">
                 <p class="community-page-follow-button-text" style="color: #FFFFFF">Following</p>
             </div>
         <%} else {%>
-        <div class="community-page-follow-button" id="<%= community.community_id %>" onclick="followCommunity(this)" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
+        <div class="community-page-follow-button" id="<%= community.community_id %>" onclick="followCommunity(this)" <%if(false/*user.pid === 1000000000*/) {%> style="display: none" <%}%>>
             <p class="community-page-follow-button-text">Follow</p>
         </div>
         <%}%>

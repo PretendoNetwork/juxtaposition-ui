@@ -7,7 +7,7 @@
     <meta content="<%= community.followers%> Followers" property="og:site_name">
     <meta content="<%= community.description %>" property="og:description" />
     <meta content="https://portal.olv.pretendo.cc/communities/<%= community.community_id %>/new" property="og:url" />
-    <meta content="https://portal.cdn.pretendo.cc/icons/<%= community.community_id %>.png" property="og:image" />
+    <meta content="http://mii.olv.pretendo.cc/icons/<%= community.community_id %>/128.png" property="og:image" />
     <meta content="#1F8A42" data-react-helmet="true" name="theme-color" />
 </head>
 <body>
@@ -114,7 +114,7 @@
         </div>
     </div>
     <div id="overlay-filter">
-        <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
+        <div class="community-page-header" style="background-image: url('http://mii.olv.pretendo.cc/headers/<%= community.community_id %>/WiiU.png')"></div>
         <%- include('scroll_wrapper', { text: community.name, lang: lang }); %>
         <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0) {%>
             <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
@@ -126,7 +126,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                 <p class="community-page-follow-button-text" id="<%= community.community_id %>"><%= community.followers %> <%= lang.community.followers %></p>
             </div>
-            <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
+            <img class="community-page-info-icon" src="http://mii.olv.pretendo.cc/icons/<%= community.community_id %>/128.png">
             <h2 class="community-page-title"><%= community.name %></h2>
             <h4 class="community-page-description"><%= community.description %></h4>
         </div>

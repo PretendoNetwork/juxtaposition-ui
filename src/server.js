@@ -28,8 +28,8 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true,
     limit: '1mb',
-    parameterLimit: 100000
 }));
+
 app.use(xmlparser);
 app.use(cookieParser());
 app.use(auth);

@@ -69,7 +69,7 @@ router.get('/discovery', upload.none(), async function (req, res) {
 });
 
 router.get('/communities', upload.none(), async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
+    let user = await database.getUserSettings(req.pid);
     let communities = await database.getCommunities(500)
 
     res.render('admin/admin_communities.ejs', {
@@ -108,7 +108,7 @@ router.get('/announcements', upload.none(), async function (req, res) {
 
 router.get('/communities/new', upload.none(), async function (req, res) {
     var communityID = req.query.CID;
-    let user = await database.getUserByPID(req.pid);
+    let user = await database.getUserSettings(req.pid);
     res.render('admin/admin_new_community.ejs', {
         user: user,
         account_server: config.account_server_domain.slice(8),

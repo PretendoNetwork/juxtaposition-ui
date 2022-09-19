@@ -76,7 +76,8 @@ async function getTotalPostsByCommunity(community) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
-        parent: null
+        parent: null,
+        removed: false
     }).countDocuments();
 }
 
@@ -91,14 +92,16 @@ async function getPostsByUserID(userID) {
     verifyConnected();
     return POST.find({
         pid: userID,
-        parent: null
+        parent: null,
+        removed: false
     });
 }
 
 async function getPostReplies(postID, number) {
     verifyConnected();
     return POST.find({
-        parent: postID
+        parent: postID,
+        removed: false
     }).limit(number);
 }
 
@@ -109,7 +112,8 @@ async function getDuplicatePosts(pid, post) {
         body: post.body,
         painting: post.painting,
         screenshot: post.screenshot,
-        parent: null
+        parent: null,
+        removed: false
     });
 }
 
@@ -118,7 +122,8 @@ async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
     return POST.find({
         parent: post.pid,
         created_at: { $lt: post.created_at },
-        message_to_pid: null
+        message_to_pid: null,
+        removed: false
     }).limit(numberOfPosts);
 }
 
@@ -127,7 +132,8 @@ async function getNumberUserPostsByID(userID, number) {
     return POST.find({
         pid: userID,
         parent: null,
-        message_to_pid: null
+        message_to_pid: null,
+        removed: false
     }).sort({ created_at: -1}).limit(number);
 }
 
@@ -136,7 +142,8 @@ async function getTotalPostsByUserID(userID) {
     return POST.find({
         pid: userID,
         parent: null,
-        message_to_pid: null
+        message_to_pid: null,
+        removed: false
     }).countDocuments();
 }
 
@@ -144,7 +151,8 @@ async function getHotPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
-        parent: null
+        parent: null,
+        removed: false
     }).sort({empathy_count: -1}).limit(numberOfPosts);
 }
 
@@ -152,7 +160,8 @@ async function getNumberNewCommunityPostsByID(community, number) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
-        parent: null
+        parent: null,
+        removed: false
     }).sort({ created_at: -1}).limit(number);
 }
 
@@ -160,7 +169,8 @@ async function getNumberPopularCommunityPostsByID(community, limit, offset) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
-        parent: null
+        parent: null,
+        removed: false
     }).sort({ empathy_count: -1}).skip(offset).limit(limit);
 }
 
@@ -169,7 +179,8 @@ async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
     return POST.find({
         title_id: community.title_id,
         verified: true,
-        parent: null
+        parent: null,
+        removed: false
     }).sort({ created_at: -1}).skip(offset).limit(limit);
 }
 
@@ -177,7 +188,8 @@ async function getPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
         title_id: community.title_id,
-        parent: null
+        parent: null,
+        removed: false
     }).limit(numberOfPosts);
 }
 
@@ -186,7 +198,8 @@ async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
     return POST.find({
         title_id: community.title_id,
         search_key: search_key,
-        parent: null
+        parent: null,
+        removed: false
     }).limit(numberOfPosts);
 }
 
@@ -194,8 +207,26 @@ async function getNewPostsByCommunity(community, limit, offset) {
     verifyConnected();
     return POST.find({
         community_id: community.community_id,
-        parent: null
+        parent: null,
+        removed: false
     }).sort({ created_at: -1 }).skip(offset).limit(limit);
+}
+
+async function getAllUserPosts(pid) {
+    verifyConnected();
+    return POST.find({
+        pid: pid,
+        message_to_pid: null
+    });
+}
+
+async function getRemovedUserPosts(pid) {
+    verifyConnected();
+    return POST.find({
+        pid: pid,
+        message_to_pid: null,
+        removed: true
+    });
 }
 
 async function getUserPostsAfterTimestamp(post, numberOfPosts) {
@@ -205,6 +236,7 @@ async function getUserPostsAfterTimestamp(post, numberOfPosts) {
         created_at: { $lt: post.created_at },
         parent: null,
         message_to_pid: null,
+        removed: false
     }).limit(numberOfPosts);
 }
 
@@ -213,7 +245,8 @@ async function getUserPostsOffset(pid, limit, offset) {
     return POST.find({
         pid: pid,
         parent: null,
-        message_to_pid: null
+        message_to_pid: null,
+        removed: false
     }).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
@@ -222,13 +255,21 @@ async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
     return POST.find({
         title_id: post.title_id,
         created_at: { $lt: post.created_at },
-        parent: null
+        parent: null,
+        removed: false
     }).limit(numberOfPosts);
 }
 
 async function getEndpoints() {
     verifyConnected();
     return ENDPOINT.find({});
+}
+
+async function getEndPoint(accessLevel) {
+    verifyConnected();
+    return ENDPOINT.findOne({
+        server_access_level: accessLevel
+    })
 }
 
 async function getUsersSettings(numberOfUsers) {
@@ -287,7 +328,8 @@ async function getNewsFeed(content, numberOfPosts) {
             {community_id: content.followed_communities},
         ],
         parent: null,
-        message_to_pid: null
+        message_to_pid: null,
+        removed: false
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
@@ -301,7 +343,8 @@ async function getNewsFeedAfterTimestamp(content, numberOfPosts, post) {
         ],
         created_at: { $lt: post.created_at },
         parent: null,
-        message_to_pid: null
+        message_to_pid: null,
+        removed: false
     }).limit(numberOfPosts).sort({ created_at: -1});
 }
 
@@ -314,7 +357,8 @@ async function getNewsFeedOffset(content, limit, offset) {
             {community_id: content.followed_communities},
         ],
         parent: null,
-        message_to_pid: null
+        message_to_pid: null,
+        removed: false
     }).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
@@ -348,7 +392,8 @@ async function getConversationMessages(community_id, limit, offset) {
     verifyConnected();
     return POST.find({
         community_id: community_id,
-        parent: null
+        parent: null,
+        removed: false
     }).sort({created_at: 1}).skip(offset).limit(limit);
 }
 
@@ -368,7 +413,8 @@ async function getLatestMessage(pid, pid2) {
         $or: [
             {pid: pid, message_to_pid: pid2},
             {pid: pid2, message_to_pid: pid}
-        ]
+        ],
+        removed: false
     })
 }
 
@@ -440,6 +486,7 @@ module.exports = {
     getPostByID,
     getDuplicatePosts,
     getEndpoints,
+    getEndPoint,
     getUserByUsername,
     getUserPostsAfterTimestamp,
     getUserPostsOffset,
@@ -464,5 +511,7 @@ module.exports = {
     getNotifications,
     getUnreadNotificationCount,
     getNotification,
-    getLastNotification
+    getLastNotification,
+    getAllUserPosts,
+    getRemovedUserPosts
 };

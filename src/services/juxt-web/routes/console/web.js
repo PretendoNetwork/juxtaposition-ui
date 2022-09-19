@@ -33,14 +33,14 @@ router.get('/favicon.ico', function (req, res) {
 router.get('/icons/:image_id.png', async function (req, res) {
     res.set("Content-Type", "image/png");
     let community = await database.getCommunityByID(req.params.image_id.toString());
-    if(community !== null) {
+    if(community !== null && community.browser_icon) {
         if(community.browser_icon.indexOf('data:image/png;base64,') !== -1)
             res.send(Buffer.from(community.browser_icon.replace('data:image/png;base64,',''), 'base64'));
         else
             res.send(Buffer.from(community.browser_icon, 'base64'));
     }
     else {
-        let user = await database.getUserByPID(req.params.image_id.toString());
+        let user = await database.getUserSettings(req.params.image_id.toString());
         if(user !== null)
             if(user.pfp_uri.indexOf('data:image/png;base64,') !== -1)
                 res.send(Buffer.from(user.pfp_uri.replace('data:image/png;base64,',''), 'base64'));

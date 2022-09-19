@@ -16,7 +16,8 @@ router.get('/', async function (req, res) {
         popularCommunities: popularCommunities,
         newCommunities: newCommunities,
         cdnURL: config.CDN_domain,
-        lang: req.lang
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 
@@ -25,7 +26,8 @@ router.get('/all', async function (req, res) {
     res.render(req.directory + '/all_communities.ejs', {
         communities: communities,
         cdnURL: config.CDN_domain,
-        lang: req.lang
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN
     });
 });
 

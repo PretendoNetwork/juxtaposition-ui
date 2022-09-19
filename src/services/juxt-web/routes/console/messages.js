@@ -144,7 +144,7 @@ router.get('/:message_id', async function (req, res) {
     if(!conversation) {
         return res.sendStatus(404);
     }
-    let user2 = conversation.users[0].pid.toString() === req.pid ? conversation.users[1] : conversation.users[0];
+    let user2 = conversation.users[0].pid.toString() === req.pid.toString() ? conversation.users[1] : conversation.users[0];
     let messages = await database.getConversationMessages(conversation.id, 100, 0);
     let userMap = await util.data.getUserHash();
     res.render(req.directory + '/message_thread.ejs', {

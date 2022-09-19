@@ -14,10 +14,10 @@
 <%- include('nav_bar', { selection: 2 }); %>
 <div id="main">
     <div id="overlay-filter">
-        <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
+        <div class="community-page-header" style="background-image: url('http://mii.olv.pretendo.cc/headers/<%= communities[i].community_id %>/WiiU.png')"></div>
         <%- include('scroll_wrapper', { text: community.name, lang: lang }); %>
         <div class="community-page-info-container"  style="height: 120px;">
-            <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
+            <img class="community-page-info-icon" src="http://mii.olv.pretendo.cc/icons/<%= community.community_id %>/128.png">
             <a class="community-page-follow-button-text" style="display: none" id="<%=community.community_id%>"></a>
             <h2 class="community-page-title"><%= community.name %></h2>
             <h4 class="community-page-description"><%= community.description %></h4>
