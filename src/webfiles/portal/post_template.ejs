@@ -23,10 +23,10 @@
             <h3><%= post.body %></h3>
         <%} else { %>
             <% if(post.screenshot !== '') { %>
-                <img id="<%= post.id %>" class="community-page-post-screenshot" src="https://cdn.pretendo.cc<%= post.screenshot %>">
+                <img id="<%= post.id %>" class="community-page-post-screenshot" src="http://mii.olv.pretendo.cc<%= post.screenshot %>">
             <%}%>
             <% if(post.painting !== '') { %>
-                <img id="<%= post.id%>" class="community-page-post-painting" src="https://cdn.pretendo.cc/paintings/<%=userContent.pid%>/<%=post.id%>.png">
+                <img id="<%= post.id%>" class="community-page-post-painting" src="http://mii.olv.pretendo.cc/paintings/<%=userContent.pid%>/<%=post.id%>.png">
             <%}%>
             <% if(post.url) { %>
                     <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
