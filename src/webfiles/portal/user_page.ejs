@@ -17,7 +17,7 @@
     <%- include('scroll_wrapper', { text: pnid.mii.name, lang: lang }); %>
     <div class="community-page-info-container" style="height: 220px;">
         <div class="community-page-action-button-wrapper">
-            <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ /*Is Friend*/%>
+            <!--<%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ /*Is Friend*/%>
             <div class="user-page-follow-button-wrapper selected" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><polyline points="17 11 19 13 23 9"/></svg>
             </div>
@@ -29,7 +29,7 @@
             <div class="user-page-follow-button-wrapper" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
             </div>
-            <%}%>
+            <%}%>-->
 
             <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1 && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
             <div class="user-page-follow-button-wrapper  <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" id="<%= userContent.pid %>" onclick="createNewMessage('<%=userContent.pid%>')">
