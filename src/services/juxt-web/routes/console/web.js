@@ -133,7 +133,8 @@ router.get('/:post_id/oembed.json', async function (req, res) {
 router.get('/downloadUserData.json', async function (req, res) {
     res.set("Content-Type", "text/json");
     let posts = await database.getUserPostsOffset(req.pid, 100000, 0);
-    let user = await database.getUserByPID(req.pid);
+    let user = await database.getUserSettings(req.pid);
+    user += await database.getUserContent(req.pid);
     let doc = {
         "user": user,
         "content": posts,

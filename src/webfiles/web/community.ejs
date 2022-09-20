@@ -16,22 +16,22 @@
     </script>
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="Juxt - <%= community.name %>">
-    <%if(user.profile_comment_visibility){%><meta itemprop="description" content="<%= community.description %>"> <%}%>
-    <meta itemprop="image" content="https://portal-cdn.b-cdn.net/icons/<%= community.community_id %>.png">
+    <meta itemprop="description" content="<%= community.description %>">
+    <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net/icons/<%= community.community_id %>/128.png">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Juxt - <%= community.name %>"/>
-    <%if(user.profile_comment_visibility){%><meta property="og:description" content="<%= community.description %>"/><%}%>
+    <meta property="og:description" content="<%= community.description %>"/>
     <meta property="og:url" content="https://juxt.pretendo.cc/communities/<%= community.community_id %>/new"/>
-    <meta property="og:image" content="https://portal-cdn.b-cdn.net/icons/<%= community.community_id %>.png"/>
+    <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/icons/<%= community.community_id %>/128.png"/>
     <meta property="og:site_name" content="Juxtaposition" />
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="Juxt - <%= community.name %>"/>
-    <%if(user.profile_comment_visibility){%><meta name="twitter:description" content="<%= community.description %>"/><%}%>
+    <meta name="twitter:description" content="<%= community.description %>"/>
     <meta name="twitter:site" content="@PretendoNetwork"/>
-    <meta name="twitter:image" content="https://portal-cdn.b-cdn.net/icons/<%= community.community_id %>.png"/>
+    <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/icons/<%= community.community_id %>/128.png"/>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
 
 </head>
@@ -42,16 +42,16 @@
     <div id="toast"></div>
     <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
-            <image class="banner" src="https://portal-cdn.b-cdn.net/banner/<%= community.community_id %>.png">
+            <image class="banner" src="https://pretendo-cdn.b-cdn.net/headers/<%= community.community_id %>/WiiU.png">
             <div class="community-info">
-                <img class="user-icon" src="https://portal-cdn.b-cdn.net/icons/<%= community.community_id %>.png">
+                <img class="user-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= community.community_id %>/128.png">
                 <h2 class="community-title"><%= community.name %></h2>
-                <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>
+                <%if(userContent.followed_communities.indexOf(community.community_id) !== -1){ %>
                     <div class="community-page-follow-button-wrapper selected">
                         <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF"><%= lang.community.following %></p>
                     </div>
                 <%} else {%>
-                <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
+                <div class="community-page-follow-button-wrapper" <%if(userContent.pid === 1000000000) {%> style="display: none" <%}%>>
                     <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>
                 </div>
                 <%}%>

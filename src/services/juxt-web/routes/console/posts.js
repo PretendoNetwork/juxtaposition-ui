@@ -62,7 +62,8 @@ router.post('/new', rateLimit, upload.none(), async function (req, res) { await 
 
 async function newPost(req, res) {
     let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = snowflake.nextId();
-    if(userSettings.account_status !== 0 || req.body.olive_community_id === 'announcements')
+    let community = await database.getCommunityByID(req.body.olive_community_id);
+    if(userSettings.account_status !== 0 || community.community_id === 'announcements')
         throw new Error('User not allowed to post')
     if(req.params.post_id) {
         parentPost = await database.getPostByID(req.params.post_id.toString());
@@ -71,7 +72,6 @@ async function newPost(req, res) {
         parentPost.reply_count = parentPost.reply_count + 1;
         parentPost.save();
     }
-    let community = await database.getCommunityByID(req.body.olive_community_id);
     if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
         res.status(422);
         return res.redirect('/posts/' + req.params.post_id.toString());

@@ -18,18 +18,56 @@
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.notifications %></h2>
-    <%- include('nav_bar', { selection: 4 }); %>
+    <%- await include('nav_bar', { selection: 4 }); %>
     <div id="toast"></div>
     <div id="wrapper">
-        <% if(user.notification_list.length === 0) {%>
+        <% if(notifications.length === 0) {%>
             <p class="no-posts-text"><%= lang.notifications.none %></p>
         <%} else { %>
-            <% for(let i = user.notification_list.length - 1; i >= 0; i--) { %>
-                <% var content; if(user.notification_list[i].content.indexOf('NEW_FOLLOWER') !== -1) content = user.notification_list[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = user.notification_list[i].content %>
-                <a class="notifications-list-content" href="<%=user.notification_list[i].link%>">
-                    <div class="unread-badge" <%if(user.notification_list[i].read) {%>style="background-color: unset"<%}%>></div>
-                    <h3><%= content %><span style="color: var(--text-secondary)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
-                </a>
+                <% for(let i = notifications.length - 1; i >= 0; i--) { %>
+                <% var title; if(notifications[i].title.indexOf('NEW_FOLLOWER') !== -1) title = notifications[i].title.replace('NEW_FOLLOWER', lang.notifications.new_follower); else title = notifications[i].title %>
+                    <%if(notifications[i].type === 0) { %>
+                    <a class="notifications-list-content" href="<%=notifications[i].link%>">
+                        <div class="unread-badge" <%if(notifications[i].read) {%>style="background-color: unset"<%}%>></div>
+                        <br>
+                        <h3><%= title %></h3>
+                        <h4><%=notifications[i].content%><span style="color: var(--text-secondary)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h4>
+                    </a>
+                    <%} else if(notifications[i].type === 1) {%>
+                    <a class="notifications-list-content" href="<%=notifications[i].link%>">
+                        <div class="unread-badge" <%if(notifications[i].read) {%>style="background-color: unset"<%}%>></div>
+                        <h3><%= title %></h3>
+                        <br>
+                        <h4><%=notifications[i].content%><span style="color: var(--text-secondary)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h4>
+                    </a>
+                    <%} else if(notifications[i].type === 2) {%>
+                        <%let userContent = await database.getUserContent(notifications[i].reference_id);
+                            let userSettings = await database.getUserSettings(notifications[i].reference_id)
+                            let userProfile = await database.getPNID(notifications[i].reference_id);
+                            if(!userContent || !userSettings || !userProfile)
+                                break;
+                        %>
+                    <a class="notifications-list-content" href="<%=notifications[i].link%>">
+                        <div class="unread-badge" <%if(notifications[i].read) {%>style="background-color: unset"<%}%>></div>
+                        <h3><%=title%></h3>
+                        <br>
+                        <div>
+                            <%if(userProfile.access_level >= 2) {%>
+                                <img class="community-page-info-icon verified" src="http://mii.olv.pretendo.cc/mii//<%= userContent.pid %>/normal_face.png">
+                                <h2 class="verified-badge" style="color: black; font-size: 20px"><%= userProfile.mii.name %></h2>
+                            <%} else {%>
+                                <img class="community-page-info-icon" src="http://mii.olv.pretendo.cc/mii//<%= userContent.pid %>/normal_face.png">
+                                <h4 style="color: black; font-size: 20px"><%= userProfile.mii.name %></h4>
+                            <%}%>
+                            <h4 class="community-page-post-time-stamp"><% if(userSettings.profile_comment_visibility){%><%=userSettings.profile_comment%><%}%></h4>
+                        </div>
+                    </a>
+                    <%} else {%>
+                    <a class="notifications-list-content" href="<%=notifications[i].link%>">
+                        <div class="unread-badge" <%if(notifications[i].read) {%>style="background-color: unset"<%}%>></div>
+                        <h3><%= title %><span style="color: var(--text-secondary)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
+                    </a>
+                    <%}%>
             <%}%>
         <%}%>
     </div>
