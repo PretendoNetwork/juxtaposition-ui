@@ -110,11 +110,14 @@ async function newPost(req, res) {
             miiFace = 'normal_face.png';
             break;
     }
+    let body = req.post.body;
+    if(body.length > 280)
+        body = body.substring(0,280);
     const document = {
         title_id: community.title_id[0],
         community_id: community.community_id,
         screen_name: userSettings.screen_name,
-        body: req.body.body,
+        body: body,
         app_data: appData,
         painting: painting,
         screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: "",

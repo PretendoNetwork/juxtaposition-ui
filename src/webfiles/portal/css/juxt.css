@@ -1180,7 +1180,8 @@ h4 {
     width:760px;
     max-width:760px;
     line-break:auto;
-    line-height:20px
+    line-height:20px;
+    overflow-x: hidden;
 }
 
 .community-page-post-screenshot {
