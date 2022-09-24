@@ -1,16 +1,16 @@
 {
     "language": "Russian",
     "global": {
-        "user_page": "User Page",
+        "user_page": "Профиль пользователя",
         "activity_feed": "Лента активности",
         "communities": "Сообщества",
-        "messages": "Messages",
-        "notifications": "Notifications",
+        "messages": "Сообщения",
+        "notifications": "Уведомления",
         "go_back": "Вернуться",
         "back": "Назад",
-        "yeahs": "Yeahs",
+        "yeahs": "Классно",
         "more": "Загрузить больше сообщений",
-        "no_posts": "No Posts",
+        "no_posts": "Постов нету",
         "private": "Private",
         "close": "Закрыть",
         "save": "Сохранить",
@@ -21,15 +21,15 @@
         "text": "Все сообщества",
         "announcements": "Объявления",
         "ann_string": "Нажмите здесь, чтобы просмотреть последние объявления!",
-        "popular_places": "Popular Places",
+        "popular_places": "Популярные места",
         "new_communities": "Новые сообщества",
         "show_all": "Показать все",
         "search": "Поиск сообществ..."
     },
     "community": {
-        "follow": "Follow Community",
-        "following": "Following",
-        "followers": "Followers",
+        "follow": "Присоединиться к сообществу",
+        "following": "Подписан",
+        "followers": "Подписчики",
         "posts": "Posts",
         "tags": "Tags",
         "recent": "Recent Posts",
@@ -43,54 +43,54 @@
         "game_experience": "Игровой опыт",
         "posts": "Сообщения",
         "friends": "Друзья",
-        "following": "Following",
-        "followers": "Followers",
-        "follow_user": "Follow",
-        "following_user": "Following",
-        "befriend": "Befriend",
-        "pending": "Pending",
-        "unfriend": "Unfriend",
+        "following": "Подписан",
+        "followers": "Подписчики",
+        "follow_user": "Подписаться",
+        "following_user": "Подписан",
+        "befriend": "Дружить",
+        "pending": "В ожидании",
+        "unfriend": "Удалить из друзей",
         "no_friends": "Нет друзей",
-        "no_following": "Not Following Anyone",
+        "no_following": "Ни на кого подписан",
         "no_followers": "Нет подписчиков"
     },
     "user_settings": {
         "profile_settings": "Настройки профиля",
         "show_country": "Показывать страну в профиле",
         "show_birthday": "Показывать дату рождения в профиле",
-        "show_game": "Show Game Experience on Profile",
-        "show_comment": "Show Comment on Profile",
-        "profile_comment": "Profile Comment",
-        "swearing": "Profile comment cannot contain explicit language."
+        "show_game": "Показывать игровой опыт в профиле",
+        "show_comment": "Показывать комментарии в профиле",
+        "profile_comment": "Комментарии профиля",
+        "swearing": "Комментарий профиля не должен иметь нецензурную лексику."
     },
     "activity_feed": {
-        "empty": "It's empty here. Try following someone!"
+        "empty": "Тут пусто. Попробуйте на кого-то подписаться!"
     },
     "notifications": {
         "none": "No notifications.",
-        "new_follower": "followed you!"
+        "new_follower": "подписался на вас!"
     },
     "new_post": {
         "new_post_text": "Новое сообщение",
         "post_to": "Post to",
-        "text_hint": "Tap here to make a post.",
-        "swearing": "Post cannot contain explicit language."
+        "text_hint": "Нажмите здесь чтобы сделать пост.",
+        "swearing": "Пост не должен иметь нецензурную лексику."
     },
     "messages": {
-        "coming_soon": "Messages isn't ready yet. Check back soon!"
+        "coming_soon": "Сообщения не готовы. Вернитесь попозже!"
     },
     "setup": {
-        "welcome": "Welcome to Juxtaposition!",
-        "welcome_text": "Juxt is a gaming community that connects people from all over the world using Mii characters. Use Juxt to share your gaming experiences and meet people from around the world.",
-        "beta": "Beta Disclaimer",
+        "welcome": "Добро пожаловать в Juxtaposition!",
+        "welcome_text": "Juxt - это игровое сообщество которое соединяет людей со всего мира используя Mii аватары. Используйте Juxt чтобы поделиться игровым опыт и встретить людей с разных уголков света.",
+        "beta": "Бета предупреждение",
         "beta_text": {
-            "first": "You are about to try out the first public beta of Juxt. This means that a lot is still up in the air, and a lot can change at any time.",
-            "second": "This can and may include a total wipe of the database at the conclusion or during the beta period.",
-            "third": "The website, its software and all content found on it are provided on an “as is” and “as available” basis. The Pretendo Network does not give any warranties, whether express or implied, as to the suitability or usability of the website, its software or any of its content."
+            "first": "Вы на пороге испытания первой публичной беты Juxt. Это значит что многое еще висит в воздухе и что многое может изменится в любое время.",
+            "second": "Это может сопровождаться полным удалением дата базы в конце или середине беты.",
+            "third": "Этот сайт , его ПО и весь контент найденный на нем предоставлен по условиям \"как есть\" и \"по мере доступности\". Pretendo Network не даёт никаких гарантий, прямо или косвенно , в отношении пригодности или удобства использования сайта , его ПО или любого его контента."
         },
-        "info": "What is Juxtaposition?",
+        "info": "Что такое Juxtaposition?",
         "info_text": "Juxt is a user-driven gaming community where you can interact with people\n                all over the world. You can write or draw posts in game communities or send messages directly to your friends.",
-        "rules": "Juxt Rules",
+        "rules": "Правила Juxt",
         "rules_text": {
             "first": "The following are some important guidelines for making Juxt a fun and enjoyable experience for everyone. The Juxt Code of Conduct contains detailed information, so please read it carefully.",
             "second": "Posts Can Be Viewed Around the World",
