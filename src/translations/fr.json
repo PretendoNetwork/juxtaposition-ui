@@ -2,7 +2,7 @@
     "language": "Français",
     "global": {
         "user_page": "Profil",
-        "activity_feed": "Suivi des activités",
+        "activity_feed": "Fil d'Actualité",
         "communities": "Communautés",
         "messages": "Messages",
         "notifications": "Notifications",
@@ -10,7 +10,7 @@
         "back": "Retour",
         "yeahs": "Ouais",
         "more": "Afficher Plus",
-        "no_posts": "Aucun Messages",
+        "no_posts": "Aucune Publication",
         "private": "Privés",
         "close": "Fermer",
         "save": "Sauvegarder",
@@ -30,18 +30,18 @@
         "follow": "Suivre la Communauté",
         "following": "Abonné",
         "followers": "Abonnés",
-        "posts": "Messages",
+        "posts": "Publications",
         "tags": "Tags",
-        "recent": "Messages Récents",
-        "popular": "Messages Populaires",
-        "verified": "Messages Vérifiés",
-        "new": "Nouveau Message"
+        "recent": "Publications Récentes",
+        "popular": "Publications Populaires",
+        "verified": "Publications Vérifiées",
+        "new": "Nouvelle Publication"
     },
     "user_page": {
         "country": "Pays",
         "birthday": "Anniversaire",
         "game_experience": "Expérience de Jeu",
-        "posts": "Messages",
+        "posts": "Publications",
         "friends": "Amis",
         "following": "Abonnements",
         "followers": "Abonnés",
@@ -71,10 +71,10 @@
         "new_follower": "vous suit !"
     },
     "new_post": {
-        "new_post_text": "Nouveau Message",
+        "new_post_text": "Nouvelle Publication",
         "post_to": "Poster sur",
         "text_hint": "Cliquez-ici pour poster un message.",
-        "swearing": "Les messages ne peuvent pas contenir de language explicite."
+        "swearing": "Les publications ne peuvent pas contenir de language explicite."
     },
     "messages": {
         "coming_soon": "Les messages ne sont pas encore prêt pour le moment. Revenez bientôt !"
@@ -93,7 +93,7 @@
         "rules": "Règles de Juxt",
         "rules_text": {
             "first": "Voici quelques directives importantes pour faire de Juxt une expérience amusante et agréable pour tous. Le code de conduite de Juxt contient des informations détaillées. Veuillez les lires attentivement.",
-            "second": "Les messages peuvent être consultés dans le monde entier",
+            "second": "Les publications peuvent être consultés dans le monde entier",
             "third": "Juxt contient de nombreuses communautés de jeu où des personnes du monde entier peuvent partager leurs idées. Lorsque vous publiez un message dans une communauté, n'oubliez pas que tout le monde peut le voir, alors exprimez-vous de manière à ce que tout le monde puisse l'apprécier. Faites preuve de bon sens et réfléchissez avant de publier. Juxt est un service qui est également accessible sur Internet, alors n'oubliez pas que les personnes qui n'utilisent pas Juxt peuvent également voir vos messages. De plus, les commentaires que vous faites sur les messages de vos amis seront vus non seulement par vos amis mais aussi par des personnes autour du globe. Gardez cela à l'esprit.",
             "fourth": "Soyez gentils les uns envers les autres",
             "fifth": "Afin que Juxt reste un endroit agréable pour tous, nous vous demandons d'être soucieux des autres utilisateurs. Aidez-nous à faire de Juxt une expérience agréable en ne publiant rien d'inapproprié ou d'offensant.",
@@ -120,7 +120,7 @@
         "done": "Amusez-vous bien sur Juxtaposition !",
         "done_button": "C'est Parti !",
         "guest": "Mode Invité",
-        "guest_text": "Nous ne pouvons pas vérifier votre compte pour le moment, ce qui signifie probablement que vous vous connectez actuellement avec un compte Nintendo Network. Vous pourrez toujours naviguer sur Juxt, mais vous ne pourrez pas donner des \"Ouais!\" aux messages, ni créer les vôtres tant que vous ne vous serez pas connecté avec un compte Pretendo Network. Pour plus d'informations, consultez le Serveur Discord.",
+        "guest_text": "Nous ne pouvons pas vérifier votre compte pour le moment, ce qui signifie probablement que vous vous connectez actuellement avec un compte Nintendo Network. Vous pourrez toujours naviguer sur Juxt, mais vous ne pourrez pas donner des \"Ouais!\" aux publications, ni créer les vôtres tant que vous ne vous serez pas connecté avec un compte Pretendo Network. Pour plus d'informations, consultez le Serveur Discord.",
         "guest_button": "Je Comprends"
     }
 }
