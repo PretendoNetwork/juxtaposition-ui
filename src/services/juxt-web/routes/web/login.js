@@ -9,7 +9,8 @@ const request = require("request");
 const logger = require("../../../../logger");
 
 router.get('/', async function (req, res) {
-    res.render(req.directory + '/login.ejs');
+    let endpoint = await database.getEndPoint('prod');
+    res.render(req.directory + '/login.ejs', {endpoint});
 });
 
 router.post('/', async (req, res) => {

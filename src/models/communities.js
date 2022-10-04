@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const moment = require("moment");
 
 const  CommunitySchema = new Schema({
     platform_id: Number,

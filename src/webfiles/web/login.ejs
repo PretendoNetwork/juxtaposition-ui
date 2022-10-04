@@ -49,7 +49,7 @@
 
     <div class="wrapper">
         <div class="account-form-wrapper">
-            <a class="logotype" href="/">
+            <a class="logotype" href="https://pretendo.network">
                 <svg xmlns="http://www.w3.org/2000/svg" width="120" height="39.876">
                     <g id="logo_type" data-name="logo type" transform="translate(-553 -467)">
                         <g id="logo" transform="translate(553 467)">
@@ -66,7 +66,8 @@
                     </g>
                 </svg>
             </a>
-
+            <%var message %>
+            <%if(endpoint.status === 0) {%>
             <form action="/login" method="post" class="account">
                 <h2>Juxtaposition Sign in</h2>
                 <p>Enter your account details below</p>
@@ -85,6 +86,22 @@
                     <a href="https://pretendo.network/account/register" class="register">Don't have an account?</a>
                 </div>
             </form>
+            <%}%>
+            <%switch (endpoint.status) {
+                case 3:
+                    message = "Juxt is currently undergoing maintenance. Please try again later.";
+                    break;
+                case 4:
+                    message = "Juxt is currently closed. Thank you for your interest.";
+                    break;
+                default:
+                    message = "Juxt is currently unavailable. Please try again later.";
+                    break;
+            } if(endpoint.status !== 0) {%>
+                <h2><%= message %></h2>
+                <h3>View current server status <a href="https://stats.uptimerobot.com/R7E4wiGjJq">here.</a></h3>
+            <%}%>
+
         </div>
     </div>
 </div>
