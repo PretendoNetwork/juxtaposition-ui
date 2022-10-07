@@ -3,17 +3,6 @@
     <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
     <script src="<%= cdnURL %>/js/pjax.min.js"></script>
     <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-195842548-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
     <meta content="<%= community.name %> - Juxtaposition Community" property="og:title" />
     <meta content="<%= community.followers%> Followers" property="og:site_name">
     <meta content="<%= community.description %>" property="og:description" />
@@ -24,8 +13,8 @@
 <body>
 <%- include('nav_bar', { selection: 2 }); %>
 <div id="main">
-    <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
-        <div class="overlay-content" style="position: fixed">
+    <div id="windowOverlay" class="overlay">
+        <div class="overlay-content">
             <div id="post-window" class="post-wrapper">
                 <!--Start of Main Post-->
                 <form class="post-emotion-radio" action="/posts/new" method="post" enctype="multipart/form-data">
@@ -113,7 +102,7 @@
                         </tr>
                         <tr style="height: 70px">
                             <td class="post-close-button-wrapper" colspan="2">
-                                <div class="post-close-button" onclick="hideNewPostScreen();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
+                                <div class="post-close-button" onclick="toggleOverlay();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
                             </td>
                             <td>
                                 <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuBrowser.lockUserOperation(true);wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
@@ -124,84 +113,55 @@
             </div>
         </div>
     </div>
-    <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
-    <div class="community-page-header-overlay"></div>
-    <div class="community-page-back-button" onclick="back()">
-        <p class="user-page-back-button-text"><%= lang.global.go_back %></p>
-    </div>
-    <div id="community-new-post-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
-        <div class="new-post-button-text" onclick="showNewPostScreen()">
-            + <%= lang.new_post.new_post_text %>
-        </div>
-    </div>
-    <div class="community-page-info-container">
-        <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>
-            <div class="community-page-follow-button-wrapper selected">
-                <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)" style="color: #FFFFFF"><%= lang.community.following %></p>
+    <div id="overlay-filter">
+        <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
+        <%- include('scroll_wrapper', { text: community.name, lang: lang }); %>
+        <%if(user.pid !== 1000000000 && user.account_status === 0) {%>
+            <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             </div>
-        <%} else {%>
-        <div class="community-page-follow-button-wrapper" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
-            <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>
-        </div>
         <%}%>
-        <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
-        <h2 class="community-page-title"><%= community.name %></h2>
-        <h4 class="community-page-description"><%= community.description %></h4>
-        <div class="community-page-margin-line"></div>
-        <table class="community-page-table-wrapper">
-            <tbody>
-            <tr>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.community.followers %></h4>
-                        <h4 class="community-page-table-text"><%= community.followers %></h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.community.posts %></h4>
-                        <h4 class="community-page-table-text"><%=totalNumPosts%></h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="community-page-shaded-info-container" style="width: 507px;">
-                        <h4 class="community-page-table-label"><%= lang.community.tags %></h4>
-                        <h4 class="community-page-table-text">N/A</h4>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="community-page-post-box">
-        <table class="community-page-posts-header switcher">
-            <tbody>
-            <tr>
-                <td>
-                    <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
-                </td>
-                <td>
-                    <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
-                </td>
-                <td>
-                    <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <div id="wrapper">
-            <% if(totalNumPosts === 0) {%>
-                <p class="no-posts-text"><%= lang.global.no_posts %></p>
-            <%} else { %>
-                <button id="load-more-posts-button" data-offset="20"  onclick="loadCommunityPosts(this)"><%= lang.global.more %></button>
-                <% newPosts.forEach(function(post) { %>
-                        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-                <% }); %>
-            <%}%>
+        <div class="community-page-info-container"  style="height: 170px;">
+            <div class="community-page-follow-button-wrapper <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>selected<%}%>" <%if(user.pid !== 1000000000) {%>onclick="followCommunity()"<%}%>>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                <p class="community-page-follow-button-text" id="<%= community.community_id %>"><%= community.followers %> <%= lang.community.followers %></p>
+            </div>
+            <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
+            <h2 class="community-page-title"><%= community.name %></h2>
+            <h4 class="community-page-description"><%= community.description %></h4>
         </div>
+        <div>
+            <table class="community-page-posts-header switcher" style="-webkit-transform: translate(-35%, -35%);">
+                <tbody>
+                <tr>
+                    <td>
+                        <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
+                    </td>
+                    <td>
+                        <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
+                    </td>
+                    <td>
+                        <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="community-page-post-box" style="margin-top: 120px;">
+            <div id="wrapper">
+                <% if(totalNumPosts === 0) {%>
+                    <p class="no-posts-text"><%= lang.global.no_posts %></p>
+                <%} else { %>
+                    <button id="load-more-posts-button" data-offset="20"  onclick="loadCommunityPosts(this)"><%= lang.global.more %></button>
+                    <% newPosts.forEach(function(post) { %>
+                        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                    <% }); %>
+                <%}%>
+            </div>
+        </div>
+        <br>
+        <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
     </div>
-    <br>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
 <br>
 <body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1);wiiuBrowser.lockUserOperation(false);">

@@ -11,7 +11,6 @@
 # What is this?
 This is the PN miiverse replacement web UI, which works with the 3DS and Wii U Miiverse Applets
 
-
 # Install and usage
 
 First install [NodeJS](https://nodejs.org) and [MongoDB](https://mongodb.com). Download/clone this repo and run `npm i` to install all dependencies. Edit `example.config.json` to your liking and rename it `config.json`. Run the server via `npm run start`.
@@ -40,6 +39,13 @@ Check out the [Wiki](https://github.com/PretendoNetwork/juxt-web/wiki) for infor
  * [GET]  /users/me
  * [POST] /users/follow
  * [POST] /post/empathy
+
+## Localization
+If you'd like to help localize Pretendo Network, you can check out our project on [Weblate](https://hosted.weblate.org/engage/pretendonetwork/).
+
+<a href="https://hosted.weblate.org/engage/pretendonetwork/">
+    <img src="https://hosted.weblate.org/widgets/pretendonetwork/-/juxtaposition/multi-auto.svg" alt="Translation status" />
+</a>
 
 ## Footnotes
 

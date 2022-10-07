@@ -3,18 +3,6 @@
     <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
     <script src="<%= cdnURL %>/js/pjax.min.js"></script>
     <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <!-- Google Analytics -->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-195842548-1', 'auto');
-        ga('send', 'pageview');
-    </script>
-    <!-- End Google Analytics -->
-
 </head>
 <body>
 <%- include('nav_bar', { selection: 0 }); %>
@@ -27,7 +15,7 @@
                     <table>
                         <tr>
                             <td class="post-close-button-wrapper">
-                                <div class="post-close-button" onclick="hideOverlay()" ><%= lang.global.close %></div>
+                                <div class="post-close-button" onclick="toggleOverlay()" ><%= lang.global.close %></div>
                             </td>
                             <td>
                                 <input type="submit" value="<%= lang.global.save %>" class="submit-button" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
@@ -83,115 +71,110 @@
             </div>
         </div>
     </div>
-    <div class="community-page-header" style="background: #673DB6; margin-left: -75px; width: 1165px !important;"></div>
-    <div class="user-page-back-button" onclick="back()">
-        <p class="user-page-back-button-text"><%= lang.global.go_back %></p>
-    </div>
-    <div class="community-page-info-container">
-        <div class="community-page-action-button-wrapper">
-            <div class="user-page-follow-button-wrapper" <%if(user.pid === 1000000000 || user.account_status !== 0) {%> style="display: none" <%}%>>
-                <p class="user-page-follow-button-text" onclick="showOverlay()"><%= lang.user_settings.profile_settings %></p>
+    <div id="overlay-filter">
+        <div class="community-page-header" style="background: #673DB6; width: 1150px;"></div>
+        <%- include('scroll_wrapper', { text: user.user_id, lang: lang }); %>
+        <div class="community-page-info-container" style="height: 220px;">
+            <div class="community-page-action-button-wrapper">
+                <div class="user-page-follow-button-wrapper" onclick="toggleOverlay()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </div>
             </div>
+            <%if(user.official) {%>
+                <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
+                <h2 class="user-page-title verified-badge"><%= user.user_id %></h2>
+            <%} else {%>
+                <img class="community-page-info-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
+                <h2 class="user-page-title"><%= user.user_id %></h2>
+            <%}%>
+            <h2 class="user-page-subtitle">@<%= user.pnid %></h2>
+            <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
+            <table class="community-page-table-wrapper">
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="community-page-shaded-info-container">
+                            <h4>
+                                <span class="community-page-table-label"><%= lang.user_page.country %>:</span>
+                                <span class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%><%= lang.global.private %><%}%></span>
+                            </h4>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="community-page-shaded-info-container">
+                            <h4>
+                                <span class="community-page-table-label"><%= lang.user_page.birthday %>:</span>
+                                <span class="community-page-table-text"><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></span>
+                            </h4>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="community-page-shaded-info-container">
+                            <h4>
+                                <span class="community-page-table-label"><%= lang.user_page.game_experience %>:</span>
+                                <span class="community-page-table-text">
+                                    <%if(user.game_skill_visibility){%>
+                                    <%if(user.game_skill === 0) {%>
+                                        <%= lang.setup.experience_text.beginner %>
+                                    <%} else if(user.game_skill === 1) {%>
+                                        <%= lang.setup.experience_text.intermediate %>
+                                    <%} else if(user.game_skill === 2) {%>
+                                        <%= lang.setup.experience_text.expert %>
+                                    <%} else {%>
+                                        N/A
+                                    <%}%>
+                                    <%}else {%>
+                                        <%= lang.global.private %>
+                                    <%}%>
+                                </span>
+                            </h4>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="community-page-shaded-info-container">
+                            <h4>
+                                <span class="community-page-table-label"><%= lang.global.yeahs %>:</span>
+                                <span class="community-page-table-text">0</span>
+                            </h4>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <%if(user.official) {%>
-            <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
-            <span class="community-page-verified-user-badge community-page-verified" style="margin-left: 110px;margin-top: 5px;"></span>
-        <%} else {%>
-            <img class="community-page-info-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
-            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
-        <%}%>
-        <h2 class="community-page-title"><%= user.user_id %> (<%= user.pnid %>)</h2>
-        <h4 class="community-page-description"><%if(user.profile_comment_visibility){%> <%= user.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
-        <div class="community-page-margin-line"></div>
-        <table class="community-page-table-wrapper">
-            <tbody>
-            <tr>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.user_page.country %></h4>
-                        <h4 class="community-page-table-text"><%if(user.country_visibility){%><%=user.country%><%}else {%><%= lang.global.private %><%}%></h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.user_page.birthday %></h4>
-                        <h4 class="community-page-table-text"><%if(user.birthday_visibility){%><%=moment.utc(user.birthday).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.user_page.game_experience %></h4>
-                        <h4 class="community-page-table-text">
-                            <%if(user.game_skill_visibility){%>
-                            <%if(user.game_skill === 0) {%>
-                                <%= lang.setup.experience_text.beginner %>
-                            <%} else if(user.game_skill === 1) {%>
-                                <%= lang.setup.experience_text.intermediate %>
-                            <%} else if(user.game_skill === 2) {%>
-                                <%= lang.setup.experience_text.expert %>
-                            <%} else {%>
-                                N/A
-                            <%}%>
-                            <%}else {%>
-                                <%= lang.global.private %>
-                            <%}%>
-                        </h4>
-                    </div>
-                </td>
-                <td>
-                    <div class="community-page-shaded-info-container">
-                        <h4 class="community-page-table-label"><%= lang.global.yeahs %></h4>
-                        <h4 class="community-page-table-text">0</h4>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <div>
+            <table class="community-page-posts-header switcher" style="-webkit-transform: translate(-35%, 25%) !important;">
+                <tbody>
+                <tr>
+                    <td>
+                        <h4 id="user-page-posts-tab" onclick="switchUserPageTabs(0, '<%= user.pid %>')" class="community-page-posts-header-tab active"><%=numPosts%> <%= lang.user_page.posts %></h4>
+                    </td>
+                    <td>
+                        <h4 id="user-page-friends-tab" onclick="switchUserPageTabs(1, '<%= user.pid %>')" class="community-page-posts-header-tab">0 <%= lang.user_page.friends %></h4>
+                    </td>
+                    <td>
+                        <h4 id="user-page-following-tab" onclick="switchUserPageTabs(2, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.following %> <%= lang.user_page.following %></h4>
+                    </td>
+                    <td>
+                        <h4 id="user-page-followers-tab" onclick="switchUserPageTabs(3, '<%= user.pid %>')" class="community-page-posts-header-tab"><%= user.followers %> <%= lang.user_page.followers %></h4>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="community-page-post-box" <% if(numPosts === 0) {%>style="height: 110px"<%}%>>
+            <% if(numPosts === 0) {%>
+                <p class="no-posts-text"><%= lang.global.no_posts %></p>
+            <%} else { %>
+                <button id="load-more-posts-button" data-offset="10" onclick="loadUserPosts(this, '<%= user.pid %>')"><%= lang.global.more %></button>
+                <% newPosts.forEach(function(post) { %>
+                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                <% }); %>
+            <%}%>
+        </div>
+        <br>
+        <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
     </div>
-    <div>
-        <table class="user-page-tab-table">
-            <tbody>
-            <tr>
-                <td onclick="switchUserPageTabs(0, '<%= user.pid %>')">
-                    <div class="user-page-tab left selected" id="user-page-posts-tab">
-                        <%=numPosts%> <%= lang.user_page.posts %>
-                    </div>
-                    <div class="user-page-tab-triangle selected" id="user-page-posts-triangle"></div>
-                </td>
-                <td onclick="switchUserPageTabs(1, '<%= user.pid %>')">
-                    <div class="user-page-tab" id="user-page-friends-tab">
-                        0 <%= lang.user_page.friends %>
-                    </div>
-                    <div class="user-page-tab-triangle" id="user-page-friends-triangle"></div>
-                </td>
-                <td onclick="switchUserPageTabs(2, '<%= user.pid %>')">
-                    <div class="user-page-tab" id="user-page-following-tab">
-                        <%= user.following %> <%= lang.user_page.following %>
-                    </div>
-                    <div class="user-page-tab-triangle" id="user-page-following-triangle"></div>
-                </td>
-                <td onclick="switchUserPageTabs(3, '<%= user.pid %>')">
-                    <div class="user-page-tab right" id="user-page-followers-tab">
-                        <%= user.followers %> <%= lang.user_page.followers %>
-                    </div>
-                    <div class="user-page-tab-triangle" id="user-page-followers-triangle"></div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="community-page-post-box" <% if(numPosts === 0) {%>style="height: 110px"<%}%>>
-        <% if(numPosts === 0) {%>
-            <p class="no-posts-text"><%= lang.global.no_posts %></p>
-        <%} else { %>
-            <button id="load-more-posts-button" data-offset="20" onclick="loadUserPosts(this, '<%= user.pid %>')"><%= lang.global.more %></button>
-            <% newPosts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-            <% }); %>
-        <%}%>
-    </div>
-    <br>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
 <br>
 <body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1);wiiuBrowser.lockUserOperation(false);">

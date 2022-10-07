@@ -3,49 +3,42 @@
     <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
     <script src="<%= cdnURL %>/js/pjax.min.js"></script>
     <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-279PNEDGEE"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-279PNEDGEE');
-
-        <!-- Google Tag Manager -->
-        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-T9NZ7BK');</script>
-    <!-- End Google Tag Manager -->
-    </script>
+    <meta content="<%= community.name %> - Juxtaposition Community" property="og:title" />
+    <meta content="<%= community.followers%> Followers" property="og:site_name">
+    <meta content="<%= community.description %>" property="og:description" />
+    <meta content="https://portal.olv.pretendo.cc/communities/<%= community.community_id %>/new" property="og:url" />
+    <meta content="https://portal.cdn.pretendo.cc/icons/<%= community.community_id %>.png" property="og:image" />
+    <meta content="#1F8A42" data-react-helmet="true" name="theme-color" />
 </head>
 <body>
 <%- include('nav_bar', { selection: 2 }); %>
 <div id="main">
-    <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
-    <div class="community-page-follow-button-wrapper" style="display: none">
-        <p class="community-page-follow-button-text" id="<%= community.community_id %>" onclick="followCommunity(this)"><%= lang.community.follow %></p>
-    </div>
-    <div class="community-page-info-container" style="min-height: 150px">
-        <img class="community-page-info-icon" src="/icons/<%= community.community_id %>.png">
-        <h2 class="community-page-title"><%= community.name %></h2>
-        <h4 class="community-page-description"><%= community.description %></h4>
-    </div>
-    <div class="community-page-post-box" style="margin-top: -40px;">
-        <div id="wrapper">
-            <% if(totalNumPosts === 0) {%>
-                <p class="no-posts-text"><%= lang.global.no_posts %></p>
-            <%} else { %>
-                    <button id="load-more-posts-button" data-offset="20"  onclick="loadCommunityPosts(this, true)"><%= lang.global.more %></button>
-                <% newPosts.forEach(function(post) { %>
-                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-                <% }); %>
-            <%}%>
+    <div id="overlay-filter">
+        <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
+        <%- include('scroll_wrapper', { text: community.name, lang: lang }); %>
+        <div class="community-page-info-container"  style="height: 120px;">
+            <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
+            <a class="community-page-follow-button-text" style="display: none" id="<%=community.community_id%>"></a>
+            <h2 class="community-page-title"><%= community.name %></h2>
+            <h4 class="community-page-description"><%= community.description %></h4>
         </div>
+        <div>
+        </div>
+        <div class="community-page-post-box" style="margin-top: 50px;">
+            <div id="wrapper">
+                <% if(totalNumPosts === 0) {%>
+                    <p class="no-posts-text"><%= lang.global.no_posts %></p>
+                <%} else { %>
+                    <button id="load-more-posts-button" data-offset="20"  onclick="loadCommunityPosts(this, true)"><%= lang.global.more %></button>
+                    <% newPosts.forEach(function(post) { %>
+                        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                    <% }); %>
+                <%}%>
+            </div>
+        </div>
+        <br>
+        <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
     </div>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
 <br>
 <body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1);wiiuBrowser.lockUserOperation(false);">

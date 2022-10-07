@@ -3,21 +3,13 @@
     <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
     <script src="<%= cdnURL %>/js/pjax.min.js"></script>
     <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-195842548-1');
-    </script>
-
 </head>
 <body>
 <%- include('nav_bar', { selection: 1 }); %>
 <div id="main">
     <h1 id="title" class="page-header"><%= lang.global.activity_feed %></h1>
-    <div class="community-page-post-box">
+    <%- include('scroll_wrapper', { text: lang.global.activity_feed, lang: lang }); %>
+    <div class="community-page-post-box feed" style="margin-top: 0px;">
         <div id="wrapper">
             <% if(posts.length === 0) {%>
                 <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
