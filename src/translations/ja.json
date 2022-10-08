@@ -1,126 +1,126 @@
 {
-  "language": "Japanese",
-  "global": {
-    "user_page": "ユーザーページ",
-    "activity_feed": "アクティビティフィード",
-    "communities": "コミュニティ",
-    "messages": "メッセージ",
-    "notifications": "通知",
-    "go_back": "戻る",
-    "back": "戻る",
-    "yeahs": "Yeahs",
-    "more": "より多くの投稿を読み込む",
-    "no_posts": "投稿なし",
-    "private": "プライベート",
-    "close": "閉まっている",
-    "save": "保存",
-    "exit": "出口",
-    "next": "次"
-  },
-  "all_communities": {
-    "text": "すべてのコミュニティ",
-    "announcements": "出版物",
-    "ann_string": "最近の発表を見るにはここをクリックしてください！",
-    "popular_places": "人気の場所",
-    "new_communities": "新しいコミュニティ",
-    "show_all": "すべて表示する",
-    "search": "検索コミュニティ..."
-  },
-  "community": {
-    "follow": "Follow Community",
-    "following": "Following",
-    "followers": "Followers",
-    "posts": "Posts",
-    "tags": "Tags",
-    "recent": "Recent Posts",
-    "popular": "Popular Posts",
-    "verified": "Verified Posts",
-    "new": "New Post"
-  },
-  "user_page": {
-    "country": "Country",
-    "birthday": "Birthday",
-    "game_experience": "Game Experience",
-    "posts": "Posts",
-    "friends": "Friends",
-    "following": "Following",
-    "followers": "Followers",
-    "follow_user": "Follow",
-    "following_user": "Following",
-    "befriend": "Befriend",
-    "pending": "Pending",
-    "unfriend": "Unfriend",
-    "no_friends": "No Friends",
-    "no_following": "Not Following Anyone",
-    "no_followers": "No Followers"
-  },
-  "user_settings": {
-    "profile_settings": "Profile Settings",
-    "show_country": "Show Country on Profile",
-    "show_birthday": "Show Birthday on Profile",
-    "show_game": "Show Game Experience on Profile",
-    "show_comment": "Show Comment on Profile",
-    "profile_comment": "Profile Comment",
-    "swearing": "Profile comment cannot contain explicit language."
-  },
-  "activity_feed": {
-    "empty": "It's empty here. Try following someone!"
-  },
-  "notifications": {
-    "none": "No notifications.",
-    "new_follower": "followed you!"
-  },
-  "new_post": {
-    "new_post_text": "New Post",
-    "post_to": "Post to",
-    "text_hint": "Tap here to make a post.",
-    "swearing": "Post cannot contain explicit language."
-  },
-  "messages": {
-    "coming_soon": "Messages isn't ready yet. Check back soon!"
-  },
-  "setup": {
-    "welcome": "Welcome to Juxtaposition!",
-    "welcome_text": "Juxt is a gaming community that connects people from all over the world using Mii characters. Use Juxt to share your gaming experiences and meet people from around the world.",
-    "beta": "Beta Disclaimer",
-    "beta_text": {
-      "first": "You are about to try out the first public beta of Juxt. This means that a lot is still up in the air, and a lot can change at any time.",
-      "second": "This can and may include a total wipe of the database at the conclusion or during the beta period.",
-      "third": "The website, its software and all content found on it are provided on an “as is” and “as available” basis. The Pretendo Network does not give any warranties, whether express or implied, as to the suitability or usability of the website, its software or any of its content."
+    "language": "Japanese",
+    "global": {
+        "user_page": "ユーザーページ",
+        "activity_feed": "アクティビティフィード",
+        "communities": "コミュニティ",
+        "messages": "メッセージ",
+        "notifications": "通知",
+        "go_back": "戻る",
+        "back": "戻る",
+        "yeahs": "はい",
+        "more": "より多くの投稿を読み込む",
+        "no_posts": "投稿なし",
+        "private": "プライベート",
+        "close": "閉まっている",
+        "save": "保存",
+        "exit": "出口",
+        "next": "次"
     },
-    "info": "What is Juxtaposition?",
-    "info_text": "Juxt is a user-driven gaming community where you can interact with people\n                all over the world. You can write or draw posts in game communities or send messages directly to your friends.",
-    "rules": "Juxt Rules",
-    "rules_text": {
-      "first": "The following are some important guidelines for making Juxt a fun and enjoyable experience for everyone. The Juxt Code of Conduct contains detailed information, so please read it carefully.",
-      "second": "Posts Can Be Viewed Around the World",
-      "third": "Juxt contains many gaming communities where people from all over the world can share their thoughts. When you post in a community, remember that everyone can see it, so please express yourself in a way that everyone can enjoy. Use common sense, and think before you post. Juxt is a service that is also accessible from the Internet, so bear in mind that people who don't use Juxt may also see your posts. Additionally, any comments you make on your friends’ posts will be seen not by just your friends but by people around the world, too. Please keep this in mind.",
-      "fourth": "Be Nice to One Another",
-      "fifth": "In order to keep Juxt a fun place for everyone, we ask that you be considerate to other users. Help us keep Juxt an enjoyable experience by not posting anything inappropriate or offensive.",
-      "sixth": "Do Not Post Personal Information—Yours or Others’",
-      "seventh": "Remember, knowing someone in Juxt isn’t the same as knowing them in real life. Never share your e-mail address, home address, work or school name, or other personally identifying information with anyone on Juxt, and never share anyone else's information either. Additionally, if someone you meet in Juxt invites you to meet him or her in the real world, do not accept. Juxt is an online community and should not be used to arrange real-world meet-ups.",
-      "eighth": "Don’t Post Spoilers",
-      "ninth": "Some people come to Juxt looking for tips and tricks for games, but others want to discover a game's secrets all on their own. Posts that reveal secrets of a game or its story are called \"spoilers.\" If you're posting something about a game that might be a spoiler, be sure to check the Spoilers box before sending your post. This way, people who don't want to be spoiled won't see your post.",
-      "tenth": "Code of Conduct Violations",
-      "eleventh": "Our goal is to keep Juxt fun and enjoyable for everyone. In the event that someone violates the Juxt Code of Conduct, we will take appropriate action, up to and including blocking the offending user or console.",
-      "twelfth": "Have You Played That Game?",
-      "thirteenth": "If you're posting in the community for a game you've played, your posts will have an icon indicating that you've played it."
+    "all_communities": {
+        "text": "すべてのコミュニティ",
+        "announcements": "出版物",
+        "ann_string": "最近の発表を見るにはここをクリックしてください！",
+        "popular_places": "人気の場所",
+        "new_communities": "新しいコミュニティ",
+        "show_all": "すべて表示する",
+        "search": "検索コミュニティ..."
     },
-    "experience": "Game Experience",
-    "experience_text": {
-      "info": "Please tell us how you would describe your level of experience with games. You can change this setting later.",
-      "beginner": "Beginner",
-      "intermediate": "Intermediate",
-      "expert": "Expert"
+    "community": {
+        "follow": "コミュニティをフォロー",
+        "following": "続く",
+        "followers": "フォロワー",
+        "posts": "Posts",
+        "tags": "Tags",
+        "recent": "Recent Posts",
+        "popular": "人気の投稿",
+        "verified": "確認済みの投稿",
+        "new": "新しい投稿"
     },
-    "google": "Google Analytics",
-    "google_text": "Juxtaposition uses Google Analytics in order to track how users are using our service. The data collected includes but is not limited to time of visit, pages visited, and time spent on the site. This data is not attached to you in any way, and is not used for advertisements by us or Google.",
-    "ready": "Ready to Start Using Juxt",
-    "ready_text": "First check out some communities and see what people from all over the world are posting about. Take this opportunity to familiarize yourself with Juxt. You might make some new discoveries along the way!",
-    "done": "Have fun in Juxt!",
-    "done_button": "Let's Go!",
-    "guest": "Guest Mode",
-    "guest_text": "We can't verify your account at the moment, which likely means your are currently logging in with a Nintendo Network account. You will still be able to browse Juxt, but you will not be able to Yeah! posts or make posts of your own till you log in with a Pretendo Network account. For more information check the Discord server.",
-    "guest_button": "I Understand"
-  }
+    "user_page": {
+        "country": "国",
+        "birthday": "誕生日",
+        "game_experience": "ゲーム体験",
+        "posts": "Posts",
+        "friends": "友達",
+        "following": "続く",
+        "followers": "フォロワー",
+        "follow_user": "従う",
+        "following_user": "続く",
+        "befriend": "友達になる",
+        "pending": "保留中",
+        "unfriend": "友達から外す",
+        "no_friends": "友達がいない",
+        "no_following": "誰もフォローしていません",
+        "no_followers": "フォロワーなし"
+    },
+    "user_settings": {
+        "profile_settings": "プロファイル設定",
+        "show_country": "プロフィールに国を表示",
+        "show_birthday": "プロフィールに誕生日を表示",
+        "show_game": "プロフィールにゲーム体験を表示",
+        "show_comment": "プロフィールにコメントを表示",
+        "profile_comment": "プロフィールコメント",
+        "swearing": "プロフィールのコメントに露骨な表現を含めることはできません。"
+    },
+    "activity_feed": {
+        "empty": "ここは空いています。誰かをフォローしてみてください！"
+    },
+    "notifications": {
+        "none": "No notifications.",
+        "new_follower": "あなたをフォローしました！"
+    },
+    "new_post": {
+        "new_post_text": "新しい投稿",
+        "post_to": "Post to",
+        "text_hint": "ここをタップして投稿します。",
+        "swearing": "投稿に露骨な表現を含めることはできません。"
+    },
+    "messages": {
+        "coming_soon": "メッセージはまだ準備ができていません。すぐにもう一度チェックしてください！"
+    },
+    "setup": {
+        "welcome": "並置へようこそ！",
+        "welcome_text": "Juxt は、Mii キャラクターを使って世界中の人々をつなぐゲーム コミュニティです。 Juxt を使用して、ゲーム体験を共有し、世界中の人々と出会いましょう。",
+        "beta": "ベータ版免責事項",
+        "beta_text": {
+            "first": "Juxt の最初のパブリック ベータ版を試してみようとしています。これは、まだ多くのことが未解決であり、多くのことがいつでも変化する可能性があることを意味します。",
+            "second": "これには、終了時またはベータ期間中のデータベースの完全なワイプが含まれる場合があります。",
+            "third": "Web サイト、そのソフトウェア、およびそこにあるすべてのコンテンツは、「現状のまま」および「利用可能な状態」で提供されます。 Pretendo Network は、明示または黙示を問わず、ウェブサイト、そのソフトウェア、またはそのコンテンツの適合性または有用性について、いかなる保証も行いません。"
+        },
+        "info": "並置とは何ですか？",
+        "info_text": "Juxt は、人々と交流できるユーザー主導のゲーム コミュニティです。\n                世界中で。ゲーム コミュニティに投稿したり、絵を描いたり、友達に直接メッセージを送信したりできます。",
+        "rules": "ジャストルール",
+        "rules_text": {
+            "first": "以下は、Juxt を誰にとっても楽しく楽しい体験にするための重要なガイドラインです。 Juxt行動規範には詳細な情報が含まれていますので、よくお読みください。",
+            "second": "投稿は世界中で閲覧可能",
+            "third": "Juxt には、世界中の人々が自分の考えを共有できる多くのゲーム コミュニティがあります。コミュニティに投稿するときは、誰もが見ることができることを忘れないでください。誰もが楽しめる方法で自分を表現してください。常識を働かせて、投稿する前によく考えてください。 Juxt はインターネットからもアクセスできるサービスです。Juxt を使用していない人にも投稿が表示される可能性があることに注意してください。さらに、友達の投稿にあなたがコメントした内容は、あなたの友達だけでなく、世界中の人々にも表示されます。このことを覚えておいてください。",
+            "fourth": "互いに親切にする",
+            "fifth": "Juxt をすべての人にとって楽しい場所であり続けるために、他のユーザーへの配慮をお願いします。不適切または攻撃的なものを投稿しないことで、Juxt を楽しい体験に保つためにご協力ください。",
+            "sixth": "個人情報を投稿しないでください—あなたまたは他の人",
+            "seventh": "Juxt で誰かを知ることは、実際の生活で誰かを知ることと同じではないことを忘れないでください。電子メール アドレス、自宅の住所、職場または学校の名前、またはその他の個人を特定できる情報を Juxt の他のユーザーと共有したり、他のユーザーの情報を共有したりしないでください。また、Juxt で出会った人が現実世界で会うように誘ってきた場合は、承諾しないでください。 Juxt はオンライン コミュニティであり、実際の交流会の手配には使用しないでください。",
+            "eighth": "スポイラーを投稿しないでください",
+            "ninth": "ゲームのヒントやコツを求めて Juxt に来る人もいれば、ゲームの秘密をすべて自分で発見したい人もいます。ゲームの秘密やストーリーを明らかにする投稿は「スポイラー」と呼ばれます。ネタバレの可能性があるゲームについて投稿する場合は、投稿を送信する前に、必ず [ネタバレ] ボックスをオンにしてください。こうすることで、甘やかされたくない人はあなたの投稿を見ることができなくなります。",
+            "tenth": "行動規範違反",
+            "eleventh": "私たちの目標は、Juxt を誰にとっても楽しく楽しいものにすることです。誰かが Juxt の行動規範に違反した場合、違反しているユーザーまたはコンソールをブロックするなど、適切な措置を講じます。",
+            "twelfth": "そのゲームをプレイしたことがありますか?",
+            "thirteenth": "プレイしたゲームをコミュニティに投稿している場合、投稿にはプレイ済みであることを示すアイコンが表示されます。"
+        },
+        "experience": "ゲーム体験",
+        "experience_text": {
+            "info": "あなたのゲーム経験のレベルをどのように説明するか教えてください。この設定は後で変更できます。",
+            "beginner": "初心者",
+            "intermediate": "中級",
+            "expert": "Expert"
+        },
+        "google": "Google Analytics",
+        "google_text": "Juxtaposition は、ユーザーが当社のサービスをどのように使用しているかを追跡するために、Google アナリティクスを使用します。収集されるデータには、訪問時間、訪問ページ、およびサイトでの滞在時間が含まれますが、これらに限定されません。このデータはいかなる方法でもあなたに添付されることはなく、当社または Google による広告に使用されることもありません。",
+        "ready": "Juxt の使用を開始する準備ができました",
+        "ready_text": "まず、いくつかのコミュニティをチェックして、世界中の人々が何について投稿しているかを確認してください。この機会に Juxt について理解を深めてください。途中で新しい発見があるかもしれません！",
+        "done": "Juxtで楽しんでください！",
+        "done_button": "さあ行こう！",
+        "guest": "ゲストモード",
+        "guest_text": "現在、あなたのアカウントを確認できません。現在ニンテンドー ネットワークのアカウントでログインしている可能性があります。 Juxt は引き続き閲覧できますが、Yeah! はできなくなります。 Pretendo Network アカウントでログインするまでは、投稿したり、独自の投稿を作成したりできます。詳細については、Discord サーバーを確認してください。",
+        "guest_button": "わかりました"
+    }
 }
