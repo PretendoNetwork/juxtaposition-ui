@@ -12,7 +12,7 @@
         "close": "Uždaryti",
         "save": "Išsaugoti",
         "activity_feed": "Įrašų puslapis",
-        "private": "Privatu",
+        "private": "Privati",
         "yeahs": "Patiktukai",
         "next": "Toliau"
     },
@@ -98,13 +98,17 @@
             "tenth": "Elgesio taisyklių pažeidimas",
             "third": "Juxt turi daug žaidimo bendruomenių kur žmonės gali iš viso pasaulio pasidalinti savo mintis. Kai tu įkeli į bendruomėnę, prisimink kad visi gali tai matyti, tai prašome atsiduok save tokiu būtu, kad visi galėtų džiaugtis. Naudok logiką, ir pagalvok prieš įkeldamas. Juxt yra servisas kuris yra pasiekiamas su internetu, tai įsimink kad žmonės kurie nenaudoja Juxt gali irgi pamatyti tavo įrašus. Pridėsiu, bet kiokie komentarai palikti ant draugų įrašų bus matyti netik tavo draugų bet draugų iš viso pasaulio irgi. Prašome prisimint tai.",
             "seventh": "Prisimink, žinodamas kažką Juxt'e nėra tas pats kas žinodamas kažką realybėje. Niekada nesidalink savo e-pašto adresu, namų adresu, darbo arba mokyklos pavadinimo,ar kitos asmeninės tapatybės atskleidimo informacijos su betkuo ant Juxt, ir niekada nesidalink kitų žmonių informacijos, Ir jei kažkas su kuriuo susitikai per Juxt pakviečia tave susitikti su tavim realybėje, nepriimk. Juxt yra internetinė bendruomenė ir jinai negali būti naudojama surengti susitikimus realybėje.",
-            "ninth": "Kai kurie žmonės ateina į Juxt kad surastų visokių patarimų ir triukų žaidimams, bet kiti nori patys atrasti žaidimo paslaptis. Įrašai kurie atskleidžia žaidimo paslaptis vadinasi \"atskleidžantis turinys.\" Jei tu keli kažką apie žaidmą kur gali kažką atskleisti, prašome užpilyti \"atskleidžiantis turinys'' dėžutę prieš įkeliant savo įrašą. Tokiu būdu, žmonės kurie nenori kad būtų atskleista kažkokia paslaptis nematytų tavo įrašo."
+            "ninth": "Kai kurie žmonės ateina į Juxt kad surastų visokių patarimų ir triukų žaidimams, bet kiti nori patys atrasti žaidimo paslaptis. Įrašai kurie atskleidžia žaidimo paslaptis vadinasi \"atskleidžantis turinys.\" Jei tu keli kažką apie žaidmą kur gali kažką atskleisti, prašome užpilyti \"atskleidžiantis turinys'' dėžutę prieš įkeliant savo įrašą. Tokiu būdu, žmonės kurie nenori kad būtų atskleista kažkokia paslaptis nematytų tavo įrašo.",
+            "thirteenth": "Jei tu keli apie žaidimą kurį žaidei į bendruomenę, tai tavo įrašai turės ženklelį indikuojantį kad tu jį žaidei.",
+            "twelfth": "Ar tu žaidėi šį žaidimą?"
         },
         "google": "Google Analitika",
         "guest": "Svečio režimas",
         "guest_button": "Aš supratau",
         "welcome_text": "Juxt yra žaidimų bendruomenė kuri sujungia žmones iš viso pasaulio naudodamasi Mii veikėjus. Naudok Juxt kad galėtum pasidalinti savo žaidimo patirtį ir susipažinti su žmonėms iš viso pasaulio.",
         "rules": "Juxt Taisyklės",
-        "info_text": "Juxt yra naudotojų vedama žaidimo bendruomenė kur tu gali bendrauti su žmonėmis \n                po visą pasaulį. Tu gali rašyti arba nupiešti įrašus žaidimų bendruomėnėse arba nusiūsti žinutes tiesogiai savo draugams."
+        "info_text": "Juxt yra naudotojų vedama žaidimo bendruomenė kur tu gali bendrauti su žmonėmis \n                po visą pasaulį. Tu gali rašyti arba nupiešti įrašus žaidimų bendruomėnėse arba nusiūsti žinutes tiesogiai savo draugams.",
+        "ready": "Pasiruošęs pradėti naudoti Juxt",
+        "guest_text": "Mes dabar neglim patikrinti tavęs, ir tai reiškia kad mes manom kad tu esi prisijungęs su Nintendo Tinklo paskyra. Tu galėsi keliauti pro Juxt bet tu negalėsi Taip!-inti įrašų arba įkelti savo įrašus iki kol neprisijungsi su savo Pretendo Tinklo paskyra. Daugiau informacijos bus mūsų Discord serveryje."
     }
 }
