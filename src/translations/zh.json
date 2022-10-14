@@ -1,12 +1,12 @@
 {
-    "language": "Chinese",
+    "language": "中文",
     "global": {
-        "user_page": "User Page",
+        "user_page": "用户页面",
         "activity_feed": "活动提要",
         "communities": "社区",
-        "messages": "Messages",
-        "notifications": "Notifications",
-        "go_back": "退回",
+        "messages": "信息",
+        "notifications": "通知",
+        "go_back": "返回",
         "back": "退回",
         "yeahs": "耶",
         "more": "加载更多帖子",
