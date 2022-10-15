@@ -2,7 +2,7 @@
     "language": "Português do Brasil",
     "global": {
         "user_page": "Perfil do usuário",
-        "activity_feed": "Postagens mais recentes",
+        "activity_feed": "Feed de atividade",
         "communities": "Comunidades",
         "messages": "Mensagens",
         "notifications": "Notificações",
@@ -14,7 +14,7 @@
         "close": "Fechar",
         "save": "Salvar",
         "exit": "Sair",
-        "next": "Proxímo",
+        "next": "Próximo",
         "no_posts": "Sem postagens"
     },
     "all_communities": {
@@ -85,7 +85,7 @@
         "beta": "Nota sobre Beta",
         "beta_text": {
             "first": "Você está prestes a experimentar a primeira beta pública do Juxt. Isto significa que ainda há muito a fazer e que muitas coisas ainda poderão mudar a qualquer momento.",
-            "second": "No final do período beta, os dados registados na plataforma poderão ser apagados.",
+            "second": "No final do período beta, os dados registrados na plataforma poderão ser apagados.",
             "third": "Este website, o seu software e todos os conteúdos nele conteúdos são disponibilizados “tais como estão” e “quando disponíveis”. A Pretendo Network não oferece quaisquer garantias, quer expressas quer implícitas, a respeito da integridade ou disponibilidade do website, do seu software ou dos seus conteúdos."
         },
         "info": "O que é o Juxt?",
@@ -117,10 +117,10 @@
         "google_text": "O Juxt usa Google Analytics para recolher informações de como os usuários usam o serviço. Os dados recolhidos incluem, mas não estão limitados a, hora da visita, páginas visitadas e tempo passado no site. Estes dados não estão associados a você de maneira nenhuma e não são usados para anúncios por nós nem pela Google.",
         "ready": "Pronto para usar o Juxt",
         "ready_text": "Começe por explorar algumas comunidades e ver o que as pessoas de todo o mundo estão postando. Aproveite esta oportunidade para se familiarizar com o Juxt. Pode ser que você descubra algo novo pelo caminho!",
-        "done": "Diverta-se com Juxt!",
+        "done": "Divirta-se com o Juxt!",
         "done_button": "Pronto!",
         "guest": "Modo de convidado",
-        "guest_text": "Não foi possível verificar a sua conta de momento, o que provavelmente significa que você está usando uma conta Nintendo Network. Você podera usar o Juxt, mas não será possível marcar postagens com Joinha! ou fazer Postagens até entrar em conta Pretendo Network. Para mais informações visite o nosso servidor do Discord.",
+        "guest_text": "Não foi possível verificar a sua conta de momento, o que provavelmente significa que você está usando uma conta da Nintendo Network. Você poderá usar o Juxt, mas não será possível marcar postagens com Joinha! ou fazer Postagens até entrar em uma conta da Pretendo Network. Para mais informações, visite o nosso servidor do Discord.",
         "guest_button": "Compreendo"
     }
 }
