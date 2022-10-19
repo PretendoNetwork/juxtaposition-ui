@@ -100,7 +100,8 @@
             "seventh": "Prisimink, žinodamas kažką Juxt'e nėra tas pats kas žinodamas kažką realybėje. Niekada nesidalink savo e-pašto adresu, namų adresu, darbo arba mokyklos pavadinimo,ar kitos asmeninės tapatybės atskleidimo informacijos su betkuo ant Juxt, ir niekada nesidalink kitų žmonių informacijos, Ir jei kažkas su kuriuo susitikai per Juxt pakviečia tave susitikti su tavim realybėje, nepriimk. Juxt yra internetinė bendruomenė ir jinai negali būti naudojama surengti susitikimus realybėje.",
             "ninth": "Kai kurie žmonės ateina į Juxt kad surastų visokių patarimų ir triukų žaidimams, bet kiti nori patys atrasti žaidimo paslaptis. Įrašai kurie atskleidžia žaidimo paslaptis vadinasi \"atskleidžantis turinys.\" Jei tu keli kažką apie žaidmą kur gali kažką atskleisti, prašome užpilyti \"atskleidžiantis turinys'' dėžutę prieš įkeliant savo įrašą. Tokiu būdu, žmonės kurie nenori kad būtų atskleista kažkokia paslaptis nematytų tavo įrašo.",
             "thirteenth": "Jei tu keli apie žaidimą kurį žaidei į bendruomenę, tai tavo įrašai turės ženklelį indikuojantį kad tu jį žaidei.",
-            "twelfth": "Ar tu žaidėi šį žaidimą?"
+            "twelfth": "Ar tu žaidėi šį žaidimą?",
+            "eleventh": "Mūsų tikslas yra palaikyti Juxt faina ir malonią vietą visiems. Jeigu kažkas pažeidžia Juxt elgesio taisykles, mes imsimės atitinkamų veiksmų, ir kai kuriais atvėjais, užblokuojant vartotoją arba konsolę."
         },
         "google": "Google Analitika",
         "guest": "Svečio režimas",
@@ -109,6 +110,7 @@
         "rules": "Juxt Taisyklės",
         "info_text": "Juxt yra naudotojų vedama žaidimo bendruomenė kur tu gali bendrauti su žmonėmis \n                po visą pasaulį. Tu gali rašyti arba nupiešti įrašus žaidimų bendruomėnėse arba nusiūsti žinutes tiesogiai savo draugams.",
         "ready": "Pasiruošęs pradėti naudoti Juxt",
-        "guest_text": "Mes dabar neglim patikrinti tavęs, ir tai reiškia kad mes manom kad tu esi prisijungęs su Nintendo Tinklo paskyra. Tu galėsi keliauti pro Juxt bet tu negalėsi Taip!-inti įrašų arba įkelti savo įrašus iki kol neprisijungsi su savo Pretendo Tinklo paskyra. Daugiau informacijos bus mūsų Discord serveryje."
+        "guest_text": "Mes dabar neglim patikrinti tavęs, ir tai reiškia kad mes manom kad tu esi prisijungęs su Nintendo Tinklo paskyra. Tu galėsi keliauti pro Juxt bet tu negalėsi Taip!-inti įrašų arba įkelti savo įrašus iki kol neprisijungsi su savo Pretendo Tinklo paskyra. Daugiau informacijos bus mūsų Discord serveryje.",
+        "experience": "Žaidimo patirtis"
     }
 }
