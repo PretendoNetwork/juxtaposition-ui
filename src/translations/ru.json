@@ -102,25 +102,25 @@
             "eighth": "Не публикуйте спойлеры",
             "ninth": "Некоторые люди приходят на Juxt в поисках советов и подсказок по играм, но другие хотят открыть секреты игры самостоятельно. Сообщения, раскрывающие секреты игры или её сюжет, называются \"спойлерами\". Если вы пишете что-то об игре, что может быть спойлером, обязательно проверьте поле \"спойлеры\" перед отправкой сообщения. Таким образом, люди, которые не хотят видеть спойлеры, не увидят ваше сообщение.",
             "tenth": "Нарушение Кодекса Поведения",
-            "eleventh": "Our goal is to keep Juxt fun and enjoyable for everyone. In the event that someone violates the Juxt Code of Conduct, we will take appropriate action, up to and including blocking the offending user or console.",
+            "eleventh": "Наша цель - сделать Juxt весёлым и приятным для всех. Если кто-то нарушит кодекс поведения Juxt, мы применим соответствующие меры наказания, вплоть аж до бана пользователя или консоли нарушителя.",
             "twelfth": "Вы играли в эту игру?",
-            "thirteenth": "If you're posting in the community for a game you've played, your posts will have an icon indicating that you've played it."
+            "thirteenth": "Если вы публикуете в сообществе информацию про игру, в которую вы играли, ваши публикации будут иметь иконку, которая показывает на то, что вы в эту игру играли."
         },
-        "experience": "Game Experience",
+        "experience": "Игровой Опыт",
         "experience_text": {
-            "info": "Please tell us how you would describe your level of experience with games. You can change this setting later.",
+            "info": "Пожалуйста, расскажите, как вы бы описали свой уровень игрового опыта. Вы можете поменять это в настройках позже.",
             "beginner": "Новичок",
             "intermediate": "Продвинутый",
             "expert": "Эксперт"
         },
         "google": "Google Analytics",
-        "google_text": "Juxtaposition uses Google Analytics in order to track how users are using our service. The data collected includes but is not limited to time of visit, pages visited, and time spent on the site. This data is not attached to you in any way, and is not used for advertisements by us or Google.",
+        "google_text": "Juxtaposition использует Google Analytics, чтобы отслеживать, как пользователь использует наш сервис. Собрание включают, но не ограничивают, время отслеживания, посещённые страницы, и время проведённое на сайте. Эти данные никаким образом не связаны с вами, и не буду использоваться для рекламы, не нами, и не Google.",
         "ready": "Готовы приступить к использованию Juxt",
-        "ready_text": "First check out some communities and see what people from all over the world are posting about. Take this opportunity to familiarize yourself with Juxt. You might make some new discoveries along the way!",
+        "ready_text": "Сначала проверьте некоторые сообщества, и посмотрите, про что там люди пишут со всего мира. Пользуйтесь этой возможностью, чтобы ознакомится с Juxt. На этом шагу вы можете!",
         "done": "Веселитесь в Juxt!",
         "done_button": "Вперёд!",
         "guest": "Гостевой режим",
-        "guest_text": "We can't verify your account at the moment, which likely means your are currently logging in with a Nintendo Network account. You will still be able to browse Juxt, but you will not be able to Yeah! posts or make posts of your own till you log in with a Pretendo Network account. For more information check the Discord server.",
+        "guest_text": "Мы не можем подтвердить ваш аккаунт на данный момент, что, вероятно означает что вы сейчас в аккаунте Nintendo Network. Вы всё ещё можете просматривать Juxt, но не сможете делать \"Yeah!\" на посты, или делать свои публикации, пока не войдете в аккаунт Pretendo Network. Для получения дополнительной информации зайдите на Discord сервер.",
         "guest_button": "Я понял"
     }
 }
