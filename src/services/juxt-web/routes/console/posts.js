@@ -110,7 +110,9 @@ async function newPost(req, res) {
             miiFace = 'normal_face.png';
             break;
     }
-    let body = req.post.body;
+    let body = req.body.body;
+    if(body)
+        body = req.body.body.replace(/[^A-Za-z\d\s-_!@#$%^&*(){}‛¨ƒºª«»“”„¿¡←→↑↓√§¶†‡¦–—⇒⇔¤¢€£¥™©®+×÷=±∞ˇ˘˙¸˛˜′″µ°¹²³♭♪•…¬¯‰¼½¾♡♥●◆■▲▼☆★♀♂,./?;:'"\[\]]/g, "");
     if(body.length > 280)
         body = body.substring(0,280);
     const document = {
