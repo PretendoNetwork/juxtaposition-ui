@@ -1,1 +1,60 @@
-{}
+{
+    "community": {
+        "following": "Sleduji",
+        "followers": "Sledující",
+        "tags": "Štítky",
+        "follow": "Sledovat komunitu",
+        "posts": "Příspěvky",
+        "recent": "Nejnovější příspěvky",
+        "new": "Nový příspěvek",
+        "popular": "Populární příspěvky",
+        "verified": "Ověřené příspěvky"
+    },
+    "global": {
+        "user_page": "Uživatelská stránka",
+        "messages": "Zprávy",
+        "back": "Zpět",
+        "close": "Zavřít",
+        "notifications": "Oznámení",
+        "private": "Soukromé",
+        "next": "Další",
+        "save": "Uložit",
+        "communities": "Komunity",
+        "go_back": "Jdi zpět",
+        "no_posts": "Žádné příspěvky",
+        "more": "Načíst další příspěvky",
+        "activity_feed": "Přehled aktivity"
+    },
+    "all_communities": {
+        "show_all": "Zobrazit vše",
+        "text": "Všechny komunity",
+        "search": "Vyhledat komunitu...",
+        "new_communities": "Nové komunity",
+        "announcements": "Vyhlášky",
+        "ann_string": "Kliknutím sem zobrazíte nedávné vyhlášky",
+        "popular_places": "Populární místa"
+    },
+    "user_page": {
+        "birthday": "Narozeniny",
+        "country": "Země",
+        "posts": "Příspěvky",
+        "friends": "Přátelé",
+        "follow_user": "Sledovat",
+        "no_friends": "Žádní přátelé",
+        "no_following": "Nesleduje nikoho",
+        "game_experience": "Herní zážitek",
+        "no_followers": "Žádní sledující"
+    },
+    "user_settings": {
+        "profile_settings": "Nastavení profilu",
+        "show_birthday": "Zobrazit narozeniny na profilu"
+    },
+    "language": "Čeština",
+    "notifications": {
+        "new_follower": "vás začal(a) sledovat!",
+        "none": "Žádné oznámení."
+    },
+    "new_post": {
+        "new_post_text": "Nový příspěvek"
+    }
+}
