@@ -1482,7 +1482,7 @@ h2.user-page-subtitle {
     right:45px;
     bottom:25px;
     width:60px;
-    height:60px;
+    height:10px;
     border-radius:30px;
     background-color:#2d1769;
     color:#fff;
@@ -1494,7 +1494,8 @@ h2.user-page-subtitle {
 
 #community-new-post-wrapper > svg {
     margin-top:9px;
-    margin-left:9px
+    margin-left:9px;
+    margin-bottom: -12px;
 }
 
 .new-post-button-text {

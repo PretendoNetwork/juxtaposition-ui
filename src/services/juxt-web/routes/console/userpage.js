@@ -213,7 +213,7 @@ router.post('/follow', upload.none(), async function (req, res) {
         let picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
         //pid, type, reference_id, origin_pid, title, content
         if(picked === null)
-            await util.data.newNotification(userToFollowContent.pid, 2, req.pid, req.pid);
+            await util.data.newNotification({ pid: userToFollowContent.pid, type: "follow", user: req.pid, link: `/users/show?pid=${req.pid}` });
     }
     else if(req.body.type === 'false' && userContent !== null  && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1)
     {

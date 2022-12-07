@@ -1,12 +1,13 @@
 const crypto = require('crypto');
 const NodeRSA = require('node-rsa');
 const fs = require('fs-extra');
+const { isAfter, subHours } = require("date-fns");
 const database = require('./database');
 const logger = require('./logger');
 const config = require('../config.json');
 const { SETTINGS } = require('./models/settings');
 const { CONTENT } = require('./models/content');
-const { NOTIFICATIONS } = require('./models/notifications');
+const { NOTIFICATION } = require('./models/notifications');
 const translations = require('./translations')
 var HashMap = require('hashmap');
 let TGA = require('tga');
@@ -54,19 +55,6 @@ function nameCache() {
     }).catch(error => {
         logger.error(error);
     });
-}
-
-async function saveNotification(pid, type, title, content, reference_id, link) {
-    let notification = {
-        pid: pid,
-        type: type,
-        title: title,
-        content: content,
-        reference_id: reference_id,
-        link: link,
-    }
-    let newNotification = new NOTIFICATIONS(notification);
-    return await newNotification.save();
 }
 
 let methods = {
@@ -327,66 +315,54 @@ let methods = {
 
         await s3.putObject(awsPutParams).promise();
     },
-    newNotification: async function(pid, type, reference_id, origin_pid, title, content) {
-        let user = await database.getUserSettings(origin_pid);
-        /**
-         * 0 like
-         * 1 reply
-         * 2 new follower
-         * 3 other
-         */
+    newNotification: async function(notification) {
+        // Check if a notification with the same pid and type already exists in the database
+        let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: notification.type });
 
-        if(type === 1)
-            return await saveNotification(pid, type, `${user.screen_name} Replied to your post.`, content, reference_id, `/posts/${reference_id}`);
-        else if(type === 2)
-            return await saveNotification(pid, type, `${user.screen_name} Followed you!`, '', reference_id, `/users/show?pid=${origin_pid}`);
+        if (existingNotification) {
+            // Check if the notification is less than 24 hours old
+            let notificationIsLessThan24HoursOld = isAfter(new Date(), subHours(existingNotification.lastUpdated, 24));
 
-        let lastNotification = await database.getLastNotification(pid);
-        if(lastNotification && lastNotification.type === 0 && lastNotification.reference_id === reference_id) {
-            let post = await database.getPostByID(reference_id);
-            let newTitle = '';
-            switch (post.empathy_count) {
-                case 1:
-                    newTitle = `${user.screen_name} Yeahed your post!`;
-                    break;
-                case 2:
-                    newTitle = `${user.screen_name} and 1 other Yeahed your post!`;
-                    break;
-                default:
-                    newTitle = `${user.screen_name} and ${post.empathy_count - 1} others Yeahed your post!`;
-                    break;
+            if (notificationIsLessThan24HoursOld) {
+                if(existingNotification.users.filter(e => (e.user === notification.user)))
+                    return;
+                // If the notification is less than 24 hours old, add the new user and timestamp to the list of users for that notification
+                existingNotification.users.push({
+                    user: notification.user,
+                    timestamp: new Date()
+                });
+                existingNotification.lastUpdated = new Date();
+                await existingNotification.save();
+            } else {
+                // If the notification is more than 24 hours old, create a new notification
+                let newNotification = new NOTIFICATION({
+                    pid: notification.pid,
+                    type: notification.type,
+                    users: [{
+                        user: notification.user,
+                        timestamp: new Date()
+                    }],
+                    link: notification.link,
+                    read: false,
+                    lastUpdated: new Date()
+                });
+                await newNotification.save();
             }
-            lastNotification.title = newTitle;
-            await lastNotification.save();
+        } else {
+            // If a notification with the same pid and type does not already exist, add a new notification to the database
+            let newNotification = new NOTIFICATION({
+                pid: notification.pid,
+                type: notification.type,
+                users: [{
+                    user: notification.user,
+                    timestamp: new Date()
+                }],
+                link: notification.link,
+                read: false,
+                lastUpdated: new Date()
+            });
+            await newNotification.save();
         }
-        else if(type === 0) {
-            let post = await database.getPostByID(reference_id);
-            let newTitle = '';
-            switch (post.empathy_count) {
-                case 1:
-                    newTitle = `${user.screen_name} Yeahed your post!`;
-                    break;
-                case 2:
-                    newTitle = `${user.screen_name} and 1 other Yeahed your post!`;
-                    break;
-                default:
-                    newTitle = `${user.screen_name} and ${post.empathy_count - 1} others Yeahed your post!`;
-                    break;
-            }
-            let newContent;
-            if(!post.body) {
-                if(post.screenshot)
-                    newContent = 'Screenshot Post';
-                else if(post.painting)
-                    newContent = 'Drawing Post';
-            }
-            else
-                newContent = post.body;
-            return await saveNotification(pid, type, newTitle, newContent, reference_id, `/posts/${post.id}`);
-        }
-        else
-            return await saveNotification(pid, type, title, content, reference_id, '');
-
     }
 };
 exports.data = methods;

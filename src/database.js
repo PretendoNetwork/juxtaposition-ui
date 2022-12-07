@@ -4,7 +4,7 @@ const { COMMUNITY } = require('./models/communities');
 const { CONTENT } = require('./models/content');
 const { CONVERSATION } = require('./models/conversation');
 const { ENDPOINT } = require('./models/endpoint');
-const { NOTIFICATIONS } = require('./models/notifications');
+const { NOTIFICATION } = require('./models/notifications');
 const { PNID } = require('./models/pnid');
 const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
@@ -432,14 +432,14 @@ async function getPNID(pid) {
 
 async function getNotifications(pid, limit, offset) {
     verifyConnected();
-    return NOTIFICATIONS.find({
+    return NOTIFICATION.find({
         pid: pid,
-    }).sort({created_at: 1}).skip(offset).limit(limit);
+    }).sort({lastUpdated: 1}).skip(offset).limit(limit);
 }
 
 async function getNotification(pid, type, reference_id) {
     verifyConnected();
-    return NOTIFICATIONS.findOne({
+    return NOTIFICATION.findOne({
         pid: pid,
         type: type,
         reference_id: reference_id
@@ -448,14 +448,14 @@ async function getNotification(pid, type, reference_id) {
 
 async function getLastNotification(pid) {
     verifyConnected();
-    return NOTIFICATIONS.findOne({
+    return NOTIFICATION.findOne({
         pid: pid
-    }).sort({created_at: -1}).limit(1);
+    }).sort({lastUpdated: -1}).limit(1);
 }
 
 async function getUnreadNotificationCount(pid) {
     verifyConnected();
-    return NOTIFICATIONS.find({
+    return NOTIFICATION.find({
         pid: pid,
         read: false
     }).countDocuments();

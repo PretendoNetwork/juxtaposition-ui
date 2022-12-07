@@ -1,10 +1,10 @@
-var express = require('express');
+const express = require('express');
 const ejs = require('ejs');
 const database = require('../../../../database');
 const config = require('../../../../../config.json');
 const path = require('node:path');
-var moment = require('moment');
-var router = express.Router();
+const moment = require('moment');
+const router = express.Router();
 
 router.get('/', async function (req, res) {
     let notifications = await database.getNotifications(req.pid, 25, 0);
@@ -21,6 +21,7 @@ router.get('/', async function (req, res) {
     res.send(html);
     notifications.filter(noti => noti.read === false).forEach(function(notification) {
         notification.markRead();
+        console.log(notification)
     });
 });
 

@@ -1,14 +1,14 @@
-var express = require('express');
+const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
 const rateLimit = require('../../../../middleware/ratelimit');
-var multer  = require('multer');
-var moment = require('moment');
-var upload = multer({ dest: 'uploads/' });
+const multer = require('multer');
+const moment = require('moment');
+const upload = multer({dest: 'uploads/'});
 const snowflake = require('node-snowflake').Snowflake;
-var router = express.Router();
+const router = express.Router();
 
 router.post('/empathy', rateLimit, async function (req, res) {
     let post = await database.getPostByID(req.body.postID);
@@ -21,7 +21,7 @@ router.post('/empathy', rateLimit, async function (req, res) {
         userContent.addToLikes(post.id)
         res.sendStatus(200);
         if(req.pid !== post.pid)
-            await util.data.newNotification(post.pid, 0, post.id, req.pid);
+            await util.data.newNotification({ pid: post.pid, type: "yeah", user: req.pid, link: `/posts/${post.id}` });
     }
     else if(req.body.type === 'down' && userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
     {
@@ -144,18 +144,8 @@ async function newPost(req, res) {
         return res.redirect('/posts/' + req.params.post_id.toString());
     const newPost = new POST(document);
     newPost.save();
-    if(parentPost && (parentPost.pid !== PNID.pid)) {
-        let newContent;
-        if(!parentPost.body) {
-            if(parentPost.screenshot)
-                newContent = 'Screenshot Post';
-            else if(parentPost.painting)
-                newContent = 'Drawing Post';
-        }
-        else
-            newContent = parentPost.body;
-        await util.data.newNotification(parentPost.pid, 1, parentPost.id, req.pid, '', newContent);
-    }
+    if(parentPost && (parentPost.pid !== PNID.pid))
+        await util.data.newNotification({ pid: parentPost.pid, type: "reply", user: req.pid, link: `/posts/${parentPost.id}` });
     if(parentPost)
         res.redirect('/posts/' + req.params.post_id.toString());
     else

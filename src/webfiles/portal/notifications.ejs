@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
@@ -16,36 +17,34 @@
                 <p class="no-posts-text"><%= lang.notifications.none %></p>
             <%} else { %>
                 <% for(let i = notifications.length - 1; i >= 0; i--) { %>
-                    <% var title; if(notifications[i].title.indexOf('NEW_FOLLOWER') !== -1) title = notifications[i].title.replace('NEW_FOLLOWER', lang.notifications.new_follower); else title = notifications[i].title %>
-                    <tr class="message-wrapper<%if(!notifications[i].read) {%>unread<%}%>" data-pjax="<%=notifications[i].link%>">
-                        <%if(notifications[i].type === 0) { %>
+                    <tr class="message-wrapper <%if(!notifications[i].read) {%>unread<%}%>" data-pjax="<%=notifications[i].link%>">
+                        <%let userContent = await database.getUserContent(notifications[i].users[0].user);
+                            let userSettings = await database.getUserSettings(notifications[i].users[0].user)
+                            let userProfile = await database.getPNID(notifications[i].users[0].user);
+                            if(!userContent || !userSettings || !userProfile)
+                                break;
+                        %>
+                        <%if(notifications[i].type === 'yeah') { %>
                             <!--<td class="notification-icon <% if(i === notifications.length - 1) { %>top<%}%>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                             </td>-->
                             <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
-                                <h3><%=title%></h3>
-                                <h4><%=notifications[i].content%></h4>
+                                <h3><%=userProfile.mii.name%> Yeahed your post!</h3>
                             </td>
-                        <%} else if(notifications[i].type === 1) {%>
+                        <%} else if(notifications[i].type === 'reply') {%>
                             <!--<td class="notification-icon <% if(i === notifications.length - 1) { %>top<%}%>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                             </td>-->
                             <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
-                                <h3><%=title%></h3>
-                                <h4><%=notifications[i].content%></h4>
+                                <h3><%=userProfile.mii.name%> Replied to your Post</h3>
+                                <h4></h4>
                             </td>
-                        <%} else if(notifications[i].type === 2) {%>
-                            <%let userContent = await database.getUserContent(notifications[i].reference_id);
-                              let userSettings = await database.getUserSettings(notifications[i].reference_id)
-                              let userProfile = await database.getPNID(notifications[i].reference_id);
-                              if(!userContent || !userSettings || !userProfile)
-                                  break;
-                            %>
+                        <%} else if(notifications[i].type === 'follow') {%>
                             <!--<td class="notification-icon <% if(i === notifications.length - 1) { %>top<%}%>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                             </td>-->
                             <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
-                                <h3><%=title%></h3>
+                                <h3><%=userProfile.mii.name%> Followed You!</h3>
                                 <div>
                                     <%if(userProfile.access_level >= 2) {%>
                                         <img class="community-page-info-icon verified" src="http://mii.olv.pretendo.cc/mii//<%= userContent.pid %>/normal_face.png">
@@ -62,7 +61,7 @@
                                 <%if(!notifications[i].read) {%><div class="unread-badge"></div><%}%>
                             </td>
                             <td class="messages-list-wrapper <% if(i === notifications.length - 1) { %>top<%}%>">
-                                <h3 class="notifications-list-content"><%= title %><span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].created_at).fromNow() %></span></h3>
+                                <h3 class="notifications-list-content">Unknown Notification<span style="color: rgba(113,141,148,1)"> - <%= moment(notifications[i].lastUpdated).fromNow() %></span></h3>
                             </td>
                         <%}%>
                     </tr>

@@ -40,10 +40,12 @@ app.use(juxt_web);
 
 // 404 handler
 logger.info('Creating 404 status handler');
-app.use((request, response) => {
+app.use((req, res) => {
     //logger.warn(request.protocol + '://' + request.get('host') + request.originalUrl);
-    response.status(404);
-    response.send();
+    res.render(req.directory + '/first_run.ejs', {
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+    });
 });
 
 // non-404 error handler
