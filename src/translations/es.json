@@ -6,9 +6,9 @@
         "communities": "Comunidades",
         "messages": "Mensajes",
         "notifications": "Notificaciones",
-        "go_back": "Atrás",
-        "back": "Volver",
-        "yeahs": "Aja",
+        "go_back": "Volver",
+        "back": "Atras",
+        "yeahs": "Geniales",
         "more": "Cargar más publicaciones",
         "no_posts": "No hay publicaciones",
         "private": "Privado",
@@ -27,7 +27,7 @@
         "search": "Buscar comunidades..."
     },
     "community": {
-        "follow": "Seguir esta comunidad",
+        "follow": "Seguir comunidad",
         "following": "Siguiendo",
         "followers": "Seguidores",
         "posts": "Publicaciones",
