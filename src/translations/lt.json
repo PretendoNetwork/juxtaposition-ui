@@ -42,7 +42,7 @@
         "birthday": "Gimimo data",
         "game_experience": "Žadimo Patirtis",
         "posts": "Įkelimai",
-        "following": "Sekameiji",
+        "following": "Sekama",
         "followers": "Sekėjai",
         "following_user": "Sekama",
         "befriend": "Draugauti",
@@ -111,6 +111,12 @@
         "info_text": "Juxt yra naudotojų vedama žaidimo bendruomenė kur tu gali bendrauti su žmonėmis \n                po visą pasaulį. Tu gali rašyti arba nupiešti įrašus žaidimų bendruomėnėse arba nusiūsti žinutes tiesogiai savo draugams.",
         "ready": "Pasiruošęs pradėti naudoti Juxt",
         "guest_text": "Mes dabar neglim patikrinti tavęs, ir tai reiškia kad mes manom kad tu esi prisijungęs su Nintendo Tinklo paskyra. Tu galėsi keliauti pro Juxt bet tu negalėsi Taip!-inti įrašų arba įkelti savo įrašus iki kol neprisijungsi su savo Pretendo Tinklo paskyra. Daugiau informacijos bus mūsų Discord serveryje.",
-        "experience": "Žaidimo patirtis"
+        "experience": "Žaidimo patirtis",
+        "experience_text": {
+            "info": "Prašome pasakyti kaip tu paaiškintum savo patirties lygį žaidimuose. Tu galėsi pakeisti šį nustatymą vėliau.",
+            "beginner": "Pradedantysis",
+            "intermediate": "Pažengęs",
+            "expert": "Ekspertas"
+        }
     }
 }
