@@ -1,3 +1,18 @@
 {
-    "language": "Polski"
+    "language": "Polski",
+    "global": {
+        "exit": "Wyjście",
+        "user_page": "Strona użytkownika",
+        "activity_feed": "Kanał aktywności",
+        "communities": "Społeczności",
+        "messages": "Wiadomości",
+        "notifications": "Powiadomienia",
+        "go_back": "Wróć",
+        "yeahs": "Tak",
+        "more": "Załaduj więcej postów",
+        "no_posts": "Brak postów",
+        "private": "Prywatny",
+        "close": "Blisko",
+        "save": "Ratować"
+    }
 }
