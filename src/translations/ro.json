@@ -1,1 +1,93 @@
-{}
+{
+    "global": {
+        "messages": "Mesaje",
+        "user_page": "Pagina utilizatorului",
+        "activity_feed": "Fluxul de activități",
+        "communities": "Comunități",
+        "notifications": "Notificări",
+        "go_back": "Mergi înapoi",
+        "back": "Înapoi",
+        "yeahs": "Yeah-uri",
+        "more": "Încarcă mai multe postări",
+        "no_posts": "Nicio postare",
+        "private": "Privat",
+        "close": "Închide",
+        "save": "Salvează",
+        "exit": "Ieșire",
+        "next": "Înainte"
+    },
+    "language": "Română",
+    "all_communities": {
+        "announcements": "Anunțuri",
+        "ann_string": "Apasă aici pentru a vedea anunțurile recente!",
+        "popular_places": "Locuri populare",
+        "new_communities": "Comunități noi",
+        "show_all": "Arată toate",
+        "search": "Caută comunități...",
+        "text": "Toate comunitățile"
+    },
+    "community": {
+        "follow": "Urmărește comunitatea",
+        "followers": "Urmăritori",
+        "posts": "Postări",
+        "tags": "Etichete",
+        "recent": "Postări recente",
+        "popular": "Postări populare",
+        "verified": "Postări verificate",
+        "new": "Postare nouă",
+        "following": "Urmărește"
+    },
+    "user_page": {
+        "country": "Țară",
+        "birthday": "Zi de naștere",
+        "game_experience": "Experiență",
+        "posts": "Postări",
+        "friends": "Prieteni",
+        "following": "Urmărește",
+        "followers": "Urmăritori",
+        "follow_user": "Urmărește",
+        "following_user": "Urmărești deja",
+        "befriend": "Deveniți prieteni",
+        "unfriend": "Șterge prieten",
+        "no_following": "Nu urmărește pe nimeni",
+        "no_followers": "Niciun urmăritor",
+        "no_friends": "Niciun prieten",
+        "pending": "În așteptare"
+    },
+    "user_settings": {
+        "profile_settings": "Setările profilului",
+        "show_country": "Arată țara pe profil",
+        "show_birthday": "Arată ziua de naștere pe profil",
+        "show_game": "Arată experiența pe profil",
+        "show_comment": "Arată comentariu pe profil",
+        "profile_comment": "Comentariu de profil",
+        "swearing": "Comentariile de profil nu pot conține limbaj vulgar."
+    },
+    "activity_feed": {
+        "empty": "E gol aici. Urmărește pe cineva!"
+    },
+    "notifications": {
+        "new_follower": "te-a urmărit!",
+        "none": "Nicio notificare."
+    },
+    "new_post": {
+        "new_post_text": "Postare nouă",
+        "post_to": "Postează la",
+        "text_hint": "Apasă aici ca să faci o postare.",
+        "swearing": "Postările nu pot conține limbaj vulgar."
+    },
+    "setup": {
+        "welcome": "Bine ai venit la Juxtaposition!",
+        "beta": "Atenționare beta",
+        "beta_text": {
+            "first": "Sunteți pe cale să testați prima versiune beta publică a Juxt. Asta înseamnă că multe lucruri încă sunt de-a valma și multe lucruri se pot schimba pe viitor.",
+            "second": "Asta include și/sau ștergerea totală a bazei de date la finalul perioadei beta.",
+            "third": "Site-ul, programele și tot conținutul"
+        },
+        "info": "Ce e Juxtaposition?",
+        "welcome_text": "Juxt este o comunitate de jocuri care conectează oamenii din jurul lumii folosind personaje Mii. Folosește Juxt pentru a-ți împărtăși experiențele tale din jocuri și a cunoaște oameni din toată lumea."
+    },
+    "messages": {
+        "coming_soon": "Mesajele nu sunt gata încă. Reveniți mai târziu!"
+    }
+}
