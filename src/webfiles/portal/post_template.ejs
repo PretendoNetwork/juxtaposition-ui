@@ -1,55 +1,40 @@
-<div class="posts-wrapper <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>" id="<%= post.id %>">
-    <div class="post-user-info-wrapper" id="<%= post.id %>">
-        <%if(post.verified) {%>
-            <img class="community-page-post-user-icon verified" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
-            <h2 class="community-page-post-username verified-badge" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
-        <%} else {%>
-            <img class="community-page-post-user-icon" src="<%= post.mii_face_url %>" data-pjax="/users/show?pid=<%= post.pid %>">
-                <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
-        <%}%>
-        <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <a onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);pjax.loadUrl('/communities/<%= post.community_id %>/new')"><%= communityMap.get(post.community_id) %></a></h4>
-
-        <div class="community-page-post-yeah-button-wrapper <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 30 30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-            <div class="community-page-post-yeah-button" onclick="<%if(userContent.pid !== 1000000000) {%>yeah(this.parentNode, '<%= post.id %>')<%}%>"></div>
-        </div>
-        <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
-    </div>
-    <div class="spoiler-overlay" <% if(post.is_spoiler === 0) {%>style="display: none"<%}%>>
-        <button onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1); this.parentElement.style.display = 'none'; document.getElementById('post-content-<%= post.id%>').style.display = 'block'">Click to Show Spoiler</button>
-    </div>
-    <div class="community-page-post-wrapper" id="post-content-<%= post.id%>" <%if(!reply){%>onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1); pjax.loadUrl('/posts/<%= post.id%>')"<%}%> <% if(post.is_spoiler === 1) {%>style="display: none"<%}%>>
-        <% if(post.body !== '' && post.painting === '' && post.screenshot === '' && !post.url) { %>
-            <h3><%= post.body %></h3>
-        <%} else { %>
-            <% if(post.screenshot !== '') { %>
-                <img id="<%= post.id %>" class="community-page-post-screenshot" src="http://mii.olv.pretendo.cc<%= post.screenshot %>">
-            <%}%>
-            <% if(post.painting !== '') { %>
-                <img id="<%= post.id%>" class="community-page-post-painting" src="http://mii.olv.pretendo.cc/paintings/<%=post.pid%>/<%=post.id%>.png">
-            <%}%>
-            <% if(post.url) { %>
+<div id="post-<%= post.id %>" class="post">
+    <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
+        <img src="<%= post.mii_face_url %>" class="mii-icon">
+    </a>
+    <div class="post-body-content">
+        <div class="post-body <%if(userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>">
+            <header>
+                <span class="screen-name"><%= post.screen_name %></span>
+                <span class="timestamp">- <%= moment(post.created_at).fromNow() %></span>
+            </header>
+            <a href="/titles/<%= post.community_id %>" class="community-banner" data-pjax="#body">
+                        <span class="title-icon-container" data-pjax="#body">
+                            <img src="https://mii.olv.pretendo.cc/icons/<%= post.community_id %>/128.png" class="title-icon">
+                        </span>
+                <span class="community-name"><%= communityMap.get(post.community_id) %></span>
+            </a>
+            <div class="post-content">
+                <% if(post.body !== '') { %>
+                    <p class="post-content-text"><%= post.body %></p>
+                <%}%>
+                <% if(post.screenshot !== '') { %>
+                    <img class="post-screenshot" src="http://mii.olv.pretendo.cc<%= post.screenshot %>">
+                <%}%>
+                <% if(post.painting !== '') { %>
+                <img class="post-memo" src="https://mii.olv.pretendo.cc/paintings/<%=post.pid%>/<%=post.id%>.png">
+                <%}%>
+                <% if(post.url) { %>
                     <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <%}%>
-            <% if(post.screenshot !== '' && post.body && post.body.size <= 50) { %>
-                <div class="community-page-post-text-overlay">
-                    <h3><%= post.body %></h3>
-                </div>
-            <%} else {%>
-                <h3><%= post.body %></h3>
-            <%}%>
-        <%}%>
+                <%}%>
+            </div>
+            <div class="post-buttons">
+                <button type="button" class="submit yeah-button <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>"></button>
+                <a href="/posts/<%= post.id %>" class="to-permalink-button" data-pjax="#body">
+                    <span class="feeling"><%=post.empathy_count %></span>
+                    <span class="reply"><%=post.reply_count %></span>
+                </a>
+            </div>
+        </div>
     </div>
-    <%if(post.reply_count > 0) {%>
-    <div class="reply-banner">
-        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 13 13.311">
-            <g id="Icon_feather-corner-down-right" data-name="Icon feather-corner-down-right" transform="translate(-5.25 -5.25)">
-                <path id="Path_47" data-name="Path 47" d="M22.5,15l3.594,3.594L22.5,22.188" transform="translate(-8.594 -4.688)" fill="none" stroke="#673db6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-                <path id="Path_48" data-name="Path 48" d="M6,6v5.031a2.875,2.875,0,0,0,2.875,2.875H17.5" fill="none" stroke="#673db6" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
-            </g>
-        </svg>
-        <h2><%= post.reply_count %> replies</h2>
-    </div>
-    <%}%>
 </div>
-

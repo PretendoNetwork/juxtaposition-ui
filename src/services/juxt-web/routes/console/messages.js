@@ -151,7 +151,6 @@ router.get('/:message_id', async function (req, res) {
     let userMap = await util.data.getUserHash();
     res.render(req.directory + '/message_thread.ejs', {
         moment: moment,
-        pid: req.pid,
         user2: user2,
         conversation: conversation,
         messages: messages,

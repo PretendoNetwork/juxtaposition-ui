@@ -57,51 +57,36 @@ router.get('/announcements', async function (req, res) {
 });
 
 router.get('/:communityID', async function (req, res) {
-    let userSettings = await database.getUserSettings(req.pid);
-    let userContent = await database.getUserContent(req.pid);
-    if(req.params.communityID === 'announcements')
-        return res.redirect('/communities/announcements')
-    let community = await database.getCommunityByID(req.params.communityID.toString());
-    if(community === null && req.query.title_id)
-        community = await database.getCommunityByTitleID(req.query.title_id)
-    if(community === null)
-        return res.sendStatus(404);
-    let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
-    let totalNumPosts = await database.getTotalPostsByCommunity(community)
-    res.render(req.directory + '/community.ejs', {
-        // EJS variable and server-side variable
-        moment: moment,
-        community: community,
-        communityMap: communityMap,
-        newPosts: newPosts,
-        totalNumPosts: totalNumPosts,
-        userSettings: userSettings,
-        userContent: userContent,
-        account_server: config.account_server_domain.slice(8),
-        cdnURL: config.CDN_domain,
-        lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
-    });
+    res.redirect(`/titles/${req.params.communityID}/new`);
 });
 
 router.get('/:communityID/:type', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
     if(req.params.communityID === 'announcements')
-        res.redirect('/communities/announcements')
+        res.redirect('/titles/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
     if(!community) return res.sendStatus(404);
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
+    let posts, type;
+
+    if(req.params.type === 'hot') {
+        posts = await database.getNumberPopularCommunityPostsByID(community, config.post_limit);
+        type = 1;
+    } else if(req.params.type === 'verified') {
+        posts = await database.getNumberVerifiedCommunityPostsByID(community, config.post_limit);
+        type = 2;
+    } else {
+        posts = await database.getNewPostsByCommunity(community, config.post_limit);
+        type = 0;
+    }
     let totalNumPosts = await database.getTotalPostsByCommunity(community)
     res.render(req.directory + '/community.ejs', {
         // EJS variable and server-side variable
         moment: moment,
         community: community,
         communityMap: communityMap,
-        newPosts: newPosts,
+        posts: posts,
         totalNumPosts: totalNumPosts,
         userSettings: userSettings,
         userContent: userContent,
@@ -109,7 +94,8 @@ router.get('/:communityID/:type', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
+        pid: req.pid,
+        type: type
     });
 });
 
