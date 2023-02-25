@@ -18,7 +18,8 @@ router.get('/', async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -42,7 +43,8 @@ router.get('/loadposts', async function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN
+            mii_image_CDN: config.mii_image_CDN,
+            pid: req.pid
         });
     }
     else

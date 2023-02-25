@@ -17,7 +17,8 @@ router.get('/', async function (req, res) {
         newCommunities: newCommunities,
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -27,7 +28,8 @@ router.get('/all', async function (req, res) {
         communities: communities,
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -49,7 +51,8 @@ router.get('/announcements', async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -78,7 +81,8 @@ router.get('/:communityID', async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -104,7 +108,8 @@ router.get('/:communityID/:type', async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -141,7 +146,8 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN
+            mii_image_CDN: config.mii_image_CDN,
+            pid: req.pid
         });
     }
     else

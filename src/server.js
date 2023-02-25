@@ -42,9 +42,10 @@ app.use(juxt_web);
 logger.info('Creating 404 status handler');
 app.use((req, res) => {
     //logger.warn(request.protocol + '://' + request.get('host') + request.originalUrl);
-    res.render(req.directory + '/first_run.ejs', {
+    res.render(req.directory + '/404.ejs', {
         cdnURL: config.CDN_domain,
         lang: req.lang,
+        pid: req.pid
     });
 });
 

@@ -145,6 +145,8 @@ router.get('/:message_id', async function (req, res) {
         return res.sendStatus(404);
     }
     let user2 = conversation.users[0].pid.toString() === req.pid.toString() ? conversation.users[1] : conversation.users[0];
+    if(req.pid !== conversation.users[0] && req.pid !== conversation.users[1])
+        res.redirect('/')
     let messages = await database.getConversationMessages(conversation.id, 100, 0);
     let userMap = await util.data.getUserHash();
     res.render(req.directory + '/message_thread.ejs', {
@@ -156,7 +158,8 @@ router.get('/:message_id', async function (req, res) {
         userMap: userMap,
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
     await conversation.markAsRead(req.pid);
 });

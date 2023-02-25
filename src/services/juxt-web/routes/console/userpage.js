@@ -34,7 +34,8 @@ router.get('/me', async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -84,7 +85,8 @@ router.get('/show', async function (req, res) {
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 
@@ -108,7 +110,8 @@ router.get('/loadPosts', async function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN
+            mii_image_CDN: config.mii_image_CDN,
+            pid: req.pid
         });
     }
     else
@@ -140,7 +143,8 @@ router.get('/following', async function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN
+            mii_image_CDN: config.mii_image_CDN,
+            pid: req.pid
         });
     }
     else
@@ -169,7 +173,8 @@ router.get('/followers', async function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN
+            mii_image_CDN: config.mii_image_CDN,
+            pid: req.pid
         });
     }
     else
@@ -193,7 +198,8 @@ router.get('/friends', async function (req, res) {
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN
+            mii_image_CDN: config.mii_image_CDN,
+            pid: req.pid
         });
     }
     else

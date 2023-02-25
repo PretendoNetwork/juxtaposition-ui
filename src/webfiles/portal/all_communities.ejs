@@ -1,43 +1,32 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-</head>
+<html lang="en">
+<%- include('head', { title: lang.all_communities.text }); %>
 <body>
-<%- include('nav_bar', { selection: 2 }); %>
-<div id="main">
-    <h1 class="page-header"><%= lang.all_communities.text %></h1>
-    <div class="search-container">
-        <form>
-            <div id="search-icon"></div>
-            <input id="search-bar" onchange="searchCommunities()" onkeyup="searchCommunities()" type="text" placeholder="<%= lang.all_communities.search %>" name="search">
-        </form>
-    </div>
-    <div id="community-list" class="communities-wrapper">
-        <table style="padding-top: 30px">
-            <tbody>
-            <tr>
+<%- include('nav_bar', { selection: 2, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class=""><%= lang.all_communities.text %></h1>
+    </header>
+    <div class="body-content">
+        <div class="communities-list">
+            <ul class="list-content-with-icon-column" id="community-new-content">
                 <% for(var i = 0; i < communities.length; i++) {%>
-                    <td>
-                        <div class="community-list-wrapper" data-pjax="/communities/<%= communities[i].community_id %>/new">
-                            <img class="community-list-icon" src="http://mii.olv.pretendo.cc/icons/<%= communities[i].community_id %>/128.png">
-                            <h2 class="community-list-title"><%= communities[i].name %></h2>
-                            <h4 class="community-list-followers" <%if(communities[i].name.length < 16) {%> style="margin-top: 45px" <%}%>><%= communities[i].followers %> followers</h4>
+                    <% var communityID = communities[i].community_id; %>
+                    <li id="<%=communityID%>">
+                        <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
+                        <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button"></a>
+                        <div class="body">
+                            <div class="body-content">
+                                <span class="community-name title"><%= communities[i].name %></span>
+                                <span class="text"><%= communities[i].followers %> <%= lang.community.followers %></span>
+                            </div>
                         </div>
-                    </td>
-                    <% if( (i + 1) % 3 === 0) { %>
-            </tr>
-            <tr>
+                    </li>
                 <% } %>
-                <% } %>
-            </tr>
-            </tbody>
-        </table>
+            </ul>
+        </div>
     </div>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
-<img src="" onerror="wiiuBrowser.showLoadingIcon(!1);">
 </body>
+<body onload="wiiuBrowser.endStartUp();"></body>
 </html>

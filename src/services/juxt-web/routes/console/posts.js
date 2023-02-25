@@ -52,7 +52,8 @@ router.get('/:post_id', async function (req, res) {
         communityMap: communityMap,
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
     });
 });
 

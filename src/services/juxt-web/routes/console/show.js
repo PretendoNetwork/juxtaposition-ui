@@ -23,6 +23,7 @@ router.get('/', async function (req, res) {
                 res.render(req.directory + '/first_run.ejs', {
                     cdnURL: config.CDN_domain,
                     lang: req.lang,
+                    pid: req.pid
                 });
             }
             else {
@@ -44,6 +45,7 @@ router.get('/', async function (req, res) {
                         moment: moment,
                         cdnURL: config.CDN_domain,
                         lang: req.lang,
+                        pid: req.pid
                     });
                 }
                 else
@@ -54,7 +56,8 @@ router.get('/', async function (req, res) {
                         popularCommunities: popularCommunities,
                         newCommunities: newCommunities,
                         cdnURL: config.CDN_domain,
-                        lang: req.lang
+                        lang: req.lang,
+                        pid: req.pid
                     });
                     let pnid = await database.getPNID(req.pid);
                     let usrMii = await database.getUserContent(req.pid);
