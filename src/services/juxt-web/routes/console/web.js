@@ -20,6 +20,11 @@ router.get('/js/:filename', function (req, res) {
     res.sendFile('/js/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
 });
 
+router.get('/images/:filename', function (req, res) {
+    res.set("Content-Type", "image/png");
+    res.sendFile('/images/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
+});
+
 router.get('/fonts/:filename', function (req, res) {
     res.set("Content-Type", "font/woff");
     res.sendFile('/fonts/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});

@@ -56,38 +56,7 @@ router.post('/me', upload.none(), async function (req, res) {
 });
 
 router.get('/show', async function (req, res) {
-    var userID = req.query.pid;
-    if(userID === 'me') {
-        res.sendStatus(504);
-        return;
-    }
-    let parentUserContent = await database.getUserContent(req.pid);
-    let pnid = await database.getPNID(userID);
-    let userContent = await database.getUserContent(userID);
-    let userSettings = await database.getUserSettings(userID);
-    if(userContent === null)
-        return res.sendStatus(404);
-    if(parentUserContent.pid === userContent.pid)
-        return res.redirect('/users/me');
-    let newPosts = await database.getNumberUserPostsByID(userContent.pid, config.post_limit);
-    let numPosts = await database.getTotalPostsByUserID(userContent.pid);
-    let communityMap = await util.data.getCommunityHash();
-    res.render(req.directory + '/user_page.ejs', {
-        // EJS variable and server-side variable
-        communityMap: communityMap,
-        moment: moment,
-        pnid: pnid,
-        userContent: userContent,
-        userSettings: userSettings,
-        newPosts: newPosts,
-        numPosts: numPosts,
-        parentUserContent: parentUserContent,
-        account_server: config.account_server_domain.slice(8),
-        cdnURL: config.CDN_domain,
-        lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
-    });
+   res.redirect(`/users/${req.query.pid}`);
 });
 
 router.get('/loadPosts', async function (req, res) {
@@ -229,6 +198,41 @@ router.post('/follow', upload.none(), async function (req, res) {
     }
     else
         res.sendStatus(423);
+});
+
+router.get('/:pid', async function (req, res) {
+    const userID = req.params.pid;
+    if(userID === 'me') {
+        res.sendStatus(504);
+        return;
+    }
+    let parentUserContent = await database.getUserContent(req.pid);
+    let pnid = await database.getPNID(userID);
+    let userContent = await database.getUserContent(userID);
+    let userSettings = await database.getUserSettings(userID);
+    if(userContent === null)
+        return res.sendStatus(404);
+    if(parentUserContent.pid === userContent.pid)
+        return res.redirect('/users/me');
+    let newPosts = await database.getNumberUserPostsByID(userContent.pid, config.post_limit);
+    let numPosts = await database.getTotalPostsByUserID(userContent.pid);
+    let communityMap = await util.data.getCommunityHash();
+    res.render(req.directory + '/user_page.ejs', {
+        // EJS variable and server-side variable
+        communityMap: communityMap,
+        moment: moment,
+        pnid: pnid,
+        userContent: userContent,
+        userSettings: userSettings,
+        newPosts: newPosts,
+        numPosts: numPosts,
+        parentUserContent: parentUserContent,
+        account_server: config.account_server_domain.slice(8),
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
+    });
 });
 
 module.exports = router;

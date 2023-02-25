@@ -1,145 +1,22 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-</head>
+<%- include('head', { title: pnid.mii.name }); %>
 <body>
-<%- include('nav_bar', { selection: 0 }); %>
-<div id="main">
-    <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
-        <div class="overlay-content">
-            <div id="post-window" class="post-wrapper">
-                <!--Start of Main Post-->
-                <form action="/users/me" method="post" enctype="multipart/form-data">
-                    <table>
-                        <tr>
-                            <td class="post-close-button-wrapper">
-                                <div class="post-close-button" onclick="toggleOverlay()" ><%= lang.global.close %></div>
-                            </td>
-                            <td>
-                                <input type="submit" value="<%= lang.global.save %>" class="submit-button" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h1 class="communities-header" style="padding-left: 75px; padding-top: 50px"><%= lang.user_settings.profile_settings %></h1>
-                            </td>
-                        </tr>
-                        <tr></tr>
-                        <tr>
-                            <td style="padding-left: 75px;">
-                                <label class="checkbox-container"><%= lang.user_settings.show_country %>
-                                    <input type="checkbox" id="country" name="country" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(userSettings.country_visibility){%>checked="checked"<%}%>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 75px;">
-                                <label class="checkbox-container"><%= lang.user_settings.show_birthday %>
-                                    <input type="checkbox" id="birthday" name="birthday" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(userSettings.birthday_visibility){%>checked="checked"<%}%>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 75px;">
-                                <label class="checkbox-container"><%= lang.user_settings.show_game %>
-                                    <input type="checkbox" id="experience" name="experience" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(userSettings.game_skill_visibility){%>checked="checked"<%}%>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 75px;">
-                                <label class="checkbox-container"><%= lang.user_settings.show_comment %>
-                                    <input type="checkbox" id="commentShow" name="commentShow" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);" <%if(userSettings.profile_comment_visibility){%>checked="checked"<%}%>>
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="padding-left: 75px;">
-                                <label for="comment" style="font-size: xx-large"><%= lang.user_settings.profile_comment %></label>
-                                <input type="text" id="comment" name="comment" class="user-input-text-area" maxlength="150" value="<%= userSettings.profile_comment %>" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.user_settings.swearing %>');}">
-                            </td>
-                            <br>
-                        </tr>
-                    </table>
-                </form>
-            </div>
+<%- include('nav_bar', { selection: 1, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <a id="header-communities-button" class="user-page" href="/users/me/settings" data-pjax="#body">Settings</a>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+        <div class="header-banner-container">
+            <img src="/images/banner.png" class="header-banner with-top-button">
         </div>
-    </div>
-    <div id="overlay-filter">
-        <div class="community-page-header" style="background: #673DB6; width: 1150px;"></div>
-        <%- include('scroll_wrapper', { text: pnid.mii.name, lang: lang }); %>
-        <div class="community-page-info-container" style="height: 220px;">
-            <div class="community-page-action-button-wrapper">
-                <div class="user-page-follow-button-wrapper" onclick="toggleOverlay()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 25 25" fill="none" stroke="#716e74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                </div>
-            </div>
-            <%if(pnid.access_level >= 2) {%>
-                <img class="community-page-info-icon verified" src="<%= mii_image_CDN %>/<%= userSettings.pid %>/normal_face.png">
-                <h2 class="user-page-title verified-badge"><%= pnid.mii.name %></h2>
-            <%} else {%>
-                <img class="community-page-info-icon" src="<%= mii_image_CDN %>/<%= userSettings.pid %>/normal_face.png">
-                <h2 class="user-page-title"><%= pnid.mii.name %></h2>
-            <%}%>
-            <h2 class="user-page-subtitle">@<%= pnid.username %></h2>
-            <h4 class="user-page-description"><%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment %> <%}else {%><%= lang.global.private %><%}%></h4>
-            <table class="community-page-table-wrapper">
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="community-page-shaded-info-container">
-                            <h4>
-                                <span class="community-page-table-label"><%= lang.user_page.country %>:</span>
-                                <span class="community-page-table-text"><%if(userSettings.country_visibility){%><%=pnid.country%><%}else {%><%= lang.global.private %><%}%></span>
-                            </h4>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="community-page-shaded-info-container">
-                            <h4>
-                                <span class="community-page-table-label"><%= lang.user_page.birthday %>:</span>
-                                <span class="community-page-table-text"><%if(userSettings.birthday_visibility){%><%=moment.utc(pnid.birthdate).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></span>
-                            </h4>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="community-page-shaded-info-container">
-                            <h4>
-                                <span class="community-page-table-label"><%= lang.user_page.game_experience %>:</span>
-                                <span class="community-page-table-text">
-                                    <%if(userSettings.game_skill_visibility){%>
-                                    <%if(userSettings.game_skill === 0) {%>
-                                        <%= lang.setup.experience_text.beginner %>
-                                    <%} else if(userSettings.game_skill === 1) {%>
-                                        <%= lang.setup.experience_text.intermediate %>
-                                    <%} else if(userSettings.game_skill === 2) {%>
-                                        <%= lang.setup.experience_text.expert %>
-                                    <%} else {%>
-                                        N/A
-                                    <%}%>
-                                    <%}else {%>
-                                        <%= lang.global.private %>
-                                    <%}%>
-                                </span>
-                            </h4>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="community-page-shaded-info-container">
-                            <h4>
-                                <span class="community-page-table-label"><%= lang.global.yeahs %>:</span>
-                                <span class="community-page-table-text">0</span>
-                            </h4>
-                        </div>
-                    </td>
-                    <!--<td>
+        <div class="community-info info-content with-header-banner">
+            <span class="icon-container"><img src="https://mii.olv.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png" class="icon" alt=""></span>
+            <span class="title"><%= pnid.mii.name %></span>
+            <span class="text"><span class="game">@<%= pnid.username %></span><span>|  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><polygon points="128 160 96 160 96 128 192 32 224 64 128 160" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polygon><line x1="164" y1="60" x2="196" y2="92" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><path d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg> <%=numPosts%></span><span>|  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><line x1="204" y1="136" x2="244" y2="136" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="224" y1="116" x2="224" y2="156" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><circle cx="108" cy="100" r="60" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><path d="M22.2,200a112,112,0,0,1,171.6,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg> <%= userContent.following_users.length - 1 %></span></span>
+            <!--<span>
+        <td>
                     <div class="supporter-star mario">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     </div>
@@ -153,79 +30,78 @@
                     <div class="supporter-star mega">
                         <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                     </div>
-                </td>-->
-                    <%if(pnid.access_level === 3) {%>
-                        <td>
-                            <div class="supporter-star dev">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool">
-                                    <defs>
-                                        <linearGradient id="rainbow">
-                                            <stop offset="16%" stop-color="red" />
-                                            <stop offset="32%" stop-color="orange" />
-                                            <stop offset="48%" stop-color="yellow" />
-                                            <stop offset="64%" stop-color="green" />
-                                            <stop offset="80%" stop-color="blue" />
-                                            <stop offset="96%" stop-color="purple" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                                </svg>
-                            </div>
-                        </td>
-                    <%}%>
-                    <%if(pnid.access_level === 2) {%>
-                        <td>
-                            <div class="supporter-star admin">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                            </div>
-                        </td>
-                    <%}%>
-                    <%if(pnid.access_level === 1) {%>
-                        <td>
-                            <div class="supporter-star tester">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
-                            </div>
-                        </td>
-                    <%}%>
-                </tr>
-                </tbody>
-            </table>
+                </td>
+                <%if(pnid.access_level === 3) {%>
+                <td>
+                    <div class="supporter-star dev">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool">
+                            <defs>
+                                <linearGradient id="rainbow">
+                                    <stop offset="16%" stop-color="red" />
+                                    <stop offset="32%" stop-color="orange" />
+                                    <stop offset="48%" stop-color="yellow" />
+                                    <stop offset="64%" stop-color="green" />
+                                    <stop offset="80%" stop-color="blue" />
+                                    <stop offset="96%" stop-color="purple" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                </td>
+                <%}%>
+                <%if(pnid.access_level === 2) {%>
+                <td>
+                    <div class="supporter-star admin">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                </td>
+                <%}%>
+                <%if(pnid.access_level === 1) {%>
+                <td>
+                    <div class="supporter-star tester">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-award"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+                    </div>
+                </td>
+                <%}%>
+      </span>-->
         </div>
-        <div>
-            <table class="community-page-posts-header switcher" style="margin-top: 40px !important;">
-                <tbody>
-                <tr>
-                    <td>
-                        <h4 id="user-page-posts-tab" onclick="switchUserPageTabs(0, '<%= userSettings.pid %>')" class="community-page-posts-header-tab active"><%=numPosts%> <%= lang.user_page.posts %></h4>
-                    </td>
-                    <td>
-                        <h4 id="user-page-friends-tab" onclick="switchUserPageTabs(1, '<%= userSettings.pid %>')" class="community-page-posts-header-tab">0 <%= lang.user_page.friends %></h4>
-                    </td>
-                    <td>
-                        <h4 id="user-page-following-tab" onclick="switchUserPageTabs(2, '<%= userSettings.pid %>')" class="community-page-posts-header-tab"><%= (userContent.followed_users.length - 1) + (userContent.followed_communities.length - 1) %> <%= lang.user_page.following %></h4>
-                    </td>
-                    <td>
-                        <h4 id="user-page-followers-tab" onclick="switchUserPageTabs(3, '<%= userSettings.pid %>')" class="community-page-posts-header-tab"><%= userContent.following_users.length - 1 %> <%= lang.user_page.followers %></h4>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="community-page-post-box" <% if(numPosts === 0) {%>style="height: 110px"<%}%>>
+        <menu class="tab-header user-page">
+            <li id="tab-header-post" class="tab-button selected">
+                <a href="/users/me" data-sound="SE_WAVE_SELECT_TAB">
+                    <span class="new-post"><%= lang.user_page.posts %></span>
+                </a>
+            </li>
+            <li id="tab-header-friends" class="tab-button">
+                <a href="/users/me/friends" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.user_page.friends %></span>
+                </a>
+            </li>
+            <li id="tab-header-following" class="tab-button">
+                <a href="/users/me/following" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.user_page.following %></span>
+                </a>
+            </li>
+            <li id="tab-header-followers" class="tab-button">
+                <a href="/users/me/followers" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.user_page.followers %></span>
+                </a>
+            </li>
+        </menu>
+        <div class="tab-body post-list">
             <% if(numPosts === 0) {%>
                 <p class="no-posts-text"><%= lang.global.no_posts %></p>
             <%} else { %>
-                <button id="load-more-posts-button" data-offset="10" onclick="loadUserPosts(this, '<%= userSettings.pid %>')"><%= lang.global.more %></button>
                 <% newPosts.forEach(function(post) { %>
-                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, user: userContent, reply: false  }); %>
                 <% }); %>
             <%}%>
         </div>
-        <br>
-        <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
+        <div class="button-wrapper center">
+            <button type="button" class="load-more"><%= lang.global.more %></button>
+        </div>
+
     </div>
 </div>
-<br>
-<body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1);wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>

@@ -22,9 +22,9 @@
         </div>
         <menu class="tab-header">
             <li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
-                <a href="/titles/<%= community.community_id %>/new" data-pjax="#community-tab-body" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
+                <a href="/titles/<%= community.community_id %>/new" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
             </li>
-            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.community_id %>/hot" data-pjax="#community-tab-body" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
+            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
         </menu>
         <div id="new-post-button-container" class="none">
             <a href="#" class="button" data-offset="10" onclick="loadFeedPosts(this)"><%= lang.global.more %></a>
