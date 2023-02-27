@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <%- include('head', { title: pnid.mii.name }); %>
 <body>
 <%- include('nav_bar', { selection: 1, pid: pid }); %>
@@ -14,7 +14,13 @@
         <div class="community-info info-content with-header-banner">
             <span class="icon-container"><img src="https://mii.olv.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png" class="icon" alt=""></span>
             <span class="title"><%= pnid.mii.name %></span>
-            <span class="text"><span class="game">@<%= pnid.username %></span><span>|  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><polygon points="128 160 96 160 96 128 192 32 224 64 128 160" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polygon><line x1="164" y1="60" x2="196" y2="92" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><path d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg> <%=numPosts%></span><span>|  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><line x1="204" y1="136" x2="244" y2="136" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="224" y1="116" x2="224" y2="156" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><circle cx="108" cy="100" r="60" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><path d="M22.2,200a112,112,0,0,1,171.6,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg> <%= userContent.following_users.length - 1 %></span></span>
+            <span class="text">
+                <span class="game">@<%= pnid.username %></span>
+                <span>|  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><polygon points="128 160 96 160 96 128 192 32 224 64 128 160" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polygon><line x1="164" y1="60" x2="196" y2="92" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><path d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
+                    <%=numPosts%></span>
+                <span>|  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><line x1="204" y1="136" x2="244" y2="136" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="224" y1="116" x2="224" y2="156" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><circle cx="108" cy="100" r="60" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><path d="M22.2,200a112,112,0,0,1,171.6,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
+                    <%= userContent.following_users.length - 1 %></span>
+            </span>
             <!--<span>
         <td>
                     <div class="supporter-star mario">

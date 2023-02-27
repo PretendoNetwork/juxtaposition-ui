@@ -12,6 +12,8 @@ const router = express.Router();
 
 router.post('/empathy', rateLimit, async function (req, res) {
     let post = await database.getPostByID(req.body.postID);
+    if(!post)
+        return res.sendStatus(404);
     let userContent = await database.getUserContent(req.pid);
     if(!userContent)
         return res.sendStatus(423);

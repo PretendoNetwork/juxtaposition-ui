@@ -176,7 +176,7 @@ router.get('/friends', async function (req, res) {
         res.send('<p class="no-posts-text">' + req.lang.user_page.no_friends + '</p>')
     }
 });
-
+// TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
     let userToFollowContent = await database.getUserContent(req.body.userID);
     let userContent = await database.getUserContent(req.pid);

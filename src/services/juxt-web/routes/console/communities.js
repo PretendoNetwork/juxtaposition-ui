@@ -38,12 +38,12 @@ router.get('/announcements', async function (req, res) {
     let userContent = await database.getUserContent(req.pid);
     let community = await database.getCommunityByID('announcements');
     let communityMap = await util.data.getCommunityHash();
-    let newPosts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
+    let posts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
     let totalNumPosts = await database.getTotalPostsByCommunity(community);
     res.render(req.directory + '/announcements.ejs', {
         moment: moment,
         community: community,
-        newPosts: newPosts,
+        posts: posts,
         communityMap: communityMap,
         userSettings: userSettings,
         userContent: userContent,
@@ -141,7 +141,7 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
         res.sendStatus(204);
     }
 });
-
+// TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
     let community = await database.getCommunityByID(req.body.communityID);
     let userContent = await database.getUserContent(req.pid);

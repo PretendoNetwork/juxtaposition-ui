@@ -1,6 +1,6 @@
 <div id="post-<%= post.id %>" class="post">
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
-        <img src="<%= post.mii_face_url %>" class="mii-icon">
+        <img src="<%= post.mii_face_url.replace('http:', 'https:') %>" class="mii-icon">
     </a>
     <div class="post-body-content">
         <div class="post-body <%if(userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>">
@@ -19,7 +19,7 @@
                     <p class="post-content-text"><%= post.body %></p>
                 <%}%>
                 <% if(post.screenshot !== '') { %>
-                    <img class="post-screenshot" src="http://mii.olv.pretendo.cc<%= post.screenshot %>">
+                    <img class="post-screenshot" src="https://mii.olv.pretendo.cc<%= post.screenshot %>">
                 <%}%>
                 <% if(post.painting !== '') { %>
                 <img class="post-memo" src="https://mii.olv.pretendo.cc/paintings/<%=post.pid%>/<%=post.id%>.png">
@@ -29,7 +29,7 @@
                 <%}%>
             </div>
             <div class="post-buttons">
-                <button type="button" class="submit yeah-button <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>"></button>
+                <button type="button" class="submit yeah-button <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>" data-post="<%= post.id %>"></button>
                 <a href="/posts/<%= post.id %>" class="to-permalink-button" data-pjax="#body">
                     <span class="feeling"><%=post.empathy_count %></span>
                     <span class="reply"><%=post.reply_count %></span>
