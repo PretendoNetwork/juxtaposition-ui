@@ -17,22 +17,22 @@ router.post('/empathy', rateLimit, async function (req, res) {
     let userContent = await database.getUserContent(req.pid);
     if(!userContent)
         return res.sendStatus(423);
-    if(req.body.type === 'up' && userContent.likes.indexOf(post.id) === -1 && userContent.pid !== post.pid)
+    if(userContent.likes.indexOf(post.id) === -1 && userContent.pid !== post.pid)
     {
         post.upEmpathy();
         userContent.addToLikes(post.id)
-        res.sendStatus(200);
+        res.send({ status: 200, id: post.id, count: post.empathy_count });
         if(req.pid !== post.pid)
             await util.data.newNotification({ pid: post.pid, type: "yeah", user: req.pid, link: `/posts/${post.id}` });
     }
-    else if(req.body.type === 'down' && userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
+    else if(userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
     {
         post.downEmpathy();
         userContent.removeFromLike(post.id);
-        res.sendStatus(200);
+        res.send({ status: 200, id: post.id, count: post.empathy_count });
     }
     else
-        res.sendStatus(423);
+        res.send({ status: 423, id: post.id, count: post.empathy_count });
 });
 
 router.get('/:post_id', async function (req, res) {
