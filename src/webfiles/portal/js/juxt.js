@@ -22,34 +22,35 @@ function initYeah() {
     if (!buttons) return;
     for (var i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", function(e) {
-            var el = e.currentTarget;
-            var parent = document.getElementById(el.getAttribute("data-post"));
+            var el = e.currentTarget, id = el.getAttribute("data-post");
+            var parent = document.getElementById(id);
+            var count = document.getElementById("count-" + id)
 
             el.disabled = true;
-            var params = "postID=" + el.getAttribute("data-post");
+            var params = "postID=" + id;
             if(el.classList.contains('selected')) {
                 el.classList.remove('selected');
                 parent.classList.remove('yeah');
-                params += "&type=down";
+                count.innerText -= 1;
                 wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+
             }
             else {
                 el.classList.add('selected');
                 parent.classList.add('yeah');
-                params += "&type=up";
+                count.innerText = ++count.innerText;
                 wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
             }
+
             POST('/posts/empathy', params, function a(data) {
                 var post = JSON.parse(data.response);
-                if(!post)
-                    return wiiuErrorViewer.openByCode(1155927);
-                if(post.status !== 200) {
+                if(!post || post.status !== 200) {
                     // Apparently there was an actual error code for not being able to yeah a post, who knew!
                     // TODO: Find more of these
                     return wiiuErrorViewer.openByCode(1155927);
                 }
                 el.disabled = false;
-                document.getElementById("count-" + post.id).innerText = post.count;
+                count.innerText = post.count;
             });
         });
     }

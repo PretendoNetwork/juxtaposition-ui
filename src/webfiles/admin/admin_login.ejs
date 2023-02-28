@@ -62,7 +62,7 @@
             if (xhr.readyState === 4) {
                 if(xhr.status === 200)
                 {
-                    setCookie('token', xmlToJSON.parseString(xhr.responseText).service_token[0].token[0]._text)
+                    setCookie('access_token', xmlToJSON.parseString(xhr.responseText).service_token[0].token[0]._text)
                     console.log(xmlToJSON.parseString(xhr.responseText).service_token[0].token[0]._text);
                     location.assign('/');
                 }
@@ -77,7 +77,7 @@
 
     function setCookie(cname, cvalue) {
         var date = new Date();
-        date.setTime(date.getTime() + (60 * 60 * 1000));
+        date.setTime(date.getTime() + (480 * 60 * 1000));
         var expires = "expires="+ date.toUTCString();
         var domain = document.location.host.indexOf('miiverse.cc') === -1 ? 'domain=pretendo.cc;' : 'domain=miiverse.cc;';
         document.cookie = cname + "=" + cvalue + ";" + domain +  expires + date.toGMTString();

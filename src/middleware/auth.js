@@ -67,7 +67,7 @@ function auth(request, response, next) {
         }
     }
     else {
-        let token = request.cookies.token || request.headers["x-nintendo-servicetoken"];
+        let token = request.cookies.access_token || request.headers["x-nintendo-servicetoken"];
         if(!token) {
             return response.render('portal/ban_notification.ejs', {
                 user: null,
