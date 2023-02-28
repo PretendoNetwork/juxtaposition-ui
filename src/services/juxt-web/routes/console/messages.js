@@ -1,13 +1,12 @@
-var express = require('express');
-var xml = require('object-to-xml');
+const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
-var moment = require('moment');
+const moment = require('moment');
 const {CONVERSATION} = require("../../../../models/conversation");
 const snowflake = require('node-snowflake').Snowflake;
-var router = express.Router();
+const router = express.Router();
 
 router.get('/', async function (req, res) {
     let conversations = await database.getConversations(req.pid.toString());

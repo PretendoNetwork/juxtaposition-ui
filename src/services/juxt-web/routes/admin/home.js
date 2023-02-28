@@ -1,15 +1,14 @@
-var express = require('express');
-var xml = require('object-to-xml');
+const express = require('express');
 const database = require('../../../../database');
 const logger = require('../../../../logger');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const request = require("request");
-var path = require('path');
-var moment = require('moment');
-var multer  = require('multer');
-var upload = multer({ dest: 'uploads/' });
-var router = express.Router();
+const path = require('path');
+const moment = require('moment');
+const multer  = require('multer');
+const upload = multer({ dest: 'uploads/' });
+const router = express.Router();
 
 router.get('/', upload.none(), async function (req, res) {
     let user = await database.getUserSettings(req.pid);

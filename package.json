@@ -38,7 +38,9 @@
     "pako": "^2.0.2",
     "pngjs": "^6.0.0",
     "sharp": "^0.28.1",
-    "tga": "^1.0.4"
+    "tga": "^1.0.4",
+    "xml2js": "^0.4.23",
+    "xmlbuilder2": "^3.0.2"
   },
   "devDependencies": {
     "bmp-js": "^0.1.0",

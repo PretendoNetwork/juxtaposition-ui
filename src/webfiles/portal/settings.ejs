@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('head', { title: lang.user_settings.profile_settings }); %>
+<body>
+<%- include('nav_bar', { selection: 1, pid: pid }); %>
+<div id="body">
+    <header id="header"></header>
+    <div class="body-content">
+        <div class="settings-list-content">
+            <ul class="settings-list">
+                <li data-name="profile_comment_visibility" class="scroll">
+                    <p class="settings-label"><%= lang.user_settings.show_country %></p>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="country" name="country" value="true" checked="<%if(userSettings.country_visibility) {%>checked<%}%>">
+                        <span class="checkmark"></span>
+                    </label>
+                </li>
+
+                <li data-name="game_skill" class="scroll">
+                    <p class="settings-label"><%= lang.user_settings.show_birthday %></p>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="birthday" name="birthday" value="true" checked="<%if(userSettings.birthday_visibility) {%>checked<%}%>">
+                        <span class="checkmark"></span>
+                    </label>
+                </li>
+
+                <li data-name="game_skill_visibility" class="scroll">
+                    <p class="settings-label"><%= lang.user_settings.show_game %></p>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="experience" name="experience" value="true" checked="<%if(userSettings.game_skill_visibility) {%>checked<%}%>">
+                        <span class="checkmark"></span>
+                    </label>
+                </li>
+
+                <!--<li data-name="birthday_visibility" class="scroll">
+                    <p class="settings-label">Show Profile Comment on Profile</p>
+                    <label class="checkbox-container">
+                        <input type="checkbox" id="comment" name="comment" value="true" checked="<%if(userSettings.profile_comment_visibility) {%>checked<%}%>">
+                        <span class="checkmark"></span>
+                    </label>
+                </li>-->
+                </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

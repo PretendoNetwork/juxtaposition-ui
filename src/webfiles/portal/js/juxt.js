@@ -55,9 +55,9 @@ document.addEventListener("pjax:complete", function() {
     console.log("Event: pjax:complete", arguments);
     wiiuBrowser.showLoadingIcon(false);
 });
-document.addEventListener("pjax:error", function() {
+document.addEventListener("pjax:error", function(e) {
     wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send the error code and what you were doing in #support');
-    console.log(event.options.request);
+    console.log(e.options.request);
     wiiuBrowser.showLoadingIcon(false);
 });
 document.addEventListener("pjax:success", function() {

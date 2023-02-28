@@ -1,13 +1,11 @@
-var express = require('express');
-var xml = require('object-to-xml');
+const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-var multer  = require('multer');
-var moment = require('moment');
-const {data} = require("../../../../util");
-var upload = multer({ dest: 'uploads/' });
-var router = express.Router();
+const multer  = require('multer');
+const moment = require('moment');
+const upload = multer({ dest: 'uploads/' });
+const router = express.Router();
 
 router.get('/menu', async function (req, res) {
     let user = await database.getUserSettings(req.pid);
@@ -31,6 +29,23 @@ router.get('/me', async function (req, res) {
         userSettings: userSettings,
         newPosts: newPosts,
         numPosts: numPosts,
+        account_server: config.account_server_domain.slice(8),
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid
+    });
+});
+
+router.get('/me/settings', async function (req, res) {
+    let pnid = await database.getPNID(req.pid);
+    let userSettings = await database.getUserSettings(req.pid);
+    let communityMap = await util.data.getCommunityHash();
+    res.render(req.directory + '/settings.ejs', {
+        communityMap: communityMap,
+        moment: moment,
+        pnid: pnid,
+        userSettings: userSettings,
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,

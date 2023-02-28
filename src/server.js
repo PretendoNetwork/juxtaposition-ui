@@ -2,7 +2,6 @@ process.title = 'Pretendo - Miiverse';
 const express = require('express');
 const morgan = require('morgan');
 const ejs = require('ejs');
-const xmlparser = require('./middleware/xml-parser');
 const cookieParser = require('cookie-parser');
 const auth = require('./middleware/auth');
 const database = require('./database');
@@ -30,7 +29,6 @@ app.use(express.urlencoded({
     limit: '1mb',
 }));
 
-app.use(xmlparser);
 app.use(cookieParser());
 app.use(auth);
 

@@ -1,12 +1,11 @@
-var express = require('express');
-var xml = require('object-to-xml');
+const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-var multer  = require('multer');
-var moment = require('moment');
-var upload = multer({ dest: 'uploads/' });
-var router = express.Router();
+const multer = require('multer');
+const moment = require('moment');
+const upload = multer({dest: 'uploads/'});
+const router = express.Router();
 
 router.get('/', async function (req, res) {
     let popularCommunities = await database.getMostPopularCommunities(9);

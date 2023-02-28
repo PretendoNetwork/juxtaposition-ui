@@ -1,10 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var xml = require('object-to-xml');
+const express = require('express');
+const router = express.Router();
 const database = require('../../../../database');
-const util = require('../../../../util');
-var path = require('path');
-const {data} = require("../../../../util");
+const path = require('path');
 
 router.get('/', function (req, res) {
     res.redirect('/titles/show')
@@ -32,7 +29,7 @@ router.get('/fonts/:filename', function (req, res) {
 
 router.get('/favicon.ico', function (req, res) {
     res.set("Content-Type", "image/x-icon");
-    res.sendFile('/css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
+    res.sendFile('/images/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
 });
 
 router.get('/icons/:image_id.png', async function (req, res) {

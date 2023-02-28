@@ -1,16 +1,16 @@
-var express = require('express');
+const express = require('express');
 const database = require('../../../../database');
 const logger = require('../../../../logger');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { COMMUNITY } = require('../../../../models/communities');
 const { POST } = require('../../../../models/post');
-var router = express.Router();
+const router = express.Router();
 const moment = require('moment');
-var multer  = require('multer');
+const multer  = require('multer');
 const snowflake = require('node-snowflake').Snowflake;
-var storage = multer.memoryStorage();
-var upload = multer({ storage: storage });
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 router.get('/communities/all', async function(req, res) {
     let user = await database.getUserByPID(req.pid);

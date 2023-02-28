@@ -1,12 +1,11 @@
-var express = require('express');
-var xml = require('object-to-xml');
+const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 
-var moment = require('moment');
-const {data} = require("../../../../util");
-var router = express.Router();
+const moment = require('moment');
+const { data } = require("../../../../util");
+const router = express.Router();
 
 router.get('/', async function (req, res) {
     try {
