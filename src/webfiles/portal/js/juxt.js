@@ -54,7 +54,6 @@ function initYeah() {
         });
     }
 }
-
 function initTabs() {
     var els = document.querySelectorAll(".tab-button");
     if (!els) return;
@@ -77,12 +76,14 @@ function initTabs() {
                     document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
                     window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
                     pjax.refresh();
+                    initYeah();
                 }
             })
 
         });
     }
 }
+
 console.log("Document initialized:", window.location.href);
 document.addEventListener("pjax:send", function() {
     console.log("Event: pjax:send", arguments[0].explicitOriginalTarget.getAttribute("data-sound"));
@@ -320,7 +321,6 @@ function POST(url, data, callback) {
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(data);
 }
-
 function GET(url, callback) {
     wiiuBrowser.showLoadingIcon(true);
     var xhttp = new XMLHttpRequest();

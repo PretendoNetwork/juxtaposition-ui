@@ -79,14 +79,30 @@ router.get('/:communityID/:type', async function (req, res) {
         posts = await database.getNewPostsByCommunity(community, config.post_limit);
         type = 0;
     }
-    let totalNumPosts = await database.getTotalPostsByCommunity(community)
+    let numPosts = await database.getTotalPostsByCommunity(community)
+
+    let bundle = {
+        posts,
+        numPosts,
+        communityMap,
+        userContent,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+    }
+
+    if(req.query.pjax)
+        return res.render(req.directory + '/partials/posts_list.ejs', {
+            bundle,
+            moment
+        });
+
     res.render(req.directory + '/community.ejs', {
         // EJS variable and server-side variable
         moment: moment,
         community: community,
         communityMap: communityMap,
         posts: posts,
-        totalNumPosts: totalNumPosts,
+        totalNumPosts: numPosts,
         userSettings: userSettings,
         userContent: userContent,
         account_server: config.account_server_domain.slice(8),
@@ -94,7 +110,9 @@ router.get('/:communityID/:type', async function (req, res) {
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
         pid: req.pid,
-        type: type
+        type,
+        bundle,
+        template: 'posts_list',
     });
 });
 

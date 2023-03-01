@@ -31,13 +31,7 @@
             <div id="new-post"></div>
         </div>
         <div class="tab-body post-list">
-            <% if(totalNumPosts === 0) {%>
-                <p class="no-posts-text"><%= lang.global.no_posts %></p>
-            <%} else { %>
-                    <% posts.forEach(function(post) { %>
-                        <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-                    <% }); %>
-            <%}%>
+            <%- include('partials/' + template, { bundle }); %>
         </div>
     </div>
 </div>

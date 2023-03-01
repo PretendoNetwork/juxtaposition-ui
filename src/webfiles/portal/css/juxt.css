@@ -429,6 +429,18 @@ input, label, button {
 .post-list .post {
     padding: 15px 0;
 }
+
+.reply .mii-icon-container {
+    float: right !important;
+    margin-right: 55px !important;
+}
+
+.reply .post-body-content {
+    float: right !important;
+    margin-right: 20px !important;
+}
+
+
 .post-list .post .mii-icon-container {
     position: relative;
     display: block;

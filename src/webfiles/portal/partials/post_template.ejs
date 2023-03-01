@@ -1,4 +1,4 @@
-<div id="post-<%= post.id %>" class="post">
+<div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%>">
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
         <img src="<%= post.mii_face_url.replace('http:', 'https:') %>" class="mii-icon">
     </a>
@@ -8,12 +8,14 @@
                 <span class="screen-name"><%= post.screen_name %></span>
                 <span class="timestamp">- <%= moment(post.created_at).fromNow() %></span>
             </header>
+            <%if(!reply) {%>
             <a href="/titles/<%= post.community_id %>" class="community-banner" data-pjax="#body">
                         <span class="title-icon-container" data-pjax="#body">
                             <img src="https://mii.olv.pretendo.cc/icons/<%= post.community_id %>/128.png" class="title-icon">
                         </span>
                 <span class="community-name"><%= communityMap.get(post.community_id) %></span>
             </a>
+            <%}%>
             <div class="post-content">
                 <% if(post.body !== '') { %>
                     <p class="post-content-text"><%= post.body %></p>
@@ -32,7 +34,9 @@
                 <button type="button" class="submit yeah-button <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>" data-post="<%= post.id %>"></button>
                 <a href="/posts/<%= post.id %>" class="to-permalink-button" data-pjax="#body">
                     <span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
+                    <%if(!reply) {%>
                     <span class="reply"><%=post.reply_count %></span>
+                    <%}%>
                 </a>
             </div>
         </div>
