@@ -14,28 +14,7 @@ router.get('/menu', async function (req, res) {
     });
 });
 
-router.get('/me', async function (req, res) {
-    let pnid = await database.getPNID(req.pid);
-    let userContent = await database.getUserContent(req.pid);
-    let userSettings = await database.getUserSettings(req.pid);
-    let newPosts = await database.getNumberUserPostsByID(req.pid, config.post_limit);
-    let numPosts = await database.getTotalPostsByUserID(req.pid);
-    let communityMap = await util.data.getCommunityHash();
-    res.render(req.directory + '/me_page.ejs', {
-        communityMap: communityMap,
-        moment: moment,
-        pnid: pnid,
-        userContent: userContent,
-        userSettings: userSettings,
-        newPosts: newPosts,
-        numPosts: numPosts,
-        account_server: config.account_server_domain.slice(8),
-        cdnURL: config.CDN_domain,
-        lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
-    });
-});
+router.get('/me', async function (req, res) { await userPage(req, res, req.pid) });
 
 router.get('/me/settings', async function (req, res) {
     let pnid = await database.getPNID(req.pid);
@@ -53,6 +32,8 @@ router.get('/me/settings', async function (req, res) {
         pid: req.pid
     });
 });
+
+router.get('/me/:type', async function (req, res) { await userRelations(req, res, req.pid) });
 
 router.post('/me', upload.none(), async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
@@ -86,7 +67,7 @@ router.get('/loadPosts', async function (req, res) {
     let communityMap = await util.data.getCommunityHash();
     if(newPosts.length > 0)
     {
-        res.render(req.directory + '/more_posts.ejs', {
+        res.render(req.directory + '/posts_list.ejs', {
             communityMap: communityMap,
             moment: moment,
             userContent: userContent,
@@ -105,92 +86,6 @@ router.get('/loadPosts', async function (req, res) {
     }
 });
 
-router.get('/following', async function (req, res) {
-    let user = await database.getUserContent(req.query.pid);
-    let followers = await database.getFollowedUsers(user);
-    let communities = user.followed_communities;
-    let communityMap = await util.data.getCommunityHash();
-
-    if(followers[0] === '0')
-        followers.splice(0, 0);
-    if(communities[0] === '0')
-        communities.splice(0, 1);
-
-    if((followers.length + communities.length) > 0)
-    {
-        res.render(req.directory + '/following_list.ejs', {
-            moment: moment,
-            user: user,
-            followers: followers,
-            communities: communities,
-            communityMap: communityMap,
-            account_server: config.account_server_domain.slice(8),
-            cdnURL: config.CDN_domain,
-            lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN,
-            pid: req.pid
-        });
-    }
-    else
-    {
-        res.send('<p class="no-posts-text">' + req.lang.user_page.no_following + '</p>')
-    }
-});
-
-router.get('/followers', async function (req, res) {
-    let user = await database.getUserContent(req.query.pid);
-    let followers = await database.getFollowingUsers(user);
-    let communities = [];
-    let userMap = await util.data.getUserHash();
-
-    if(followers[0] === '0')
-        followers.splice(0, 1);
-
-    if(followers.length > 0)
-    {
-        res.render(req.directory + '/following_list.ejs', {
-            moment: moment,
-            user: user,
-            followers: followers,
-            communities: communities,
-            userMap: userMap,
-            account_server: config.account_server_domain.slice(8),
-            cdnURL: config.CDN_domain,
-            lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN,
-            pid: req.pid
-        });
-    }
-    else
-    {
-        res.send('<p class="no-posts-text">' + req.lang.user_page.no_followers + '</p>')
-    }
-});
-
-router.get('/friends', async function (req, res) {
-    let user = await database.getUserContent(req.query.pid);
-    let friends = null;
-    let userMap = await util.data.getUserHash();
-
-    if(friends)
-    {
-        res.render(req.directory + '/following_list.ejs', {
-            moment: moment,
-            user: user,
-            friends: friends,
-            userMap: userMap,
-            account_server: config.account_server_domain.slice(8),
-            cdnURL: config.CDN_domain,
-            lang: req.lang,
-            mii_image_CDN: config.mii_image_CDN,
-            pid: req.pid
-        });
-    }
-    else
-    {
-        res.send('<p class="no-posts-text">' + req.lang.user_page.no_friends + '</p>')
-    }
-});
 // TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
     let userToFollowContent = await database.getUserContent(req.body.userID);
@@ -217,37 +112,125 @@ router.post('/follow', upload.none(), async function (req, res) {
 
 router.get('/:pid', async function (req, res) {
     const userID = req.params.pid;
-    if(userID === 'me') {
-        res.sendStatus(504);
-        return;
-    }
-    let parentUserContent = await database.getUserContent(req.pid);
+    if(userID === 'me' || Number(userID) === req.pid)
+        return res.redirect('/users/me');
+    await userPage(req, res, userID);
+});
+
+router.get('/:pid/:type', async function (req, res) {
+    const userID = req.params.pid;
+    if(userID === 'me' || Number(userID) === req.pid)
+        return res.redirect('/users/me');
+    await userRelations(req, res, userID);
+});
+
+async function userPage(req, res, userID) {
     let pnid = await database.getPNID(userID);
     let userContent = await database.getUserContent(userID);
+    if(isNaN(userID) || !pnid)
+        return res.redirect('/404');
     let userSettings = await database.getUserSettings(userID);
-    if(userContent === null)
-        return res.sendStatus(404);
-    if(parentUserContent.pid === userContent.pid)
-        return res.redirect('/users/me');
-    let newPosts = await database.getNumberUserPostsByID(userContent.pid, config.post_limit);
-    let numPosts = await database.getTotalPostsByUserID(userContent.pid);
+    let posts = await database.getNumberUserPostsByID(userID, config.post_limit);
+    let numPosts = await database.getTotalPostsByUserID(userID);
     let communityMap = await util.data.getCommunityHash();
+
+    let bundle = {
+        posts,
+        numPosts,
+        communityMap,
+        userContent,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+    }
+
+    if(req.query.pjax)
+        return res.render(req.directory + '/partials/posts_list.ejs', {
+            bundle,
+            moment
+        });
+    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
+    let parentUserContent;
+    if(pnid.pid !== req.pid)
+        parentUserContent = await database.getUserContent(req.pid);
+
     res.render(req.directory + '/user_page.ejs', {
-        // EJS variable and server-side variable
-        communityMap: communityMap,
-        moment: moment,
-        pnid: pnid,
-        userContent: userContent,
-        userSettings: userSettings,
-        newPosts: newPosts,
-        numPosts: numPosts,
-        parentUserContent: parentUserContent,
+        template: 'posts_list',
+        selection: 0,
+        moment,
+        pnid,
+        numPosts,
+        userContent,
+        userSettings,
+        bundle,
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
+        pid: req.pid,
+        link,
+        parentUserContent
     });
-});
+}
+
+async function userRelations(req, res, userID) {
+    let pnid = await database.getPNID(userID);
+    let userContent = await database.getUserContent(userID);
+    if(isNaN(userID) || !pnid)
+        return res.redirect('/404');
+
+    let followers, communities, communityMap, selection;
+
+    if(req.params.type === 'followers') {
+        followers = await database.getFollowingUsers(userContent);
+        communities = [];
+        selection = 3;
+    }
+    else {
+        followers = await database.getFollowedUsers(userContent);
+        communities = userContent.followed_communities;
+        communityMap = await util.data.getCommunityHash();
+        selection = 2;
+    }
+
+    if(followers[0] === '0')
+        followers.splice(0, 0);
+    if(communities[0] === '0')
+        communities.splice(0, 1);
+
+    let bundle = {
+        followers: followers,
+        communities: communities,
+        communityMap: communityMap
+    }
+
+    if(req.query.pjax)
+        return res.render(req.directory + '/partials/following_list.ejs', {
+            bundle,
+        });
+
+    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}`;
+    let userSettings = await database.getUserSettings(userID);
+    let numPosts = await database.getTotalPostsByUserID(userID);
+    let parentUserContent;
+    if(pnid.pid !== req.pid)
+        parentUserContent = await database.getUserContent(req.pid);
+    res.render(req.directory + '/user_page.ejs', {
+        template: 'following_list',
+        selection: selection,
+        moment,
+        pnid,
+        numPosts,
+        userContent,
+        userSettings,
+        bundle,
+        account_server: config.account_server_domain.slice(8),
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid,
+        link,
+        parentUserContent
+    });
+}
 
 module.exports = router;

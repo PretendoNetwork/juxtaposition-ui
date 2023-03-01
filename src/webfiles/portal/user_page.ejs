@@ -1,21 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('head', { title: pnid.mii.name }); %>
+<%- include('partials/head', { title: pnid.mii.name }); %>
 <body>
-<%- include('nav_bar', { selection: -1, pid: pid }); %>
+<%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
 <div id="body">
     <header id="header">
-
+        <%if(pnid.pid === pid) {%>
+        <a id="header-communities-button" class="user-page" href="/users/me/settings" data-pjax="#body">Settings</a>
+        <%}%>
     </header>
     <div class="body-content tab2-content" id="community-post-list">
         <div class="header-banner-container">
-            <img src="/images/banner.png" class="header-banner with-top-button" alt="">
+            <img src="/images/banner.png" class="header-banner with-top-button">
         </div>
         <div class="community-info info-content with-header-banner">
             <span class="icon-container"><img src="https://mii.olv.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png" class="icon" alt=""></span>
-            <a href="#" class="favorite-button favorite-button-mini button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>checked<%}%>" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-community-id="<%=pnid.pid%>"></a>
-            <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1 && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
-            <a href="#" class="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
+            <%if(pnid.pid !== pid) {%>
+                <a href="#" class="favorite-button favorite-button-mini button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>checked<%}%>" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-community-id="<%=pnid.pid%>"></a>
+                <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1 && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
+                <a href="#" class="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
+                <%}%>
             <%}%>
             <span class="title"><%= pnid.mii.name %></span>
             <span class="text">
@@ -97,42 +101,33 @@
                 </span>
                 <%}%>
             </span>
+
         </div>
         <menu class="tab-header user-page">
-            <li id="tab-header-post" class="tab-button selected">
-                <a href="/users/<%=pnid.pid%>" data-sound="SE_WAVE_SELECT_TAB">
+            <li id="tab-header-post" class="tab-button <%if(selection === 0){ %>selected<%}%>">
+                <a href="<%= link %>" data-sound="SE_WAVE_SELECT_TAB">
                     <span class="new-post"><%= lang.user_page.posts %></span>
                 </a>
             </li>
-            <li id="tab-header-friends" class="tab-button">
-                <a href="/users/<%=pnid.pid%>/friends" data-sound="SE_WAVE_SELECT_TAB">
+            <li id="tab-header-friends" class="tab-button <%if(selection === 1){ %>selected<%}%>">
+                <a href="<%= link %>friends" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.friends %></span>
                 </a>
             </li>
-            <li id="tab-header-following" class="tab-button">
-                <a href="/users/<%=pnid.pid%>/following" data-sound="SE_WAVE_SELECT_TAB">
+            <li id="tab-header-following" class="tab-button <%if(selection === 2){ %>selected<%}%>">
+                <a href="<%= link %>following" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.following %></span>
                 </a>
             </li>
-            <li id="tab-header-followers" class="tab-button">
-                <a href="/users/<%=pnid.pid%>/followers" data-sound="SE_WAVE_SELECT_TAB">
+            <li id="tab-header-followers" class="tab-button <%if(selection === 3){ %>selected<%}%>">
+                <a href="<%= link %>followers" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.followers %></span>
                 </a>
             </li>
         </menu>
         <div class="tab-body post-list">
-            <% if(numPosts === 0) {%>
-                <p class="no-posts-text"><%= lang.global.no_posts %></p>
-            <%} else { %>
-                <% newPosts.forEach(function(post) { %>
-                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, user: parentUserContent, reply: false  }); %>
-                <% }); %>
-            <%}%>
+            <%- include('partials/' + template, { bundle }); %>
         </div>
-        <div class="button-wrapper center">
-            <button type="button" class="load-more"><%= lang.global.more %></button>
-        </div>
-
     </div>
 </div>
 </body>

@@ -3,25 +3,24 @@ var updateCheck = setInterval(checkForUpdates, 30000);
 
 /* global Pjax */
 function initNavBar() {
-    var buttons = document.querySelectorAll("#nav-menu > li");
-    if (!buttons) return;
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", function(e) {
+    var els = document.querySelectorAll("#nav-menu > li");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
-            for(var i = 0; i < buttons.length; i++) {
-                if(buttons[i].classList.contains('selected'))
-                    buttons[i].classList.remove('selected');
+            for(var i = 0; i < els.length; i++) {
+                if(els[i].classList.contains('selected'))
+                    els[i].classList.remove('selected');
             }
             el.classList.add("selected");
-            wiiuSound.playSoundByName(el.getAttribute("data-sound"), 1);
         });
     }
 }
 function initYeah() {
-    var buttons = document.querySelectorAll("button[data-post]");
-    if (!buttons) return;
-    for (var i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", function(e) {
+    var els = document.querySelectorAll("button[data-post]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
             var el = e.currentTarget, id = el.getAttribute("data-post");
             var parent = document.getElementById(id);
             var count = document.getElementById("count-" + id)
@@ -55,9 +54,40 @@ function initYeah() {
         });
     }
 }
+
+function initTabs() {
+    var els = document.querySelectorAll(".tab-button");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            e.preventDefault();
+            var el = e.currentTarget;
+            var child = el.children[0];
+
+            for(var i = 0; i < els.length; i++) {
+                if(els[i].classList.contains('selected'))
+                    els[i].classList.remove('selected');
+            }
+            el.classList.add("selected");
+
+            GET(child.getAttribute('href') + "?pjax=true", function a(data) {
+                var response = data.response;
+                console.log(!response || data.status !== 200);
+                if(response && data.status === 200) {
+                    document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
+                    window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
+                    pjax.refresh();
+                }
+            })
+
+        });
+    }
+}
 console.log("Document initialized:", window.location.href);
 document.addEventListener("pjax:send", function() {
-    console.log("Event: pjax:send", arguments);
+    console.log("Event: pjax:send", arguments[0].explicitOriginalTarget.getAttribute("data-sound"));
+    if(arguments[0].explicitOriginalTarget.getAttribute("data-sound"))
+        wiiuSound.playSoundByName(arguments[0].explicitOriginalTarget.getAttribute("data-sound"), 1);
     wiiuBrowser.showLoadingIcon(true);
 });
 document.addEventListener("pjax:complete", function() {
@@ -66,7 +96,7 @@ document.addEventListener("pjax:complete", function() {
 });
 document.addEventListener("pjax:error", function(e) {
     wiiuErrorViewer.openByCodeAndMessage(5984000, 'Error: Unable to load element. \nPlease send the error code and what you were doing in #support');
-    console.log(e.options.request);
+    console.log(e);
     wiiuBrowser.showLoadingIcon(false);
 });
 document.addEventListener("pjax:success", function() {
@@ -75,19 +105,21 @@ document.addEventListener("pjax:success", function() {
     // Init page content
     initNavBar();
     initYeah();
-    //initNotifications();
+    initTabs();
     //initCommunityUsers();
 });
 document.addEventListener("DOMContentLoaded", function() {
     // Init Pjax instance
     pjax = new Pjax({
-        elements: "a",
+        elements: "a[data-pjax]",
         selectors: [
             "title",
             "#body",
         ],
         switches: {
-            "#nav-menu": Pjax.switches.replaceNode
+            "#nav-menu": Pjax.switches.replaceNode,
+            ".tab-body": Pjax.switches.replaceNode
+
         }
     })
     console.log("Pjax initialized.", pjax);
@@ -95,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // Init page content
     initNavBar();
     initYeah();
-    //initNotifications();
+    initTabs();
     //initCommunityUsers();
 });
 
@@ -111,7 +143,9 @@ function stopLoading() {
 }
 function exit() {
     wiiu.gamepad.update()
-    if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
+    if(wiiu.gamepad.hold === 8)
+        location.reload();
+    else if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
         alert('Debug Menu');
     else {
         wiiuSound.playSoundByName("SE_WAVE_EXIT", 1);
@@ -214,31 +248,33 @@ function checkForUpdates() {
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             var notificationObj = JSON.parse(this.responseText);
+            var messages = document.getElementById("message-badge");
+            var news = document.getElementById("news-badge");
             /**/
             if(notificationObj.message_count > 0  && notificationObj.message_count < 99) {
-                document.getElementById("messages-badge").innerHTML = notificationObj.message_count;
-                document.getElementById("messages-badge").style.display = "block";
+                messages.innerHTML = notificationObj.message_count;
+                messages.style.display = "unset";
             }
             else if(notificationObj.message_count >= 99) {
-                document.getElementById("messages-badge").innerHTML = "99+";
-                document.getElementById("messages-badge").style.display = "block";
+                messages.innerHTML = "99+";
+                messages.style.display = "unset";
             }
             else {
-                document.getElementById("messages-badge").innerHTML = "";
-                document.getElementById("messages-badge").style.display = "none";
+                messages.innerHTML = "";
+                messages.style.display = "none";
             }
             /*Check for Notifications*/
             if(notificationObj.notification_count > 0  && notificationObj.notification_count < 99) {
-                document.getElementById("news-badge").innerHTML = notificationObj.notification_count;
-                document.getElementById("news-badge").style.display = "block";
+                news.innerHTML = notificationObj.notification_count;
+                news.style.display = "unset";
             }
             else if(notificationObj.notification_count >= 99) {
-                document.getElementById("news-badge").innerHTML = "99+";
-                document.getElementById("news-badge").style.display = "block";
+                news.innerHTML = "99+";
+                news.style.display = "unset";
             }
             else {
-                document.getElementById("news-badge").innerHTML = "";
-                document.getElementById("news-badge").style.display = "none";
+                news.innerHTML = "";
+                news.style.display = "none";
             }
         }
     };
@@ -286,6 +322,7 @@ function POST(url, data, callback) {
 }
 
 function GET(url, callback) {
+    wiiuBrowser.showLoadingIcon(true);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if(this.readyState === 4) {

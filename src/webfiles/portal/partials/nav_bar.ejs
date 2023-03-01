@@ -14,10 +14,10 @@
         <a href="/titles" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.communities %></a>
     </li>
     <li id="nav-menu-message" <% if(selection === 3) {%>class="selected"<%}%>>
-        <a href="/friend_messages" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.messages %><span class="badge">0</span></a>
+        <a href="/friend_messages" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.messages %><span id="message-badge" class="badge">0</span></a>
     </li>
     <li id="nav-menu-news" <% if(selection === 4) {%>class="selected"<%}%>>
-        <a href="/news/my_news" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.notifications %><span class="badge">0</span></a>
+        <a href="/news/my_news" data-pjax="#body" data-sound="SE_WAVE_MENU"><%= lang.global.notifications %><span id="news-badge" class="badge">0</span></a>
     </li>
     <li id="nav-menu-exit" onclick="exit()">
         <a href="#" role="button" data-sound="SE_WAVE_EXIT"><%= lang.global.close %></a>

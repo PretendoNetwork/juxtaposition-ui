@@ -121,7 +121,7 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
     }
     if(posts.length > 0)
     {
-        res.render(req.directory + '/more_posts.ejs', {
+        res.render(req.directory + '/posts_list.ejs', {
             communityMap: communityMap,
             moment: moment,
             database: database,

@@ -33,7 +33,7 @@ router.get('/loadposts', async function (req, res) {
         return res.sendStatus(204);
     if(posts.length > 0)
     {
-        res.render(req.directory + '/more_posts.ejs', {
+        res.render(req.directory + '/posts_list.ejs', {
             communityMap: communityMap,
             moment: moment,
             database: database,

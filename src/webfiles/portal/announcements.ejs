@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('head', { title: community.name }); %>
+<%- include('partials/head', { title: community.name }); %>
 <body>
-<%- include('nav_bar', { selection: 2, pid: pid }); %>
+<%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
 <div id="body">
     <header id="header"></header>
     <div class="body-content tab2-content" id="community-post-list">
@@ -23,7 +23,7 @@
                 <p class="no-posts-text"><%= lang.global.no_posts %></p>
             <%} else { %>
                 <% posts.forEach(function(post) { %>
-                    <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                    <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
                 <% }); %>
             <%}%>
         </div>

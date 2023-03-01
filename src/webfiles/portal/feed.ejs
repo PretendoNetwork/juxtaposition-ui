@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('head', { title: lang.global.activity_feed }); %>
+<%- include('partials/head', { title: lang.global.activity_feed }); %>
 <body>
-<%- include('nav_bar', { selection: 1, pid: pid }); %>
+<%- include('partials/nav_bar', { selection: 1, pid: pid }); %>
 <div id="body">
     <header id="header">
         <h1 id="page-title" class="left"><%= lang.global.activity_feed %></h1>
@@ -17,7 +17,7 @@
             <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
         <%} else { %>
             <% posts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid  }); %>
+                <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid  }); %>
             <% }); %>
         <%}%>
     </div>

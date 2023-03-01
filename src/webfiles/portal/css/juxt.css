@@ -175,6 +175,7 @@ input, label, button {
     text-indent: 0;
     border-radius: 20px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+    display: none;
 }
 #nav-menu .selected .badge {
     margin-top: 39px;
@@ -402,10 +403,9 @@ input, label, button {
 }
 
 .arrow-button {
-    width: 955px;
+    width: 950px;
     height: 123px;
     position: absolute;
-    margin-left: 110px;
     top: 5px;
     overflow-y: hidden;
 }
