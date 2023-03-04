@@ -16,7 +16,7 @@
                 <span class="community-name"><%= communityMap.get(post.community_id) %></span>
             </a>
             <%}%>
-            <div class="post-content">
+            <div class="post-content" data-href="/posts/<%= post.id %>">
                 <% if(post.body !== '') { %>
                     <p class="post-content-text"><%= post.body %></p>
                 <%}%>

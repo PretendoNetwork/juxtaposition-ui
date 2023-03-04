@@ -8,7 +8,9 @@
         <h1 id="page-title" class="left"><%= post.screen_name %></h1>
     </header>
     <div class="body-content post-list" id="post">
-        <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid  }); %>
+        <div class="post-wrapper">
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid  }); %>
+        </div>
         <% replies.forEach(function(post) { %>
             <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true, pid: pid  }); %>
             <span class="replies-line"></span>

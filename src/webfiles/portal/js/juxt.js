@@ -83,12 +83,19 @@ function initTabs() {
         });
     }
 }
+function initPosts() {
+    var els = document.querySelectorAll(".post-content[data-href]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
+        });
+    }
+}
 
 console.log("Document initialized:", window.location.href);
 document.addEventListener("pjax:send", function() {
-    console.log("Event: pjax:send", arguments[0].explicitOriginalTarget.getAttribute("data-sound"));
-    if(arguments[0].explicitOriginalTarget.getAttribute("data-sound"))
-        wiiuSound.playSoundByName(arguments[0].explicitOriginalTarget.getAttribute("data-sound"), 1);
+    console.log("Event: pjax:send", arguments);
     wiiuBrowser.showLoadingIcon(true);
 });
 document.addEventListener("pjax:complete", function() {
@@ -107,7 +114,7 @@ document.addEventListener("pjax:success", function() {
     initNavBar();
     initYeah();
     initTabs();
-    //initCommunityUsers();
+    initPosts();
 });
 document.addEventListener("DOMContentLoaded", function() {
     // Init Pjax instance
@@ -129,7 +136,7 @@ document.addEventListener("DOMContentLoaded", function() {
     initNavBar();
     initYeah();
     initTabs();
-    //initCommunityUsers();
+    initPosts();
 });
 
 function stopLoading() {

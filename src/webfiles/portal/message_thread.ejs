@@ -1,80 +1,30 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-</head>
+<%- include('partials/head', { title: lang.global.messages }); %>
 <body>
-<%- include('nav_bar', { selection: 3 }); %>
-<div id="main">
-    <div id="message-viewer">
-        <div class="message-viewer-top-cover"></div>
-        <div class="message-viewer-bottom-cover"></div>
-        <div class="message-viewer-top-banner">
-            <table>
-                <tbody>
-                <tr>
-                    <td>
-                        <div class="message-viewer-top-banner-back-button" onclick="back()"></div>
-                    </td>
-                    <td>
-                        <img id="message-viewer-icon" onclick="window.scroll(0, 0);" data-pjax="/users/show?pid=<%= user2.pid %>" class="community-page-post-user-icon <%if(user2.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= user2.pid %>/normal_face.png">
-                    </td>
-                    <td>
-                        <h2 id="message-viewer-name" onclick="window.scroll(0, 0);" data-pjax="/users/show?pid=<%= user2.pid %>" class="<%if(user2.official) {%>verified-badge<%}%>"><%= userMap.get(user2.pid) %></h2>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
-        <div id="message-viewer-content" style="">
-            <% messages.forEach(function(message) { %>
-                <%if(message.pid === pid) {%>
-                <div class="message-viewer-bubble-sent">
+<%- include('partials/nav_bar', { selection: 3, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class=""><%= lang.global.messages %></h1>
+    </header>
+    <div class="body-content message-post-list" id="message-page">
+        <% messages.forEach(function(message) { %>
+            <div id="message-<%= message.post_id%>" class="post scroll <%if(message.pid === pid) {%>my-post<%} else {%>other-post<%}%>">
+                <a href="/users/show?pid=<%= message.pid %>" data-pjax="#body" class="scroll-focus mii-icon-container">
+                    <img src="https://mii.olv.pretendo.cc/mii/<%= message.pid %>/normal_face.png" class="mii-icon">
+                </a>
+                <header>
+                    <span class="timestamp"><%= moment(message.created_at).fromNow()%></span>
+                </header>
+                <div class="post-body">
                     <%if(message.painting) {%>
-                    <img class="message-viewer-bubble-sent-memo" src="data:image/bmp;base64,<%= message.painting_uri %>">
+                    <img class="message-viewer-bubble-sent-memo" src="https://mii.olv.pretendo.cc/paintings/<%=message.pid%>/<%=message.id%>.png">
                     <%}else {%>
-                    <p class="message-viewer-bubble-sent-text"><%= message.body %></p>
+                        <p class="post-content"><%= message.body %></p>
                     <%}%>
                 </div>
-                <div class="message-viewer-bubble-sent-timestamp"><p><%= moment(message.created_at).fromNow()%></p></div>
-                <%} else {%>
-                <div class="message-viewer-bubble-receive">
-                    <%if(message.painting) {%>
-                        <img class="message-viewer-bubble-sent-memo" src="https://cdn.pretendo.cc/paintings/<%=message.message_to_pid%>/<%=message.id%>.png">
-                    <%}else {%>
-                        <p class="message-viewer-bubble-receive-text"><%= message.body %></p>
-                    <%}%>
-                </div>
-                <div class="message-viewer-bubble-receive-timestamp"><p><%= moment(message.created_at).fromNow()%></p></div>
-                <%}%>
-            <%});%>
-
-        </div>
-        <div class="message-viewer-bottom-banner">
-            <table>
-                <tbody>
-                <tr>
-                    <td>
-                        <div id="message-viewer-attach-button" onclick="sendPainting('<%= conversation.id %>', '<%= user2.pid %>')"></div>
-                    </td>
-                    <td>
-                        <form action="javascript:sendMessage('<%= conversation.id %>', '<%= user2.pid %>')">
-                            <input id="message-viewer-input" type="text" placeholder="Send message..." name="message">
-                        </form>
-                    </td>
-                    <td>
-                        <div id="message-viewer-submit-button" onclick="sendMessage('<%= conversation.id %>', '<%= user2.pid %>')"></div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+            </div>
+        <%});%>
     </div>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1); scrollToBottom();">
 </div>
-<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>

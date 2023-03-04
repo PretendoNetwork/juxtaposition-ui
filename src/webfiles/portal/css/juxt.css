@@ -392,7 +392,7 @@ input, label, button {
     right: 65px;
 }
 #messages-list > ul > li > .body {
-    margin-left: 110px;
+    margin-left: 125px;
     margin-top: 10px;
     margin-right: 1em;
     user-select: none;
@@ -431,13 +431,11 @@ input, label, button {
 }
 
 .reply .mii-icon-container {
-    float: right !important;
-    margin-right: 55px !important;
+
 }
 
 .reply .post-body-content {
-    float: right !important;
-    margin-right: 20px !important;
+
 }
 
 
@@ -633,6 +631,18 @@ input, label, button {
     height: 50px;
     line-height: 60px;
     vertical-align: middle;
+}
+
+.post-wrapper {
+    width: fit-content;
+    padding: 15px 30px !important;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+}
+
+.post-wrapper .post-body {
+    box-shadow: none !important;
 }
 /* Tab Screen */
 .tab-button.selected span {

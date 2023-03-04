@@ -69,7 +69,7 @@ function auth(request, response, next) {
     else {
         let token = request.cookies.access_token || request.headers["x-nintendo-servicetoken"];
         if(!token) {
-            return response.render('portal/ban_notification.ejs', {
+            return response.render('portal/partials/ban_notification.ejs', {
                 user: null,
                 error: "Missing auth headers"
             });
@@ -82,7 +82,7 @@ function auth(request, response, next) {
             else
                 paramPackData = null;
             if(pid === null) {
-                return response.render('portal/ban_notification.ejs', {
+                return response.render('portal/partials/ban_notification.ejs', {
                     user: null,
                     error: "Unable to parse service token. Are you using a Nintendo Network ID?"
                 });
