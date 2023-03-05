@@ -65,7 +65,7 @@ router.get('/:communityID/:type', async function (req, res) {
     if(req.params.communityID === 'announcements')
         res.redirect('/titles/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
-    if(!community) return res.sendStatus(404);
+    if(!community) return res.render(req.directory + '/error.ejs', {code: 404, message: "Community not Found", pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
     let communityMap = await util.data.getCommunityHash();
     let posts, type;
 
@@ -88,6 +88,7 @@ router.get('/:communityID/:type', async function (req, res) {
         userContent,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
+        link: `/titles/${req.params.communityID}/${req.params.type}/more?offset=${posts.length}&pjax=true`
     }
 
     if(req.query.pjax)
@@ -116,7 +117,7 @@ router.get('/:communityID/:type', async function (req, res) {
     });
 });
 
-router.get('/:communityID/:type/loadPosts', async function (req, res) {
+router.get('/:communityID/:type/more', async function (req, res) {
     let offset = parseInt(req.query.offset);
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
@@ -137,15 +138,24 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
             posts = await database.getNewPostsByCommunity(community, config.post_limit, offset);
             break;
     }
+
+    let bundle = {
+        posts,
+        numPosts: posts.length,
+        communityMap,
+        userContent,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+        link: `/titles/${req.params.communityID}/${req.params.type}/more?offset=${offset + posts.length}&pjax=true`
+    }
+
     if(posts.length > 0)
     {
-        res.render(req.directory + '/posts_list.ejs', {
+        res.render(req.directory + '/partials/posts_list.ejs', {
             communityMap: communityMap,
             moment: moment,
             database: database,
-            userSettings: userSettings,
-            userContent: userContent,
-            newPosts: posts,
+            bundle,
             account_server: config.account_server_domain.slice(8),
             cdnURL: config.CDN_domain,
             lang: req.lang,
@@ -154,21 +164,19 @@ router.get('/:communityID/:type/loadPosts', async function (req, res) {
         });
     }
     else
-    {
         res.sendStatus(204);
-    }
 });
 // TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
     let community = await database.getCommunityByID(req.body.communityID);
     let userContent = await database.getUserContent(req.pid);
-    if(req.body.type === 'true' && userContent !== null && userContent.followed_communities.indexOf(community.community_id) === -1)
+    if(userContent !== null && userContent.followed_communities.indexOf(community.community_id) === -1)
     {
         community.upFollower();
         userContent.addToCommunities(community.community_id);
         res.sendStatus(200);
     }
-    else if(req.body.type === 'false' && userContent !== null  && userContent.followed_communities.indexOf(community.community_id) !== -1)
+    else if(userContent !== null  && userContent.followed_communities.indexOf(community.community_id) !== -1)
     {
         community.downFollower();
         userContent.removeFromCommunities(community.community_id);
