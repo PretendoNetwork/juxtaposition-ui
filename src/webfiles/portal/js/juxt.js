@@ -7,7 +7,6 @@ function initNavBar() {
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
         els[i].addEventListener("click", function(e) {
-            wiiuBrowser.lockUserOperation(true);
             var el = e.currentTarget;
             for(var i = 0; i < els.length; i++) {
                 if(els[i].classList.contains('selected'))
@@ -137,7 +136,6 @@ function initPostModules() {
                 document.getElementById("nav-menu").style.display = 'none';
             wiiuBrowser.showLoadingIcon(false);
             initNewPost();
-            setTimeout(function () { wiiuBrowser.lockUserOperation(false); }, 1000);
         });
     }
 }
@@ -165,8 +163,8 @@ function initAll() {
     initYeah();
     initTabs();
     initPosts();
-    initMorePosts()
-    initPostModules()
+    initMorePosts();
+    initPostModules();
     pjax.refresh();
 }
 console.debug("Document initialized:" + window.location.href);
@@ -190,7 +188,7 @@ document.addEventListener("pjax:success", function() {
 });
 document.addEventListener("DOMContentLoaded", function() {
     pjax = new Pjax({
-        elements: "a" +
+        elements: "a[data-pjax]" +
             "",
         selectors: ["title", "#body"],
         switches: {"#nav-menu": Pjax.switches.replaceNode, ".tab-body": Pjax.switches.replaceNode}
@@ -275,6 +273,31 @@ function chooseScreenShot(value) {
             document.getElementById('screenshot-value').disabled = true;
     }
     hideScreenShots();
+}
+function follow(el) {
+    var id = el.getAttribute("data-community-id");
+    var count = document.getElementById("followers");
+    el.disabled = true;
+    var params = "id=" + id;
+    if(el.classList.contains('checked')) {
+        el.classList.remove('checked');
+        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+    }
+    else {
+        el.classList.add('checked');
+        wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+    }
+
+    POST(el.getAttribute("data-url"), params, function a(data) {
+        var element = JSON.parse(data.response);
+        if(!element || element.status !== 200) {
+            // Apparently there was an actual error code for not being able to yeah a post, who knew!
+            // TODO: Find more of these
+            return wiiuErrorViewer.openByCode(1155927);
+        }
+        el.disabled = false;
+        count.innerText = element.count;
+    });
 }
 
 function newPainting(reset) {

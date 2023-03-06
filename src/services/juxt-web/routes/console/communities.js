@@ -190,22 +190,22 @@ router.get('/:communityID/:type/more', async function (req, res) {
 });
 // TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
-    let community = await database.getCommunityByID(req.body.communityID);
+    let community = await database.getCommunityByID(req.body.id);
     let userContent = await database.getUserContent(req.pid);
     if(userContent !== null && userContent.followed_communities.indexOf(community.community_id) === -1)
     {
         community.upFollower();
         userContent.addToCommunities(community.community_id);
-        res.sendStatus(200);
+        res.send({ status: 200, id: community.community_id, count: community.followers });
     }
     else if(userContent !== null  && userContent.followed_communities.indexOf(community.community_id) !== -1)
     {
         community.downFollower();
         userContent.removeFromCommunities(community.community_id);
-        res.sendStatus(200);
+        res.send({ status: 200, id: community.community_id, count: community.followers });
     }
     else
-        res.sendStatus(423);
+        res.send({ status: 423, id: community.community_id, count: community.followers });
 });
 
 module.exports = router;
