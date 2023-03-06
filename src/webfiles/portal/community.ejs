@@ -6,9 +6,9 @@
 <div id="body">
     <header id="header">
         <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0) {%>
-        <a id="header-post-button" class="header-button" href="post">Post</a>
+        <a id="header-post-button" class="header-button" href="#" data-module-hide="community-post-list" data-module-show="add-post-page" data-header="false" data-menu="false">Post</a>
         <%}%>
-        <a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>
+        <!--<a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>-->
     </header>
     <div class="body-content tab2-content" id="community-post-list">
         <div class="header-banner-container">
@@ -27,13 +27,14 @@
             <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
         </menu>
         <div id="new-post-button-container" class="none">
-            <a href="#" class="button" data-offset="10" onclick="loadFeedPosts(this)"><%= lang.global.more %></a>
+            <a href="#" class="button" data-offset="10"><%= lang.global.more %></a>
             <div id="new-post"></div>
         </div>
         <div class="tab-body post-list">
             <%- include('partials/' + template, { bundle }); %>
         </div>
     </div>
+    <%- include('partials/new_post', { pid, lang, id: community.community_id, name: community.name }); %>
 </div>
 </body>
 </html>

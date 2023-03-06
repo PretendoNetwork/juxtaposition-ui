@@ -746,6 +746,7 @@ input, label, button {
     height: auto;
     color: #111;
     white-space: normal;
+    margin-left: 10px;
 }
 #news-list-content li .text .nick-name {
     font-weight: bold;
@@ -1091,7 +1092,7 @@ input, label, button {
 .feeling-selector .buttons li {
     display: inline-block;
     height: 87px;
-    margin: 5px 7px;
+    margin: 5px 3px;
 }
 
 .feeling-selector .buttons input {
@@ -1193,6 +1194,7 @@ input, label, button {
 .capture-image {
     width: 200px;
     border-radius: 15px;
+    height: 112px;
 }
 
 .screenshot-menu > .image-wrapper > input {
@@ -1547,6 +1549,9 @@ textarea.placeholder {
 #setting-page-visible-title .window-body-inner {
     width: 500px;
     padding-right: 320px;
+}
+#add-post-page {
+    display: none;
 }
 
 .checkbox-container {

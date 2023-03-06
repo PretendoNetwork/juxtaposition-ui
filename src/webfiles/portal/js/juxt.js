@@ -7,6 +7,7 @@ function initNavBar() {
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
         els[i].addEventListener("click", function(e) {
+            wiiuBrowser.lockUserOperation(true);
             var el = e.currentTarget;
             for(var i = 0; i < els.length; i++) {
                 if(els[i].classList.contains('selected'))
@@ -72,7 +73,6 @@ function initTabs() {
 
             GET(child.getAttribute('href') + "?pjax=true", function a(data) {
                 var response = data.response;
-                console.debug(!response || data.status !== 200, "initTabs:82");
                 if(response && data.status === 200) {
                     document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
                     window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
@@ -93,15 +93,13 @@ function initPosts() {
     }
 }
 function initMorePosts() {
-    var els = document.querySelectorAll(".load-more");
+    var els = document.querySelectorAll(".load-more[data-href]");
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
         els[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
             GET(el.getAttribute('data-href'), function a(data) {
                 var response = data.response;
-                console.debug(!response || data.status !== 200, "initMorePosts:110");
-                console.debug(data.status)
                 if(response && data.status === 200) {
                     el.parentElement.outerHTML = data.response;
                     initYeah();
@@ -115,6 +113,52 @@ function initMorePosts() {
         });
     }
 }
+function initPostModules() {
+    var els = document.querySelectorAll("[data-module-show]");
+    console.log(els)
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            var el = e.currentTarget,
+                show = el.getAttribute("data-module-show"),
+                hide = el.getAttribute("data-module-hide"),
+                header = el.getAttribute("data-header"),
+                menu = el.getAttribute("data-menu");
+            if(!show || !hide) return;
+            document.getElementById(hide).style.display = 'none';
+            document.getElementById(show).style.display = 'block';
+            if(header === 'true')
+                document.getElementById("header").style.display = 'block';
+            else
+                document.getElementById("header").style.display = 'none';
+            if(menu === 'true')
+                document.getElementById("nav-menu").style.display = 'block';
+            else
+                document.getElementById("nav-menu").style.display = 'none';
+            wiiuBrowser.showLoadingIcon(false);
+            initNewPost();
+            setTimeout(function () { wiiuBrowser.lockUserOperation(false); }, 1000);
+        });
+    }
+}
+function initPostEmotion() {
+    var els = document.querySelectorAll("input[data-mii-face-url]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            document.getElementById("mii-face").src = el.getAttribute('data-mii-face-url');
+        });
+    }
+}
+function initScreenShots() {
+    document.getElementById("top-screen").src = "data:image/png;base64," + wiiuMainApplication.getScreenShot(true);
+    document.getElementById("bottom-screen").src = "data:image/png;base64," + wiiuMainApplication.getScreenShot(false);
+}
+function initNewPost() {
+    initPostEmotion();
+    initScreenShots();
+}
 
 function initAll() {
     initNavBar();
@@ -122,6 +166,7 @@ function initAll() {
     initTabs();
     initPosts();
     initMorePosts()
+    initPostModules()
     pjax.refresh();
 }
 console.debug("Document initialized:" + window.location.href);
@@ -145,7 +190,8 @@ document.addEventListener("pjax:success", function() {
 });
 document.addEventListener("DOMContentLoaded", function() {
     pjax = new Pjax({
-        elements: "a[data-pjax]",
+        elements: "a" +
+            "",
         selectors: ["title", "#body"],
         switches: {"#nav-menu": Pjax.switches.replaceNode, ".tab-body": Pjax.switches.replaceNode}
     })
@@ -210,6 +256,36 @@ function checkForUpdates() {
     };
     xhttp.open("GET", "/notifications.json", true);
     xhttp.send();
+}
+
+function hideScreenShots() { document.getElementById('screenshot-toggle').checked = false; }
+function chooseScreenShot(value) {
+    var screenshot = document.getElementById('screenshot-value');
+    switch (value) {
+        case 0:
+            screenshot.value = wiiuMainApplication.getScreenShot(true);
+            document.getElementById('screenshot-value').disabled = false
+            break;
+        case 1:
+            screenshot.value = wiiuMainApplication.getScreenShot(false);
+            document.getElementById('screenshot-value').disabled = false
+            break;
+        default:
+            screenshot.value = "";
+            document.getElementById('screenshot-value').disabled = true;
+    }
+    hideScreenShots();
+}
+
+function newPainting(reset) {
+    wiiuMemo.open(reset);
+    setTimeout(function () {
+        if(wiiuMemo.isFinish()) {
+            console.log('running!')
+            document.getElementById('memo').src = 'data:image/png;base64,' + wiiuMemo.getImage(false);
+            document.getElementById('memo-value').value = wiiuMemo.getImage(true);
+        }
+    }, 250);
 }
 
 function POST(url, data, callback) {

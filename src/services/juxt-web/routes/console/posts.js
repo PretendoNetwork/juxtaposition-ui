@@ -35,6 +35,8 @@ router.post('/empathy', rateLimit, async function (req, res) {
         res.send({ status: 423, id: post.id, count: post.empathy_count });
 });
 
+router.post('/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res)});
+
 router.get('/:post_id', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
@@ -61,13 +63,11 @@ router.get('/:post_id', async function (req, res) {
 
 router.post('/:post_id/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res);});
 
-router.post('/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res)});
-
 async function newPost(req, res) {
     let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = snowflake.nextId();
-    let community = await database.getCommunityByID(req.body.olive_community_id);
-    if(userSettings.account_status !== 0 || community.community_id === 'announcements')
-        throw new Error('User not allowed to post')
+    let community = await database.getCommunityByID(req.body.community_id);
+    if(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
+        return res.sendStatus(403);
     if(req.params.post_id) {
         parentPost = await database.getPostByID(req.params.post_id.toString());
         if(!parentPost)
@@ -79,10 +79,8 @@ async function newPost(req, res) {
         res.status(422);
         return res.redirect('/posts/' + req.params.post_id.toString());
     }
-    let appData = "", painting = "", paintingURI = "", screenshot = null;
-    if (req.body.app_data)
-        appData = req.body.app_data.replace(/\0/g, "").trim();
-    if (req.body.painting && req.body.painting !== 'eJztwTEBACAMA7DCNRlIQRbu4ZoEviTJTNvjZNUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL55fYLL3w==') {
+    let painting = "", paintingURI = "", screenshot = null;
+    if (req.body._post_type === 'painting' && req.body.painting) {
         painting = req.body.painting.replace(/\0/g, "").trim();
         paintingURI = await util.data.processPainting(painting, true);
         await util.data.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
@@ -93,7 +91,7 @@ async function newPost(req, res) {
     }
 
     let miiFace;
-    switch (parseInt(req.body.emotion)) {
+    switch (parseInt(req.body.feeling_id)) {
         case 1:
             miiFace = 'smile_open_mouth.png';
             break;
@@ -123,14 +121,13 @@ async function newPost(req, res) {
         community_id: community.community_id,
         screen_name: userSettings.screen_name,
         body: body,
-        app_data: appData,
         painting: painting,
         screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: "",
         country_id: req.paramPackData ? req.paramPackData.country_id : 49,
         created_at: new Date(),
-        feeling_id: req.body.emotion,
+        feeling_id: req.body.feeling_id,
         id: postID,
-        is_autopost: req.body.is_autopost,
+        is_autopost: 0,
         is_spoiler: (req.body.spoiler) ? 1 : 0,
         is_app_jumpable: req.body.is_app_jumpable,
         language_id: req.body.language_id,
@@ -143,7 +140,7 @@ async function newPost(req, res) {
         parent: parentPost ? parentPost.id : null
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
-    if(duplicatePost)
+    if(duplicatePost && req.params.post_id)
         return res.redirect('/posts/' + req.params.post_id.toString());
     const newPost = new POST(document);
     newPost.save();
@@ -152,7 +149,7 @@ async function newPost(req, res) {
     if(parentPost)
         res.redirect('/posts/' + req.params.post_id.toString());
     else
-        res.redirect('/communities/' + community.community_id + '/new');
+        res.redirect('/titles/' + community.community_id + '/new');
 }
 
 module.exports = router;

@@ -59,6 +59,28 @@ router.get('/:communityID', async function (req, res) {
     res.redirect(`/titles/${req.params.communityID}/new`);
 });
 
+router.get('/:communityID/post', async function (req, res) {
+    let userSettings = await database.getUserSettings(req.pid);
+    let userContent = await database.getUserContent(req.pid);
+    if(req.params.communityID === 'announcements')
+        res.redirect('/titles/announcements')
+    let community = await database.getCommunityByID(req.params.communityID.toString());
+    if(!community) return res.render(req.directory + '/error.ejs', {code: 404, message: "Community not Found", pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+
+    res.render(req.directory + '/new_post.ejs', {
+        // EJS variable and server-side variable
+        moment: moment,
+        community: community,
+        userSettings: userSettings,
+        userContent: userContent,
+        account_server: config.account_server_domain.slice(8),
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid,
+    });
+});
+
 router.get('/:communityID/:type', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);

@@ -8,18 +8,30 @@ const router = express.Router();
 
 router.get('/my_news', async function (req, res) {
     let notifications = await database.getNotifications(req.pid, 25, 0);
-    let directory = path.join(__dirname, '../../../../webfiles', req.directory);
-    const html = await ejs.renderFile(directory + '/notifications.ejs', {
+    res.render(req.directory + '/notifications.ejs', {
         moment: moment,
         notifications: notifications,
         cdnURL: config.CDN_domain,
         lang: req.lang,
         database: database,
         pid: req.pid
-    },
-        {async: true}
-    );
-    res.send(html);
+    });
+    notifications.filter(noti => noti.read === false).forEach(function(notification) {
+        notification.markRead();
+        console.log(notification)
+    });
+});
+
+router.get('/friend_requests', async function (req, res) {
+    let notifications = await database.getNotifications(req.pid, 25, 0);
+    res.render(req.directory + '/requests.ejs', {
+        moment: moment,
+        notifications: notifications,
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+        database: database,
+        pid: req.pid
+    });
     notifications.filter(noti => noti.read === false).forEach(function(notification) {
         notification.markRead();
         console.log(notification)
