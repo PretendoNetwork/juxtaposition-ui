@@ -30,6 +30,7 @@
         <%});%>
     </div>
     <%- include('partials/new_post', { pid, lang, id: conversation.id, name: userMap.get(user2.pid), url: '/friend_messages/new', show: 'message-page', message_pid: user2.pid  }); %>
+    <img src="" onerror="setTimeout(function() { window.scrollTo(0, 50000); }, 500)">
 </div>
 </body>
 </html>

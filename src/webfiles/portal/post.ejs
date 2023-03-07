@@ -6,6 +6,7 @@
 <div id="body">
     <header id="header">
         <h1 id="page-title" class="left"><%= post.screen_name %></h1>
+        <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
     </header>
     <div class="body-content post-list" id="post">
         <div class="post-wrapper">
@@ -16,7 +17,7 @@
             <span class="replies-line"></span>
         <% }); %>
     </div>
+    <%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
 </div>
-<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>

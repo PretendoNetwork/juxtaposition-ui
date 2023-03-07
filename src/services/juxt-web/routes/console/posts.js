@@ -41,6 +41,13 @@ router.get('/:post_id', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
     let post = await database.getPostByID(req.params.post_id.toString());
+    if(post.parent) {
+        post = await database.getPostByID(post.parent);
+        if(post === null)
+            return res.sendStatus(404);
+        return res.redirect(`/posts/${post.id}`);
+    }
+
     if(post === null)
         return res.sendStatus(404);
     let community = await database.getCommunityByID(post.community_id);
@@ -66,6 +73,10 @@ router.post('/:post_id/new', rateLimit, upload.none(), async function (req, res)
 async function newPost(req, res) {
     let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = snowflake.nextId();
     let community = await database.getCommunityByID(req.body.community_id);
+    console.log(!community)
+    console.log(userSettings.account_status !== 0)
+    console.log(community.community_id === 'announcements')
+    console.log(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
     if(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
         return res.sendStatus(403);
     if(req.params.post_id) {

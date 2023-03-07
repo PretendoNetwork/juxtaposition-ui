@@ -167,6 +167,7 @@ function initAll() {
     initPostModules();
     pjax.refresh();
 }
+
 console.debug("Document initialized:" + window.location.href);
 document.addEventListener("pjax:send", function() {
     console.debug("Event: pjax:send", arguments);
@@ -196,6 +197,60 @@ document.addEventListener("DOMContentLoaded", function() {
     console.debug("Pjax initialized.", pjax);
     initAll();
 });
+
+function hideScreenShots() { document.getElementById('screenshot-toggle').checked = false; }
+function chooseScreenShot(value) {
+    var screenshot = document.getElementById('screenshot-value');
+    switch (value) {
+        case 0:
+            screenshot.value = wiiuMainApplication.getScreenShot(true);
+            document.getElementById('screenshot-value').disabled = false
+            break;
+        case 1:
+            screenshot.value = wiiuMainApplication.getScreenShot(false);
+            document.getElementById('screenshot-value').disabled = false
+            break;
+        default:
+            screenshot.value = "";
+            document.getElementById('screenshot-value').disabled = true;
+    }
+    hideScreenShots();
+}
+function follow(el) {
+    var id = el.getAttribute("data-community-id");
+    var count = document.getElementById("followers");
+    el.disabled = true;
+    var params = "id=" + id;
+    if(el.classList.contains('checked')) {
+        el.classList.remove('checked');
+        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+    }
+    else {
+        el.classList.add('checked');
+        wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+    }
+
+    POST(el.getAttribute("data-url"), params, function a(data) {
+        var element = JSON.parse(data.response);
+        if(!element || element.status !== 200) {
+            // Apparently there was an actual error code for not being able to yeah a post, who knew!
+            // TODO: Find more of these
+            return wiiuErrorViewer.openByCode(1155927);
+        }
+        el.disabled = false;
+        count.innerText = element.count;
+    });
+}
+function newPainting(reset) {
+    wiiuMemo.open(reset);
+    setTimeout(function () {
+        if(wiiuMemo.isFinish()) {
+            console.log('running!')
+            document.getElementById('memo').src = 'data:image/png;base64,' + wiiuMemo.getImage(false);
+            document.getElementById('memo-value').value = wiiuMemo.getImage(true);
+        }
+    }, 250);
+}
 function stopLoading() {
     if (typeof wiiuBrowser !== 'undefined'
         && typeof wiiuBrowser.endStartUp !== 'undefined') {
@@ -255,62 +310,6 @@ function checkForUpdates() {
     xhttp.open("GET", "/notifications.json", true);
     xhttp.send();
 }
-
-function hideScreenShots() { document.getElementById('screenshot-toggle').checked = false; }
-function chooseScreenShot(value) {
-    var screenshot = document.getElementById('screenshot-value');
-    switch (value) {
-        case 0:
-            screenshot.value = wiiuMainApplication.getScreenShot(true);
-            document.getElementById('screenshot-value').disabled = false
-            break;
-        case 1:
-            screenshot.value = wiiuMainApplication.getScreenShot(false);
-            document.getElementById('screenshot-value').disabled = false
-            break;
-        default:
-            screenshot.value = "";
-            document.getElementById('screenshot-value').disabled = true;
-    }
-    hideScreenShots();
-}
-function follow(el) {
-    var id = el.getAttribute("data-community-id");
-    var count = document.getElementById("followers");
-    el.disabled = true;
-    var params = "id=" + id;
-    if(el.classList.contains('checked')) {
-        el.classList.remove('checked');
-        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
-    }
-    else {
-        el.classList.add('checked');
-        wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
-    }
-
-    POST(el.getAttribute("data-url"), params, function a(data) {
-        var element = JSON.parse(data.response);
-        if(!element || element.status !== 200) {
-            // Apparently there was an actual error code for not being able to yeah a post, who knew!
-            // TODO: Find more of these
-            return wiiuErrorViewer.openByCode(1155927);
-        }
-        el.disabled = false;
-        count.innerText = element.count;
-    });
-}
-
-function newPainting(reset) {
-    wiiuMemo.open(reset);
-    setTimeout(function () {
-        if(wiiuMemo.isFinish()) {
-            console.log('running!')
-            document.getElementById('memo').src = 'data:image/png;base64,' + wiiuMemo.getImage(false);
-            document.getElementById('memo-value').value = wiiuMemo.getImage(true);
-        }
-    }, 250);
-}
-
 function POST(url, data, callback) {
     wiiuBrowser.showLoadingIcon(true);
     var xhttp = new XMLHttpRequest();

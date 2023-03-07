@@ -8,13 +8,24 @@ const router = express.Router();
 
 router.get('/my_news', async function (req, res) {
     let notifications = await database.getNotifications(req.pid, 25, 0);
+    let bundle = {
+        notifications
+    }
+
+    if(req.query.pjax)
+        return res.render(req.directory + '/partials/updates.ejs', {
+            bundle,
+            moment
+    });
+
     res.render(req.directory + '/notifications.ejs', {
-        moment: moment,
-        notifications: notifications,
+        moment,
+        selection: 0,
+        bundle,
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        database: database,
-        pid: req.pid
+        pid: req.pid,
+        template: 'updates'
     });
     notifications.filter(noti => noti.read === false).forEach(function(notification) {
         notification.markRead();
@@ -24,13 +35,24 @@ router.get('/my_news', async function (req, res) {
 
 router.get('/friend_requests', async function (req, res) {
     let notifications = await database.getNotifications(req.pid, 25, 0);
-    res.render(req.directory + '/requests.ejs', {
-        moment: moment,
-        notifications: notifications,
+    let bundle = {
+        notifications
+    }
+
+    if(req.query.pjax)
+        return res.render(req.directory + '/partials/requests.ejs', {
+            bundle,
+            moment
+    });
+
+    res.render(req.directory + '/notifications.ejs', {
+        moment,
+        selection: 1,
+        bundle,
         cdnURL: config.CDN_domain,
         lang: req.lang,
-        database: database,
-        pid: req.pid
+        pid: req.pid,
+        template: 'requests'
     });
     notifications.filter(noti => noti.read === false).forEach(function(notification) {
         notification.markRead();
