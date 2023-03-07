@@ -35,13 +35,13 @@ router.get('/me/settings', async function (req, res) {
 
 router.get('/me/:type', async function (req, res) { await userRelations(req, res, req.pid) });
 
-router.post('/me', upload.none(), async function (req, res) {
+router.post('/me/settings', upload.none(), async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
 
     userSettings.country_visibility = !!req.body.country;
     userSettings.birthday_visibility = !!req.body.birthday;
     userSettings.game_skill_visibility = !!req.body.experience;
-    userSettings.profile_comment_visibility = !!req.body.commentShow;
+    userSettings.profile_comment_visibility = !!req.body.comment;
 
     if (req.body.comment)
         userSettings.updateComment(req.body.comment);

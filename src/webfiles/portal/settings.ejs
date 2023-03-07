@@ -6,6 +6,7 @@
 <div id="body">
     <header id="header"></header>
     <div class="body-content">
+        <form method="post" action="/users/me/settings" id="settings-form">
         <div class="settings-list-content">
             <ul class="settings-list">
                 <li data-name="profile_comment_visibility" class="scroll">
@@ -15,7 +16,6 @@
                         <span class="checkmark"></span>
                     </label>
                 </li>
-
                 <li data-name="game_skill" class="scroll">
                     <p class="settings-label"><%= lang.user_settings.show_birthday %></p>
                     <label class="checkbox-container">
@@ -23,7 +23,6 @@
                         <span class="checkmark"></span>
                     </label>
                 </li>
-
                 <li data-name="game_skill_visibility" class="scroll">
                     <p class="settings-label"><%= lang.user_settings.show_game %></p>
                     <label class="checkbox-container">
@@ -31,18 +30,17 @@
                         <span class="checkmark"></span>
                     </label>
                 </li>
-
                 <!--<li data-name="birthday_visibility" class="scroll">
-                    <p class="settings-label">Show Profile Comment on Profile</p>
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="comment" name="comment" value="true" <%if(userSettings.profile_comment_visibility) {%>checked="checked"<%}%>>
-                        <span class="checkmark"></span>
-                    </label>
-                </li>-->
-                </form>
-                </li>
+                <p class="settings-label">Show Profile Comment on Profile</p>
+                <label class="checkbox-container">
+                    <input type="checkbox" id="comment" name="comment" value="true" <%if(userSettings.profile_comment_visibility) {%>checked="checked"<%}%>>
+                    <span class="checkmark"></span>
+                </label>
+            </li>-->
+                <input type="submit" class="post-button fixed-bottom-button" value="Save">
             </ul>
         </div>
+        </form>
     </div>
 </div>
 </body>

@@ -23,10 +23,11 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/new', async function (req, res, next) {
-    let conversation = await database.getConversationByID(req.body.conversationID);
+    let conversation = await database.getConversationByID(req.body.community_id);
     let user = await database.getPNID(req.pid);
     let user2 = await database.getPNID(req.body.message_to_pid);
-    if(req.body.conversationID === 0)
+    let userSettings = await database.getUserSettings(req.pid), postID = snowflake.nextId();
+    if(req.body.community_id === 0)
         return res.sendStatus(404);
     if(!conversation) {
         if(!user || !user2)
@@ -52,34 +53,76 @@ router.post('/new', async function (req, res, next) {
     }
     if(!conversation)
         return res.sendStatus(404);
-    let painting, postID = snowflake.nextId();
-    if (req.body.raw && req.body.raw !== 'eJztwTEBACAMA7DCNRlIQRbu4ZoEviTJTNvjZNUFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAL55fYLL3w==') {
-        console.log(req.body.raw.length)
-        painting = req.body.raw.replace(/\s+/g, "").trim();
-        //console.log(painting)
-        let paintingURI = await util.data.processPainting(painting, true);
-        if(!paintingURI)
-            return res.sendStatus(400)
+
+    if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
+        res.status(422);
+        return res.redirect(`/friend_messages/${conversation.id}`);
+    }
+    let painting = "", paintingURI = "", screenshot = null;
+    if (req.body._post_type === 'painting' && req.body.painting) {
+        painting = req.body.painting.replace(/\0/g, "").trim();
+        paintingURI = await util.data.processPainting(painting, true);
         await util.data.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
     }
-    let document = {
-        screen_name: user.mii.name,
-        body: req.body.body,
-        painting: req.body.raw,
-        painting_uri: req.body.raw,
-        created_at: new Date(),
-        id: postID,
-        mii: user.mii.data,
-        mii_face_url: `https://mii.olv.pretendo.cc/${user.pid}/normal_face.png`,
-        pid: user.pid,
-        verified: (user.access_level === 2 || user.access_level === 3),
-        parent: null,
+    if (req.body.screenshot) {
+        screenshot = req.body.screenshot.replace(/\0/g, "").trim();
+        await util.data.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
+    }
+
+    let miiFace;
+    switch (parseInt(req.body.feeling_id)) {
+        case 1:
+            miiFace = 'smile_open_mouth.png';
+            break;
+        case 2:
+            miiFace = 'wink_left.png';
+            break;
+        case 3:
+            miiFace = 'surprise_open_mouth.png';
+            break;
+        case 4:
+            miiFace = 'frustrated.png';
+            break;
+        case 5:
+            miiFace = 'sorrow.png';
+            break;
+        default:
+            miiFace = 'normal_face.png';
+            break;
+    }
+    let body = req.body.body;
+    if(body)
+        body = req.body.body.replace(/[^A-Za-z\d\s-_!@#$%^&*(){}‛¨ƒºª«»“”„¿¡←→↑↓√§¶†‡¦–—⇒⇔¤¢€£¥™©®+×÷=±∞ˇ˘˙¸˛˜′″µ°¹²³♭♪•…¬¯‰¼½¾♡♥●◆■▲▼☆★♀♂,./?;:'"\[\]]/g, "");
+    if(body.length > 280)
+        body = body.substring(0,280);
+    const document = {
         community_id: conversation.id,
+        screen_name: userSettings.screen_name,
+        body: body,
+        painting: painting,
+        screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: "",
+        country_id: req.paramPackData ? req.paramPackData.country_id : 49,
+        created_at: new Date(),
+        feeling_id: req.body.feeling_id,
+        id: postID,
+        is_autopost: 0,
+        is_spoiler: (req.body.spoiler) ? 1 : 0,
+        is_app_jumpable: req.body.is_app_jumpable,
+        language_id: req.body.language_id,
+        mii: user.mii.data,
+        mii_face_url: `https://mii.olv.pretendo.cc/mii/${user.pid}/${miiFace}`,
+        pid: req.pid,
+        platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
+        region_id: req.paramPackData ? req.paramPackData.region_id : 2,
+        verified: (user.access_level === 2 || user.access_level === 3),
         message_to_pid: req.body.message_to_pid
     };
+    let duplicatePost = await database.getDuplicatePosts(req.pid, document);
+    if(duplicatePost && req.params.post_id)
+        return res.redirect('/posts/' + req.params.post_id.toString());
     const newPost = new POST(document);
     newPost.save();
-    res.sendStatus(200);
+    res.redirect(`/friend_messages/${conversation.id}`);
     let postPreviewText;
     if(document.painting)
         postPreviewText = 'sent a Drawing'
@@ -139,19 +182,15 @@ router.get('/new/:pid', async function (req, res, next) {
 });
 
 router.get('/:message_id', async function (req, res) {
-    console.log('Oh howdy!')
     let conversation = await database.getConversationByID(req.params.message_id.toString());
     if(!conversation) {
         return res.sendStatus(404);
     }
     let user2 = conversation.users[0].pid.toString() === req.pid.toString() ? conversation.users[1] : conversation.users[0];
-    console.log(req.pid !== conversation.users[0].pid)
-    console.log(req.pid !== conversation.users[1].pid)
     if(req.pid.toString() !== conversation.users[0].pid && req.pid.toString() !== conversation.users[1].pid)
         res.redirect('/')
     let messages = await database.getConversationMessages(conversation.id, 100, 0);
     let userMap = await util.data.getUserHash();
-    console.log(messages)
     res.render(req.directory + '/message_thread.ejs', {
         moment: moment,
         user2: user2,

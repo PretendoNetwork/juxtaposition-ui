@@ -43,7 +43,7 @@
             <%- include('partials/' + template, { bundle }); %>
         </div>
     </div>
-    <%- include('partials/new_post', { pid, lang, id: community.community_id, name: community.name }); %>
+    <%- include('partials/new_post', { pid, lang, id: community.community_id, name: community.name, url: '/posts/new', show: 'community-post-list', message_pid: '' }); %>
 </div>
 </body>
 </html>

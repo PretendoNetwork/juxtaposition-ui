@@ -2,7 +2,7 @@
     <header class="add-post-page-header">
         <h1 class="page-title"><%= lang.new_post.post_to %> <%= name %></h1>
     </header>
-    <form method="post" action="/posts/new" id="posts-form" data-is-own-title="1" data-is-identified="1">
+    <form method="post" action="<%=url%>" id="posts-form" data-is-own-title="1" data-is-identified="1">
         <input type="hidden" name="community_id" value="<%= id %>"/>
         <div class="add-post-page-content">
             <div class="feeling-selector expression">
@@ -83,9 +83,10 @@
                 <span class="checkmark"></span>
             </label>
         </div>
+        <input id="message_to_pid" type="hidden" name="message_to_pid" <%if(message_pid) {%>value="<%= message_pid %><%}%>">
         <input type="button" class="olv-modal-close-button fixed-bottom-button left"
                value="Cancel" data-sound="SE_WAVE_CANCEL"
-               data-module-show="community-post-list" data-module-hide="add-post-page"
+               data-module-show="<%= show %>" data-module-hide="add-post-page"
                data-header="true" data-menu="true">
         <input type="submit" class="post-button fixed-bottom-button" value="Post">
     </form>

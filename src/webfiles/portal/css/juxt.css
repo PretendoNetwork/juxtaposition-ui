@@ -403,7 +403,7 @@ input, label, button {
 }
 
 .arrow-button {
-    width: 950px;
+    width: 1060px;
     height: 123px;
     position: absolute;
     top: 5px;
@@ -416,7 +416,7 @@ input, label, button {
     width: 50px;
     height: 50px;
     top: 37px;
-    right: 5px;
+    right: 0;
     border-radius: 1em;
     content: " ";
     background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' fill='%23ffffff' viewBox='0 0 256 256' style='stroke: black;'%3E%3Crect width='256' fill='none'/%3E%3Cpolyline points='96 48 176 128 96 208' fill='none' stroke-linecap='round' stroke-linejoin='round' stroke-width='40'/%3E%3C/svg%3E") no-repeat 10px 10px, -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(0.3, #fff), color-stop(0.8, #fff5f5), color-stop(0.96, #fff5f5), to(#fff5f5)) 0 0;
@@ -636,13 +636,13 @@ input, label, button {
 .post-wrapper {
     width: fit-content;
     padding: 15px 30px !important;
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+    /*! background: #fff; */
+    /*! border-radius: 20px; */
+    /*! box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); */
 }
 
 .post-wrapper .post-body {
-    box-shadow: none !important;
+    /*! box-shadow: none !important; */
 }
 /* Tab Screen */
 .tab-button.selected span {
@@ -1021,6 +1021,12 @@ input, label, button {
     content: "";
     display: block;
     clear: both;
+}
+.message-viewer-bubble-sent-memo {
+  width: 340px;
+}
+.message-viewer-bubble-sent-screenshot {
+  width: 500px;
 }
 .message-post-list .post {
     *zoom: 1;
