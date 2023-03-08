@@ -5,7 +5,8 @@ function auth(request, response, next) {
     if(request.path.includes('/css/') || request.path.includes('/fonts/')
         || request.path.includes('/js/') || request.path.includes('/icons/')
         || request.path.includes('/headers/') || request.path.includes('/paintings/')
-        || request.path.includes('/screenshots/') || request.path.includes('/web/')) {
+        || request.path.includes('/screenshots/') || request.path.includes('/web/')
+        || request.path.includes('/images/')) {
         if(request.subdomains.indexOf('juxt') !== -1) {
             request.directory = 'web';
             request.lang = util.data.processLanguage();
