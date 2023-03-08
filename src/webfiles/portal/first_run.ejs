@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-</head>
+<%- include('partials/head', { title: '' }); %>
 <script>
     var experience = 0;
     var notifications = false;
@@ -40,6 +36,7 @@
         }
         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications, "region": wiiuSystemSetting.getCountry().code }));
+        wiiuSound.playSoundByName('JGL_OLV_INIT_END', 3);
     }
 </script>
 <style>
@@ -68,6 +65,8 @@
         font-size: 20px;
         color: white;
         font-weight: bold;
+        margin: 0 auto;
+        display: block;
         background: -webkit-gradient(linear, left top, left bottom, from(#866dbe), to(#673DB6)) 0 0;
     }
     .about-header {
@@ -291,12 +290,16 @@
         <div id="have-fun" class="about-wrapper background">
             <h1 class="about-header"></h1>
             <div class="about-body">
-                <h1><%= lang.setup.done %></h1>
+                <h1 class="about-header"><%= lang.setup.done %></h1>
             </div>
-            <button class="about-button"
-                    onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
+            <br><br><br><br>
+            <div class="center">
+                <button class="about-button"
+                        onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);
                     wiiuSound.playSoundByName('BGM_OLV_MAIN', 3);
                     window.location.replace('/titles')"><%= lang.setup.done_button %></button>
+            </div>
+
         </div>
     </div>
 <body onload="wiiuBrowser.endStartUp(); wiiuSound.playSoundByName('BGM_OLV_INIT', 3);">

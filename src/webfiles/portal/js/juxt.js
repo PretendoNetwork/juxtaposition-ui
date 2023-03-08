@@ -122,7 +122,9 @@ function initPostModules() {
                 show = el.getAttribute("data-module-show"),
                 hide = el.getAttribute("data-module-hide"),
                 header = el.getAttribute("data-header"),
-                menu = el.getAttribute("data-menu");
+                menu = el.getAttribute("data-menu"),
+                sound = el.getAttribute("data-sound");
+            if(sound) wiiuSound.playSoundByName(sound, 1);
             if(!show || !hide) return;
             document.getElementById(hide).style.display = 'none';
             document.getElementById(show).style.display = 'block';
