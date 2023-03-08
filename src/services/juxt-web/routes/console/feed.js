@@ -8,6 +8,8 @@ var router = express.Router();
 router.get('/', async function (req, res) {
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
+    if(!userContent)
+        return res.redirect('/404');
     let posts = await database.getNewsFeed(userContent, config.post_limit);
     res.render(req.directory + '/feed.ejs', {
         moment: moment,
@@ -26,6 +28,8 @@ router.get('/loadposts', async function (req, res) {
     let offset = parseInt(req.query.offset);
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
+    if(!userContent)
+        return res.redirect('/404');
     let posts;
     if(offset !== null)
         posts = await database.getNewsFeedOffset(userContent, config.post_limit, offset);

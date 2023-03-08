@@ -84,6 +84,8 @@ router.get('/:communityID/post', async function (req, res) {
 router.get('/:communityID/:type', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
+    if(!userContent || !userSettings)
+        return res.redirect('/404');
     if(req.params.communityID === 'announcements')
         res.redirect('/titles/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
@@ -146,7 +148,7 @@ router.get('/:communityID/:type/more', async function (req, res) {
     let communityMap = await util.data.getCommunityHash();
     let posts;
     let community = await database.getCommunityByID(req.params.communityID)
-    if(!community) return res.sendStatus(404);
+    if(!community) return res.redirect('/404');
     if(!offset)
         offset = 0;
     switch (req.params.type) {

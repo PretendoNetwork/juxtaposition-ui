@@ -17,7 +17,8 @@ router.get('/', async function (req, res) {
         }
         else {
             let user = await database.getUserSettings(req.pid);
-            if(user === null)
+            let content = await database.getUserContent(req.pid)
+            if(!user || !content)
             {
                 res.render(req.directory + '/first_run.ejs', {
                     cdnURL: config.CDN_domain,

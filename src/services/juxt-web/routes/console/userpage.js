@@ -100,7 +100,7 @@ router.get('/:pid/:type', async function (req, res) {
 async function userPage(req, res, userID) {
     let pnid = await database.getPNID(userID);
     let userContent = await database.getUserContent(userID);
-    if(isNaN(userID) || !pnid)
+    if(isNaN(userID) || !pnid || !userContent)
         return res.redirect('/404');
     let userSettings = await database.getUserSettings(userID);
     let posts = await database.getNumberUserPostsByID(userID, config.post_limit);
