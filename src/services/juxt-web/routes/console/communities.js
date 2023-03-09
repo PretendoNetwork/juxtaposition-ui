@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
     let popularCommunities = await database.getMostPopularCommunities(9);
-    let newCommunities = await database.getCommunities(6);
+    let newCommunities = await database.getNewCommunities(6);
     res.render(req.directory + '/communities.ejs', {
         cache: true,
         popularCommunities: popularCommunities,

@@ -198,6 +198,7 @@ document.addEventListener("DOMContentLoaded", function() {
     })
     console.debug("Pjax initialized.", pjax);
     initAll();
+    stopLoading();
 });
 
 function hideScreenShots() { document.getElementById('screenshot-toggle').checked = false; }

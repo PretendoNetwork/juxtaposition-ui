@@ -166,6 +166,16 @@ let methods = {
 
         return decryptedBody;
     },
+    unpackToken: function(token) {
+        return {
+            system_type: token.readUInt8(0x0),
+            token_type: token.readUInt8(0x1),
+            pid: token.readUInt32LE(0x2),
+            access_level: token.readUInt8(0x6),
+            title_id: token.readBigUInt64LE(0x7), // always 0 here
+            expire_time: token.readBigUInt64LE(0xF)
+        }
+    },
     processPainting: async function (painting, isTGA) {
         if (isTGA) {
             let paintingBuffer = Buffer.from(painting, 'base64');

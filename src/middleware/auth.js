@@ -52,11 +52,11 @@ function auth(request, response, next) {
             return next()
         }
         else {
-            if(request.cookies.token === undefined || request.cookies.token === null)
+            if(request.cookies.access_token === undefined || request.cookies.access_token === null)
             {
                 return response.redirect('/login');
             }
-            let pid = util.data.processServiceToken(request.cookies.token);
+            let pid = util.data.processServiceToken(request.cookies.access_token);
             if(pid === null)
             {
                 return response.redirect('/login');

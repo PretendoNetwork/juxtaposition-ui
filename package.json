@@ -24,6 +24,7 @@
     "cookie-parser": "^1.4.5",
     "date-fns": "^2.29.3",
     "express": "^4.17.1",
+    "express-rate-limit": "^6.7.0",
     "fs-extra": "^9.0.1",
     "hashmap": "^2.4.0",
     "image-pixels": "^2.2.2",

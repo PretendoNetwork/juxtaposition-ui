@@ -3,14 +3,28 @@ const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
-const rateLimit = require('../../../../middleware/ratelimit');
 const multer = require('multer');
 const moment = require('moment');
+const rateLimit = require('express-rate-limit')
 const upload = multer({dest: 'uploads/'});
 const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
 
-router.post('/empathy', rateLimit, async function (req, res) {
+const postLimit = rateLimit({
+    windowMs: 30 * 1000, // 30 seconds
+    max: 1, // Limit each IP to 1 request per `window`
+    standardHeaders: true,
+    legacyHeaders: true,
+})
+
+const yeahLimit = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 60, // Limit each IP to 60 requests per `window`
+    standardHeaders: true,
+    legacyHeaders: true,
+})
+
+router.post('/empathy', yeahLimit, async function (req, res) {
     let post = await database.getPostByID(req.body.postID);
     if(!post)
         return res.sendStatus(404);
@@ -35,7 +49,7 @@ router.post('/empathy', rateLimit, async function (req, res) {
         res.send({ status: 423, id: post.id, count: post.empathy_count });
 });
 
-router.post('/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res)});
+router.post('/new', postLimit, upload.none(), async function (req, res) { await newPost(req, res)});
 
 router.get('/:post_id', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
@@ -68,15 +82,11 @@ router.get('/:post_id', async function (req, res) {
     });
 });
 
-router.post('/:post_id/new', rateLimit, upload.none(), async function (req, res) { await newPost(req, res);});
+router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) { await newPost(req, res);});
 
 async function newPost(req, res) {
     let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = snowflake.nextId();
     let community = await database.getCommunityByID(req.body.community_id);
-    console.log(!community)
-    console.log(userSettings.account_status !== 0)
-    console.log(community.community_id === 'announcements')
-    console.log(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
     if(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
         return res.sendStatus(403);
     if(req.params.post_id) {
@@ -153,6 +163,8 @@ async function newPost(req, res) {
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
     if(duplicatePost && req.params.post_id)
         return res.redirect('/posts/' + req.params.post_id.toString());
+    if(document.body === '' && document.painting === '' && document.screenshot === '')
+        return res.redirect('/titles/' + community.community_id + '/new');;
     const newPost = new POST(document);
     newPost.save();
     if(parentPost && (parentPost.pid !== PNID.pid))

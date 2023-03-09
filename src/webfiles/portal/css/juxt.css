@@ -635,10 +635,8 @@ input, label, button {
 
 .post-wrapper {
     width: fit-content;
-    padding: 15px 30px !important;
-    /*! background: #fff; */
-    /*! border-radius: 20px; */
-    /*! box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6); */
+    padding: 0px !important;
+    border-bottom: 5px dotted #d2b0e1;
 }
 
 .post-wrapper .post-body {
