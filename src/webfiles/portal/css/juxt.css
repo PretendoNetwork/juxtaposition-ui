@@ -1022,9 +1022,11 @@ input, label, button {
 }
 .message-viewer-bubble-sent-memo {
   width: 340px;
+  height: 127px;
 }
 .message-viewer-bubble-sent-screenshot {
   width: 500px;
+  height: 281px;
 }
 .message-post-list .post {
     *zoom: 1;

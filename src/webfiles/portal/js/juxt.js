@@ -59,27 +59,30 @@ function initTabs() {
     var els = document.querySelectorAll(".tab-button");
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
-        els[i].addEventListener("click", function(e) {
-            e.preventDefault();
-            var el = e.currentTarget;
-            var child = el.children[0];
+        els[i].removeEventListener('click', tabs);
+        els[i].addEventListener("click", tabs);
+    }
+    function tabs(e) {
+        e.preventDefault();
+        var el = e.currentTarget;
+        var child = el.children[0];
 
-            for(var i = 0; i < els.length; i++) {
-                if(els[i].classList.contains('selected'))
-                    els[i].classList.remove('selected');
+        for(var i = 0; i < els.length; i++) {
+            if(els[i].classList.contains('selected'))
+                els[i].classList.remove('selected');
+        }
+        el.classList.add("selected");
+
+        GET(child.getAttribute('href') + "?pjax=true", function a(data) {
+            var response = data.response;
+            if(response && data.status === 200) {
+                document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
+                window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
+                initPosts();
+                initYeah();
             }
-            el.classList.add("selected");
+        })
 
-            GET(child.getAttribute('href') + "?pjax=true", function a(data) {
-                var response = data.response;
-                if(response && data.status === 200) {
-                    document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
-                    window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
-                    initAll();
-                }
-            })
-
-        });
     }
 }
 function initPosts() {

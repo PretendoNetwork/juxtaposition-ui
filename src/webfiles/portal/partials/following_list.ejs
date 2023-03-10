@@ -15,7 +15,7 @@
         <% bundle.communities.forEach(function(community) { %>
                 <li id="<%= community %>">
                     <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= community %>/128.png" class="icon" alt=""></span>
-                    <a href="/communities/<%= community %>/new" data-pjax="#body" class="scroll to-community-button"></a>
+                    <a href="/titles/<%= community %>/new" data-pjax="#body" class="scroll to-community-button"></a>
                     <div class="body">
                         <div class="body-content">
                             <span class="community-name title"><%= bundle.communityMap.get(community) %></span>

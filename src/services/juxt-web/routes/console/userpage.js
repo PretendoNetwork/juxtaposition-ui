@@ -57,7 +57,7 @@ router.get('/show', async function (req, res) {
 
 router.get('/:pid/more', async function (req, res) { await morePosts(req, res, req.params.pid) });
 
-router.get('/:pid/:type', async function (req, res) { await userRelations(req, res, req.pid) });
+router.get('/:pid/:type', async function (req, res) { await userRelations(req, res, req.params.pid) });
 
 // TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
@@ -182,7 +182,7 @@ async function userRelations(req, res, userID) {
             bundle,
         });
 
-    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}`;
+    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
     let userSettings = await database.getUserSettings(userID);
     let numPosts = await database.getTotalPostsByUserID(userID);
     let parentUserContent;
