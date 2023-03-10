@@ -265,6 +265,7 @@ function stopLoading() {
         setTimeout(function() {
             wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
         },90000);
+        wiiuBrowser.lockUserOperation(false);
     }
 }
 function exit() {

@@ -17,6 +17,7 @@ app.set('etag', false);
 app.disable('x-powered-by');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/webfiles');
+app.set('trust proxy', 1)
 
 // Create router
 logger.info('Setting up Middleware');
