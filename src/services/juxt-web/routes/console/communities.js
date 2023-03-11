@@ -118,7 +118,8 @@ router.get('/:communityID/:type', async function (req, res) {
     if(req.query.pjax)
         return res.render(req.directory + '/partials/posts_list.ejs', {
             bundle,
-            moment
+            moment,
+            lang: req.lang
         });
 
     res.render(req.directory + '/community.ejs', {

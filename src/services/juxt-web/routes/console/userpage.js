@@ -154,6 +154,10 @@ async function userRelations(req, res, userID) {
 
     let followers, communities, communityMap, selection;
 
+    if(req.params.type === 'friends') {
+        return res.render(req.directory + '/partials/not_ready.ejs');
+    }
+
     if(req.params.type === 'followers') {
         followers = await database.getFollowingUsers(userContent);
         communities = [];

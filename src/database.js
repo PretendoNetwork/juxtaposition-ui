@@ -14,6 +14,7 @@ const logger = require('./logger');
 const accountDB = require('./accountdb');
 
 let connection;
+mongoose.set('strictQuery', true);
 
 async function connect() {
     await mongoose.connect(`${uri}/${database}`, options);

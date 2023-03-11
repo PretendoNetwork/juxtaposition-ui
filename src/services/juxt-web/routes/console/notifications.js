@@ -13,7 +13,7 @@ router.get('/my_news', async function (req, res) {
     }
 
     if(req.query.pjax)
-        return res.render(req.directory + '/partials/updates.ejs', {
+        return res.render(req.directory + '/partials/not_ready.ejs', {
             bundle,
             moment
     });
@@ -25,7 +25,7 @@ router.get('/my_news', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         pid: req.pid,
-        template: 'updates'
+        template: 'not_ready'
     });
     notifications.filter(noti => noti.read === false).forEach(function(notification) {
         notification.markRead();
@@ -40,7 +40,7 @@ router.get('/friend_requests', async function (req, res) {
     }
 
     if(req.query.pjax)
-        return res.render(req.directory + '/partials/requests.ejs', {
+        return res.render(req.directory + '/partials/not_ready.ejs', {
             bundle,
             moment
     });
@@ -52,7 +52,7 @@ router.get('/friend_requests', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         pid: req.pid,
-        template: 'requests'
+        template: 'not_ready'
     });
     notifications.filter(noti => noti.read === false).forEach(function(notification) {
         notification.markRead();

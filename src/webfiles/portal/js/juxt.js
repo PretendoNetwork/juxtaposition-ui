@@ -269,8 +269,9 @@ function stopLoading() {
     }
 }
 function exit() {
-    wiiu.gamepad.update()
-    if(wiiu.gamepad.hold === 8)
+    wiiu.gamepad.update();
+
+    if(wiiu.gamepad.hold === 4096)
         location.reload();
     else if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
         alert('Debug Menu');
