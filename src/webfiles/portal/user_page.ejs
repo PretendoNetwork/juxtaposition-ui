@@ -18,7 +18,7 @@
             <%if(pnid.pid !== pid) {%>
                 <a href="#" class="favorite-button favorite-button-mini button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>"></a>
                 <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1 && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
-                <a href="#" class="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
+                <a href="/friend_messages/new/<%=userContent.pid%>" class="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
                 <%}%>
             <%}%>
             <span class="title"><%= pnid.mii.name %></span>

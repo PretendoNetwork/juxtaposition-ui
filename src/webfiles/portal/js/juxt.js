@@ -1,5 +1,6 @@
 var scrollPosition, pjax;
 var updateCheck = setInterval(checkForUpdates, 30000);
+var inputCheck = setInterval(input, 100);
 
 /* global Pjax */
 function initNavBar() {
@@ -127,7 +128,7 @@ function initPostModules() {
                 header = el.getAttribute("data-header"),
                 menu = el.getAttribute("data-menu"),
                 sound = el.getAttribute("data-sound");
-            if(sound) wiiuSound.playSoundByName(sound, 1);
+            if(sound) wiiuSound.playSoundByName(sound, 3);
             if(!show || !hide) return;
             document.getElementById(hide).style.display = 'none';
             document.getElementById(show).style.display = 'block';
@@ -151,6 +152,16 @@ function initPostEmotion() {
         els[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
             document.getElementById("mii-face").src = el.getAttribute('data-mii-face-url');
+            wiiuSound.playSoundByName(el.getAttribute('data-sound'), 3);
+        });
+    }
+}
+function initSounds() {
+    var els = document.querySelectorAll("[data-sound]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
         });
     }
 }
@@ -170,6 +181,7 @@ function initAll() {
     initPosts();
     initMorePosts();
     initPostModules();
+    initSounds
     pjax.refresh();
 }
 
@@ -271,9 +283,7 @@ function stopLoading() {
 function exit() {
     wiiu.gamepad.update();
 
-    if(wiiu.gamepad.hold === 4096)
-        location.reload();
-    else if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
+    if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
         alert('Debug Menu');
     else {
         wiiuSound.playSoundByName("SE_WAVE_EXIT", 1);
@@ -342,4 +352,18 @@ function GET(url, callback) {
     };
     xhttp.open("GET", url, true);
     xhttp.send();
+}
+function input() {
+    wiiu.gamepad.update();
+    if(wiiu.gamepad.isDataValid === 0) return;
+    switch (wiiu.gamepad.hold) {
+        case 12:
+            return wiiuBrowser.lockUserOperation(false);
+        case 4096:
+            wiiuSound.playSoundByName('SE_WAVE_BALLOON_OPEN', 1);
+            return location.reload();
+        case 16384:
+            wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+            if(wiiuBrowser.canHistoryBack()) return history.back();
+    }
 }

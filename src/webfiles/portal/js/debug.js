@@ -190,9 +190,9 @@ if (typeof wiiuMainApplication === 'undefined') {
 
             // テスト等でスクショの有無を固定したい場合にクッキーで指定できるようにする, 実機ではこの挙動は存在しない
             // If you want to fix the presence or absence of screenshots in tests, etc., make it possible to specify with cookies, this behavior does not exist on the actual device
-            var force = Olv.Cookie.get('force_screenshot_for_test');
-            if (force === 'true')  index = 0;
-            if (force === 'false') index = 2;
+            //var force = Olv.Cookie.get('force_screenshot_for_test');
+            //if (force === 'true')  index = 0;
+            //if (force === 'false') index = 2;
 
             return images[index];
         },

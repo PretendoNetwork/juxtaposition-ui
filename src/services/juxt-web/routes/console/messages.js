@@ -140,7 +140,7 @@ router.get('/new/:pid', async function (req, res, next) {
         return res.sendStatus(422)
     let conversation = await database.getConversationByUsers([user.pid, user2.pid]);
     if(conversation)
-        return res.redirect(`/messages/${conversation.id}`);
+        return res.redirect(`/friend_messages/${conversation.id}`);
     let document = {
         id: snowflake.nextId(),
         users: [

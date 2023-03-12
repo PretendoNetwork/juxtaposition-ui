@@ -3,8 +3,8 @@
 <%} else { %>
     <% bundle.posts.forEach(function(post) { %>
         <%- include('post_template', { post: post, mii_image_CDN: bundle.mii_image_CDN, lang: bundle.lang, userContent: bundle.userContent, communityMap: bundle.communityMap, reply: false  }); %>
-        <div class="button-wrapper center">
-            <button type="button" class="load-more" data-href="<%= bundle.link %>"><%= bundle.lang.global.more %></button>
-        </div>
     <% }); %>
+    <div class="button-wrapper center">
+        <button type="button" class="load-more" data-href="<%= bundle.link %>"><%= bundle.lang.global.more %></button>
+    </div>
 <%}%>

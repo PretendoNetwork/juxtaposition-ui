@@ -12,8 +12,7 @@ body {
     line-height: 1.5;
     margin: 0;
     padding: 0;
-    background-size: 100%;
-    background: rgba(232, 236, 236, 1)  url('/images/background.png') repeat;
+    background: url('/images/background.png') repeat;
     min-height: 720px;
     background-size: 1280px;
     overflow-x: hidden !important;
