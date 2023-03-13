@@ -202,6 +202,18 @@ document.addEventListener("pjax:error", function(e) {
 document.addEventListener("pjax:success", function() {
     console.debug("Event: pjax:success", arguments);
     wiiuBrowser.showLoadingIcon(false);
+    var back = document.getElementById('nav-menu-back');
+    var close = document.getElementById('nav-menu-exit');
+    if(wiiuBrowser.canHistoryBack()) {
+        back.classList.remove('selected');
+        back.classList.remove('none');
+        close.classList.add('none');
+    }
+    else {
+        back.classList.remove('selected');
+        back.classList.add('none');
+        close.classList.remove('none');
+    }
     initAll();
 });
 document.addEventListener("DOMContentLoaded", function() {
@@ -353,6 +365,14 @@ function GET(url, callback) {
     xhttp.open("GET", url, true);
     xhttp.send();
 }
+
+function back() {
+    if(wiiuBrowser.canHistoryBack()) {
+        document.getElementById('nav-menu-back').classList.add('selected')
+        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+        history.back();
+    }
+}
 function input() {
     wiiu.gamepad.update();
     if(wiiu.gamepad.isDataValid === 0) return;
@@ -363,7 +383,6 @@ function input() {
             wiiuSound.playSoundByName('SE_WAVE_BALLOON_OPEN', 1);
             return location.reload();
         case 16384:
-            wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
-            if(wiiuBrowser.canHistoryBack()) return history.back();
+            back();
     }
 }

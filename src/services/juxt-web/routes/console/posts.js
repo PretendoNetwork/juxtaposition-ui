@@ -53,7 +53,7 @@ router.post('/empathy', yeahLimit, async function (req, res) {
         userContent.addToLikes(post.id)
         res.send({ status: 200, id: post.id, count: post.empathy_count });
         if(req.pid !== post.pid)
-            await util.data.newNotification({ pid: post.pid, type: "yeah", user: req.pid, link: `/posts/${post.id}` });
+            await util.data.newNotification({ pid: post.pid, type: "yeah", objectID: post.id, userPID: req.pid, link: `/posts/${post.id}` });
     }
     else if(userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
     {
@@ -103,16 +103,16 @@ async function newPost(req, res) {
     let community = await database.getCommunityByID(req.body.community_id);
     if(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
         return res.sendStatus(403);
+    if(req.params.post_id && (req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '')) {
+        res.status(422);
+        return res.redirect('/posts/' + req.params.post_id.toString());
+    }
     if(req.params.post_id) {
         parentPost = await database.getPostByID(req.params.post_id.toString());
         if(!parentPost)
             return res.sendStatus(403);
         parentPost.reply_count = parentPost.reply_count + 1;
         parentPost.save();
-    }
-    if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
-        res.status(422);
-        return res.redirect('/posts/' + req.params.post_id.toString());
     }
     let painting = "", paintingURI = "", screenshot = null;
     if (req.body._post_type === 'painting' && req.body.painting) {

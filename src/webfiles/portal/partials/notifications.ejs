@@ -1,0 +1,15 @@
+<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+<% for(var notification of bundle.notifications) {%>
+    <li>
+        <a href="/users/<%= notification.objectID %>" data-pjax="#body" class="icon-container notify">
+            <img src="https://mii.olv.pretendo.cc/mii/<%= notification.objectID %>/normal_face.png" class="icon">
+        </a>
+        <div class="body">
+            <p class="text"><span class="nick-name"><%= bundle.userMap.get(notification.objectID) %></span>
+                <a href="<%= notification.link %>" class="link"> followed you</a>
+                <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+            </p>
+        </div>
+    </li>
+    <%}%>
+</ul>

@@ -326,53 +326,74 @@ let methods = {
         await s3.putObject(awsPutParams).promise();
     },
     newNotification: async function(notification) {
-        // Check if a notification with the same pid and type already exists in the database
-        let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: notification.type });
-
-        if (existingNotification) {
-            // Check if the notification is less than 24 hours old
-            let notificationIsLessThan24HoursOld = isAfter(new Date(), subHours(existingNotification.lastUpdated, 24));
-
-            if (notificationIsLessThan24HoursOld) {
-                if(existingNotification.users.filter(e => (e.user === notification.user)))
-                    return;
-                // If the notification is less than 24 hours old, add the new user and timestamp to the list of users for that notification
+        if(notification.type === 'follow') {
+            // { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
+            let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
+            if(existingNotification) {
+                existingNotification.lastUpdated = new Date();
+                return await existingNotification.save();
+            }
+            existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow' });
+            if(existingNotification) {
                 existingNotification.users.push({
-                    user: notification.user,
-                    timestamp: new Date()
+                    user: notification.objectID,
+                    timeStamp: new Date()
                 });
                 existingNotification.lastUpdated = new Date();
-                await existingNotification.save();
-            } else {
-                // If the notification is more than 24 hours old, create a new notification
+                existingNotification.link = notification.link;
+                existingNotification.objectID = notification.objectID;
+                return await existingNotification.save();
+            }
+            else {
                 let newNotification = new NOTIFICATION({
                     pid: notification.pid,
                     type: notification.type,
                     users: [{
-                        user: notification.user,
+                        user: notification.objectID,
                         timestamp: new Date()
                     }],
                     link: notification.link,
+                    objectID: notification.objectID,
                     read: false,
                     lastUpdated: new Date()
                 });
                 await newNotification.save();
             }
-        } else {
-            // If a notification with the same pid and type does not already exist, add a new notification to the database
-            let newNotification = new NOTIFICATION({
-                pid: notification.pid,
-                type: notification.type,
-                users: [{
-                    user: notification.user,
-                    timestamp: new Date()
-                }],
-                link: notification.link,
-                read: false,
-                lastUpdated: new Date()
-            });
-            await newNotification.save();
         }
+        /*else if(notification.type === 'yeah') {
+            // { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
+            let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
+            if(existingNotification) {
+                existingNotification.lastUpdated = new Date();
+                return await existingNotification.save();
+            }
+            existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'yeah' });
+            if(existingNotification) {
+                existingNotification.users.push({
+                    user: notification.objectID,
+                    timeStamp: new Date()
+                });
+                existingNotification.lastUpdated = new Date();
+                existingNotification.link = notification.link;
+                existingNotification.objectID = notification.objectID;
+                return await existingNotification.save();
+            }
+            else {
+                let newNotification = new NOTIFICATION({
+                    pid: notification.pid,
+                    type: notification.type,
+                    users: [{
+                        user: notification.objectID,
+                        timestamp: new Date()
+                    }],
+                    link: notification.link,
+                    objectID: notification.objectID,
+                    read: false,
+                    lastUpdated: new Date()
+                });
+                await newNotification.save();
+            }
+        }*/
     }
 };
 exports.data = methods;
