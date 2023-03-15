@@ -371,8 +371,10 @@ function back() {
         document.getElementById('nav-menu-back').classList.add('selected')
         wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
         history.back();
+        document.getElementById('nav-menu').style.display = 'block';
     }
 }
+
 function input() {
     wiiu.gamepad.update();
     if(wiiu.gamepad.isDataValid === 0) return;
