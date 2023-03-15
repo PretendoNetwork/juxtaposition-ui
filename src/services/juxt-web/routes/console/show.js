@@ -27,9 +27,9 @@ router.get('/', async function (req, res) {
                 });
             }
             else {
-                if(moment(user.ban_lift_date).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') && user.account_status !== 3) {
+                if(moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
                     user.account_status = 0;
-                    user.save()
+                    await user.save()
                 }
                 /**
                  * Account Status
@@ -38,9 +38,9 @@ router.get('/', async function (req, res) {
                  * 2 - Temporary Ban
                  * 3 - Forever Ban
                  */
-                if(user.access_level === -1)
+                if(user.account_status < 0 || user.account_status > 1)
                 {
-                    res.render(req.directory + '/ban_notification.ejs', {
+                    res.render(req.directory + '/partials/ban_notification.ejs', {
                         user: user,
                         moment: moment,
                         cdnURL: config.CDN_domain,
