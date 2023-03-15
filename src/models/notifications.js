@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 const  NotificationSchema = new Schema({
     pid: String,
     type: String,
+    objectID: String,
     link: String,
     users: [{
         user: String,

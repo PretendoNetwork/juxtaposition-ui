@@ -27,7 +27,7 @@
     "express-rate-limit": "^6.7.0",
     "fs-extra": "^9.0.1",
     "hashmap": "^2.4.0",
-    "image-pixels": "^2.2.2",
+    "image-pixels": "^1.1.1",
     "memory-cache": "^0.2.0",
     "moment": "^2.29.1",
     "mongoose": "^6.0.13",
@@ -38,7 +38,7 @@
     "node-snowflake": "0.0.1",
     "pako": "^2.0.2",
     "pngjs": "^6.0.0",
-    "sharp": "^0.28.1",
+    "sharp": "^0.31.3",
     "tga": "^1.0.4",
     "xml2js": "^0.4.23",
     "xmlbuilder2": "^3.0.2"

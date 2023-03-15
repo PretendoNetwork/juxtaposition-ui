@@ -112,6 +112,8 @@ PostSchema.methods.unRemove = async function(reason) {
     await this.save();
 };
 
+PostSchema.method('remove', undefined, { suppressWarning: true });
+
 const POST = model('POST', PostSchema);
 
 module.exports = {

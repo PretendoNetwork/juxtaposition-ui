@@ -140,7 +140,7 @@ router.get('/new/:pid', async function (req, res, next) {
         return res.sendStatus(422)
     let conversation = await database.getConversationByUsers([user.pid, user2.pid]);
     if(conversation)
-        return res.redirect(`/messages/${conversation.id}`);
+        return res.redirect(`/friend_messages/${conversation.id}`);
     let document = {
         id: snowflake.nextId(),
         users: [
@@ -189,7 +189,7 @@ router.get('/:message_id', async function (req, res) {
     let user2 = conversation.users[0].pid.toString() === req.pid.toString() ? conversation.users[1] : conversation.users[0];
     if(req.pid.toString() !== conversation.users[0].pid && req.pid.toString() !== conversation.users[1].pid)
         res.redirect('/')
-    let messages = await database.getConversationMessages(conversation.id, 100, 0);
+    let messages = await database.getConversationMessages(conversation.id, 200, 0);
     let userMap = await util.data.getUserHash();
     res.render(req.directory + '/message_thread.ejs', {
         moment: moment,

@@ -1,5 +1,6 @@
 var scrollPosition, pjax;
 var updateCheck = setInterval(checkForUpdates, 30000);
+var inputCheck = setInterval(input, 100);
 
 /* global Pjax */
 function initNavBar() {
@@ -59,27 +60,30 @@ function initTabs() {
     var els = document.querySelectorAll(".tab-button");
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
-        els[i].addEventListener("click", function(e) {
-            e.preventDefault();
-            var el = e.currentTarget;
-            var child = el.children[0];
+        els[i].removeEventListener('click', tabs);
+        els[i].addEventListener("click", tabs);
+    }
+    function tabs(e) {
+        e.preventDefault();
+        var el = e.currentTarget;
+        var child = el.children[0];
 
-            for(var i = 0; i < els.length; i++) {
-                if(els[i].classList.contains('selected'))
-                    els[i].classList.remove('selected');
+        for(var i = 0; i < els.length; i++) {
+            if(els[i].classList.contains('selected'))
+                els[i].classList.remove('selected');
+        }
+        el.classList.add("selected");
+
+        GET(child.getAttribute('href') + "?pjax=true", function a(data) {
+            var response = data.response;
+            if(response && data.status === 200) {
+                document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
+                window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
+                initPosts();
+                initYeah();
             }
-            el.classList.add("selected");
+        })
 
-            GET(child.getAttribute('href') + "?pjax=true", function a(data) {
-                var response = data.response;
-                if(response && data.status === 200) {
-                    document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
-                    window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
-                    initAll();
-                }
-            })
-
-        });
     }
 }
 function initPosts() {
@@ -124,7 +128,7 @@ function initPostModules() {
                 header = el.getAttribute("data-header"),
                 menu = el.getAttribute("data-menu"),
                 sound = el.getAttribute("data-sound");
-            if(sound) wiiuSound.playSoundByName(sound, 1);
+            if(sound) wiiuSound.playSoundByName(sound, 3);
             if(!show || !hide) return;
             document.getElementById(hide).style.display = 'none';
             document.getElementById(show).style.display = 'block';
@@ -148,6 +152,16 @@ function initPostEmotion() {
         els[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
             document.getElementById("mii-face").src = el.getAttribute('data-mii-face-url');
+            wiiuSound.playSoundByName(el.getAttribute('data-sound'), 3);
+        });
+    }
+}
+function initSounds() {
+    var els = document.querySelectorAll("[data-sound]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
         });
     }
 }
@@ -167,6 +181,7 @@ function initAll() {
     initPosts();
     initMorePosts();
     initPostModules();
+    initSounds
     pjax.refresh();
 }
 
@@ -187,6 +202,18 @@ document.addEventListener("pjax:error", function(e) {
 document.addEventListener("pjax:success", function() {
     console.debug("Event: pjax:success", arguments);
     wiiuBrowser.showLoadingIcon(false);
+    var back = document.getElementById('nav-menu-back');
+    var close = document.getElementById('nav-menu-exit');
+    if(wiiuBrowser.canHistoryBack()) {
+        back.classList.remove('selected');
+        back.classList.remove('none');
+        close.classList.add('none');
+    }
+    else {
+        back.classList.remove('selected');
+        back.classList.add('none');
+        close.classList.remove('none');
+    }
     initAll();
 });
 document.addEventListener("DOMContentLoaded", function() {
@@ -262,13 +289,13 @@ function stopLoading() {
         setTimeout(function() {
             wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);
         },90000);
+        wiiuBrowser.lockUserOperation(false);
     }
 }
 function exit() {
-    wiiu.gamepad.update()
-    if(wiiu.gamepad.hold === 8)
-        location.reload();
-    else if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
+    wiiu.gamepad.update();
+
+    if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
         alert('Debug Menu');
     else {
         wiiuSound.playSoundByName("SE_WAVE_EXIT", 1);
@@ -337,4 +364,25 @@ function GET(url, callback) {
     };
     xhttp.open("GET", url, true);
     xhttp.send();
+}
+
+function back() {
+    if(wiiuBrowser.canHistoryBack()) {
+        document.getElementById('nav-menu-back').classList.add('selected')
+        wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+        history.back();
+    }
+}
+function input() {
+    wiiu.gamepad.update();
+    if(wiiu.gamepad.isDataValid === 0) return;
+    switch (wiiu.gamepad.hold) {
+        case 12:
+            return wiiuBrowser.lockUserOperation(false);
+        case 4096:
+            wiiuSound.playSoundByName('SE_WAVE_BALLOON_OPEN', 1);
+            return location.reload();
+        case 16384:
+            back();
+    }
 }

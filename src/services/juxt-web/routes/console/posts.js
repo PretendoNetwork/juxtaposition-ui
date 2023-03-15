@@ -15,6 +15,22 @@ const postLimit = rateLimit({
     max: 1, // Limit each IP to 1 request per `window`
     standardHeaders: true,
     legacyHeaders: true,
+    message: "New post limit reached. Try again in a minute",
+    handler: function(req, res) {
+        if(req.params.post_id)
+            res.redirect('/posts/' + req.params.post_id.toString());
+        else if(req.body.community_id)
+            res.redirect('/titles/' + req.body.community_id);
+        else {
+            res.render(req.directory + '/error.ejs', {
+                code: 429,
+                message: "Too many new posts have been created.",
+                cdnURL: config.CDN_domain,
+                lang: req.lang,
+                pid: req.pid
+            });
+        }
+    },
 })
 
 const yeahLimit = rateLimit({
@@ -37,7 +53,7 @@ router.post('/empathy', yeahLimit, async function (req, res) {
         userContent.addToLikes(post.id)
         res.send({ status: 200, id: post.id, count: post.empathy_count });
         if(req.pid !== post.pid)
-            await util.data.newNotification({ pid: post.pid, type: "yeah", user: req.pid, link: `/posts/${post.id}` });
+            await util.data.newNotification({ pid: post.pid, type: "yeah", objectID: post.id, userPID: req.pid, link: `/posts/${post.id}` });
     }
     else if(userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
     {
@@ -55,15 +71,13 @@ router.get('/:post_id', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
     let post = await database.getPostByID(req.params.post_id.toString());
+    if(post === null) return res.redirect('/404');
     if(post.parent) {
         post = await database.getPostByID(post.parent);
         if(post === null)
             return res.sendStatus(404);
         return res.redirect(`/posts/${post.id}`);
     }
-
-    if(post === null)
-        return res.sendStatus(404);
     let community = await database.getCommunityByID(post.community_id);
     let communityMap = await util.data.getCommunityHash();
     let replies = await database.getPostReplies(req.params.post_id.toString(), 25)
@@ -89,16 +103,16 @@ async function newPost(req, res) {
     let community = await database.getCommunityByID(req.body.community_id);
     if(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
         return res.sendStatus(403);
+    if(req.params.post_id && (req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '')) {
+        res.status(422);
+        return res.redirect('/posts/' + req.params.post_id.toString());
+    }
     if(req.params.post_id) {
         parentPost = await database.getPostByID(req.params.post_id.toString());
         if(!parentPost)
             return res.sendStatus(403);
         parentPost.reply_count = parentPost.reply_count + 1;
         parentPost.save();
-    }
-    if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
-        res.status(422);
-        return res.redirect('/posts/' + req.params.post_id.toString());
     }
     let painting = "", paintingURI = "", screenshot = null;
     if (req.body._post_type === 'painting' && req.body.painting) {

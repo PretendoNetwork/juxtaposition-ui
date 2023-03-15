@@ -57,7 +57,7 @@ router.get('/show', async function (req, res) {
 
 router.get('/:pid/more', async function (req, res) { await morePosts(req, res, req.params.pid) });
 
-router.get('/:pid/:type', async function (req, res) { await userRelations(req, res, req.pid) });
+router.get('/:pid/:type', async function (req, res) { await userRelations(req, res, req.params.pid) });
 
 // TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
@@ -71,7 +71,7 @@ router.post('/follow', upload.none(), async function (req, res) {
         let picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
         //pid, type, reference_id, origin_pid, title, content
         if(picked === null)
-            await util.data.newNotification({ pid: userToFollowContent.pid, type: "follow", user: req.pid, link: `/users/show?pid=${req.pid}` });
+            await util.data.newNotification({ pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` });
     }
     else if(userContent !== null  && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1)
     {
@@ -154,6 +154,10 @@ async function userRelations(req, res, userID) {
 
     let followers, communities, communityMap, selection;
 
+    if(req.params.type === 'friends') {
+        return res.render(req.directory + '/partials/not_ready.ejs');
+    }
+
     if(req.params.type === 'followers') {
         followers = await database.getFollowingUsers(userContent);
         communities = [];
@@ -182,7 +186,7 @@ async function userRelations(req, res, userID) {
             bundle,
         });
 
-    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}`;
+    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
     let userSettings = await database.getUserSettings(userID);
     let numPosts = await database.getTotalPostsByUserID(userID);
     let parentUserContent;
