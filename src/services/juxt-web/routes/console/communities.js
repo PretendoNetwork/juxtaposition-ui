@@ -118,6 +118,7 @@ router.get('/:communityID/:type', async function (req, res) {
 
     let bundle = {
         posts,
+        open: community.open,
         numPosts,
         communityMap,
         userContent,
@@ -176,6 +177,7 @@ router.get('/:communityID/:type/more', async function (req, res) {
 
     let bundle = {
         posts,
+        open: true,
         numPosts: posts.length,
         communityMap,
         userContent,

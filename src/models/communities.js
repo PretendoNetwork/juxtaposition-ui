@@ -64,6 +64,10 @@ const  CommunitySchema = new Schema({
     browser_thumbnail: String,
     CTR_browser_header: String,
     WiiU_browser_header: String,
+    allows_comments: {
+        type: Boolean,
+        default: true
+    }
 });
 
 CommunitySchema.methods.upEmpathy = async function() {

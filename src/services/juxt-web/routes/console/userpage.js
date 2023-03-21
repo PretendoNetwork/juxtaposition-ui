@@ -109,6 +109,7 @@ async function userPage(req, res, userID) {
 
     let bundle = {
         posts,
+        open: true,
         numPosts,
         communityMap,
         userContent,

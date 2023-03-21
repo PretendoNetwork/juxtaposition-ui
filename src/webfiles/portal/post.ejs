@@ -6,7 +6,7 @@
 <div id="body">
     <header id="header">
         <h1 id="page-title" class="left"><%= post.screen_name %></h1>
-        <% if(post.community_id !== 'announcements') {%>
+        <% if(community.allows_comments && community.open) {%>
         <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
     </header>

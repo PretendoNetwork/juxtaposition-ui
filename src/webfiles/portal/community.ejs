@@ -5,7 +5,7 @@
 <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
 <div id="body">
     <header id="header">
-        <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0) {%>
+        <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0 && community.open) {%>
         <a id="header-post-button" class="header-button" href="#" data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list" data-module-show="add-post-page" data-header="false" data-menu="false">Post</a>
         <%}%>
         <!--<a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>-->
@@ -16,7 +16,9 @@
 
         <div class="community-info info-content with-header-banner">
             <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= community.community_id %>/128.png" class="icon"></span>
+            <%if(community.open){%>
             <a href="#" class="favorite-button button <%if(userContent.followed_communities.indexOf(community.community_id) !== -1){ %>checked<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.community_id %>"></a>
+            <%}%>
             <span class="title"><%= community.name %></span>
             <span class="text">
                 <span>
