@@ -1,7 +1,6 @@
 const crypto = require('crypto');
 const NodeRSA = require('node-rsa');
 const fs = require('fs-extra');
-const { isAfter, subHours } = require("date-fns");
 const database = require('./database');
 const logger = require('./logger');
 const config = require('../config.json');
@@ -326,22 +325,26 @@ let methods = {
         await s3.putObject(awsPutParams).promise();
     },
     newNotification: async function(notification) {
+        const now = new Date();
         if(notification.type === 'follow') {
             // { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
             let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
             if(existingNotification) {
-                existingNotification.lastUpdated = new Date();
+                existingNotification.lastUpdated = now;
+                existingNotification.read = false;
                 return await existingNotification.save();
             }
-            existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow' });
+            const last10min = new Date(now.getTime() - 10 * 60 * 1000);
+            existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow', lastUpdated: { $gte: last10min } });
             if(existingNotification) {
                 existingNotification.users.push({
                     user: notification.objectID,
-                    timeStamp: new Date()
+                    timeStamp: now
                 });
-                existingNotification.lastUpdated = new Date();
+                existingNotification.lastUpdated = now;
                 existingNotification.link = notification.link;
                 existingNotification.objectID = notification.objectID;
+                existingNotification.read = false;
                 return await existingNotification.save();
             }
             else {
@@ -350,12 +353,12 @@ let methods = {
                     type: notification.type,
                     users: [{
                         user: notification.objectID,
-                        timestamp: new Date()
+                        timestamp: now
                     }],
                     link: notification.link,
                     objectID: notification.objectID,
                     read: false,
-                    lastUpdated: new Date()
+                    lastUpdated: now
                 });
                 await newNotification.save();
             }
