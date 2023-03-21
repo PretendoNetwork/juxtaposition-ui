@@ -435,7 +435,7 @@ async function getNotifications(pid, limit, offset) {
     verifyConnected();
     return NOTIFICATION.find({
         pid: pid,
-    }).sort({lastUpdated: 1}).skip(offset).limit(limit);
+    }).sort({lastUpdated: -1}).skip(offset).limit(limit);
 }
 
 async function getNotification(pid, type, reference_id) {
