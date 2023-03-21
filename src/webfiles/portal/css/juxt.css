@@ -68,7 +68,7 @@ input, label, button {
     border-radius: 0 50px 50px 0;
     z-index: 20;
     user-select: none;
-    overflow-y: auto;
+    overflow-y: clip;
 }
 #nav-menu li {
     margin: 0 15px;

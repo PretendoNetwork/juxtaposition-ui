@@ -6,10 +6,21 @@ const multer = require('multer');
 const moment = require('moment');
 const upload = multer({dest: 'uploads/'});
 const router = express.Router();
+const { POST } = require('../../../../models/post');
+const { COMMUNITY } = require('../../../../models/communities');
 
 router.get('/', async function (req, res) {
-    let popularCommunities = await database.getMostPopularCommunities(9);
     let newCommunities = await database.getNewCommunities(6);
+    let last24Hours = await calculateMostPopularCommunities();
+    let popularCommunities = await COMMUNITY.aggregate([
+        { $match: { community_id: { $in: last24Hours } } },
+        {$addFields: {
+                index: { $indexOfArray: [ last24Hours, "$community_id" ] }
+            }},
+        { $sort: { index: 1 } },
+        { $limit : 9 },
+        { $project: { index: 0, _id: 0 } }
+    ]);
     res.render(req.directory + '/communities.ejs', {
         cache: true,
         popularCommunities: popularCommunities,
@@ -144,7 +155,6 @@ router.get('/:communityID/:type', async function (req, res) {
 
 router.get('/:communityID/:type/more', async function (req, res) {
     let offset = parseInt(req.query.offset);
-    let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
     let posts;
@@ -191,7 +201,7 @@ router.get('/:communityID/:type/more', async function (req, res) {
     else
         res.sendStatus(204);
 });
-// TODO: Remove the need for a parameter to toggle the following state
+
 router.post('/follow', upload.none(), async function (req, res) {
     let community = await database.getCommunityByID(req.body.id);
     let userContent = await database.getUserContent(req.pid);
@@ -210,5 +220,21 @@ router.post('/follow', upload.none(), async function (req, res) {
     else
         res.send({ status: 423, id: community.community_id, count: community.followers });
 });
+
+async function calculateMostPopularCommunities() {
+    const now = new Date();
+    const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+    const posts = await POST.find({ created_at: { $gte: last24Hours } }).lean();
+
+    const communityIds = {};
+    for (const post of posts) {
+        const communityId = post.community_id;
+        communityIds[communityId] = (communityIds[communityId] || 0) + 1;
+    }
+    return Object.entries(communityIds)
+        .sort((a, b) => b[1] - a[1])
+        .map((entry) => entry[0]);
+}
 
 module.exports = router;
