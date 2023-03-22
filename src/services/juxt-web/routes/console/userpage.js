@@ -121,6 +121,7 @@ async function userPage(req, res, userID) {
     if(req.query.pjax)
         return res.render(req.directory + '/partials/posts_list.ejs', {
             bundle,
+            lang: req.lang,
             moment
         });
     let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
