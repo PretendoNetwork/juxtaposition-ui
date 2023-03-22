@@ -38,13 +38,14 @@
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.user_page %></h2>
-    <%- include('nav_bar', { selection: -1 }); %>
+    <%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper">
         <div class="community-top">
             <div class="community-info">
                 <img class="user-icon <%if(pnid.access_level >= 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
                 <h2 class="community-title"><%= pnid.mii.name %> (<%= pnid.username %>)<span class="verified-badge" style="<%if(!pnid.access_level >= 2) {%>display: none;<%}%>">✓</span></h2>
+                <%if(pnid.pid !== pid) {%>
                 <%if(parentUserContent.followed_users.indexOf(userSettings.pid) !== -1){ %>
                 <div class="community-page-follow-button-wrapper user-page-follow-button-wrapper selected" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
                     <p class="community-page-follow-button-text user-page-follow-button-text" id="<%= userSettings.pid %>" onclick="followUser(this)" style="color: #FFFFFF"><%= lang.user_page.following_user %></p>
@@ -54,8 +55,53 @@
                     <p class="community-page-follow-button-text user-page-follow-button-text" id="<%= userSettings.pid %>" onclick="followUser(this)"><%= lang.user_page.follow_user %></p>
                 </div>
                 <%}%>
+                <%}%>
             </div>
-            <h4 class="community-description"><%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%></h4>
+            <h4 class="community-description">
+                <!--<%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%>
+                    <%if(pnid.connections.stripe.tier_level) {%>
+                    <%if(pnid.connections.stripe.tier_level === 1) {%>
+                        <span class="supporter-star mario">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </span>
+                    <%} else if(pnid.connections.stripe.tier_level === 2) {%>
+                        <span class="supporter-star super">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </span>
+                    <%} else if(pnid.connections.stripe.tier_level === 3) {%>
+                        <span class="supporter-star mega">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </span>
+                    <%}%>
+                    <%}%>
+                    <%if(pnid.access_level === 3) {%>
+                        <span class="supporter-star dev">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool">
+                            <defs>
+                                <linearGradient id="rainbow">
+                                    <stop offset="16%" stop-color="red" />
+                                    <stop offset="32%" stop-color="orange" />
+                                    <stop offset="48%" stop-color="yellow" />
+                                    <stop offset="64%" stop-color="green" />
+                                    <stop offset="80%" stop-color="blue" />
+                                    <stop offset="96%" stop-color="purple" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                </span>
+                    <%}%>
+                    <%if(pnid.access_level === 2) {%>
+                        <span class="supporter-star mega">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </span>
+                    <%}%>
+                    <%if(pnid.access_level === 1) {%>
+                        <span class="supporter-star tester">|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor"><path d="M104,32V93.8a8.4,8.4,0,0,1-1.1,4.1l-63.6,106A8,8,0,0,0,46.1,216H209.9a8,8,0,0,0,6.8-12.1l-63.6-106a8.4,8.4,0,0,1-1.1-4.1V32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="32" x2="168" y2="32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M62.6,165c11.8-8.7,32.1-13.6,65.4,3,35.7,17.9,56.5,10.8,67.9,1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+                </span>
+                    <%}%>-->
+            </h4>
             <div class="info-boxes-wrapper">
                 <div>
                     <h4><%= lang.user_page.country %></h4>
@@ -89,16 +135,7 @@
                 </div>
             </div>
         </div>
-        <% if(newPosts.length === 0) {%>
-            <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
-        <%} else { %>
-            <% newPosts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-            <% }); %>
-        <%}%>
-    </div>
-    <div id="wrapper">
-        <button id="load-more-posts-button" data-offset="20" onclick="loadUserPosts(this, '<%= userSettings.pid %>')"><%= lang.global.more %></button>
+        <%- include('partials/' + template, { bundle }); %>
     </div>
 </div>
 <script>

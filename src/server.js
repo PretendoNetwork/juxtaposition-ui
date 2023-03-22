@@ -41,7 +41,7 @@ app.use(juxt_web);
 // 404 handler
 logger.info('Creating 404 status handler');
 app.use((req, res) => {
-    //logger.warn(request.protocol + '://' + request.get('host') + request.originalUrl);
+    logger.warn(req.protocol + '://' + req.get('host') + req.originalUrl);
     res.render(req.directory + '/error.ejs', {
         code: 404,
         message: "Page not found",

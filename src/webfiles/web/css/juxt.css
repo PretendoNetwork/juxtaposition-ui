@@ -300,9 +300,11 @@ header > .selected {
 }
 .community-list-title {
     margin: 0.5em 0 -1em 0;
+    font-size: 2ch;
 }
 .community-list-followers {
     margin: 0.5em 0 0 0;
+    font-size: 1.5ch;
 }
 
 .communities-wrapper {
@@ -438,13 +440,14 @@ iframe {
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
     #main {
         width: 100%;
         margin-bottom: 60px;
     }
 
     .posts-wrapper {
+        max-width: 600px;
         width: 90vw;
     }
     .post-content {
@@ -522,8 +525,9 @@ iframe {
     }
 
     #load-more-posts-button {
-        width: 95vw;
         margin-bottom: 1em;
+        max-width: 600px;
+        width: 90vw;
     }
 
     #title {
@@ -566,6 +570,7 @@ iframe {
     }
     
     .community-top {
+      max-width: 600px;
       width: 90vw;
     }
     

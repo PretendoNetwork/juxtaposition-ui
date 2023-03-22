@@ -38,7 +38,7 @@
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.communities %></h2>
-    <%- include('nav_bar', { selection: 2 }); %>
+    <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
@@ -73,13 +73,7 @@
                 </div>
             </div>
         </div>
-        <% if(newPosts.length === 0) {%>
-            <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
-        <%} else { %>
-            <% newPosts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-            <% }); %>
-        <%}%>
+        <%- include('partials/' + template, { bundle }); %>
     </div>
     <!--<table class="community-page-posts-header switcher">
         <tbody>
@@ -96,9 +90,6 @@
         </tr>
         </tbody>
     </table>-->
-    <div id="wrapper">
-        <button id="load-more-posts-button" data-offset="20" onclick="loadCommunityPosts(this, true)"><%= lang.global.more %></button>
-    </div>
 </div>
 <script>
     window.onscroll = function(ev) {

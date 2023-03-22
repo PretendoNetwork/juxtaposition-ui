@@ -18,19 +18,16 @@
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.activity_feed %></h2>
-    <%- include('nav_bar', { selection: 1 }); %>
+    <%- include('partials/nav_bar', { selection: 1, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper">
         <% if(posts.length === 0) {%>
             <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
         <%} else { %>
             <% posts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid  }); %>
             <% }); %>
         <%}%>
-    </div>
-    <div id="wrapper">
-        <button id="load-more-posts-button" data-offset="20" onclick="loadFeedPosts(this)"><%= lang.global.more %></button>
     </div>
 </div>
 <script>

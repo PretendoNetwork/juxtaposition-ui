@@ -18,45 +18,39 @@
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.messages %></h2>
-    <%- include('nav_bar', { selection: 3 }); %>
+    <%- include('partials/nav_bar', { selection: 3, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper">
         <% if(conversations.length === 0) {%>
             <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
         <%} else { %>
             <% conversations.forEach(function(conversation) { %>
-                    <%
-                        // get the PID of the opposite user
-                        var userObj, me;
-                        if(conversation.users[0].pid === pid) {
-                            userObj = conversation.users[1];
-                            me = conversation.users[0];
-                        }
-                        else if(conversation.users[1].pid === pid) {
-                            userObj = conversation.users[0];
-                            me = conversation.users[1];
-                        }
-                    %>
-                    <tr class="message-wrapper" onclick="showMessage('<%= conversation.id %>')">
-                        <td class="messages-unread-badge-wrapper">
-                            <%if(!me.read) {%><div class="unread-badge"></div><%}%>
-                        </td>
-                        <td>
-                            <img class="community-page-post-user-icon <%if(userObj.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= userObj.pid %>/normal_face.png">
-                            <span class="message-page-verified-user-badge community-page-verified" style=""></span>
-                        </td>
-                        <td>
-                            <h2 class="message-list-title <%if(userObj.official) {%>verified-badge<%}%>"><%= usersMap.get(userObj.pid) %></h2>
-                            <h4 class="message-list-timestamp <%if(userObj.official) {%>verified<%}%>"> - <%= moment(conversation.last_updated).fromNow() %></h4>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td colspan="2" class="message-list-preview"><%= conversation.message_preview %></td>
-                    </tr>
-            <%});%>
-        <%}%>
+                <%
+                    // get the PID of the opposite user
+                    var userObj, me;
+                    if(conversation.users[0].pid === pid) {
+                        userObj = conversation.users[1];
+                        me = conversation.users[0];
+                    }
+                    else if(conversation.users[1].pid === pid) {
+                        userObj = conversation.users[0];
+                        me = conversation.users[1];
+                    }
+                %>
+                <li>
+                    <a href="/users/show?pid=<%= userObj.pid %>" data-pjax="#body"
+                       class="icon-container trigger"><img src="https://mii.olv.pretendo.cc/mii/<%= userObj.pid %>/normal_face.png" class="icon<%if(userObj.official) {%> verified<%}%>"></a>
+                    <a href="/friend_messages/<%= conversation.id %>" data-pjax="#body" class="arrow-button"></a>
+                    <div class="body">
+                        <p class="title">
+                            <span class="nick-name"><%= usersMap.get(userObj.pid) %></span>
+                            <span class="id-name">@<%= usersMap.get(userObj.pid) %></span>
+                        </p>
+                        <span class="timestamp"><%= moment(conversation.last_updated).fromNow() %></span>
+                        <p class="text"><%= conversation.message_preview %></p>
+                    </div>
+                </li>
+        <% });} %>
     </div>
 </div>
 <script>
