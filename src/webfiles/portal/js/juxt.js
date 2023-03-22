@@ -80,7 +80,6 @@ function initTabs() {
                 document.getElementsByClassName("tab-body")[0].innerHTML = data.response;
                 window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
                 initPosts();
-                initYeah();
                 initMorePosts();
             }
         })
@@ -95,6 +94,8 @@ function initPosts() {
             pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
         });
     }
+    initYeah();
+    initSpoilers();
 }
 function initMorePosts() {
     var els = document.querySelectorAll(".load-more[data-href]");
@@ -106,7 +107,6 @@ function initMorePosts() {
                 var response = data.response;
                 if(response && data.status === 200) {
                     el.parentElement.outerHTML = data.response;
-                    initYeah();
                     initPosts();
                     initMorePosts();
                 }
@@ -174,15 +174,25 @@ function initNewPost() {
     initPostEmotion();
     initScreenShots();
 }
+function initSpoilers() {
+    var els = document.querySelectorAll("button[data-post-id]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            document.getElementById('post-' + el.getAttribute('data-post-id')).classList.remove('spoiler');
+            el.remove();
+        });
+    }
+}
 
 function initAll() {
     initNavBar();
-    initYeah();
     initTabs();
     initPosts();
     initMorePosts();
     initPostModules();
-    initSounds
+    initSounds();
     pjax.refresh();
 }
 

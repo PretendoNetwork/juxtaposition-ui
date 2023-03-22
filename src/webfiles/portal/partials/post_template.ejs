@@ -1,4 +1,4 @@
-<div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%>">
+<div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%> <%if(post.is_spoiler) {%>spoiler<%}%>">
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
         <img src="<%= post.mii_face_url.replace('http:', 'https:') %>" class="mii-icon">
     </a>
@@ -15,6 +15,11 @@
                         </span>
                 <span class="community-name"><%= communityMap.get(post.community_id) %></span>
             </a>
+            <%}%>
+            <%if(post.is_spoiler) {%>
+            <div class="spoiler-wrapper">
+                <button data-post-id="<%= post.id %>">Show Spoiler</button>
+            </div>
             <%}%>
             <div class="post-content" <%if(!reply) {%>data-href="/posts/<%= post.id %>"<%}%>>
                 <% if(post.body !== '') { %>
