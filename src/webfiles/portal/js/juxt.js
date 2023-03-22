@@ -81,6 +81,7 @@ function initTabs() {
                 window.history.pushState({ url: child.href, title: "", scrollPos: [0, 0]}, "", child.href);
                 initPosts();
                 initYeah();
+                initMorePosts();
             }
         })
 

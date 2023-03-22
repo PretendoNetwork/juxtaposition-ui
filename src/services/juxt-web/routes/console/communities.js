@@ -227,7 +227,7 @@ async function calculateMostPopularCommunities() {
     const now = new Date();
     const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-    const posts = await POST.find({ created_at: { $gte: last24Hours } }).lean();
+    const posts = await POST.find({ created_at: { $gte: last24Hours },  message_to_pid: null }).lean();
 
     const communityIds = {};
     for (const post of posts) {

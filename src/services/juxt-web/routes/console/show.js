@@ -50,15 +50,7 @@ router.get('/', async function (req, res) {
                 }
                 else
                 {
-                    let popularCommunities = await database.getMostPopularCommunities(9);
-                    let newCommunities = await database.getNewCommunities(6);
-                    res.render(req.directory + '/communities.ejs', {
-                        popularCommunities: popularCommunities,
-                        newCommunities: newCommunities,
-                        cdnURL: config.CDN_domain,
-                        lang: req.lang,
-                        pid: req.pid
-                    });
+                    res.redirect('/titles')
                     let pnid = await database.getPNID(req.pid);
                     let usrMii = await database.getUserContent(req.pid);
                     if(pnid.mii.name !== usrMii.screen_name)
