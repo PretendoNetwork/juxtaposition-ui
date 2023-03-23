@@ -30,7 +30,7 @@
     <div id="toast"></div>
     <div id="wrapper">
         <div class="community-top">
-            <img class="banner" src="<%= cdnURL %>/images/banner.png" alt="">
+            <img class="banner" src="https://juxt-web-cdn.b-cdn.net/images/banner.png" alt="">
             <div class="community-info">
                 <img class="user-icon <%if(pnid.access_level > 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
                 <h2 class="community-title"><%= pnid.mii.name %> @<%= pnid.username %><span class="verified-badge" style="<%if(pnid.access_level < 2) {%>display: none;<%}%>">✓</span></h2>
