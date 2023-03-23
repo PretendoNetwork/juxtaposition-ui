@@ -71,7 +71,7 @@ router.post('/', async (req, res) => {
                                 });
                             }
                             token = result.service_token.token[0];
-                            let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.cc';
+                            let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.network';
                             res.cookie('access_token', token, { domain : cookieDomain });
                             res.redirect('/');
                         });
