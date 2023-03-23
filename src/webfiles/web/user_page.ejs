@@ -1,4 +1,4 @@
-<html>
+<html lang="en">
 <head>
     <title>Juxt - <%= pnid.mii.name %></title>
     <%- include('partials/head'); %>
@@ -30,10 +30,10 @@
     <div id="toast"></div>
     <div id="wrapper">
         <div class="community-top">
-            <img class="banner" src="<%= cdnURL %>/images/banner.png">
+            <img class="banner" src="<%= cdnURL %>/images/banner.png" alt="">
             <div class="community-info">
-                <img class="user-icon <%if(pnid.access_level >= 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
-                <h2 class="community-title"><%= pnid.mii.name %> (<%= pnid.username %>)<span class="verified-badge" style="<%if(!pnid.access_level >= 2) {%>display: none;<%}%>">✓</span></h2>
+                <img class="user-icon <%if(pnid.access_level > 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
+                <h2 class="community-title"><%= pnid.mii.name %> @<%= pnid.username %><span class="verified-badge" style="<%if(pnid.access_level < 2) {%>display: none;<%}%>">✓</span></h2>
                 <%if(pnid.pid !== pid) {%>
                 <% var following = parentUserContent.followed_users.indexOf(userContent.pid) !== -1; %>
                 <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
