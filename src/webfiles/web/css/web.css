@@ -52,6 +52,8 @@ a:hover {
     border-radius: 1em;
     color: var(--text);
     margin-left: 1.25em;
+    display: none;
+    margin-bottom: 30px;
 }
 
 body {
@@ -85,6 +87,7 @@ header a {
     border-radius: 2em;
     display: flex;
     margin: 0.1em;
+    align-items: center;
 }
 
 header a:first-child {
@@ -100,15 +103,22 @@ header > a > p {
 }
 
 header > .selected {
-        background: var(--background-alt);
-        border-radius: 1em;
-        font-weight: bold;
-        color: var(--theme-light);
-    }
+    background: var(--background-alt);
+    border-radius: 1em;
+    font-weight: bold;
+    color: var(--theme-light);
+}
 
-    header > .selected > svg {
-        stroke: var(--theme-light);
-    }
+header > .selected > svg {
+    stroke: var(--theme-light);
+}
+
+.mii-icon {
+    width: 40px;
+    height: 40px;
+    background: #a1a8d9;
+    border-radius: 50px;
+}
 
 #main {
     width: 95%;
@@ -252,30 +262,30 @@ header > .selected {
   stroke: red;
 }
 
-#load-more-posts-button {
+#load-more {
     width: 632px;
     margin-bottom: 1em;
 }
 
 #toast {
-    visibility: hidden;
+    opacity: 0;
     min-width: 250px;
     margin-left: -141px;
     background-color: var(--btn);
     color: var(--text);
     text-align: center;
-    padding: 1em;
     position: fixed;
     z-index: 10;
     left: 50%;
-    bottom: 4em;
+    bottom: 5em;
     border-radius: 1em;
+    padding: 1ch;
+    transition: all 0.5s ease;
 }
 
 #toast.show {
-    visibility: visible;
-    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    opacity: 0;
+
 }
 
 .community-list-wrapper {
@@ -431,6 +441,21 @@ iframe {
   color: var(--text) !important;
 }
 
+.favorite-button {
+    border: 2px solid var(--btn);
+    border-radius: 1em;
+    margin: 1.5em 0 auto auto;
+    cursor: pointer;
+    height: fit-content;
+    color: var(--text) !important;
+    text-decoration: none !important;
+    padding: 1ch;
+}
+
+.favorite-button.checked {
+    background: var(--btn);
+}
+
 @media screen and (max-width: 1350px) { 
     .communities-wrapper {
         max-width: 600px;
@@ -524,7 +549,7 @@ iframe {
         stroke: var(--theme-light);
     }
 
-    #load-more-posts-button {
+    #load-more {
         margin-bottom: 1em;
         max-width: 600px;
         width: 90vw;
@@ -545,6 +570,10 @@ iframe {
     
     #wrapper {
         margin-top: 4em;
+    }
+
+    #wrapper.bottom {
+        margin-top: 0;
     }
     
     .communities-wrapper {

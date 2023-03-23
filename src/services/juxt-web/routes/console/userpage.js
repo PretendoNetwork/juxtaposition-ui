@@ -106,13 +106,16 @@ async function userPage(req, res, userID) {
     let posts = await database.getNumberUserPostsByID(userID, config.post_limit);
     let numPosts = await database.getTotalPostsByUserID(userID);
     let communityMap = await util.data.getCommunityHash();
+    let parentUserContent;
+    if(pnid.pid !== req.pid)
+        parentUserContent = await database.getUserContent(req.pid);
 
     let bundle = {
         posts,
         open: true,
         numPosts,
         communityMap,
-        userContent,
+        userContent: parentUserContent ? parentUserContent : userContent,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
         link: `/users/${userID}/more?offset=${posts.length}&pjax=true`
@@ -125,9 +128,6 @@ async function userPage(req, res, userID) {
             moment
         });
     let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
-    let parentUserContent;
-    if(pnid.pid !== req.pid)
-        parentUserContent = await database.getUserContent(req.pid);
 
     res.render(req.directory + '/user_page.ejs', {
         template: 'posts_list',
@@ -225,6 +225,7 @@ async function morePosts(req, res, userID) {
     let bundle = {
         posts,
         numPosts: posts.length,
+        open: true,
         communityMap,
         userContent,
         lang: req.lang,

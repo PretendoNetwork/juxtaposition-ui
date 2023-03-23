@@ -1,19 +1,7 @@
 <html>
 <head>
     <title>Juxt - <%= pnid.mii.name %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
-    <script src="https://portal.cdn.pretendo.cc/js/pjax.min.js"></script>
-    <script src="https://portal.cdn.pretendo.cc/js/juxt.js"></script>
-    <link rel="manifest" href="/web/manifest.json">
-    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-195842548-1');
-    </script>
+    <%- include('partials/head'); %>
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="Juxt - <%= pnid.mii.name %>">
     <%if(userSettings.profile_comment_visibility){%><meta itemprop="description" content="<%= userSettings.profile_comment%>"> <%}%>
@@ -42,18 +30,15 @@
     <div id="toast"></div>
     <div id="wrapper">
         <div class="community-top">
+            <img class="banner" src="<%= cdnURL %>/images/banner.png">
             <div class="community-info">
                 <img class="user-icon <%if(pnid.access_level >= 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
                 <h2 class="community-title"><%= pnid.mii.name %> (<%= pnid.username %>)<span class="verified-badge" style="<%if(!pnid.access_level >= 2) {%>display: none;<%}%>">✓</span></h2>
                 <%if(pnid.pid !== pid) {%>
-                <%if(parentUserContent.followed_users.indexOf(userSettings.pid) !== -1){ %>
-                <div class="community-page-follow-button-wrapper user-page-follow-button-wrapper selected" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
-                    <p class="community-page-follow-button-text user-page-follow-button-text" id="<%= userSettings.pid %>" onclick="followUser(this)" style="color: #FFFFFF"><%= lang.user_page.following_user %></p>
-                </div>
-                <%} else {%>
-                <div class="community-page-follow-button-wrapper user-page-follow-button-wrapper" <%if(parentUserContent.pid === 1000000000) {%> style="display: none" <%}%>>
-                    <p class="community-page-follow-button-text user-page-follow-button-text" id="<%= userSettings.pid %>" onclick="followUser(this)"><%= lang.user_page.follow_user %></p>
-                </div>
+                <% var following = parentUserContent.followed_users.indexOf(userContent.pid) !== -1; %>
+                <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
+                <%if(following && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
+                <a href="/friend_messages/new/<%=userContent.pid%>" class="message-button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
                 <%}%>
                 <%}%>
             </div>
@@ -131,34 +116,12 @@
                 </div>
                 <div>
                     <h4><%= lang.user_page.followers %></h4>
-                    <h4 id="user-page-followers-tab"><%= userContent.following_users.length %></h4>
+                    <h4 id="user-page-followers-tab" id="followers"><%= userContent.following_users.length %></h4>
                 </div>
             </div>
         </div>
         <%- include('partials/' + template, { bundle }); %>
     </div>
 </div>
-<script>
-    window.onscroll = function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            document.getElementById('load-more-posts-button').click();
-        }
-    };
-    function copyToClipboard(text) {
-        let inputc = document.getElementsByTagName("header")[0].appendChild(document.createElement("input"));
-        inputc.value = text;
-        inputc.focus();
-        inputc.select();
-        document.execCommand('copy');
-        inputc.parentNode.removeChild(inputc);
-        Toast("Copied to clipboard.");
-    }
-    function Toast(text) {
-        var x = document.getElementById("toast");
-        x.innerText = text;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    }
-</script>
 </body>
 </html>

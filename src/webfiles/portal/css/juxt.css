@@ -1638,6 +1638,7 @@ textarea.placeholder {
 
 div.button-wrapper.center {
     width: 1040px;
+    padding: unset;
 }
 
 button.load-more {

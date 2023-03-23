@@ -13,13 +13,7 @@
     </div>
 
     <div class="body-content post-list" id="activity-feed">
-        <% if(posts.length === 0) {%>
-            <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
-        <%} else { %>
-            <% posts.forEach(function(post) { %>
-                <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid  }); %>
-            <% }); %>
-        <%}%>
+        <%- include('partials/' + template, { bundle }); %>
     </div>
 </div>
 <body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">

@@ -1,19 +1,7 @@
 <html>
 <head>
     <title>Juxt - <%= pnid.mii.name %></title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
-    <script src="https://portal.cdn.pretendo.cc/js/pjax.min.js"></script>
-    <script src="https://portal.cdn.pretendo.cc/js/juxt.js"></script>
-    <link rel="manifest" href="/web/manifest.json">
-    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-195842548-1');
-    </script>
+    <%- include('partials/head'); %>
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="Juxt - <%= pnid.mii.name %>">
     <%if(userSettings.profile_comment_visibility){%><meta itemprop="description" content="<%= userSettings.profile_comment %>"> <%}%>
@@ -95,36 +83,5 @@
         <button id="load-more-posts-button" data-offset="20" onclick="loadUserPosts(this, '<%= userSettings.pid %>')"><%= lang.global.more %></button>
     </div>
 </div>
-<script>
-    window.onscroll = function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            document.getElementById('load-more-posts-button').click();
-        }
-    };
-    function copyToClipboard(text) {
-        let inputc = document.getElementsByTagName("header")[0].appendChild(document.createElement("input"));
-        inputc.value = text;
-        inputc.focus();
-        inputc.select();
-        document.execCommand('copy');
-        inputc.parentNode.removeChild(inputc);
-        Toast("Copied to clipboard.");
-    }
-    function Toast(text) {
-        let x = document.getElementById("toast");
-        x.innerText = text;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    }
-    function downloadURI(uri, name) {
-        let link = document.createElement("a");
-        link.download = name;
-        link.href = uri;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        delete link;
-    }
-</script>
 </body>
 </html>

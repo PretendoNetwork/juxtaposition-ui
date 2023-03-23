@@ -30,33 +30,20 @@
     <div id="toast"></div>
     <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
-            <img class="banner" src="https://pretendo-cdn.b-cdn.net/headers/<%= community.community_id %>/WiiU.png"/>
             <div class="community-info">
                 <img class="user-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= community.community_id %>/128.png"/>
                 <h2 class="community-title"><%= community.name %></h2>
-                <%if(community.open){%>
-                    <% var following = userContent.followed_communities.indexOf(community.community_id) !== -1; %>
-                    <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.community_id %>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
-                <%}%>
             </div>
             <h4 class="community-description"><%= community.description %></h4>
             <span class="community-page-follow-button-text" id="<%= community.community_id %>"></span>
-            <div class="info-boxes-wrapper">
-                <div>
-                    <h4><%= lang.community.followers %></h4>
-                    <h4 class="community-page-table-text" id="followers"><%= community.followers %></h4>
-                </div>
-                <div>
-                    <h4><%= lang.community.posts %></h4>
-                    <h4><%=totalNumPosts%></h4>
-                </div>
-                <div>
-                    <h4><%= lang.community.tags %></h4>
-                    <h4>N/A</h4>
-                </div>
-            </div>
         </div>
-        <%- include('partials/' + template, { bundle }); %>
+        <% if(totalNumPosts === 0) {%>
+            <p class="no-posts-text"><%= lang.global.no_posts %></p>
+        <%} else { %>
+            <% posts.forEach(function(post) { %>
+                <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+            <% }); %>
+        <%}%>
     </div>
     <!--<table class="community-page-posts-header switcher">
         <tbody>

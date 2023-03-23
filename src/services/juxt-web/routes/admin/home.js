@@ -20,7 +20,7 @@ router.get('/', upload.none(), async function (req, res) {
 });
 
 router.get('/css/juxt.css', function (req, res) {
-    res.sendFile('css/juxt.css', {root: path.join(__dirname, '../../../../webfiles/admin/')});
+    res.sendFile('css/web.css', {root: path.join(__dirname, '../../../../webfiles/admin/')});
 });
 
 router.get('/favicon.ico', function (req, res) {

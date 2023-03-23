@@ -8,16 +8,14 @@ const request = require("request");
 const logger = require("../../../../logger");
 
 router.get('/', async function (req, res) {
-    let endpoint = await database.getEndPoint('prod');
-    res.render(req.directory + '/login.ejs', {endpoint});
+    res.render(req.directory + '/login.ejs', {toast: null, cdnURL: config.CDN_domain,});
 });
 
 router.post('/', async (req, res) => {
     const { username, password } = req.body;
     let user = await database.getUserByUsername(username);
     if(!user) {
-        res.cookie('error', 'User not found.', { domain: '.pretendo.cc' });
-        return res.redirect('/account/login');
+        return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
     }
     let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
     let auth, token;
@@ -36,7 +34,6 @@ router.post('/', async (req, res) => {
         }
     }, function (error, response, body) {
         if (!error && response.statusCode === 200) {
-            logger.audit('[' + user.username + ' - ' + user.pid + '] signed into the application');
             parseString(body, async function (err, result) {
                 auth = result.OAuth20.access_token[0].token[0];
                 await request.get({
@@ -50,11 +47,33 @@ router.post('/', async (req, res) => {
                 }, function (error, response, body) {
                     if (!error && response.statusCode === 200) {
                         parseString(body, async function (err, result) {
+                            let PNID = await database.getPNID(user.pid);
+                            let discovery = await database.getEndPoint(PNID.server_access_level);
+                            let message = '';
+                            switch (discovery.status) {
+                                case 3:
+                                    message = "Juxt is currently undergoing maintenance. Please try again later.";
+                                    break;
+                                case 4:
+                                    message = "Juxt is currently closed. Thank you for your interest.";
+                                    break;
+                                default:
+                                    message = "Juxt is currently unavailable. Please try again later.";
+                                    break;
+                            }
+                            if(discovery.status !== 0) {
+                                return res.render(req.directory + '/error.ejs', {
+                                    code: 504,
+                                    message: message,
+                                    cdnURL: config.CDN_domain,
+                                    lang: req.lang,
+                                    pid: req.pid
+                                });
+                            }
                             token = result.service_token.token[0];
-                            console.log(req.hostname);
                             let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.cc';
                             res.cookie('access_token', token, { domain : cookieDomain });
-                            res.redirect('/activity-feed');
+                            res.redirect('/');
                         });
                     }
                     else
@@ -64,14 +83,8 @@ router.post('/', async (req, res) => {
                 });
             });
         }
-        else {
-            res.statusCode = 403;
-            let response = {
-                error_code: 403,
-                message: 'Invalid account ID or password'
-            };
-            return res.send(response);
-        }
+        else
+            return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
     });
 });
 
