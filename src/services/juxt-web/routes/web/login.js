@@ -70,6 +70,8 @@ router.post('/', async (req, res) => {
                                     pid: req.pid
                                 });
                             }
+                            if(!result.service_token)
+                                return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
                             token = result.service_token.token[0];
                             let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.network';
                             res.cookie('access_token', token, { domain : cookieDomain });
@@ -77,9 +79,7 @@ router.post('/', async (req, res) => {
                         });
                     }
                     else
-                    {
-                        console.log(error);
-                    }
+                        return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
                 });
             });
         }
