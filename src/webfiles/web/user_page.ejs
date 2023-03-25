@@ -10,9 +10,9 @@
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Juxt - <%= pnid.mii.name %>"/>
     <%if(userSettings.profile_comment_visibility){%><meta property="og:description" content="<%= userSettings.profile_comment%>"/><%}%>
-    <meta property="og:url" content="https://juxt.pretendo.cc/users/show?pid=<%= userSettings.pid %>"/>
+    <meta property="og:url" content="https://juxt.pretendo.network/users/<%= userSettings.pid %>"/>
     <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/smile_open_mouth.png"/>
-    <meta property="og:site_name" content="Juxtaposition" />
+    <meta property="og:site_name" content="Juxtaposition"/>
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image"/>
@@ -34,7 +34,7 @@
             <div class="community-info">
                 <img class="user-icon <%if(pnid.access_level > 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
                 <h2 class="community-title"><%= pnid.mii.name %> @<%= pnid.username %><span class="verified-badge" style="<%if(pnid.access_level < 2) {%>display: none;<%}%>">✓</span></h2>
-                <%if(pnid.pid !== pid) {%>
+                <%if(pnid.pid !== pid && pid !== 1000000000) {%>
                 <% var following = parentUserContent.followed_users.indexOf(userContent.pid) !== -1; %>
                 <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
                 <%if(following && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>

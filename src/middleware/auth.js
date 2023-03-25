@@ -19,7 +19,8 @@ function auth(request, response, next) {
 
     if(request.subdomains.indexOf('juxt') !== -1) {
         request.directory = 'web';
-        if(request.path === '/login' || request.path === '/favicon.ico' ||
+        if(request.path === '/login' || request.path === '/favicon.ico' || request.path.includes('/users/')
+            || request.path.includes('/titles/') ||
             (request.path.includes('/posts/') && !request.path.includes('/empathy'))) {
             request.lang = util.data.processLanguage();
             request.pid = util.data.processServiceToken(request.cookies.access_token) || 1000000000;

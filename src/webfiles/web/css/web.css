@@ -240,6 +240,7 @@ iframe {
     border-radius:1em
 }
 #toast {
+    opacity: 0;
     min-width:250px;
     margin-left:-141px;
     background-color:var(--btn);
@@ -252,9 +253,8 @@ iframe {
     padding:1ch;
     transition:all .5s ease
 }
-#toast,
 #toast.show {
-    opacity:0
+    opacity:1;
 }
 .community-list-wrapper {
     display:grid;
