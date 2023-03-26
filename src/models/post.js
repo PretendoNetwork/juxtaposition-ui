@@ -74,8 +74,8 @@ const PostSchema = new Schema({
 
 PostSchema.methods.upEmpathy = async function() {
     const empathy = this.get('empathy_count');
-    if(empathy + 1 < 0)
-        this.set('empathy_count', 0);
+    if(empathy < 0)
+        this.set('empathy_count', 1);
     else
         this.set('empathy_count', empathy + 1);
 
@@ -84,7 +84,7 @@ PostSchema.methods.upEmpathy = async function() {
 
 PostSchema.methods.downEmpathy = async function() {
     const empathy = this.get('empathy_count');
-    if(empathy - 1 < 0)
+    if(empathy < 1)
         this.set('empathy_count', 0);
     else
         this.set('empathy_count', empathy - 1);
@@ -94,8 +94,8 @@ PostSchema.methods.downEmpathy = async function() {
 
 PostSchema.methods.upReply = async function() {
     const replyCount = this.get('reply_count');
-    if(replyCount + 1 < 0)
-        this.set('reply_count', 0);
+    if(replyCount < 0)
+        this.set('reply_count', 1);
     else
         this.set('reply_count', replyCount + 1);
 
@@ -104,7 +104,7 @@ PostSchema.methods.upReply = async function() {
 
 PostSchema.methods.downReply = async function() {
     const replyCount = this.get('reply_count');
-    if(replyCount - 1 < 0)
+    if(replyCount < 1)
         this.set('reply_count', 0);
     else
         this.set('reply_count', replyCount - 1);
