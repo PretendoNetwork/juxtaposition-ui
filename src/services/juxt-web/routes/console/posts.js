@@ -6,6 +6,7 @@ const { POST } = require('../../../../models/post');
 const multer = require('multer');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit')
+const {CONTENT} = require("../../../../models/content");
 const upload = multer({dest: 'uploads/'});
 const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
@@ -35,7 +36,7 @@ const postLimit = rateLimit({
 
 const yeahLimit = rateLimit({
     windowMs: 60 * 1000, // 1 minute
-    max: 60, // Limit each IP to 60 requests per `window`
+    max: 30, // Limit each IP to 60 requests per `window`
     standardHeaders: true,
     legacyHeaders: true,
 })
@@ -49,17 +50,23 @@ router.post('/empathy', yeahLimit, async function (req, res) {
         return res.sendStatus(423);
     if(userContent.likes.indexOf(post.id) === -1 && userContent.pid !== post.pid)
     {
-        post.upEmpathy();
+        await POST.updateOne(
+            { id: post.id },
+            { $inc: { empathy_count: 1 } }
+        );
         userContent.addToLikes(post.id)
-        res.send({ status: 200, id: post.id, count: post.empathy_count });
+        res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
         if(req.pid !== post.pid)
             await util.data.newNotification({ pid: post.pid, type: "yeah", objectID: post.id, userPID: req.pid, link: `/posts/${post.id}` });
     }
     else if(userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
     {
-        post.downEmpathy();
+        await POST.updateOne(
+            { id: post.id },
+            { $inc: { empathy_count: -1 } }
+        );
         userContent.removeFromLike(post.id);
-        res.send({ status: 200, id: post.id, count: post.empathy_count });
+        res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
     }
     else
         res.send({ status: 423, id: post.id, count: post.empathy_count });
@@ -81,6 +88,7 @@ router.get('/:post_id', async function (req, res) {
     let community = await database.getCommunityByID(post.community_id);
     let communityMap = await util.data.getCommunityHash();
     let replies = await database.getPostReplies(req.params.post_id.toString(), 25)
+    let yeahs = await CONTENT.find({ likes: post.id }).limit(8);
     res.render(req.directory + '/post.ejs', {
         moment: moment,
         userSettings: userSettings,
@@ -92,7 +100,8 @@ router.get('/:post_id', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
+        pid: req.pid,
+        yeahs
     });
 });
 

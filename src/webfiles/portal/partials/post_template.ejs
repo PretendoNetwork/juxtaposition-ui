@@ -44,6 +44,15 @@
                     <%}%>
                 </a>
             </div>
+            <%if(yeah && yeahs.length > 0) {%>
+            <div class="yeah-list">
+                <%for(var yeah of yeahs) {%>
+                <a href="/users/<%= yeah.pid %>" class="mii-icon-container" data-pjax="#body">
+                    <img src="https://mii.olv.pretendo.cc/mii/<%= yeah.pid %>/normal_face.png" class="mii-icon">
+                </a>
+                <%}%>
+            </div>
+            <%}%>
         </div>
     </div>
 </div>

@@ -204,6 +204,7 @@ header>.selected>svg {
     margin-top:1em;
     display:flex;
     justify-content:space-between;
+    user-select:none;
     margin-left:74px
 }
 .post-buttons-wrapper>span {

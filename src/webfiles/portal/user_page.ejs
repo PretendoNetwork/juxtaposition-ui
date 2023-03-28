@@ -108,11 +108,11 @@
                     <span class="new-post"><%= lang.user_page.posts %></span>
                 </a>
             </li>
-            <li id="tab-header-friends" class="tab-button <%if(selection === 1){ %>selected<%}%>">
+            <!--<li id="tab-header-friends" class="tab-button <%if(selection === 1){ %>selected<%}%>">
                 <a href="<%= link %>friends" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.friends %></span>
                 </a>
-            </li>
+            </li>-->
             <li id="tab-header-following" class="tab-button <%if(selection === 2){ %>selected<%}%>">
                 <a href="<%= link %>following" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.following %></span>
@@ -121,6 +121,11 @@
             <li id="tab-header-followers" class="tab-button <%if(selection === 3){ %>selected<%}%>">
                 <a href="<%= link %>followers" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.followers %></span>
+                </a>
+            </li>
+            <li id="tab-header-yeahs" class="tab-button <%if(selection === 4){ %>selected<%}%>">
+                <a href="<%= link %>yeahs" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.global.yeahs %></span>
                 </a>
             </li>
         </menu>

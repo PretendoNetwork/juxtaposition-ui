@@ -5,6 +5,7 @@ const config = require('../../../../../config.json');
 const multer  = require('multer');
 const moment = require('moment');
 const upload = multer({ dest: 'uploads/' });
+const { POST } = require('../../../../models/post');
 const router = express.Router();
 
 router.get('/menu', async function (req, res) {
@@ -56,6 +57,8 @@ router.get('/show', async function (req, res) {
 });
 
 router.get('/:pid/more', async function (req, res) { await morePosts(req, res, req.params.pid) });
+
+router.get('/:pid/yeahs/more', async function (req, res) { await moreYeahPosts(req, res, req.params.pid) });
 
 router.get('/:pid/:type', async function (req, res) { await userRelations(req, res, req.params.pid) });
 
@@ -151,10 +154,56 @@ async function userPage(req, res, userID) {
 async function userRelations(req, res, userID) {
     let pnid = await database.getPNID(userID);
     let userContent = await database.getUserContent(userID);
+    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
+    let userSettings = await database.getUserSettings(userID);
+    let numPosts = await database.getTotalPostsByUserID(userID);
+    let parentUserContent;
+    if(pnid.pid !== req.pid)
+        parentUserContent = await database.getUserContent(req.pid);
     if(isNaN(userID) || !pnid)
         return res.redirect('/404');
 
     let followers, communities, communityMap, selection;
+
+    if(req.params.type === 'yeahs') {
+        let posts = await POST.find({id: userContent.likes, removed: false}).sort({ created_at: -1}).limit(config.post_limit);
+        let communityMap = await util.data.getCommunityHash();
+        let bundle = {
+            posts,
+            open: true,
+            numPosts: posts.length,
+            communityMap,
+            userContent: parentUserContent,
+            lang: req.lang,
+            mii_image_CDN: config.mii_image_CDN,
+            link: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`
+        }
+
+        if(req.query.pjax)
+            return res.render(req.directory + '/partials/posts_list.ejs', {
+                bundle,
+                lang: req.lang,
+                moment
+            });
+        else
+            return res.render(req.directory + '/user_page.ejs', {
+                template: 'posts_list',
+                selection: 4,
+                moment,
+                pnid,
+                numPosts,
+                userContent,
+                userSettings,
+                bundle,
+                account_server: config.account_server_domain.slice(8),
+                cdnURL: config.CDN_domain,
+                lang: req.lang,
+                mii_image_CDN: config.mii_image_CDN,
+                pid: req.pid,
+                link,
+                parentUserContent
+            });
+    }
 
     if(req.params.type === 'friends') {
         return res.render(req.directory + '/partials/not_ready.ejs');
@@ -187,13 +236,6 @@ async function userRelations(req, res, userID) {
         return res.render(req.directory + '/partials/following_list.ejs', {
             bundle,
         });
-
-    let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
-    let userSettings = await database.getUserSettings(userID);
-    let numPosts = await database.getTotalPostsByUserID(userID);
-    let parentUserContent;
-    if(pnid.pid !== req.pid)
-        parentUserContent = await database.getUserContent(req.pid);
     res.render(req.directory + '/user_page.ejs', {
         template: 'following_list',
         selection: selection,
@@ -215,12 +257,10 @@ async function userRelations(req, res, userID) {
 
 async function morePosts(req, res, userID) {
     let offset = parseInt(req.query.offset);
-    let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
-    let posts;
     if(!offset) offset = 0;
-    posts = await database.getUserPostsOffset(userID, config.post_limit, offset);
+    let posts = await database.getUserPostsOffset(userID, config.post_limit, offset);
 
     let bundle = {
         posts,
@@ -231,6 +271,43 @@ async function morePosts(req, res, userID) {
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
         link: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`
+    }
+
+    if(posts.length > 0)
+    {
+        res.render(req.directory + '/partials/posts_list.ejs', {
+            communityMap: communityMap,
+            moment: moment,
+            database: database,
+            bundle,
+            account_server: config.account_server_domain.slice(8),
+            cdnURL: config.CDN_domain,
+            lang: req.lang,
+            mii_image_CDN: config.mii_image_CDN,
+            pid: req.pid
+        });
+    }
+    else
+        res.sendStatus(204);
+}
+
+async function moreYeahPosts(req, res, userID) {
+    let offset = parseInt(req.query.offset);
+    let parentUserContent = await database.getUserContent(userID);
+    let userContent = await database.getUserContent(req.pid);
+    let communityMap = await util.data.getCommunityHash();
+    if(!offset) offset = 0;
+    let posts = await POST.find({id: parentUserContent.likes, removed: false}).skip(offset).limit(config.post_limit).sort({ created_at: -1});
+
+    let bundle = {
+        posts,
+        numPosts: posts.length,
+        open: true,
+        communityMap,
+        userContent,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+        link: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`
     }
 
     if(posts.length > 0)
