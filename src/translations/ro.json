@@ -85,7 +85,19 @@
             "third": "Site-ul, programele și tot conținutul"
         },
         "info": "Ce e Juxtaposition?",
-        "welcome_text": "Juxt este o comunitate de jocuri care conectează oamenii din jurul lumii folosind personaje Mii. Folosește Juxt pentru a-ți împărtăși experiențele tale din jocuri și a cunoaște oameni din toată lumea."
+        "welcome_text": "Juxt este o comunitate de jocuri care conectează oamenii din jurul lumii folosind personaje Mii. Folosește Juxt pentru a-ți împărtăși experiențele tale din jocuri și a cunoaște oameni din toată lumea.",
+        "info_text": "Juxt este o comunintate facută de oameni pentru gaming. Poți vorbi cu oameni prin toată lumea. Poți scrie sau să desenezi postări in comunitățile unui joc. Sau poți trimite mesaj direct la prieteni.",
+        "rules": "Regurile Juxt",
+        "rules_text": {
+            "first": "Următoarele sunt cele mai importante regurile pentru a face Juxt un loc distractiv și plăcut pentru toată lumea. Regurile Juxt conțin informație dataliată, te rog să citești cu atenție!",
+            "second": "Postările pot fi văzute de toată lumea.",
+            "fourth": "Fii grozav cu toată lumea.",
+            "sixth": "Nu posta lucruri private - a tale sau a celălaiți.",
+            "eighth": "Nu posta spoilăre",
+            "tenth": "Violați de Codul de conduită",
+            "eleventh": "Golul nostru e să facem Juxt distractiv și plăcut pentru toată lumea. Dacă cineva violează Juxt Codul de conduită, noi osă luăm măsurile , Măsurile pot fi doar să blocăm utilizatorul sau toată consola.",
+            "twelfth": "Tai jucat jocul ăla?"
+        }
     },
     "messages": {
         "coming_soon": "Mesajele nu sunt gata încă. Reveniți mai târziu!"
