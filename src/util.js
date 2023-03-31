@@ -7,6 +7,7 @@ const config = require('../config.json');
 const { SETTINGS } = require('./models/settings');
 const { CONTENT } = require('./models/content');
 const { NOTIFICATION } = require('./models/notifications');
+const { COMMUNITY } = require('./models/communities');
 const translations = require('./translations')
 const HashMap = require('hashmap');
 const TGA = require('tga');
@@ -28,7 +29,7 @@ nameCache();
 
 function nameCache() {
     database.connect().then(async e => {
-        let communities = await database.getCommunities();
+        let communities = await COMMUNITY.find();
         if(communities !== null) {
             for(let i = 0; i < communities.length; i++ ) {
                 if(communities[i].title_id !== null) {

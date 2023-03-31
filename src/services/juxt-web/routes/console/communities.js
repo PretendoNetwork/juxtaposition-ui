@@ -13,7 +13,7 @@ router.get('/', async function (req, res) {
     let newCommunities = await database.getNewCommunities(6);
     let last24Hours = await calculateMostPopularCommunities();
     let popularCommunities = await COMMUNITY.aggregate([
-        { $match: { community_id: { $in: last24Hours } } },
+        { $match: { community_id: { $in: last24Hours }, parent: null } },
         {$addFields: {
                 index: { $indexOfArray: [ last24Hours, "$community_id" ] }
             }},
@@ -92,6 +92,31 @@ router.get('/:communityID/post', async function (req, res) {
     });
 });
 
+router.get('/:communityID/related', async function (req, res) {
+    let userSettings = await database.getUserSettings(req.pid);
+    let userContent = await database.getUserContent(req.pid);
+    if(!userContent || !userSettings)
+        return res.redirect('/404');
+    if(req.params.communityID === 'announcements')
+        res.redirect('/titles/announcements')
+    let community = await database.getCommunityByID(req.params.communityID.toString());
+    if(!community) return res.render(req.directory + '/error.ejs', {code: 404, message: "Community not Found", pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+    let communityMap = await util.data.getCommunityHash();
+    let children = await database.getSubCommunities(community.community_id);
+
+    res.render(req.directory + '/sub_communities.ejs', {
+        selection: 2,
+        communityMap,
+        community,
+        children,
+        cdnURL: config.CDN_domain,
+        lang: req.lang,
+        mii_image_CDN: config.mii_image_CDN,
+        pid: req.pid,
+    });
+
+});
+
 router.get('/:communityID/:type', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
@@ -102,6 +127,9 @@ router.get('/:communityID/:type', async function (req, res) {
     let community = await database.getCommunityByID(req.params.communityID.toString());
     if(!community) return res.render(req.directory + '/error.ejs', {code: 404, message: "Community not Found", pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
     let communityMap = await util.data.getCommunityHash();
+    let children = await database.getSubCommunities(community.community_id);
+    if(children.length === 0)
+        children = null;
     let posts, type;
 
     if(req.params.type === 'hot') {
@@ -148,6 +176,7 @@ router.get('/:communityID/:type', async function (req, res) {
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
         pid: req.pid,
+        children,
         type,
         bundle,
         template: 'posts_list',

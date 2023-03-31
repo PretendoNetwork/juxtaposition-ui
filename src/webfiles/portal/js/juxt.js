@@ -4,7 +4,7 @@ var inputCheck = setInterval(input, 100);
 
 /* global Pjax */
 function initNavBar() {
-    var els = document.querySelectorAll("#nav-menu > li");
+    var els = document.querySelectorAll("#nav-menu > li[data-tab]");
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
         els[i].addEventListener("click", function(e) {
@@ -111,7 +111,7 @@ function initMorePosts() {
                     initMorePosts();
                 }
                 else
-                    el.parentElement.remove();
+                    el.parentElement.outerHTML = "";
             })
 
         });

@@ -286,6 +286,11 @@ body {
 .communities-list .list-content-with-icon-column li:last-child {
     margin-bottom:15px
 }
+
+.communities-list.double  .list-content-with-icon-column .title { width: 465px; }
+.communities-list.double  .list-content-with-icon-column .to-community-button { width: 585px; }
+.communities-list.double  .list-content-with-icon-column li { width: 585px; }
+
 .list-content-with-icon-and-text li,
 .list-content-with-icon-column li {
     position:relative;
@@ -1557,7 +1562,7 @@ textarea.placeholder {
     margin-left:10px
 }
 div.button-wrapper.center {
-    width:1040px;
+    width:1000px;
     padding:unset
 }
 button.load-more {

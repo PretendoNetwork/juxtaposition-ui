@@ -8,7 +8,9 @@
         <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0 && community.open) {%>
         <a id="header-post-button" class="header-button" href="#" data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list" data-module-show="add-post-page" data-header="false" data-menu="false">Post</a>
         <%}%>
-        <!--<a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>-->
+        <%if(children){%>
+        <a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>
+        <%}%>
     </header>
     <div class="body-content tab2-content" id="community-post-list">
         <div class="header-banner-container">

@@ -12,8 +12,10 @@
         <div id="new-post"></div>
     </div>
 
-    <div class="body-content post-list" id="activity-feed">
-        <%- include('partials/' + template, { bundle }); %>
+    <div class="body-content" id="activity-feed">
+        <div class="tab-body post-list">
+            <%- include('partials/' + template, { bundle }); %>
+        </div>
     </div>
 </div>
 <body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
