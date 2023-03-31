@@ -166,14 +166,23 @@ async function userRelations(req, res, userID) {
     let followers, communities, communityMap, selection;
 
     if(req.params.type === 'yeahs') {
-        let posts = await POST.find({id: userContent.likes, removed: false}).sort({ created_at: -1}).limit(config.post_limit);
+        let likesArray = await userContent.likes.slice().reverse();
+        let posts = await POST.aggregate([
+            { $match: { id: { $in: likesArray } } },
+            {$addFields: {
+                    "__order": { $indexOfArray: [ likesArray, "$id" ] }
+                }},
+            { $sort: { "__order": 1 } },
+            { $project: { index: 0, _id: 0 } },
+            { $limit: config.post_limit }
+        ]);
         let communityMap = await util.data.getCommunityHash();
         let bundle = {
             posts,
             open: true,
             numPosts: posts.length,
             communityMap,
-            userContent: parentUserContent,
+            userContent: parentUserContent ? parentUserContent : userContent,
             lang: req.lang,
             mii_image_CDN: config.mii_image_CDN,
             link: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`
@@ -297,10 +306,20 @@ async function moreYeahPosts(req, res, userID) {
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
     if(!offset) offset = 0;
-    let posts = await POST.find({id: parentUserContent.likes, removed: false}).skip(offset).limit(config.post_limit).sort({ created_at: -1});
+    let likesArray = await userContent.likes.slice().reverse();
+    let posts = await POST.aggregate([
+        { $match: { id: { $in: likesArray } } },
+        {$addFields: {
+                "__order": { $indexOfArray: [ likesArray, "$id" ] }
+            }},
+        { $sort: { "__order": 1 } },
+        { $project: { index: 0, _id: 0 } },
+        { $skip : offset },
+        { $limit: config.post_limit }
+    ]);
 
     let bundle = {
-        posts,
+        posts: posts.reverse(),
         numPosts: posts.length,
         open: true,
         communityMap,
