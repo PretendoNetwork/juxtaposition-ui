@@ -1,92 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>3DS Testing</title>
-    <script src="/js/pjax.js"></script>
-    <script src="/js/juxt.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-</head>
+<%- include('partials/head', { title: lang.global.communities }); %>
 <body>
-<div id="main">
-    <div class="top-screen">
-        <div class="header-description">
-            <p>
-                Check out the communities for the games that you play or games that you're curious about!
-            </p>
-        </div>
-        <div id="headers-communities-icon" class="header-icon"></div>
-        <h2 class="header-title">Communities</h2>
-    </div>
-    <div class="bottom-screen">
-        <div class="search-container">
-            <div id="search-icon"></div>
-            <input id="search-bar" type="text" placeholder="Search communities..." name="search" onclick="searchCommunities(this)" readonly>
-        </div>
-        <div class="communities-wrapper" id="popular-communities">
-            <h1 class="communities-header">Popular Places</h1>
-            <div data-pjax="/communities/all">
-                <button class="outlined-button" style="position: absolute;margin-left: 222px;margin-top: -28px;"><p>Show All</p></button>
+<div id="body">
+    <header id="header" class="buttons">
+        <h1 id="page-title" class=""><%= lang.global.communities %></h1>
+        <a id="header-communities-button" href="/titles/all" data-pjax="#body"><%= lang.all_communities.text %></a>
+    </header>
+    <div class="body-content">
+        <div class="communities-list">
+            <div class="headline">
+                <h2><%= lang.all_communities.popular_places %></h2>
             </div>
-            <table>
-                <tbody>
+            <ul class="list-content-with-icon-column" id="community-new-content">
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>
-                    <% if(i === popularCommunities.length - 1) { %>
-                        <tr>
-                            <td>
-                                <div class="community-list-wrapper bottom" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
-                                    <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].community_id %>.png">
-                                    <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
-                                    <h4><%= popularCommunities[i].followers %> followers</h4>
-                                </div>
-                            </td>
-                        </tr>
-                    <% } else { %>
-                        <tr>
-                            <td>
-                                <div class="community-list-wrapper" data-pjax="/communities/<%= popularCommunities[i].community_id %>/new">
-                                    <img class="community-list-icon" src="<%= cdnURL %>/icons/<%= popularCommunities[i].community_id %>.png">
-                                    <h2 class="community-list-title"><%= popularCommunities[i].name %></h2>
-                                    <h4><%= popularCommunities[i].followers %> followers</h4>
-                                </div>
-                            </td>
-                        </tr>
-                <% }} %>
-                </tbody>
-            </table>
+                    <% var communityID = popularCommunities[i].community_id; %>
+                    <li id="<%=communityID%>">
+                        <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button">
+                        <span class="icon-container"><img src="http://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
+                        <div class="body">
+                            <div class="body-content">
+                                <span class="community-name title"><%= popularCommunities[i].name %></span>
+                                <br>
+                                <span class="text"><%= popularCommunities[i].followers %> <%= lang.community.followers %></span>
+                            </div>
+                        </div>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
+            <div class="headline headline-green">
+                <h2><%= lang.all_communities.new_communities %></h2>
+            </div>
+            <ul class="list-content-with-icon-column" id="community-top-content">
+                <% for(var j = 0; j < newCommunities.length; j++) {%>
+                    <% var communityID = newCommunities[j].community_id; %>
+                    <li id="<%=communityID%>">
+                        <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button">
+                        <span class="icon-container"><img src="http://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
+                        <div class="body">
+                            <div class="body-content">
+                                <span class="community-name title"><%= newCommunities[j].name %></span>
+                                <br>
+                                <span class="text"><%= newCommunities[j].followers %> <%= lang.community.followers %></span>
+                            </div>
+                        </div>
+                        </a>
+                    </li>
+                <% } %>
+            </ul>
         </div>
-        <div class="communities-wrapper" id="new-communities">
-            <h1 class="communities-header">New Communities</h1>
-            <table>
-                <tbody>
-                    <% for(var i = 0; i < newCommunities.length; i++) {%>
-                    <% if(i === newCommunities.length - 1) { %>
-                        <tr>
-                            <td>
-                                <div class="community-list-wrapper bottom" data-pjax="/communities/<%= newCommunities[i].community_id %>/new">
-                                    <img class="community-list-icon" src="<%= newCommunities[i].browser_thumbnail %>">
-                                    <h2 class="community-list-title"><%= newCommunities[i].name %></h2>
-                                    <h4><%= newCommunities[i].followers %> followers</h4>
-                                </div>
-                            </td>
-                        </tr>
-                    <% } else { %>
-                        <tr>
-                            <td>
-                                <div class="community-list-wrapper" data-pjax="/communities/<%= newCommunities[i].community_id %>/new">
-                                    <img class="community-list-icon" src="<%= newCommunities[i].browser_thumbnail %>">
-                                    <h2 class="community-list-title"><%= newCommunities[i].name %></h2>
-                                    <h4><%= newCommunities[i].followers %> followers</h4>
-                                </div>
-                            </td>
-                        </tr>
-                <% }} %>
-                </tbody>
-            </table>
-        </div>
-        <div class="toolbar-padding"></div>
     </div>
 </div>
-<body onload="onStart()"></body>
 </body>
+<body onload="stopLoading();">
 </html>

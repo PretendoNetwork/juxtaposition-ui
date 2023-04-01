@@ -1,4 +1,5 @@
-/* pjax CTR
+/*
+pjax CTR
    Written By: Jemma
  */
 var hist = [window.location];
