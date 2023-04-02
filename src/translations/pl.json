@@ -1,7 +1,7 @@
 {
     "language": "Polski",
     "global": {
-        "exit": "Wyjście",
+        "exit": "Wyjdź",
         "user_page": "Strona użytkownika",
         "activity_feed": "Kanał aktywności",
         "communities": "Społeczności",
@@ -24,24 +24,24 @@
             "second": "To może i może obejmować całkowite wyczyszczenie bazy danych na zakończenie lub w trakcie okresu beta."
         },
         "welcome_text": "Juxt jest społecznością graczy która łączy ludzi z całego świata używając postaci Mii. Używaj Juxt aby udostępnić swoje doświadczenia i poznaj ludzi z całego świata.",
-        "beta": "Ostrzeżenie o betcie",
+        "beta": "Ostrzeżenie o fazie beta",
         "rules_text": {
             "first": "Poniżej są ważne zasady aby Juxt była porządną platformą dla każdego. Kodeks postępowania Juxt zawiera zdetalowane informacje, więc proszę przeczytać uważnie.",
             "third": "Juxt zawiera wiele społeczności graczy, w których ludzie z całego świata mogą dzielić się swoimi przemyśleniami. Kiedy piszesz post w społeczności, pamiętaj, że każdy może go zobaczyć, więc wyrażaj się w sposób, który może się wszystkim spodobać. Zachowaj zdrowy rozsądek i pomyśl, zanim napiszesz post. Juxt jest serwisem dostępnym również z Internetu, więc pamiętaj, że osoby nie korzystające z Juxt mogą również zobaczyć Twoje posty. Ponadto wszelkie komentarze do postów znajomych będą widoczne nie tylko dla znajomych, ale także dla ludzi z całego świata. Należy o tym pamiętać.",
             "seventh": "Pamiętaj, że znajomość z kimś w Juxt to nie to samo, co znajomość w prawdziwym życiu. Nigdy nie udostępniaj nikomu w Juxt swojego adresu e-mail, adresu domowego, nazwy pracy lub szkoły, ani innych informacji umożliwiających identyfikację. Ponadto, jeżeli osoba poznana w Juxt zaprasza do spotkania w świecie rzeczywistym, nie należy jej akceptować. Juxt jest społecznością internetową i nie powininna być wykorzystywana do organizowania spotkań w świecie rzeczywistym.",
             "ninth": "Niektórzy ludzie przychodzą do Juxt w poszukiwaniu porad i wskazówek dotyczących gier, ale inni chcą odkryć sekrety gry na własną rękę. Posty, które ujawniają sekrety gry lub jej fabułę, są nazywane \"spoilerami\". Jeśli publikujesz coś o grze, co może być spoilerem, pamiętaj, aby sprawdzić pole Spoilery przed wysłaniem swojego postu. W ten sposób osoby, które nie chcą zostać zepsuci, nie zobaczą Twojego postu.",
             "second": "Posty mogą być przeczytane na całym świecie",
-            "fourth": "Bądź miły do każdego",
+            "fourth": "Bądź miły dla każdego",
             "fifth": "Aby Juxt był miejscem przyjemnym dla wszystkich, prosimy o zachowanie szacunku dla innych użytkowników. Pomóż nam utrzymać Juxt jako miejsce przyjemne, nie zamieszczając niczego nieodpowiedniego lub obraźliwego.",
             "sixth": "Nie publikuj informacji prywatnych, ani twoich ani kogoś innego",
             "eighth": "Nie publikuj spoilerów",
             "tenth": "Naruszenia Kodeksu Postępowania",
             "eleventh": "Naszym celem jest utrzymanie Juxt w stanie zabawy i przyjemności dla każdego. W przypadku, gdy ktoś naruszy Kodeks Postępowania Juxt, podejmiemy odpowiednie działania, aż do zablokowania użytkownika lub konsoli.",
-            "twelfth": "Czy już grałeś w tą grę?",
+            "twelfth": "Czy kiedykolwiek zagrałeś w tą grę?",
             "thirteenth": "Jeśli piszesz posty w społeczności dla gry, w którą grałeś, twoje posty będą miały ikonę wskazującą, że w nią grałeś."
         },
         "welcome": "Witaj w Juxtaposition!",
-        "info": "Co to Juxtaposition?",
+        "info": "Czym jest Juxtaposition?",
         "rules": "Zasady Juxt",
         "experience": "Doświadczenie w grze",
         "experience_text": {
@@ -53,7 +53,7 @@
         "google": "Analityki Google",
         "info_text": "Juxt to społeczność graczy, w której możesz wchodzić w interakcje z ludźmi z całego świata.\n                z całego świata. Możesz pisać lub rysować posty w społecznościach gier lub wysyłać wiadomości bezpośrednio do swoich znajomych.",
         "google_text": "Juxtaposition wykorzystuje Analityki Google w celu śledzenia, jak użytkownicy korzystają z naszego serwisu. Zbierane dane obejmują, ale nie ograniczają się do czasu wizyty, odwiedzanych stron i czasu spędzonego na stronie. Dane te nie są w żaden sposób powiązane z użytkownikiem i nie są wykorzystywane do reklam przez nas lub Google.",
-        "ready": "Zacznij używać Juxt",
+        "ready": "Gotowy(wa), aby zacząc korzystać z Juxt",
         "ready_text": "Najpierw sprawdź kilka społeczności i zobacz, o czym piszą ludzie z całego świata. Skorzystaj z okazji, aby zapoznać się z Juxt. Być może po drodze dokonasz kilku nowych odkryć!",
         "done": "Baw się dobrze w Juxt!",
         "done_button": "Zaczynamy!",
@@ -63,8 +63,8 @@
     },
     "all_communities": {
         "text": "Wszystkie społeczności",
-        "announcements": "Wiadomości",
-        "ann_string": "Kliknij tutaj aby zobaczyć nowe wiadomości!",
+        "announcements": "Ogłoszenia",
+        "ann_string": "Kliknij tutaj aby zobaczyć nowe ogłoszenia!",
         "popular_places": "Popularne miejsca",
         "new_communities": "Nowe społeczności",
         "show_all": "Pokaż wszystkie",
@@ -72,7 +72,7 @@
     },
     "community": {
         "follow": "Obserwuj Społeczność",
-        "following": "Obserwuję",
+        "following": "Obserwujesz",
         "followers": "Obserwatorzy",
         "posts": "Posty",
         "tags": "Tagi",
@@ -87,7 +87,7 @@
         "game_experience": "Doświadczenie gry",
         "posts": "Posty",
         "friends": "Znajomi",
-        "following": "Obserwuję",
+        "following": "Obserwujsz",
         "followers": "Obserwatorzy",
         "follow_user": "Obserwuj",
         "following_user": "Obserwuję",
@@ -95,7 +95,7 @@
         "pending": "Oczekujące",
         "unfriend": "Usuń znajomego",
         "no_friends": "Brak znajomych",
-        "no_following": "Nikogo nie obserwuje",
+        "no_following": "Nikogo nie obserwujesz",
         "no_followers": "Brak obserwujących"
     },
     "user_settings": {
