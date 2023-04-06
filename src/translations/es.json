@@ -61,10 +61,10 @@
         "show_game": "Mostrar experiencia en tu perfil",
         "show_comment": "Mostrar comentario en tu perfil",
         "profile_comment": "Comentario del perfil",
-        "swearing": "Los comentarios no pueden tener lenguaje no apropiado."
+        "swearing": "Los comentarios no pueden tener lenguaje inapropiado."
     },
     "activity_feed": {
-        "empty": "No hay nada. ¡Intenta seguir a alguien!"
+        "empty": "No hay nada que ver. ¡Prueba a seguir a alguien!"
     },
     "notifications": {
         "none": "Sin notificaciones.",
