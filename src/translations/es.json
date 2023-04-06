@@ -85,7 +85,7 @@
         "beta": "Información de la beta",
         "beta_text": {
             "first": "Estás a punto de probar la primera beta pública de Juxt. Esto significa que todavía quedan muchas cosas en el aire y muchas cosas pueden cambiar en cualquier momento.",
-            "second": "Esto es posible que incluya que todos los datos que almacenamos sean completamente eliminados durante o al acabar el periodo de beta.",
+            "second": "Esto puede incluir que todos los datos que almacenamos sean completamente eliminados durante o al acabar el periodo de beta.",
             "third": "El sitio web, su software y todo el contenido que se encuentra en él se proporcionan 'tal cual' y 'según esté disponible'. Pretendo Network no ofrece ninguna garantía, ya sea expresa o implícita, en cuanto a la integridad o usabilidad del sitio web, su software o cualquiera de sus contenidos."
         },
         "info": "¿Que es Juxtaposition?",
