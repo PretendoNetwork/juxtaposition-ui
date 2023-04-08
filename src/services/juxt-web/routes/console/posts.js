@@ -36,7 +36,7 @@ const postLimit = rateLimit({
 
 const yeahLimit = rateLimit({
     windowMs: 60 * 1000, // 1 minute
-    max: 30, // Limit each IP to 60 requests per `window`
+    max: 10, // Limit each IP to 60 requests per `window`
     standardHeaders: true,
     legacyHeaders: true,
 })
@@ -50,10 +50,18 @@ router.post('/empathy', yeahLimit, async function (req, res) {
         return res.sendStatus(423);
     if(userContent.likes.indexOf(post.id) === -1 && userContent.pid !== post.pid)
     {
-        await POST.updateOne(
-            { id: post.id },
-            { $inc: { empathy_count: 1 } }
-        );
+        if(post.empathy_count < 0) {
+            await POST.updateOne(
+                { id: post.id },
+                { $set: { empathy_count: 1 } }
+            );
+        }
+        else {
+            await POST.updateOne(
+                { id: post.id },
+                { $inc: { empathy_count: 1 } }
+            );
+        }
         userContent.addToLikes(post.id)
         res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
         if(req.pid !== post.pid)
@@ -61,10 +69,18 @@ router.post('/empathy', yeahLimit, async function (req, res) {
     }
     else if(userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
     {
-        await POST.updateOne(
-            { id: post.id },
-            { $inc: { empathy_count: -1 } }
-        );
+        if(post.empathy_count < 0) {
+            await POST.updateOne(
+                { id: post.id },
+                { $set: { empathy_count: 0 } }
+            );
+        }
+        else {
+            await POST.updateOne(
+                { id: post.id },
+                { $inc: { empathy_count: -1 } }
+            );
+        }
         userContent.removeFromLike(post.id);
         res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
     }

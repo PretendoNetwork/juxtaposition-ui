@@ -7,6 +7,15 @@
             <header>
                 <span class="screen-name"><%= post.screen_name %></span>
                 <span class="timestamp">- <%= moment(post.created_at).fromNow() %></span>
+                <%if(post.topic_tag) {%>
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="30" height="30">
+                    <path d="M42.34,138.34A8,8,0,0,1,40,132.69V40h92.69a8,8,0,0,1,5.65,2.34l99.32,99.32a8,8,0,0,1,0,11.31L153,237.66a8,8,0,0,1-11.31,0Z" fill="#a362d8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/>
+                    <circle fill="#fff" cx="84" cy="84" r="12"/>
+                </svg>
+                <span class="tags"><%=post.topic_tag%></span>
+                </span>
+                <%}%>
             </header>
             <%if(!reply) {%>
             <a href="/titles/<%= post.community_id %>" class="community-banner" data-pjax="#body">
@@ -37,22 +46,25 @@
             </div>
             <div class="post-buttons">
                 <button type="button" class="submit yeah-button <%if(userContent && userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>" data-post="<%= post.id %>"></button>
-                <a href="/posts/<%= post.id %>" class="to-permalink-button" data-pjax="#body">
-                    <span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
-                    <%if(!reply) {%>
-                    <span class="reply"><%=post.reply_count %></span>
+                <a <%if(!yeah) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
+                    <%if(!yeah) {%>
+                        <span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
+                        <%if(!reply) {%>
+                        <span class="reply"><%=post.reply_count %></span>
+                        <%}%>
                     <%}%>
                 </a>
             </div>
-            <%if(yeah && yeahs.length > 0) {%>
-            <div class="yeah-list">
-                <%for(var yeah of yeahs) {%>
-                <a href="/users/<%= yeah.pid %>" class="mii-icon-container" data-pjax="#body">
-                    <img src="https://mii.olv.pretendo.cc/mii/<%= yeah.pid %>/normal_face.png" class="mii-icon">
-                </a>
-                <%}%>
-            </div>
-            <%}%>
         </div>
     </div>
+    <%if(yeah && yeahs.length > 0) {%>
+    <h6 class="yeah-text"><span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span> people gave this post a yeah.</h6>
+    <div class="yeah-list">
+        <%for(var yeah of yeahs) {%>
+            <a href="/users/<%= yeah.pid %>" class="mii-icon-container" data-pjax="#body">
+                <img src="https://mii.olv.pretendo.cc/mii/<%= yeah.pid %>/normal_face.png" class="mii-icon">
+            </a>
+        <%}%>
+    </div>
+    <%}%>
 </div>
