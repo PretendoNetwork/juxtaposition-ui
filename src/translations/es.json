@@ -77,14 +77,14 @@
         "swearing": "No se puede incluir lenguaje inapropiado en las publicaciones."
     },
     "messages": {
-        "coming_soon": "La función de mensajería no esta lista. ¡Vuelve más tarde!"
+        "coming_soon": "La función de mensajes no esta lista. ¡Vuelve más tarde!"
     },
     "setup": {
         "welcome": "¡Bienvenido a Juxtaposition!",
-        "welcome_text": "Juxt es una comunidad de videojuegos donde las personas se pueden conectar desde todas partes usando los personajes Mii. Juxt se puede usar para compartir tus experiencias con los videojuegos y conocer personas de todo el mundo.",
+        "welcome_text": "Juxt es una comunidad de videojuegos para conectar a personas de todo el mundo usando personajes Mii. Juxt se puede usar para compartir tus experiencias Gaming y conocer personas de todo el mundo.",
         "beta": "Información de la beta",
         "beta_text": {
-            "first": "Estás a punto de probar la primera beta pública de Juxt. Esto significa que todavía quedan muchas cosas en el aire y muchas cosas pueden cambiar en cualquier momento.",
+            "first": "Estás a punto de probar la primera beta pública de Juxt. Esto significa que todavía quedan muchas cosas en el aire, y pueden haber grandes cambios en cualquier momento.",
             "second": "Esto puede incluir que todos los datos que almacenamos sean completamente eliminados durante o al acabar el periodo de beta.",
             "third": "El sitio web, su software y todo el contenido que se encuentra en él se proporcionan 'tal cual' y 'según esté disponible'. Pretendo Network no ofrece ninguna garantía, ya sea expresa o implícita, en cuanto a la integridad o usabilidad del sitio web, su software o cualquiera de sus contenidos."
         },
@@ -97,7 +97,7 @@
             "third": "Juxt contiene muchas comunidades de videojuegos donde gente de todo el mundo puede compartir sus pensamientos. Cuando publiques en una comunidad, recuerda que todos pueden verlo. Por favor, expresa tus pensamientos de una forma que sea respetuosa hacia todos. Usa el sentido común y piensa antes de publicar. Juxt es un servicio al que también se puede acceder desde Internet, así que ten en cuenta que las personas que no usan Juxt también pueden ver tus publicaciones. Además, cualquier comentario que hagas en las publicaciones de tus amigos será visto, no solo por tus amigos, sino también por personas de todo el mundo. Por favor, ten esto en mente.",
             "fourth": "Sé agradable con los demás",
             "fifth": "Para que Juxt sea un lugar divertido para todos, te pedimos que seas considerado con los demás usuarios. Ayúdanos a que Juxt sea una experiencia agradable: no publiques nada inapropiado ni ofensivo.",
-            "sixth": "No publiques nada sobre tu información personal y/o la de otros",
+            "sixth": "No publiques información personal - tuya o de otras personas",
             "seventh": "Recuerda, conocer a alguien en Juxt no es lo mismo que conocerlo en la vida real. Nunca compartas tu dirección de correo electrónico, domicilio, nombre de tu trabajo o escuela u otra información de identificación personal con nadie en Juxt, y tampoco compartas la información de nadie más. Además, si alguien que conoces en Juxt te invita a conocerlo en el mundo real, no lo aceptes. Juxt es una comunidad en línea y no debe usarse para organizar reuniones en el mundo real.",
             "eighth": "No publiques spoilers",
             "ninth": "Algunas personas vienen a Juxt en busca de consejos y trucos para juegos, pero otras quieren descubrir los secretos de un juego por su cuenta. Las publicaciones que revelan secretos de un juego o su historia se denominan \"spoilers\". Si estás publicando algo sobre un juego que podría ser un spoiler, asegúrate de marcar la casilla \"Spoilers\" antes de enviar tu publicación. De esta forma, las personas que no quieran ver detalles del juego no verán tu publicación.",
