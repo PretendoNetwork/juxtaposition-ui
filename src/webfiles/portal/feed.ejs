@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('partials/head', { title: lang.global.activity_feed }); %>
+<%- include('partials/head', { title: title }); %>
 <body>
-<%- include('partials/nav_bar', { selection: 1, pid: pid }); %>
+<%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
 <div id="body">
     <header id="header">
-        <h1 id="page-title" class="left"><%= lang.global.activity_feed %></h1>
+        <h1 id="page-title" class="left"><%= title %></h1>
     </header>
     <div id="new-post-button-container" class="none">
         <a href="#" class="button" data-offset="10" onclick="loadFeedPosts(this)"><%= lang.global.more %></a>

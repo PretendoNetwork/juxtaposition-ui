@@ -500,7 +500,7 @@ body {
  margin-top:-3px;
  color:#969696
 }
-header>span>svg {
+header svg {
  fill:#a362d8;
  -webkit-transform:translate(10px,10px);
  margin-left:-10px;

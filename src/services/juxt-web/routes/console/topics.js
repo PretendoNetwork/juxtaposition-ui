@@ -3,14 +3,17 @@ const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const moment = require('moment');
+const { POST } = require('../../../../models/post');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
-    if(!userContent)
+    let tag = req.query.topic_tag;
+    console.log(tag)
+    if(!userContent || !tag)
         return res.redirect('/404');
-    let posts = await database.getNewsFeed(userContent, config.post_limit);
+    let posts = await POST.find({ topic_tag: req.query.topic_tag }).sort({ created_at: -1}).limit(parseInt(req.query.limit));
 
     let bundle = {
         posts,
@@ -19,7 +22,7 @@ router.get('/', async function (req, res) {
         userContent,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        link: `/feed/more?offset=${posts.length}&pjax=true`
+        link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
     }
 
     if(req.query.pjax)
@@ -31,7 +34,7 @@ router.get('/', async function (req, res) {
 
     res.render(req.directory + '/feed.ejs', {
         moment: moment,
-        title: req.lang.global.activity_feed,
+        title: tag,
         userContent: userContent,
         posts: posts,
         communityMap: communityMap,
@@ -49,9 +52,10 @@ router.get('/more', async function (req, res) {
     let offset = parseInt(req.query.offset);
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
-    let posts;
+    let tag = req.query.topic_tag;
+    if(!tag) return res.sendStatus(204);
     if(!offset) offset = 0;
-    posts = await database.getNewsFeedOffset(userContent, config.post_limit, offset);
+    let posts = await POST.find({ topic_tag: req.query.topic_tag }).sort({ created_at: -1}).limit(parseInt(req.query.limit));
 
     let bundle = {
         posts,
@@ -61,7 +65,7 @@ router.get('/more', async function (req, res) {
         userContent,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        link: `/feed/more?offset=${offset + posts.length}&pjax=true`
+        link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
     }
 
     if(posts.length > 0)

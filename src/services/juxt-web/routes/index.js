@@ -7,6 +7,7 @@ module.exports = {
 	PORTAL_FEED: require('./console/feed'),
 	PORTAL_NEWS: require('./console/notifications'),
 	PORTAL_MESSAGES: require('./console/messages'),
+	PORTAL_TOPICS: require('./console/topics'),
 	WEB_ADMIN: require('./admin/home'),
 	WEB_API: require('./admin/api'),
 	WEB_LOGIN: require('./web/login'),
