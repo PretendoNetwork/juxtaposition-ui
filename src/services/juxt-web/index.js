@@ -27,6 +27,7 @@ router.use(subdomain('web_api.olv', admin));
 // Setup routes
 console.use('/titles/show', routes.PORTAL_SHOW);
 console.use('/titles', routes.PORTAL_COMMUNITIES);
+console.use('/communities', routes.PORTAL_COMMUNITIES);
 console.use('/topics', routes.PORTAL_TOPICS);
 console.use('/users', routes.PORTAL_USER);
 console.use('/posts', routes.PORTAL_POST);

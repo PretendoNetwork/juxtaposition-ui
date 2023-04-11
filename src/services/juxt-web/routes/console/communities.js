@@ -67,6 +67,11 @@ router.get('/announcements', async function (req, res) {
 });
 
 router.get('/:communityID', async function (req, res) {
+    if(req.query.title_id) {
+        let community = await database.getCommunityByTitleID(req.query.title_id);
+        if(!community) return res.redirect('/404');
+        return res.redirect(`/titles/${community.community_id}/new`);
+    }
     res.redirect(`/titles/${req.params.communityID}/new`);
 });
 
