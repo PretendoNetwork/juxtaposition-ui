@@ -55,9 +55,13 @@ router.get('/', async function (req, res) {
                     }
                     res.redirect('/titles')
                     let pnid = await database.getPNID(req.pid);
-                    let usrMii = await database.getUserContent(req.pid);
-                    if(pnid.mii.name !== usrMii.screen_name)
-                        util.data.setName(req.pid)
+                    let usrMii = await database.getUserSettings(req.pid);
+                    if(pnid.mii.name !== usrMii.screen_name) {
+                        util.data.setName(req.pid, pnid.mii.name);
+                        usrMii.screen_name = pnid.mii.name;
+                        await usrMii.save();
+                    }
+
                 }
             }
 
