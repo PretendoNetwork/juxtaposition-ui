@@ -1,6 +1,6 @@
 <div class="posts-wrapper" id="<%= post.id %>">
     <div class="post-user-info-wrapper" id="<%= post.id %>">
-            <img class="user-icon <%if(post.verified) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net<%= post.mii_face_url.substr(26) %>" data-pjax="/users/show?pid=<%= post.pid %>">
+            <img class="user-icon <%if(post.verified) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net<%= post.mii_face_url.substring(post.mii_face_url.lastIndexOf('/mii')) %>" data-pjax="/users/show?pid=<%= post.pid %>">
         <div class="post-meta-wrapper">
             <h3><a href="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></a></h3>
             <span class="verified-badge" style="<%if(!post.verified) {%>display: none;<%}%>">✓</span>
