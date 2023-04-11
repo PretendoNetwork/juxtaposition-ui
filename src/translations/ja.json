@@ -1,5 +1,5 @@
 {
-    "language": "Japanese",
+    "language": "日本語",
     "global": {
         "user_page": "マイメニュー",
         "activity_feed": "みんなの活動",
@@ -10,9 +10,9 @@
         "back": "もどる",
         "yeahs": "そうだね",
         "more": "もっと読み込む",
-        "no_posts": "投稿なし",
+        "no_posts": "投稿ありません",
         "private": "非公開",
-        "close": "閉じる",
+        "close": "おわる",
         "save": "保存",
         "exit": "閉じる",
         "next": "次へ"
