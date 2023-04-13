@@ -135,6 +135,7 @@ router.get('/:post_id/oembed.json', async function (req, res) {
 
 router.get('/downloadUserData.json', async function (req, res) {
     res.set("Content-Type", "text/json");
+    res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
     let posts = await POST.find({ pid: req.pid })
     let userContent = await database.getUserSettings(req.pid);
     let userSettings = await database.getUserContent(req.pid);
