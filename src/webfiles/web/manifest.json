@@ -1,8 +1,8 @@
 {
   "name": "Juxtaposition",
   "short_name": "Juxt",
-  "theme_color": "#1b1f3b",
-  "background_color": "#1b1f3b",
+  "theme_color": "#16192d",
+  "background_color": "#16192d",
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",

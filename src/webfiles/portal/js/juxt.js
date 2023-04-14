@@ -181,7 +181,7 @@ function initSpoilers() {
         els[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
             document.getElementById('post-' + el.getAttribute('data-post-id')).classList.remove('spoiler');
-            el.remove();
+            el.outerHTML = '';
         });
     }
 }

@@ -118,6 +118,12 @@
                     <h4><%= lang.user_page.followers %></h4>
                     <h4 id="user-page-followers-tab" id="followers"><%= userContent.following_users.length %></h4>
                 </div>
+                <%if(pnid.pid === pid) {%>
+                <div>
+                    <h4>Download User Data</h4>
+                    <h4 id="user-page-download-tab"><a href="/downloadUserData.json">Download</a></h4>
+                </div>
+                <%}%>
             </div>
         </div>
         <%- include('partials/' + template, { bundle }); %>
