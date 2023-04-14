@@ -33,14 +33,14 @@ function initYeah() {
         if(el.classList.contains('selected')) {
             el.classList.remove('selected');
             parent.classList.remove('yeah');
-            count.innerText -= 1;
+            if(count) count.innerText -= 1;
             wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
 
         }
         else {
             el.classList.add('selected');
             parent.classList.add('yeah');
-            count.innerText = ++count.innerText;
+            if(count) count.innerText = ++count.innerText;
             wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
         }
 
@@ -52,7 +52,7 @@ function initYeah() {
                 return wiiuErrorViewer.openByCode(1155927);
             }
             el.disabled = false;
-            count.innerText = post.count;
+            if(count) count.innerText = post.count;
         });
     }
 }

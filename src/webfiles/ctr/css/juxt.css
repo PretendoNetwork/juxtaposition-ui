@@ -3,6 +3,7 @@ body {
     font-family: Poppins, Arial, serif;
     width: 400px;
     overflow-x: clip;
+    background: blue;
 }
 
 #body {
@@ -10,6 +11,7 @@ body {
     background-size: 100px;
     background-repeat: repeat;
     padding-bottom: 30px;
+    overflow-x: clip;
 }
 
 a {
@@ -41,25 +43,39 @@ h1, h2, h3, h4, h5, h6, li, menu, ol, p, table, td, th, tr, ul {
     position: absolute;
     margin: 0;
     bottom: 0;
-    padding-left: 10px;
-    height: 52px;
+    height: 55px;
     line-height: 50px;
     font-size: 25px;
+    white-space: nowrap;
+    display: inline;
+    background: #fff;
+    width: 100%;
 }
 
-#header-communities-button {
+#header > a {
     position: absolute;
     margin: 0;
     bottom: -31px;
-    right: 0;
     height: 13px;
     line-height: 13px;
     font-size: 13px;
-    padding: 8px 45px 8px 8px;
+    padding: 8px;
     background: -webkit-gradient(linear,left top,left bottom,from(#fff),color-stop(.5,#fff),to(#e6e6e6))0 0;
-    border-bottom-left-radius: 10px;
     color: #323232;
     border: 1px solid #dddddd;
+}
+
+#header a.right {
+    right: 0;
+    padding-right: 45px;
+    border-bottom-left-radius: 10px;
+}
+
+
+#header a.left {
+    left: 0;
+    padding-left: 45px;
+    border-bottom-right-radius: 10px;
 }
 
 
@@ -120,4 +136,25 @@ h1, h2, h3, h4, h5, h6, li, menu, ol, p, table, td, th, tr, ul {
 .community-name.title {
   font-size: 15px;
   color: #323232;
+}
+#page-title .icon-container {
+  position: absolute;
+  bottom: 6px;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+}
+
+#page-title .icon-container > .icon {
+  width: 40px;
+  height: 40px;
+}
+
+#page-title .community-name {
+  margin-left: 55px;
+  font-size: 15px;
+  white-space: normal;
+  line-height: 20px;
+  vertical-align: middle;
+  display: inline-block;
 }

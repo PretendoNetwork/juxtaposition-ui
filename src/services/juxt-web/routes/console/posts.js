@@ -9,6 +9,7 @@ const rateLimit = require('express-rate-limit')
 const {CONTENT} = require("../../../../models/content");
 const upload = multer({dest: 'uploads/'});
 const snowflake = require('node-snowflake').Snowflake;
+const crypto = require('crypto')
 const router = express.Router();
 
 const postLimit = rateLimit({
@@ -124,7 +125,7 @@ router.get('/:post_id', async function (req, res) {
 router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) { await newPost(req, res);});
 
 async function newPost(req, res) {
-    let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = snowflake.nextId();
+    let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = await generatePostUID(22);
     let community = await database.getCommunityByID(req.body.community_id);
     if(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
         return res.sendStatus(403);
@@ -192,7 +193,7 @@ async function newPost(req, res) {
         is_app_jumpable: req.body.is_app_jumpable,
         language_id: req.body.language_id,
         mii: PNID.mii.data,
-        mii_face_url: `http://mii.olv.pretendo.cc/mii/${PNID.pid}/${miiFace}`,
+        mii_face_url: `https://mii.olv.pretendo.cc/mii/${PNID.pid}/${miiFace}`,
         pid: req.pid,
         platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
         region_id: req.paramPackData ? req.paramPackData.region_id : 2,
@@ -213,5 +214,13 @@ async function newPost(req, res) {
     else
         res.redirect('/titles/' + community.community_id + '/new');
 }
+
+async function generatePostUID(length) {
+    let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, "").substring(0, length);
+    const inuse = await POST.findOne({ id });
+    id = (inuse ? await generatePostUID() : id);
+    return id;
+}
+
 
 module.exports = router;

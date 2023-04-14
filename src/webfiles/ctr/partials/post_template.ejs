@@ -11,8 +11,8 @@
             <h2 class="community-page-post-username" data-pjax="/users/show?pid=<%= post.pid %>"><%= post.screen_name %></h2>
             <h4 class="community-page-post-time-stamp"><%= moment(post.created_at).fromNow() %> - <a onclick="cave.snd_playSe('SE_OLV_OK');pjax.loadUrl('/communities/<%= post.community_id %>/new')"><%= communityMap.get(post.community_id) %></a></h4>
         </div>
-        <div class="community-page-post-yeah-button-wrapper <%if(user.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
-            <div class="community-page-post-yeah-button" onclick="<%if(user.pid !== 1000000000) {%>yeah(this.parentNode, '<%= post.id %>')<%}%>"></div>
+        <div class="community-page-post-yeah-button-wrapper <%if(userContent.likes.indexOf(post.id) !== -1){ %> selected <%}%>">
+            <div class="community-page-post-yeah-button" onclick="<%if(userContent.pid !== 1000000000) {%>yeah(this.parentNode, '<%= post.id %>')<%}%>"></div>
         </div>
         <div id="yeah-<%= post.id %>" class="community-page-post-yeah-count"><%= post.empathy_count %> <%= lang.global.yeahs %></div>
     </div>
