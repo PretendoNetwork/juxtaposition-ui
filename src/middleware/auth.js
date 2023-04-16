@@ -1,5 +1,6 @@
 const config = require('../../config.json');
 const util = require('../util');
+const db = require('../database');
 
 function auth(request, response, next) {
     if(request.path.includes('/css/') || request.path.includes('/fonts/')
