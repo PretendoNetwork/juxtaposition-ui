@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const ReportSchema = new Schema({
-    pid: String,
+    pid: Number,
     post_id: String,
     reason: Number,
     created_at: {

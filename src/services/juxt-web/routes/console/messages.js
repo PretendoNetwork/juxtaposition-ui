@@ -5,6 +5,7 @@ const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
 const moment = require('moment');
 const {CONVERSATION} = require("../../../../models/conversation");
+const crypto = require("crypto");
 const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post('/new', async function (req, res, next) {
     let conversation = await database.getConversationByID(req.body.community_id);
     let user = await database.getPNID(req.pid);
     let user2 = await database.getPNID(req.body.message_to_pid);
-    let userSettings = await database.getUserSettings(req.pid), postID = snowflake.nextId();
+    let userSettings = await database.getUserSettings(req.pid), postID = generatePostUID(21);
     if(req.body.community_id === 0)
         return res.sendStatus(404);
     if(!conversation) {
@@ -166,7 +167,7 @@ router.get('/new/:pid', async function (req, res, next) {
         screen_name: user.mii.name,
         body: body,
         created_at: new Date(),
-        id: snowflake.nextId(),
+        id: generatePostUID(21),
         mii: user.mii.data,
         mii_face_url: `https://mii.olv.pretendo.cc/${user.pid}/normal_face.png`,
         pid: user.pid,
@@ -204,5 +205,13 @@ router.get('/:message_id', async function (req, res) {
     });
     await conversation.markAsRead(req.pid);
 });
+
+async function generatePostUID(length) {
+    let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, "").substring(0, length);
+    const inuse = await POST.findOne({ id });
+    id = (inuse ? await generatePostUID() : id);
+    return id;
+}
+
 
 module.exports = router;

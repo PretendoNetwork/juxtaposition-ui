@@ -120,7 +120,7 @@ router.get('/:post_id', async function (req, res) {
 router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) { await newPost(req, res);});
 
 async function newPost(req, res) {
-    let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = await generatePostUID(22);
+    let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = await generatePostUID(21);
     let community = await database.getCommunityByID(req.body.community_id);
     if(!community || !userSettings || !PNID) {
         res.status(403);
