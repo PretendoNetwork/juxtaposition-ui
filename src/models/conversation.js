@@ -38,10 +38,10 @@ ConversationSchema.methods.newMessage = async function(message, fromPid) {
     const users = this.get('users');
     console.log(fromPid)
     if(users[0].pid.toString() === fromPid.toString()) {;
-        users[1].read = true;
+        users[1].read = false;
     }
     else {
-        users[0].read = true;
+        users[0].read = false;
     }
     this.set('users', users);
     this.set('last_updated', moment(new Date()));

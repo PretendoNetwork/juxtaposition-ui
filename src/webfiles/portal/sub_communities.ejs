@@ -11,7 +11,7 @@
         <div class="communities-list double">
             <ul class="list-content-with-icon-column" id="community-new-content">
                 <% for(var i = 0; i < children.length; i++) {%>
-                    <% var communityID = children[i].community_id; %>
+                    <% var communityID = children[i].olive_community_id; %>
                     <li id="<%=communityID%>">
                         <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
                         <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button"></a>

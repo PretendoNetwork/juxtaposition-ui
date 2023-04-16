@@ -40,6 +40,7 @@
     }
 </script>
 <style>
+
     .background {
         background: #fff;
         border-radius: 20px;
@@ -109,7 +110,7 @@
         border-radius: 0 50px 50px 0;
     }
 
-    ul.horizontal-list li > span {
+    ul.horizontal-list li > a {
         text-shadow: none;
         border-radius: 50px;
         text-align: center;
@@ -117,8 +118,9 @@
         display: inline-block;
         width: 287px;
         height: 60px;
+        color: #fff;
     }
-    ul.horizontal-list li.selected > span {
+    ul.horizontal-list li.selected > a {
         background: -webkit-gradient(linear, left top, left bottom, from(#fff), color-stop(0.3, #fff), color-stop(0.8, #fff5f5), color-stop(0.96, #fff5f5), to(#fff5f5)) 0 0;
         color: #4d4d4d;
     }
@@ -255,9 +257,9 @@
             <div>
                 <br><br>
                 <ul class="horizontal-list">
-                    <li  id="beginner" onclick="selectExperience(0)" class="selected"><span><%= lang.setup.experience_text.beginner %></span></li>
-                    <li  id="intermediate" onclick="selectExperience(1)"><span><%= lang.setup.experience_text.intermediate %></span></li>
-                    <li  id="expert" onclick="selectExperience(2)"><span><%= lang.setup.experience_text.expert %></span></li>
+                    <li  id="beginner" onclick="selectExperience(0)" class="selected"><a href="#"><%= lang.setup.experience_text.beginner %></a></li>
+                    <li  id="intermediate" onclick="selectExperience(1)"><a href="#"><%= lang.setup.experience_text.intermediate %></a></li>
+                    <li  id="expert" onclick="selectExperience(2)"><a href="#"><%= lang.setup.experience_text.expert %></a></li>
                 </ul>
             </div>
             <input type="button" class="fixed-bottom-button left"

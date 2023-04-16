@@ -131,7 +131,6 @@ async function userPage(req, res, userID) {
             moment
         });
     let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
-
     res.render(req.directory + '/user_page.ejs', {
         template: 'posts_list',
         selection: 0,
@@ -166,8 +165,8 @@ async function userRelations(req, res, userID) {
     let followers, communities, communityMap, selection;
 
     if(req.params.type === 'yeahs') {
-        let likesArray = await userContent.likes.slice().reverse();
-        let posts = await POST.aggregate([
+        let posts = await POST.find({ yeahs: req.pid }).sort({created_at: -1});
+        /*let posts = await POST.aggregate([
             { $match: { id: { $in: likesArray } } },
             {$addFields: {
                     "__order": { $indexOfArray: [ likesArray, "$id" ] }
@@ -175,7 +174,7 @@ async function userRelations(req, res, userID) {
             { $sort: { "__order": 1 } },
             { $project: { index: 0, _id: 0 } },
             { $limit: config.post_limit }
-        ]);
+        ]);*/
         let communityMap = await util.data.getCommunityHash();
         let bundle = {
             posts,

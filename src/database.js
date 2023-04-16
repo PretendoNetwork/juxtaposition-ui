@@ -69,14 +69,14 @@ async function getCommunityByTitleID(title_id) {
 async function getCommunityByID(community_id) {
     verifyConnected();
     return COMMUNITY.findOne({
-        community_id: community_id
+        olive_community_id: community_id
     });
 }
 
 async function getTotalPostsByCommunity(community) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         parent: null,
         removed: false
     }).countDocuments();
@@ -151,7 +151,7 @@ async function getTotalPostsByUserID(userID) {
 async function getHotPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         parent: null,
         removed: false
     }).sort({empathy_count: -1}).limit(numberOfPosts);
@@ -160,7 +160,7 @@ async function getHotPostsByCommunity(community, numberOfPosts) {
 async function getNumberNewCommunityPostsByID(community, number) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         parent: null,
         removed: false
     }).sort({ created_at: -1}).limit(number);
@@ -169,7 +169,7 @@ async function getNumberNewCommunityPostsByID(community, number) {
 async function getNumberPopularCommunityPostsByID(community, limit, offset) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         parent: null,
         removed: false
     }).sort({ empathy_count: -1}).skip(offset).limit(limit);
@@ -178,7 +178,7 @@ async function getNumberPopularCommunityPostsByID(community, limit, offset) {
 async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         verified: true,
         parent: null,
         removed: false
@@ -188,7 +188,7 @@ async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
 async function getPostsByCommunity(community, numberOfPosts) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         parent: null,
         removed: false
     }).limit(numberOfPosts);
@@ -197,8 +197,7 @@ async function getPostsByCommunity(community, numberOfPosts) {
 async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id
-        ,
+        community_id: community.olive_community_id,
         search_key: search_key,
         parent: null,
         removed: false
@@ -208,7 +207,7 @@ async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
 async function getNewPostsByCommunity(community, limit, offset) {
     verifyConnected();
     return POST.find({
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         parent: null,
         removed: false
     }).sort({ created_at: -1 }).skip(offset).limit(limit);

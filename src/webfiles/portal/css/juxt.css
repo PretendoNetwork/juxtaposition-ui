@@ -260,7 +260,7 @@ body {
 .headline {
  display:-webkit-box;
  -webkit-box-align:center;
- width:880px;
+ max-width:880px;
  height:60px;
  padding:0 160px 0 20px;
  margin:0-20px 10px;

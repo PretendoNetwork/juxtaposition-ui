@@ -13,9 +13,9 @@ router.get('/', async function (req, res) {
     let newCommunities = await database.getNewCommunities(6);
     let last24Hours = await calculateMostPopularCommunities();
     let popularCommunities = await COMMUNITY.aggregate([
-        { $match: { community_id: { $in: last24Hours }, parent: null } },
+        { $match: { olive_community_id: { $in: last24Hours }, parent: null } },
         {$addFields: {
-                index: { $indexOfArray: [ last24Hours, "$community_id" ] }
+                index: { $indexOfArray: [ last24Hours, "$olive_community_id" ] }
             }},
         { $sort: { index: 1 } },
         { $limit : 9 },
@@ -43,58 +43,13 @@ router.get('/all', async function (req, res) {
     });
 });
 
-router.get('/announcements', async function (req, res) {
-    let userSettings = await database.getUserSettings(req.pid);
-    let userContent = await database.getUserContent(req.pid);
-    let community = await database.getCommunityByID('announcements');
-    let communityMap = await util.data.getCommunityHash();
-    let posts = await database.getNumberNewCommunityPostsByID(community, config.post_limit);
-    let totalNumPosts = await database.getTotalPostsByCommunity(community);
-    res.render(req.directory + '/announcements.ejs', {
-        moment: moment,
-        community: community,
-        posts: posts,
-        communityMap: communityMap,
-        userSettings: userSettings,
-        userContent: userContent,
-        totalNumPosts: totalNumPosts,
-        account_server: config.account_server_domain.slice(8),
-        cdnURL: config.CDN_domain,
-        lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
-    });
-});
-
 router.get('/:communityID', async function (req, res) {
     if(req.query.title_id) {
         let community = await database.getCommunityByTitleID(req.query.title_id);
         if(!community) return res.redirect('/404');
-        return res.redirect(`/titles/${community.community_id}/new`);
+        return res.redirect(`/titles/${community.olive_community_id}/new`);
     }
     res.redirect(`/titles/${req.params.communityID}/new`);
-});
-
-router.get('/:communityID/post', async function (req, res) {
-    let userSettings = await database.getUserSettings(req.pid);
-    let userContent = await database.getUserContent(req.pid);
-    if(req.params.communityID === 'announcements')
-        res.redirect('/titles/announcements')
-    let community = await database.getCommunityByID(req.params.communityID.toString());
-    if(!community) return res.render(req.directory + '/error.ejs', {code: 404, message: "Community not Found", pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
-
-    res.render(req.directory + '/new_post.ejs', {
-        // EJS variable and server-side variable
-        moment: moment,
-        community: community,
-        userSettings: userSettings,
-        userContent: userContent,
-        account_server: config.account_server_domain.slice(8),
-        cdnURL: config.CDN_domain,
-        lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid,
-    });
 });
 
 router.get('/:communityID/related', async function (req, res) {
@@ -102,12 +57,12 @@ router.get('/:communityID/related', async function (req, res) {
     let userContent = await database.getUserContent(req.pid);
     if(!userContent || !userSettings)
         return res.redirect('/404');
-    if(req.params.communityID === 'announcements')
-        res.redirect('/titles/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
     if(!community) return res.render(req.directory + '/error.ejs', {code: 404, message: "Community not Found", pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
     let communityMap = await util.data.getCommunityHash();
-    let children = await database.getSubCommunities(community.community_id);
+    let children = await database.getSubCommunities(community.olive_community_id);
+    if(!children)
+        return res.redirect(`/titles/${community.olive_community_id}/new`);
 
     res.render(req.directory + '/sub_communities.ejs', {
         selection: 2,
@@ -127,12 +82,10 @@ router.get('/:communityID/:type', async function (req, res) {
     let userContent = await database.getUserContent(req.pid);
     if(!userContent || !userSettings)
         return res.redirect('/404');
-    if(req.params.communityID === 'announcements')
-        res.redirect('/titles/announcements')
     let community = await database.getCommunityByID(req.params.communityID.toString());
     if(!community) return res.render(req.directory + '/error.ejs', {code: 404, message: "Community not Found", pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
     let communityMap = await util.data.getCommunityHash();
-    let children = await database.getSubCommunities(community.community_id);
+    let children = await database.getSubCommunities(community.olive_community_id);
     if(children.length === 0)
         children = null;
     let posts, type;
@@ -241,20 +194,20 @@ router.get('/:communityID/:type/more', async function (req, res) {
 router.post('/follow', upload.none(), async function (req, res) {
     let community = await database.getCommunityByID(req.body.id);
     let userContent = await database.getUserContent(req.pid);
-    if(userContent !== null && userContent.followed_communities.indexOf(community.community_id) === -1)
+    if(userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) === -1)
     {
         community.upFollower();
-        userContent.addToCommunities(community.community_id);
-        res.send({ status: 200, id: community.community_id, count: community.followers });
+        userContent.addToCommunities(community.olive_community_id);
+        res.send({ status: 200, id: community.olive_community_id, count: community.followers });
     }
-    else if(userContent !== null  && userContent.followed_communities.indexOf(community.community_id) !== -1)
+    else if(userContent !== null  && userContent.followed_communities.indexOf(community.olive_community_id) !== -1)
     {
         community.downFollower();
-        userContent.removeFromCommunities(community.community_id);
-        res.send({ status: 200, id: community.community_id, count: community.followers });
+        userContent.removeFromCommunities(community.olive_community_id);
+        res.send({ status: 200, id: community.olive_community_id, count: community.followers });
     }
     else
-        res.send({ status: 423, id: community.community_id, count: community.followers });
+        res.send({ status: 423, id: community.olive_community_id, count: community.followers });
 });
 
 async function calculateMostPopularCommunities() {

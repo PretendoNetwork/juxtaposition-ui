@@ -1,26 +1,37 @@
 const { Schema, model } = require('mongoose');
 
-const  NotificationSchema = new Schema({
+const  NotificationsSchema = new Schema({
     pid: String,
-    type: String,
-    objectID: String,
+    /**
+     * 0 like
+     * 1 reply
+     * 2 new follower
+     * 3 other
+     */
+    type: Number,
+    title: String,
+    content: String,
+    reference_id: String,
     link: String,
-    users: [{
-        user: String,
-        timestamp: Date
-    }],
-    read: Boolean,
-    lastUpdated: Date
+    created_at: {
+        type: Date,
+        default: new Date()
+    },
+    read: {
+        type: Boolean,
+        default: false
+    },
+    origin_pid: String,
 });
 
-NotificationSchema.methods.markRead = async function() {
+NotificationsSchema.methods.markRead = async function() {
     this.set('read', true);
     await this.save();
 };
 
-const NOTIFICATION = model('NOTIFICATION', NotificationSchema);
+const NOTIFICATION = model('NOTIFICATION', NotificationsSchema);
 
 module.exports = {
-    NotificationSchema,
+    NotificationsSchema,
     NOTIFICATION
 };

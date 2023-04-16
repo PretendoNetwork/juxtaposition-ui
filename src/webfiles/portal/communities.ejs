@@ -15,7 +15,7 @@
             </div>
             <ul class="list-content-with-icon-column" id="community-new-content">
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>
-                    <% var popCommunityID = popularCommunities[i].community_id; %>
+                    <% var popCommunityID = popularCommunities[i].olive_community_id; %>
                     <li id="<%=popCommunityID%>">
                         <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%=popCommunityID%>/128.png" class="icon" alt=""></span>
                         <a href="/titles/<%=popCommunityID%>/new" data-pjax="#body" class="scroll to-community-button"></a>
@@ -33,7 +33,7 @@
             </div>
             <ul class="list-content-with-icon-column" id="community-top-content">
                 <% for(var j = 0; j < newCommunities.length; j++) {%>
-                    <% var communityID = newCommunities[j].community_id; %>
+                    <% var communityID = newCommunities[j].olive_community_id; %>
                     <li id="<%=communityID%>">
                         <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
                         <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button"></a>

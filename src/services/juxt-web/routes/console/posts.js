@@ -13,8 +13,8 @@ const crypto = require('crypto')
 const router = express.Router();
 
 const postLimit = rateLimit({
-    windowMs: 30 * 1000, // 30 seconds
-    max: 1, // Limit each IP to 1 request per `window`
+    windowMs: 15 * 1000, // 30 seconds
+    max: 10, // Limit each IP to 1 request per `window`
     standardHeaders: true,
     legacyHeaders: true,
     message: "New post limit reached. Try again in a minute",
@@ -46,43 +46,40 @@ router.post('/empathy', yeahLimit, async function (req, res) {
     let post = await database.getPostByID(req.body.postID);
     if(!post)
         return res.sendStatus(404);
-    let userContent = await database.getUserContent(req.pid);
-    if(!userContent)
-        return res.sendStatus(423);
-    if(userContent.likes.indexOf(post.id) === -1 && userContent.pid !== post.pid)
-    {
-        if(post.empathy_count < 0) {
-            await POST.updateOne(
-                { id: post.id },
-                { $set: { empathy_count: 1 } }
-            );
-        }
-        else {
-            await POST.updateOne(
-                { id: post.id },
-                { $inc: { empathy_count: 1 } }
-            );
-        }
-        userContent.addToLikes(post.id)
+    if(post.yeahs.indexOf(req.pid) === -1) {
+        await POST.updateOne({
+                id: post.id,
+                yeahs: {
+                    $ne: req.pid
+                }
+            },
+            {
+                $inc: {
+                    empathy_count: 1
+                },
+                $push: {
+                    yeahs: req.pid
+                }
+            });
         res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
         if(req.pid !== post.pid)
             await util.data.newNotification({ pid: post.pid, type: "yeah", objectID: post.id, userPID: req.pid, link: `/posts/${post.id}` });
     }
-    else if(userContent.likes.indexOf(post.id) !== -1 && userContent.pid !== post.pid)
-    {
-        if(post.empathy_count < 0) {
-            await POST.updateOne(
-                { id: post.id },
-                { $set: { empathy_count: 0 } }
-            );
-        }
-        else {
-            await POST.updateOne(
-                { id: post.id },
-                { $inc: { empathy_count: -1 } }
-            );
-        }
-        userContent.removeFromLike(post.id);
+    else if(post.yeahs.indexOf(req.pid) !== -1) {
+        await POST.updateOne({
+                id: post.id,
+                yeahs: {
+                    $eq: req.pid
+                }
+            },
+            {
+                $inc: {
+                    empathy_count: -1
+                },
+                $pull: {
+                    yeahs: req.pid
+                }
+            });
         res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
     }
     else
@@ -105,7 +102,6 @@ router.get('/:post_id', async function (req, res) {
     let community = await database.getCommunityByID(post.community_id);
     let communityMap = await util.data.getCommunityHash();
     let replies = await database.getPostReplies(req.params.post_id.toString(), 25)
-    let yeahs = await CONTENT.find({ likes: post.id }).limit(8);
     res.render(req.directory + '/post.ejs', {
         moment: moment,
         userSettings: userSettings,
@@ -117,8 +113,7 @@ router.get('/:post_id', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid,
-        yeahs
+        pid: req.pid
     });
 });
 
@@ -127,8 +122,11 @@ router.post('/:post_id/new', postLimit, upload.none(), async function (req, res)
 async function newPost(req, res) {
     let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = await generatePostUID(22);
     let community = await database.getCommunityByID(req.body.community_id);
-    if(!community || userSettings.account_status !== 0 || community.community_id === 'announcements')
-        return res.sendStatus(403);
+    if(!community || !userSettings || !PNID) {
+        res.status(403);
+        console.log('missing data')
+        return res.redirect(`/titles/${community.olive_community_id}/new`);
+    }
     if(req.params.post_id && (req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '')) {
         res.status(422);
         return res.redirect('/posts/' + req.params.post_id.toString());
@@ -137,9 +135,13 @@ async function newPost(req, res) {
         parentPost = await database.getPostByID(req.params.post_id.toString());
         if(!parentPost)
             return res.sendStatus(403);
-        parentPost.reply_count = parentPost.reply_count + 1;
-        parentPost.save();
     }
+    if(!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0)
+        && (community.type >= 2) && !(parentPost && community.allows_comments && community.open)) {
+        res.status(403);
+        return res.redirect(`/titles/${community.olive_community_id}/new`);
+    }
+
     let painting = "", paintingURI = "", screenshot = null;
     if (req.body._post_type === 'painting' && req.body.painting) {
         painting = req.body.painting.replace(/\0/g, "").trim();
@@ -179,7 +181,7 @@ async function newPost(req, res) {
         body = body.substring(0,280);
     const document = {
         title_id: community.title_id[0],
-        community_id: community.community_id,
+        community_id: community.olive_community_id,
         screen_name: userSettings.screen_name,
         body: body,
         painting: painting,
@@ -201,18 +203,24 @@ async function newPost(req, res) {
         parent: parentPost ? parentPost.id : null
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
+    console.log('duplicate test' + duplicatePost && req.params.post_id)
     if(duplicatePost && req.params.post_id)
         return res.redirect('/posts/' + req.params.post_id.toString());
+    console.log('last empty check' + document.body === '' && document.painting === '' && document.screenshot === '')
     if(document.body === '' && document.painting === '' && document.screenshot === '')
-        return res.redirect('/titles/' + community.community_id + '/new');;
+        return res.redirect('/titles/' + community.olive_community_id + '/new');
     const newPost = new POST(document);
     newPost.save();
+    if(parentPost) {
+        parentPost.reply_count = parentPost.reply_count + 1;
+        parentPost.save();
+    }
     if(parentPost && (parentPost.pid !== PNID.pid))
         await util.data.newNotification({ pid: parentPost.pid, type: "reply", user: req.pid, link: `/posts/${parentPost.id}` });
     if(parentPost)
         res.redirect('/posts/' + req.params.post_id.toString());
     else
-        res.redirect('/titles/' + community.community_id + '/new');
+        res.redirect('/titles/' + community.olive_community_id + '/new');
 }
 
 async function generatePostUID(length) {

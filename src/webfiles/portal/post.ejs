@@ -6,19 +6,19 @@
 <div id="body">
     <header id="header">
         <h1 id="page-title" class="left"><%= post.screen_name %></h1>
-        <% if(community.allows_comments && community.open) {%>
+        <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
         <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
     </header>
     <div class="body-content post-list" id="post">
         <div class="post-wrapper parent">
-            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid, yeah: true, yeahs: yeahs  }); %>
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid, yeah: true }); %>
         </div>
         <% replies.forEach(function(post) { %>
             <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true, pid: pid  }); %>
         <% }); %>
     </div>
-    <% if(post.community_id !== 'announcements') {%>
+    <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
     <%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
     <%}%>
 </div>

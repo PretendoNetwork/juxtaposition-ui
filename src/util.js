@@ -35,13 +35,13 @@ function nameCache() {
                 if(communities[i].title_id !== null) {
                     for(let j = 0; j < communities[i].title_id.length; j++) {
                         communityMap.set(communities[i].title_id[j], communities[i].name);
-                        communityMap.set(communities[i].title_id[j] + '-id', communities[i].community_id);
+                        communityMap.set(communities[i].title_id[j] + '-id', communities[i].olive_community_id);
                     }
-                    communityMap.set(communities[i].community_id, communities[i].name);
+                    communityMap.set(communities[i].olive_community_id, communities[i].name);
                 }
             }
+            logger.success('Created community index of ' + communities.length + ' communities');
         }
-        logger.success('Created community index of ' + communities.length + ' communities')
         let users = await database.getUsersSettings(-1);
         if(users !== null) {
             for(let i = 0; i < users.length; i++ ) {
@@ -49,8 +49,8 @@ function nameCache() {
                     userMap.set(users[i].pid.toString(), users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu,""));
                 }
             }
+            logger.success('Created user index of ' + users.length + ' users')
         }
-        logger.success('Created user index of ' + users.length + ' users')
 
     }).catch(error => {
         logger.error(error);

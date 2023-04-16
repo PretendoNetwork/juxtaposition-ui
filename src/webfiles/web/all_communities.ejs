@@ -10,8 +10,8 @@
     <div id="wrapper">
         <div id="popular" class="communities-wrapper">
             <% for(var i = 0; i < communities.length; i++) {%>
-                <a class="community-list-wrapper" href="/titles/<%= communities[i].community_id %>/new">
-                    <img class="community-list-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= communities[i].community_id %>/128.png">
+                <a class="community-list-wrapper" href="/titles/<%= communities[i].olive_community_id %>/new">
+                    <img class="community-list-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= communities[i].olive_community_id %>/128.png">
                     <h2 class="community-list-title"><%= communities[i].name %></h2>
                     <h4 class="community-list-followers"><%= communities[i].followers %> followers</h4>
                 </a>
