@@ -37,9 +37,9 @@ function verifyConnected() {
 async function getCommunities(numberOfCommunities) {
     verifyConnected();
     if(numberOfCommunities === -1)
-        return COMMUNITY.find({ parent: null, type: 0 });
+        return COMMUNITY.find({ parent: null, type: [0,2] });
     else
-        return COMMUNITY.find({ parent: null, type: 0 }).limit(numberOfCommunities);
+        return COMMUNITY.find({ parent: null, type: [0,2] }).limit(numberOfCommunities);
 }
 
 async function getMostPopularCommunities(numberOfCommunities) {

@@ -14,10 +14,10 @@
     </header>
     <div class="body-content tab2-content" id="community-post-list">
         <div class="header-banner-container">
-            <img src="https://mii.olv.pretendo.cc/headers/<%= community.olive_community_id %>/WiiU.png" class="header-banner with-top-button"></div>
+            <img src="https://mii.olv.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png" class="header-banner with-top-button"></div>
 
         <div class="community-info info-content with-header-banner">
-            <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= community.olive_community_id %>/128.png" class="icon"></span>
+            <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png" class="icon"></span>
             <%if(community.open){%>
             <a href="#" class="favorite-button button <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>checked<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>"></a>
             <%}%>
