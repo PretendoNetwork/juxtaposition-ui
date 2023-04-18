@@ -6,6 +6,7 @@ const multer  = require('multer');
 const moment = require('moment');
 const upload = multer({ dest: 'uploads/' });
 const { POST } = require('../../../../models/post');
+const {SETTINGS} = require("../../../../models/settings");
 const router = express.Router();
 
 router.get('/menu', async function (req, res) {
@@ -109,6 +110,7 @@ async function userPage(req, res, userID) {
     let posts = await database.getNumberUserPostsByID(userID, config.post_limit);
     let numPosts = await database.getTotalPostsByUserID(userID);
     let communityMap = await util.data.getCommunityHash();
+    let friends = await util.data.getFriends(userID);
     let parentUserContent;
     if(pnid.pid !== req.pid)
         parentUserContent = await database.getUserContent(req.pid);
@@ -146,6 +148,7 @@ async function userPage(req, res, userID) {
         mii_image_CDN: config.mii_image_CDN,
         pid: req.pid,
         link,
+        friends,
         parentUserContent
     });
 }
@@ -156,6 +159,7 @@ async function userRelations(req, res, userID) {
     let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
     let userSettings = await database.getUserSettings(userID);
     let numPosts = await database.getTotalPostsByUserID(userID);
+    let friends = await util.data.getFriends(userID);
     let parentUserContent;
     if(pnid.pid !== req.pid)
         parentUserContent = await database.getUserContent(req.pid);
@@ -209,15 +213,17 @@ async function userRelations(req, res, userID) {
                 mii_image_CDN: config.mii_image_CDN,
                 pid: req.pid,
                 link,
+                friends,
                 parentUserContent
             });
     }
 
     if(req.params.type === 'friends') {
-        return res.render(req.directory + '/partials/not_ready.ejs');
+        followers = await SETTINGS.find({ pid: friends });
+        communities = [];
+        selection = 2;
     }
-
-    if(req.params.type === 'followers') {
+    else if(req.params.type === 'followers') {
         followers = await database.getFollowingUsers(userContent);
         communities = [];
         selection = 3;
@@ -235,7 +241,7 @@ async function userRelations(req, res, userID) {
         communities.splice(0, 1);
 
     let bundle = {
-        followers: followers,
+        followers: followers ? followers : [],
         communities: communities,
         communityMap: communityMap
     }

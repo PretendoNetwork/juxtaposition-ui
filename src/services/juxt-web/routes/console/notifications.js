@@ -35,17 +35,21 @@ router.get('/my_news', async function (req, res) {
 });
 
 router.get('/friend_requests', async function (req, res) {
-    let notifications = await database.getNotifications(req.pid, 25, 0);
+    let requests = (await util.data.getFriendRequests(req.pid)).reverse();
+    const now = new Date();
+    requests = requests.filter(request => new Date(request.expires * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000))
+    let userMap = util.data.getUserHash();
     let bundle = {
-        notifications
+        requests: requests ? requests : [],
+        userMap
     }
 
     if(req.query.pjax)
-        return res.render(req.directory + '/partials/not_ready.ejs', {
+        return res.render(req.directory + '/partials/requests.ejs', {
             bundle,
             lang: req.lang,
             moment
-    });
+        });
 
     res.render(req.directory + '/notifications.ejs', {
         moment,
@@ -54,11 +58,7 @@ router.get('/friend_requests', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         pid: req.pid,
-        template: 'not_ready'
-    });
-    notifications.filter(noti => noti.read === false).forEach(function(notification) {
-        notification.markRead();
-        console.log(notification)
+        template: 'requests'
     });
 });
 

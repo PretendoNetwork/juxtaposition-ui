@@ -193,6 +193,7 @@ function initAll() {
     initMorePosts();
     initPostModules();
     initSounds();
+    checkForUpdates();
     pjax.refresh();
 }
 
@@ -314,42 +315,37 @@ function exit() {
     }
 }
 function checkForUpdates() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState === 4 && this.status === 200) {
-            var notificationObj = JSON.parse(this.responseText);
-            var messages = document.getElementById("message-badge");
-            var news = document.getElementById("news-badge");
-            /**/
-            if(notificationObj.message_count > 0  && notificationObj.message_count < 99) {
-                messages.innerHTML = notificationObj.message_count;
-                messages.style.display = "unset";
-            }
-            else if(notificationObj.message_count >= 99) {
-                messages.innerHTML = "99+";
-                messages.style.display = "unset";
-            }
-            else {
-                messages.innerHTML = "";
-                messages.style.display = "none";
-            }
-            /*Check for Notifications*/
-            if(notificationObj.notification_count > 0  && notificationObj.notification_count < 99) {
-                news.innerHTML = notificationObj.notification_count;
-                news.style.display = "unset";
-            }
-            else if(notificationObj.notification_count >= 99) {
-                news.innerHTML = "99+";
-                news.style.display = "unset";
-            }
-            else {
-                news.innerHTML = "";
-                news.style.display = "none";
-            }
+    GET('/notifications.json', function updates(data) {
+        var notificationObj = JSON.parse(data.responseText);
+        var messages = document.getElementById("message-badge");
+        var news = document.getElementById("news-badge");
+
+        /**/
+        if(notificationObj.message_count > 0  && notificationObj.message_count < 99) {
+            messages.innerHTML = notificationObj.message_count;
+            messages.style.display = "block";
         }
-    };
-    xhttp.open("GET", "/notifications.json", true);
-    xhttp.send();
+        else if(notificationObj.message_count >= 99) {
+            messages.innerHTML = "99+";
+            messages.style.display = "block";
+        }
+        else {
+            messages.innerHTML = "";
+            messages.style.display = "none";
+        }
+        if(notificationObj.notification_count > 0  && notificationObj.notification_count < 99) {
+            news.innerHTML = notificationObj.notification_count;
+            news.style.display = "block";
+        }
+        else if(notificationObj.notification_count >= 99) {
+            news.innerHTML = "99+";
+            news.style.display = "block";
+        }
+        else {
+            news.innerHTML = "";
+            news.style.display = "none";
+        }
+    });
 }
 function POST(url, data, callback) {
     wiiuBrowser.showLoadingIcon(true);

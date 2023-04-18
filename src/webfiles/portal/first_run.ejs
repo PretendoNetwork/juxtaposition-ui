@@ -35,7 +35,7 @@
             }
         }
         xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications, "region": wiiuSystemSetting.getCountry().code }));
+        xmlhttp.send(JSON.stringify({ "experience": experience, "notifications": notifications }));
         wiiuSound.playSoundByName('JGL_OLV_INIT_END', 3);
     }
 </script>
@@ -55,7 +55,7 @@
         width: 185px !important;
     }
     .about-wrapper.background {
-        height: 500px;
+        min-height: 500px;
     }
     .about-button {
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);

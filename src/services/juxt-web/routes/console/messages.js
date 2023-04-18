@@ -6,15 +6,16 @@ const { POST } = require('../../../../models/post');
 const moment = require('moment');
 const {CONVERSATION} = require("../../../../models/conversation");
 const crypto = require("crypto");
+const {friends} = require("grpc");
 const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-    let conversations = await database.getConversations(req.pid.toString());
+    let conversations = await database.getConversations(req.pid);
     let usersMap = await util.data.getUserHash();
     res.render(req.directory + '/messages.ejs', {
         moment: moment,
-        pid: req.pid.toString(),
+        pid: req.pid,
         conversations: conversations,
         cdnURL: config.CDN_domain,
         usersMap: usersMap,
@@ -27,7 +28,8 @@ router.post('/new', async function (req, res, next) {
     let conversation = await database.getConversationByID(req.body.community_id);
     let user = await database.getPNID(req.pid);
     let user2 = await database.getPNID(req.body.message_to_pid);
-    let userSettings = await database.getUserSettings(req.pid), postID = generatePostUID(21);
+    let userSettings = await database.getUserSettings(req.pid), postID = await generatePostUID(21);
+    let friends = await util.data.getFriends(user2.pid);
     if(req.body.community_id === 0)
         return res.sendStatus(404);
     if(!conversation) {
@@ -54,7 +56,8 @@ router.post('/new', async function (req, res, next) {
     }
     if(!conversation)
         return res.sendStatus(404);
-
+    if(!friends || friends.indexOf(req.pid) === -1)
+        return res.sendStatus(422);
     if(req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
         res.status(422);
         return res.redirect(`/friend_messages/${conversation.id}`);
@@ -120,7 +123,7 @@ router.post('/new', async function (req, res, next) {
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
     if(duplicatePost && req.params.post_id)
-        return res.redirect('/posts/' + req.params.post_id.toString());
+        return res.redirect('/posts/' + req.params.post_id);
     const newPost = new POST(document);
     newPost.save();
     res.redirect(`/friend_messages/${conversation.id}`);
@@ -131,17 +134,20 @@ router.post('/new', async function (req, res, next) {
         postPreviewText = document.body.substring(0, 25) + '...';
     else
         postPreviewText = document.body;
-    await conversation.newMessage(postPreviewText, document.message_to_pid);
+    await conversation.newMessage(postPreviewText, user2.pid);
 });
 
 router.get('/new/:pid', async function (req, res, next) {
     let user = await database.getPNID(req.pid);
-    let user2 = await database.getPNID(req.params.pid.toString());
+    let user2 = await database.getPNID(req.params.pid);
+    let friends = await util.data.getFriends(user2.pid);
     if(!user || !user2)
         return res.sendStatus(422)
     let conversation = await database.getConversationByUsers([user.pid, user2.pid]);
     if(conversation)
         return res.redirect(`/friend_messages/${conversation.id}`);
+    if(!friends || friends.indexOf(req.pid) === -1)
+        return res.sendStatus(422);
     let document = {
         id: snowflake.nextId(),
         users: [
@@ -167,9 +173,9 @@ router.get('/new/:pid', async function (req, res, next) {
         screen_name: user.mii.name,
         body: body,
         created_at: new Date(),
-        id: generatePostUID(21),
+        id: await generatePostUID(21),
         mii: user.mii.data,
-        mii_face_url: `https://mii.olv.pretendo.cc/${user.pid}/normal_face.png`,
+        mii_face_url: `https://mii.olv.pretendo.cc/mii/${user.pid}/normal_face.png`,
         pid: user.pid,
         verified: (user.access_level === 2 || user.access_level === 3),
         parent: null,
@@ -178,8 +184,8 @@ router.get('/new/:pid', async function (req, res, next) {
     };
     const newPost = new POST(newMessage);
     newPost.save();
-    await conversation.newMessage(`${user.mii.name} started a new chat!`, newMessage.message_to_pid);
-    res.redirect(`/messages/${conversation.id}`);
+    await conversation.newMessage(`${user.mii.name} started a new chat!`, user2.pid);
+    res.redirect(`/friend_messages/${conversation.id}`);
 });
 
 router.get('/:message_id', async function (req, res) {
@@ -187,8 +193,8 @@ router.get('/:message_id', async function (req, res) {
     if(!conversation) {
         return res.sendStatus(404);
     }
-    let user2 = conversation.users[0].pid.toString() === req.pid.toString() ? conversation.users[1] : conversation.users[0];
-    if(req.pid.toString() !== conversation.users[0].pid && req.pid.toString() !== conversation.users[1].pid)
+    let user2 = conversation.users[0].pid === req.pid ? conversation.users[1] : conversation.users[0];
+    if(req.pid !== conversation.users[0].pid && req.pid !== conversation.users[1].pid)
         res.redirect('/')
     let messages = await database.getConversationMessages(conversation.id, 200, 0);
     let userMap = await util.data.getUserHash();

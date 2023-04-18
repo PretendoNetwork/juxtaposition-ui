@@ -3,11 +3,14 @@ const NodeRSA = require('node-rsa');
 const fs = require('fs-extra');
 const database = require('./database');
 const logger = require('./logger');
+const grpc = require('nice-grpc');
+const grpcServices = require('grpc');
 const config = require('../config.json');
 const { SETTINGS } = require('./models/settings');
 const { CONTENT } = require('./models/content');
 const { NOTIFICATION } = require('./models/notifications');
 const { COMMUNITY } = require('./models/communities');
+const { FriendsDefinition } = grpcServices.friends.service;
 const translations = require('./translations')
 const HashMap = require('hashmap');
 const TGA = require('tga');
@@ -17,6 +20,9 @@ const bmp = require("bmp-js");
 const aws = require('aws-sdk');
 let communityMap = new HashMap();
 let userMap = new HashMap();
+const { ip, port, api_key } = config.grpc.friends;
+const channel = grpc.createChannel(`${ip}:${port}`);
+const client = grpc.createClient(FriendsDefinition, channel);
 
 const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
 const s3 = new aws.S3({
@@ -46,7 +52,7 @@ function nameCache() {
         if(users !== null) {
             for(let i = 0; i < users.length; i++ ) {
                 if(users[i].pid !== null) {
-                    userMap.set(users[i].pid.toString(), users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu,""));
+                    userMap.set(users[i].pid, users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu,""));
                 }
             }
             logger.success('Created user index of ' + users.length + ' users')
@@ -398,6 +404,26 @@ let methods = {
                 await newNotification.save();
             }
         }*/
+    },
+    getFriends: async function(pid) {
+        const pids =  await client.getUserFriendPIDs({
+            pid: pid
+        }, {
+            metadata: grpc.Metadata({
+                'X-API-Key': api_key
+            })
+        });
+        return pids.pids;
+    },
+    getFriendRequests: async function(pid) {
+        const requests = await client.getUserFriendRequestsIncoming({
+            pid: pid
+        }, {
+            metadata: grpc.Metadata({
+                'X-API-Key': api_key
+            })
+        });
+        return requests.friendRequests;
     }
 };
 exports.data = methods;

@@ -1,24 +1,20 @@
-<div class="communities-list">
-    <ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
-        <li>
-            <a href="/users/LonglivetheEU" data-pjax="#body" class="icon-container notify">
-                <img src="https://mii.olv.pretendo.cc/mii/1337825003/normal_face.png" class="icon">
-            </a>
-            <div class="body">
-                <p class="text"><span class="nick-name">Shutterbug</span>
-                </p>
-            </div>
-        </li>
-        <li>
-            <a href="/users/navajocookie" data-pjax="#body"
-               class="icon-container notify">
-                <img src="https://mii.olv.pretendo.cc/mii/1213651904/normal_face.png" class="icon">
-            </a>
-            <div class="body">
-                <p class="text">Followed by <span class="nick-name">♪☆Peyton☆♪</span>, <span class="nick-name">Rocman X</span>,
-                    and <span class="nick-name">Whissu2</span>. <span class="timestamp"> 3 minutes ago</span>
-                </p>
-            </div>
-        </li>
-    </ul>
-</div>
+<ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
+    <%if(!bundle.requests) {%><li><p>No Friend Requests</p></li><%}%>
+    <%if(bundle.requests){%>
+        <% for(var request of bundle.requests) {%>
+            <%if(bundle.userMap.get(request.sender)) {%>
+            <li>
+                <a href="/users/<%= request.sender %>" data-pjax="#body" class="icon-container notify">
+                    <img src="https://mii.olv.pretendo.cc/mii/<%= request.sender %>/normal_face.png" class="icon">
+                </a>
+                <div class="body">
+                    <p class="text"><span class="nick-name"><%= bundle.userMap.get(request.sender) %></span>
+                        <span><%=request.message%></span>
+                        <span class="timestamp"> <%= moment(request.sent * 1000).fromNow() %></span>
+                    </p>
+                </div>
+            </li>
+            <%}%>
+        <%}%>
+    <%}%>
+</ul>
