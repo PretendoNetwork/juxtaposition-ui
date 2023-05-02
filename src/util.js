@@ -18,6 +18,7 @@ const pako = require('pako');
 const PNG = require('pngjs').PNG;
 const bmp = require("bmp-js");
 const aws = require('aws-sdk');
+const crc32 = require('crc/crc32');
 let communityMap = new HashMap();
 let userMap = new HashMap();
 const { ip, port, api_key } = config.grpc.friends;
@@ -102,7 +103,8 @@ let methods = {
         {
             let B64token = Buffer.from(token, 'base64');
             let decryptedToken = this.decryptToken(B64token);
-            return decryptedToken.readUInt32LE(0x2);
+            const token = this.unpackToken(decryptedToken);
+            return token.pid;
         }
         catch(e)
         {
@@ -112,75 +114,38 @@ let methods = {
 
     },
     decryptToken: function(token) {
-        // Access and refresh tokens use a different format since they must be much smaller
-        // Assume a small length means access or refresh token
-        if (token.length <= 32) {
-            const cryptoPath = `${__dirname}/../certs/access`;
-            const aesKey = Buffer.from(fs.readFileSync(`${cryptoPath}/aes.key`, { encoding: 'utf8' }), 'hex');
-
-            const iv = Buffer.alloc(16);
-
-            const decipher = crypto.createDecipheriv('aes-128-cbc', aesKey, iv);
-
-            let decryptedBody = decipher.update(token);
-            decryptedBody = Buffer.concat([decryptedBody, decipher.final()]);
-
-            return decryptedBody;
+        if (!config.aes_key) {
+            throw new Error('Service token AES key not found. Set config.aes_key');
         }
 
-        const cryptoPath = `${__dirname}/certs/access`;
+        const iv = Buffer.alloc(16);
+        const key = Buffer.from(config.aes_key, 'hex');
 
-        const cryptoOptions = {
-            private_key: fs.readFileSync(`${cryptoPath}/private.pem`),
-            hmac_secret: config.account_server_secret
-        };
+        const expectedChecksum = token.readUint32BE();
+        const encryptedBody = token.subarray(4);
 
-        const privateKey = new NodeRSA(cryptoOptions.private_key, 'pkcs1-private-pem', {
-            environment: 'browser',
-            encryptionScheme: {
-                'hash': 'sha256',
-            }
-        });
+        const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
 
-        const cryptoConfig = token.subarray(0, 0x82);
-        const signature = token.subarray(0x82, 0x96);
-        const encryptedBody = token.subarray(0x96);
-
-        const encryptedAESKey = cryptoConfig.subarray(0, 128);
-        const point1 = cryptoConfig.readInt8(0x80);
-        const point2 = cryptoConfig.readInt8(0x81);
-
-        const iv = Buffer.concat([
-            Buffer.from(encryptedAESKey.subarray(point1, point1 + 8)),
-            Buffer.from(encryptedAESKey.subarray(point2, point2 + 8))
+        const decrypted = Buffer.concat([
+            decipher.update(encryptedBody),
+            decipher.final()
         ]);
 
-        const decryptedAESKey = privateKey.decrypt(encryptedAESKey);
-
-        const decipher = crypto.createDecipheriv('aes-128-cbc', decryptedAESKey, iv);
-
-        let decryptedBody = decipher.update(encryptedBody);
-        decryptedBody = Buffer.concat([decryptedBody, decipher.final()]);
-
-        const hmac = crypto.createHmac('sha1', cryptoOptions.hmac_secret).update(decryptedBody);
-        const calculatedSignature = hmac.digest();
-
-        if (Buffer.compare(calculatedSignature, signature) !== 0) {
-            console.log('Token signature did not match');
-            return null;
+        if (expectedChecksum !== crc32(decrypted)) {
+            throw new Error('Checksum did not match. Failed decrypt. Are you using the right key?');
         }
 
-        return decryptedBody;
+        return decrypted;
     },
     unpackToken: function(token) {
         return {
             system_type: token.readUInt8(0x0),
             token_type: token.readUInt8(0x1),
             pid: token.readUInt32LE(0x2),
-            access_level: token.readUInt8(0x6),
-            title_id: token.readBigUInt64LE(0x7), // always 0 here
-            expire_time: token.readBigUInt64LE(0xF)
-        }
+            expire_time: token.readBigUInt64LE(0x6),
+            title_id: token.readBigUInt64LE(0xE),
+            access_level: token.readUInt8(0x16)
+        };
     },
     processPainting: async function (painting, isTGA) {
         if (isTGA) {
