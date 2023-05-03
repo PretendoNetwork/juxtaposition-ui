@@ -98,10 +98,10 @@ let methods = {
         }
         return out;
     },
-    processServiceToken: function(token) {
+    processServiceToken: function(encryptedToken) {
         try
         {
-            let B64token = Buffer.from(token, 'base64');
+            let B64token = Buffer.from(encryptedToken, 'base64');
             let decryptedToken = this.decryptToken(B64token);
             const token = this.unpackToken(decryptedToken);
             return token.pid;
