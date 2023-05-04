@@ -15,7 +15,8 @@
     "close": "閉まっている",
     "save": "保存",
     "exit": "出口",
-    "next": "次"
+    "next": "次",
+    "no_Postagens": "投稿がありません"
   },
   "all_communities": {
     "text": "すべてのコミュニティ",
