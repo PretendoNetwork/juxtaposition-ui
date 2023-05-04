@@ -15,7 +15,8 @@
     "close": "Fechar",
     "save": "Guardar",
     "exit": "Sair",
-    "next": "Seguinte"
+    "next": "Seguinte",
+    "no_Postagens": "Nenhuma postagem"
   },
   "all_communities": {
     "text": "Todas as comunidades",
