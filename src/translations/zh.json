@@ -15,7 +15,8 @@
     "close": "Close",
     "save": "Save",
     "exit": "Exit",
-    "next": "Next"
+    "next": "Next",
+    "no_Postagens": "没有帖子"
   },
   "all_communities": {
     "text": "All Communities",
