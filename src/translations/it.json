@@ -15,7 +15,8 @@
     "close": "Chiudi",
     "save": "Salva",
     "exit": "Esci",
-    "next": "Avanti"
+    "next": "Avanti",
+    "no_Postagens": "Nessun post"
   },
   "all_communities": {
     "text": "Tutte le community",
