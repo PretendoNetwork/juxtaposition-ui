@@ -15,7 +15,8 @@
     "close": "Schließen",
     "save": "Speichern",
     "exit": "Verlassen",
-    "next": "Weiter"
+    "next": "Weiter",
+    "no_Postagens": "Keine Beiträge"
   },
   "all_communities": {
     "text": "Alle Communities",
