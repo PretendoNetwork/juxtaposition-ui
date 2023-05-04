@@ -15,7 +15,8 @@
     "close": "닫기",
     "save": "저장",
     "exit": "나가기",
-    "next": "다음"
+    "next": "다음",
+    "no_Postagens": "게시물 없음"
   },
   "all_communities": {
     "text": "모든 커뮤니티",
