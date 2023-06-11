@@ -144,7 +144,7 @@ let methods = {
             pid: token.readUInt32LE(0x2),
             expire_time: token.readBigUInt64LE(0x6),
             title_id: token.readBigUInt64LE(0xE),
-            access_level: token.readUInt8(0x16)
+            access_level: token.readInt8(0x16)
         };
     },
     processPainting: async function (painting, isTGA) {
