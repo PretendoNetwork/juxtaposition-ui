@@ -90,7 +90,6 @@ function auth(request, response, next) {
                     error: "Unable to parse service token. Are you using a Nintendo Network ID?"
                 });
             }
-
             else {
                 response.header('X-Nintendo-WhiteList', config.whitelist);
                 let paramPack = request.headers["x-nintendo-parampack"] || undefined;

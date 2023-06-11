@@ -6,6 +6,7 @@
     <header id="header" class="buttons">
         <h1 id="page-title" class=""><%= lang.global.communities %></h1>
         <a id="header-communities-button" class="right" href="/titles/all" data-pjax="#body"><%= lang.all_communities.text %></a>
+        <a id="header-communities-button" class="left" href="#" data-pjax="#body" onclick="testOffline()">Test</a>
     </header>
     <div class="body-content">
         <div class="communities-list">
@@ -14,10 +15,10 @@
             </div>
             <ul class="list-content-with-icon-column" id="community-new-content">
                 <% for(var i = 0; i < popularCommunities.length; i++) {%>
-                    <% var communityID = popularCommunities[i].community_id; %>
+                    <% var communityID = popularCommunities[i].olive_community_id; %>
                     <li id="<%=communityID%>">
                         <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button">
-                        <span class="icon-container"><img src="http://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
+                        <span class="icon-container"><img src="http://mii.olv.pretendo.cc/icons/<%=communityID%>/64.png" class="icon" alt=""></span>
                         <div class="body">
                             <div class="body-content">
                                 <span class="community-name title"><%= popularCommunities[i].name %></span>
@@ -34,10 +35,10 @@
             </div>
             <ul class="list-content-with-icon-column" id="community-top-content">
                 <% for(var j = 0; j < newCommunities.length; j++) {%>
-                    <% var communityID = newCommunities[j].community_id; %>
+                    <% var communityID = newCommunities[j].olive_community_id; %>
                     <li id="<%=communityID%>">
                         <a href="/titles/<%=communityID%>/new" data-pjax="#body" class="scroll to-community-button">
-                        <span class="icon-container"><img src="http://mii.olv.pretendo.cc/icons/<%=communityID%>/128.png" class="icon" alt=""></span>
+                        <span class="icon-container"><img src="http://mii.olv.pretendo.cc/icons/<%=communityID%>/64.png" class="icon" alt=""></span>
                         <div class="body">
                             <div class="body-content">
                                 <span class="community-name title"><%= newCommunities[j].name %></span>

@@ -11,6 +11,7 @@ const { CONTENT } = require('./models/content');
 const { NOTIFICATION } = require('./models/notifications');
 const { COMMUNITY } = require('./models/communities');
 const { FriendsDefinition } = grpcServices.friends.service;
+const { AccountsDefinition } = grpcServices.account.service;
 const translations = require('./translations')
 const HashMap = require('hashmap');
 const TGA = require('tga');
@@ -21,9 +22,9 @@ const aws = require('aws-sdk');
 const crc32 = require('crc/crc32');
 let communityMap = new HashMap();
 let userMap = new HashMap();
-const { ip, port, api_key } = config.grpc.friends;
-const channel = grpc.createChannel(`${ip}:${port}`);
-const client = grpc.createClient(FriendsDefinition, channel);
+const { ip: friendsIP, port: friendsPort, api_key: friendsKey } = config.grpc.friends;
+const friendsChannel = grpc.createChannel(`${friendsIP}:${friendsPort}`);
+const friendsClient = grpc.createClient(FriendsDefinition, friendsChannel);
 
 const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
 const s3 = new aws.S3({
@@ -108,7 +109,7 @@ let methods = {
         }
         catch(e)
         {
-            //console.log(e)
+            console.log(e)
             return null;
         }
 
@@ -371,21 +372,21 @@ let methods = {
         }*/
     },
     getFriends: async function(pid) {
-        const pids =  await client.getUserFriendPIDs({
+        const pids =  await friendsClient.getUserFriendPIDs({
             pid: pid
         }, {
             metadata: grpc.Metadata({
-                'X-API-Key': api_key
+                'X-API-Key': friendsKey
             })
         });
         return pids.pids;
     },
     getFriendRequests: async function(pid) {
-        const requests = await client.getUserFriendRequestsIncoming({
+        const requests = await friendsClient.getUserFriendRequestsIncoming({
             pid: pid
         }, {
             metadata: grpc.Metadata({
-                'X-API-Key': api_key
+                'X-API-Key': friendsKey
             })
         });
         return requests.friendRequests;
