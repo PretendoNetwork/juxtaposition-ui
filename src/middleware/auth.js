@@ -1,8 +1,7 @@
 const config = require('../../config.json');
 const util = require('../util');
-const db = require('../database');
 
-function auth(request, response, next) {
+async function auth(request, response, next) {
     if(request.path.includes('/css/') || request.path.includes('/fonts/')
         || request.path.includes('/js/') || request.path.includes('/icons/')
         || request.path.includes('/headers/') || request.path.includes('/paintings/')
@@ -17,14 +16,13 @@ function auth(request, response, next) {
         }
         return next()
     }
-
     if(request.subdomains.indexOf('juxt') !== -1) {
         request.directory = 'web';
         if(request.path === '/login' || request.path === '/favicon.ico' || request.path.includes('/users/')
             || request.path.includes('/titles/') ||
             (request.path.includes('/posts/') && !request.path.includes('/empathy'))) {
             request.lang = util.data.processLanguage();
-            request.pid = util.data.processServiceToken(request.cookies.access_token) || 1000000000;
+            request.pid = request.cookies.access_token ? await util.data.getPid(request.cookies.access_token) : 1000000000;
             request.paramPackData = null;
             request.directory = 'web';
             return next();
@@ -34,11 +32,9 @@ function auth(request, response, next) {
             {
                 return response.redirect('/login');
             }
-            let pid = util.data.processServiceToken(request.cookies.access_token);
+            let pid = await util.data.getPid(request.cookies.access_token);
             if(pid === null)
-            {
                 return response.redirect('/login');
-            }
             else {
                 request.lang = util.data.processLanguage();
                 request.pid = pid;
@@ -48,29 +44,8 @@ function auth(request, response, next) {
             }
         }
     }
-
-    if(request.subdomains.indexOf('admin') !== -1) {
-        if(request.path === '/login' || request.path === '/token' || request.path === '/favicon.ico') {
-            return next()
-        }
-        else {
-            if(request.cookies.access_token === undefined || request.cookies.access_token === null)
-            {
-                return response.redirect('/login');
-            }
-            let pid = util.data.processServiceToken(request.cookies.access_token);
-            if(pid === null)
-            {
-                return response.redirect('/login');
-            }
-            else {
-                request.pid = pid;
-                return next();
-            }
-        }
-    }
     else {
-        let token = request.cookies.access_token || request.headers["x-nintendo-servicetoken"];
+        let token = request.headers["x-nintendo-servicetoken"];
         if(!token) {
             return response.render('portal/partials/ban_notification.ejs', {
                 user: null,

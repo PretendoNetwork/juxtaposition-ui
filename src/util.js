@@ -11,7 +11,7 @@ const { CONTENT } = require('./models/content');
 const { NOTIFICATION } = require('./models/notifications');
 const { COMMUNITY } = require('./models/communities');
 const { FriendsDefinition } = grpcServices.friends.service;
-const { AccountsDefinition } = grpcServices.account.service;
+const { APIDefinition } = grpcServices.api.service;
 const translations = require('./translations')
 const HashMap = require('hashmap');
 const TGA = require('tga');
@@ -22,9 +22,14 @@ const aws = require('aws-sdk');
 const crc32 = require('crc/crc32');
 let communityMap = new HashMap();
 let userMap = new HashMap();
+
 const { ip: friendsIP, port: friendsPort, api_key: friendsKey } = config.grpc.friends;
 const friendsChannel = grpc.createChannel(`${friendsIP}:${friendsPort}`);
 const friendsClient = grpc.createClient(FriendsDefinition, friendsChannel);
+
+const { ip: apiIP, port: apiPort, api_key: apiKey } = config.grpc.account;
+const apiChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
+const apiClient = grpc.createClient(APIDefinition, apiChannel);
 
 const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
 const s3 = new aws.S3({
@@ -390,6 +395,29 @@ let methods = {
             })
         });
         return requests.friendRequests;
+    },
+    login: async function(username, password) {
+        return await apiClient.login({
+            username: username,
+            password: password,
+            grantType: 'password'
+        }, {
+            metadata: grpc.Metadata({
+                'X-API-Key': apiKey
+            })
+        });
+    },
+    getUserData: async function(token) {
+        return apiClient.getUserData({}, {
+            metadata: grpc.Metadata({
+                'X-API-Key': apiKey,
+                'X-Token': token
+            })
+        });
+    },
+    getPid: async function(token) {
+        const user = await this.getUserData(token);
+        return user.pid;
     }
 };
 exports.data = methods;

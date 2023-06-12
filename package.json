@@ -41,8 +41,10 @@
     "node-snowflake": "0.0.1",
     "pako": "^2.0.2",
     "pngjs": "^6.0.0",
+    "pretendo-grpc": "github:PretendoNetwork/grpc-js",
     "sharp": "^0.31.3",
     "tga": "^1.0.4",
+    "typescript": "^5.1.3",
     "xml2js": "^0.4.23",
     "xmlbuilder2": "^3.0.2"
   },

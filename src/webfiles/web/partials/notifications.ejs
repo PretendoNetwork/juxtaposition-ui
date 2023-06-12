@@ -9,21 +9,21 @@
             </a>
             <a class="body" href="<%= notification.link %>">
                 <% if(notification.users.length === 1) {%>
-                    <span class="text"><span class="nick-name"><%= bundle.userMap.get(notification.objectID) %></span>
+                    <span class="text"><span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>
                     <span href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></span>
                     <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
                 </span>
                 <%} else if(notification.users.length === 2) {%>
                     <span class="text">
-                    <span class="nick-name"><%= bundle.userMap.get(notification.objectID) %></span>
-                    <span>and <span class="nick-name"><%= bundle.userMap.get(notification.users[0].user) %></span></span>
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>
+                    <span>and <span class="nick-name"><%= bundle.userMap.get(Number(notification.users[0].user)) %></span></span>
                     <span href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></span>
                     <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
                 </span>
                 <%} else if(notification.users.length > 2) {%>
                     <span class="text">
-                    <span class="nick-name"><%= bundle.userMap.get(notification.objectID) %></span>,
-                    <span class="nick-name"><%= bundle.userMap.get(notification.users[0].user) %></span>,
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.objectID)) %></span>,
+                    <span class="nick-name"><%= bundle.userMap.get(Number(notification.users[0].user)) %></span>,
                     <span>and <span class="nick-name"><%= notification.users.length - 2%> other(s)</span></span>
                     <span href="<%= notification.link %>" class="link"> <%= lang.notifications.new_follower %></span>
                     <span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
