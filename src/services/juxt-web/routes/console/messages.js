@@ -25,9 +25,8 @@ router.get('/', async function (req, res) {
 
 router.post('/new', async function (req, res, next) {
     let conversation = await database.getConversationByID(req.body.community_id);
-    let user = await database.getPNID(req.pid);
-    let user2 = await database.getPNID(req.body.message_to_pid);
-    let userSettings = await database.getUserSettings(req.pid), postID = await generatePostUID(21);
+    let user2 = await util.data.getUserDataFromPid(req.body.message_to_pid);
+    let postID = await generatePostUID(21);
     let friends = await util.data.getFriends(user2.pid);
     if(req.body.community_id === 0)
         return res.sendStatus(404);
@@ -38,13 +37,13 @@ router.post('/new', async function (req, res, next) {
             id: snowflake.nextId(),
             users: [
                 {
-                    pid: user.pid,
-                    official: (user.access_level === 2 || user.access_level === 3),
+                    pid: req.pid,
+                    official: (req.user.accessLevel >= 2),
                     read: true
                 },
                 {
                     pid: user2.pid,
-                    official: (user2.access_level === 2 || user2.access_level === 3),
+                    official: (user2.accessLevel >= 2),
                     read: false
                 },
             ]
@@ -100,7 +99,7 @@ router.post('/new', async function (req, res, next) {
         body = body.substring(0,280);
     const document = {
         community_id: conversation.id,
-        screen_name: userSettings.screen_name,
+        screen_name: req.user.mii.name,
         body: body,
         painting: painting,
         screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: "",
@@ -112,12 +111,12 @@ router.post('/new', async function (req, res, next) {
         is_spoiler: (req.body.spoiler) ? 1 : 0,
         is_app_jumpable: req.body.is_app_jumpable,
         language_id: req.body.language_id,
-        mii: user.mii.data,
-        mii_face_url: `https://mii.olv.pretendo.cc/mii/${user.pid}/${miiFace}`,
+        mii: req.user.mii.data,
+        mii_face_url: `https://mii.olv.pretendo.cc/mii/${req.pid}/${miiFace}`,
         pid: req.pid,
         platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
         region_id: req.paramPackData ? req.paramPackData.region_id : 2,
-        verified: (user.access_level === 2 || user.access_level === 3),
+        verified: (req.user.accessLevel >= 2),
         message_to_pid: req.body.message_to_pid
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
@@ -137,12 +136,12 @@ router.post('/new', async function (req, res, next) {
 });
 
 router.get('/new/:pid', async function (req, res, next) {
-    let user = await database.getPNID(req.pid);
-    let user2 = await database.getPNID(req.params.pid);
+    let user = await util.data.getUserDataFromPid(req.pid);
+    let user2 = await util.data.getUserDataFromPid(req.params.pid);
     let friends = await util.data.getFriends(user2.pid);
-    if(!user || !user2)
+    if(!req.user || !user2)
         return res.sendStatus(422)
-    let conversation = await database.getConversationByUsers([user.pid, user2.pid]);
+    let conversation = await database.getConversationByUsers([req.pid, user2.pid]);
     if(conversation)
         return res.redirect(`/friend_messages/${conversation.id}`);
     if(!friends || friends.indexOf(req.pid) === -1)
@@ -151,13 +150,13 @@ router.get('/new/:pid', async function (req, res, next) {
         id: snowflake.nextId(),
         users: [
             {
-                pid: user.pid,
-                official: (user.access_level === 2 || user.access_level === 3),
+                pid: req.user.pid,
+                official: (req.user.accessLevel >= 2),
                 read: true
             },
             {
                 pid: user2.pid,
-                official: (user2.access_level === 2 || user2.access_level === 3),
+                official: (user2.accessLevel >= 2),
                 read: false
             },
         ]
@@ -167,23 +166,23 @@ router.get('/new/:pid', async function (req, res, next) {
     conversation = await database.getConversationByID(document.id);
     if(!conversation)
         return res.sendStatus(404);
-    let body = `${user.mii.name} started a new chat!`;
+    let body = `${req.user.mii.name} started a new chat!`;
     let newMessage = {
-        screen_name: user.mii.name,
+        screen_name: req.user.mii.name,
         body: body,
         created_at: new Date(),
         id: await generatePostUID(21),
-        mii: user.mii.data,
-        mii_face_url: `https://mii.olv.pretendo.cc/mii/${user.pid}/normal_face.png`,
-        pid: user.pid,
-        verified: (user.access_level === 2 || user.access_level === 3),
+        mii: req.user.mii.data,
+        mii_face_url: `https://mii.olv.pretendo.cc/mii/${req.pid}/normal_face.png`,
+        pid: req.pid,
+        verified: (req.user.accessLevel >= 2),
         parent: null,
         community_id: conversation.id,
         message_to_pid: user2.pid
     };
     const newPost = new POST(newMessage);
     newPost.save();
-    await conversation.newMessage(`${user.mii.name} started a new chat!`, user2.pid);
+    await conversation.newMessage(`${req.user.mii.name} started a new chat!`, user2.pid);
     res.redirect(`/friend_messages/${conversation.id}`);
 });
 

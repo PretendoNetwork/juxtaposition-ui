@@ -5,13 +5,11 @@ const { CONTENT } = require('./models/content');
 const { CONVERSATION } = require('./models/conversation');
 const { ENDPOINT } = require('./models/endpoint');
 const { NOTIFICATION } = require('./models/notifications');
-const { PNID } = require('./models/pnid');
 const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 
 const { uri, database, options } = mongooseConfig;
 const logger = require('./logger');
-const accountDB = require('./accountdb');
 
 let connection;
 mongoose.set('strictQuery', true);
@@ -313,13 +311,6 @@ async function getFollowedUsers(content) {
     });
 }
 
-async function getUserByUsername(user_id) {
-    verifyConnected();
-    return PNID.findOne({
-        "username": new RegExp(`^${user_id}$`, 'i')
-    });
-}
-
 async function getNewsFeed(content, numberOfPosts) {
     verifyConnected();
     return POST.find({
@@ -419,18 +410,6 @@ async function getLatestMessage(pid, pid2) {
     })
 }
 
-async function getPNIDS() {
-    accountDB.verifyConnected();
-    return PNID.find({});
-}
-
-async function getPNID(pid) {
-    accountDB.verifyConnected();
-    return PNID.findOne({
-        pid: pid
-    });
-}
-
 async function getNotifications(pid, limit, offset) {
     verifyConnected();
     return NOTIFICATION.find({
@@ -488,7 +467,6 @@ module.exports = {
     getDuplicatePosts,
     getEndpoints,
     getEndPoint,
-    getUserByUsername,
     getUserPostsAfterTimestamp,
     getUserPostsOffset,
     getCommunityPostsAfterTimestamp,
@@ -503,8 +481,6 @@ module.exports = {
     getConversationMessages,
     getUnreadConversationCount,
     getLatestMessage,
-    getPNID,
-    getPNIDS,
     getUsersSettings,
     getUsersContent,
     getUserSettings,

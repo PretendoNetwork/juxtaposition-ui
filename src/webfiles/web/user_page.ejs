@@ -32,8 +32,8 @@
         <div class="community-top">
             <img class="banner" src="https://juxt-web-cdn.b-cdn.net/images/banner.png" alt="">
             <div class="community-info">
-                <img class="user-icon <%if(pnid.access_level > 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
-                <h2 class="community-title"><%= pnid.mii.name %> @<%= pnid.username %><span class="verified-badge" style="<%if(pnid.access_level < 2) {%>display: none;<%}%>">✓</span></h2>
+                <img class="user-icon <%if(pnid.accessLevel > 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
+                <h2 class="community-title"><%= pnid.mii.name %> @<%= pnid.username %><span class="verified-badge" style="<%if(pnid.accessLevel < 2) {%>display: none;<%}%>">✓</span></h2>
                 <%if(pnid.pid !== pid && pid !== 1000000000) {%>
                 <% var following = parentUserContent.followed_users.indexOf(userContent.pid) !== -1; %>
                 <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
@@ -44,22 +44,22 @@
             </div>
             <h4 class="community-description">
                 <!--<%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%>
-                    <%if(pnid.connections.stripe.tier_level) {%>
-                    <%if(pnid.connections.stripe.tier_level === 1) {%>
+                    <%if(pnid.tierName) {%>
+                    <%if(pnid.tierName === 'Mario') {%>
                         <span class="supporter-star mario">|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </span>
-                    <%} else if(pnid.connections.stripe.tier_level === 2) {%>
+                    <%} else if(pnid.tierName === 'Super Mario') {%>
                         <span class="supporter-star super">|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </span>
-                    <%} else if(pnid.connections.stripe.tier_level === 3) {%>
+                    <%} else if(pnid.tierName === 'Mega Mushroom') {%>
                         <span class="supporter-star mega">|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
                 </span>
                     <%}%>
                     <%}%>
-                    <%if(pnid.access_level === 3) {%>
+                    <%if(pnid.accessLevel === 3) {%>
                         <span class="supporter-star dev">|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="rainbow" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tool">
                             <defs>
@@ -76,12 +76,12 @@
                         </svg>
                 </span>
                     <%}%>
-                    <%if(pnid.access_level === 2) {%>
+                    <%if(pnid.accessLevel === 2) {%>
                         <span class="supporter-star mega">|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </span>
                     <%}%>
-                    <%if(pnid.access_level === 1) {%>
+                    <%if(pnid.accessLevel === 1) {%>
                         <span class="supporter-star tester">|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor"><path d="M104,32V93.8a8.4,8.4,0,0,1-1.1,4.1l-63.6,106A8,8,0,0,0,46.1,216H209.9a8,8,0,0,0,6.8-12.1l-63.6-106a8.4,8.4,0,0,1-1.1-4.1V32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="32" x2="168" y2="32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M62.6,165c11.8-8.7,32.1-13.6,65.4,3,35.7,17.9,56.5,10.8,67.9,1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
                 </span>

@@ -74,8 +74,8 @@ function nameCache() {
 }
 
 let methods = {
-    create_user: async function(pid, experience, notifications, region) {
-        const pnid = await database.getPNID(pid);
+    create_user: async function(pid, experience, notifications) {
+        const pnid = await this.getUserDataFromPid(pid);
         if(!pnid)
             return;
         let newSettings = {
@@ -409,7 +409,7 @@ let methods = {
             })
         });
     },
-    getUserData: async function(token) {
+    getUserDataFromToken: async function(token) {
         return apiClient.getUserData({}, {
             metadata: grpc.Metadata({
                 'X-API-Key': apiKey,
@@ -417,8 +417,17 @@ let methods = {
             })
         });
     },
+    getUserDataFromPid: async function(pid) {
+      return accountClient.getUserData({
+          pid: pid
+      }, {
+          metadata: grpc.Metadata({
+              'X-API-Key': apiKey
+          })
+      });
+    },
     getPid: async function(token) {
-        const user = await this.getUserData(token);
+        const user = await this.getUserDataFromToken(token);
         return user.pid;
     }
 };

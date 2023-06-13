@@ -49,12 +49,11 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/more', async function (req, res) {
-    let offset = parseInt(req.query.offset);
+    let offset = req.query.offset ? parseInt(req.query.offset) : 0;
     let userContent = await database.getUserContent(req.pid);
     let communityMap = await util.data.getCommunityHash();
     let tag = req.query.topic_tag;
     if(!tag) return res.sendStatus(204);
-    if(!offset) offset = 0;
     let posts = await POST.find({ topic_tag: req.query.topic_tag }).sort({ created_at: -1}).limit(parseInt(req.query.limit));
 
     let bundle = {
@@ -68,8 +67,7 @@ router.get('/more', async function (req, res) {
         link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
     }
 
-    if(posts.length > 0)
-    {
+    if(posts.length > 0) {
         res.render(req.directory + '/partials/posts_list.ejs', {
             communityMap: communityMap,
             moment: moment,

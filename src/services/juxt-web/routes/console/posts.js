@@ -120,9 +120,9 @@ router.get('/:post_id', async function (req, res) {
 router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) { await newPost(req, res);});
 
 async function newPost(req, res) {
-    let PNID = await database.getPNID(req.pid), userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = await generatePostUID(21);
+    let userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = await generatePostUID(21);
     let community = await database.getCommunityByID(req.body.community_id);
-    if(!community || !userSettings || !PNID) {
+    if(!community || !userSettings || !req.user) {
         res.status(403);
         console.log('missing data')
         return res.redirect(`/titles/${community.olive_community_id}/new`);
@@ -194,12 +194,12 @@ async function newPost(req, res) {
         is_spoiler: (req.body.spoiler) ? 1 : 0,
         is_app_jumpable: req.body.is_app_jumpable,
         language_id: req.body.language_id,
-        mii: PNID.mii.data,
-        mii_face_url: `https://mii.olv.pretendo.cc/mii/${PNID.pid}/${miiFace}`,
+        mii: req.user.mii.data,
+        mii_face_url: `https://mii.olv.pretendo.cc/mii/${req.user.pid}/${miiFace}`,
         pid: req.pid,
         platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
         region_id: req.paramPackData ? req.paramPackData.region_id : 2,
-        verified: (PNID.access_level === 2 || PNID.access_level === 3),
+        verified: (req.user.access_level >= 2),
         parent: parentPost ? parentPost.id : null
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);

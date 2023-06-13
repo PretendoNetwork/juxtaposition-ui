@@ -19,13 +19,11 @@ router.get('/menu', async function (req, res) {
 router.get('/me', async function (req, res) { await userPage(req, res, req.pid) });
 
 router.get('/me/settings', async function (req, res) {
-    let pnid = await database.getPNID(req.pid);
     let userSettings = await database.getUserSettings(req.pid);
     let communityMap = await util.data.getCommunityHash();
     res.render(req.directory + '/settings.ejs', {
         communityMap: communityMap,
         moment: moment,
-        pnid: pnid,
         userSettings: userSettings,
         account_server: config.account_server_domain.slice(8),
         cdnURL: config.CDN_domain,
@@ -102,7 +100,9 @@ router.get('/:pid/:type', async function (req, res) {
 });
 
 async function userPage(req, res, userID) {
-    let pnid = await database.getPNID(userID);
+    let pnid = userID === req.pid ? req.user : await util.data.getUserDataFromPid(userID).catch((e) => {
+        console.log(e.details);
+    });
     let userContent = await database.getUserContent(userID);
     if(isNaN(userID) || !pnid || !userContent)
         return res.redirect('/404');
@@ -154,7 +154,7 @@ async function userPage(req, res, userID) {
 }
 
 async function userRelations(req, res, userID) {
-    let pnid = await database.getPNID(userID);
+    let pnid = userID === req.pid ? req.user : await util.data.getUserDataFromPid(userID);
     let userContent = await database.getUserContent(userID);
     let link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
     let userSettings = await database.getUserSettings(userID);

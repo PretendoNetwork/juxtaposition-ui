@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     });
     if(!login) return;
 
-    const PNID = await util.data.getUserData(login.accessToken);
+    const PNID = await util.data.getUserDataFromToken(login.accessToken);
     if(!PNID)
         return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
 
