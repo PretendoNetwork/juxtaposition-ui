@@ -96,7 +96,7 @@ async function auth(request, response, next) {
             });
         }
         let userAgent = request.headers['user-agent'];
-        if(request.user.accessLevel < 3 && (request.cookies.access_token || (!userAgent.includes('Nintendo Wii U') && !userAgent.includes('Nintendo 3DS'))))
+        if(request.user.accessLevel < 3 && (request.cookies.access_token || (!userAgent.includes('Nintendo WiiU') && !userAgent.includes('Nintendo 3DS'))))
             return response.render('portal/partials/ban_notification.ejs', {
                 user: null,
                 error: "Invalid authentication method used."
