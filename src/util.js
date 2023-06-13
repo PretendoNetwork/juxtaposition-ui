@@ -4,14 +4,14 @@ const fs = require('fs-extra');
 const database = require('./database');
 const logger = require('./logger');
 const grpc = require('nice-grpc');
-const grpcServices = require('grpc');
 const config = require('../config.json');
 const { SETTINGS } = require('./models/settings');
 const { CONTENT } = require('./models/content');
 const { NOTIFICATION } = require('./models/notifications');
 const { COMMUNITY } = require('./models/communities');
-const { FriendsDefinition } = grpcServices.friends.service;
-const { APIDefinition } = grpcServices.api.service;
+const { AccountDefinition } = require('pretendo-grpc/dist/account/account_service');
+const { FriendsDefinition } = require('pretendo-grpc/dist/friends/friends_service');
+const { APIDefinition } = require('pretendo-grpc/dist/api/api_service');
 const translations = require('./translations')
 const HashMap = require('hashmap');
 const TGA = require('tga');
@@ -30,6 +30,9 @@ const friendsClient = grpc.createClient(FriendsDefinition, friendsChannel);
 const { ip: apiIP, port: apiPort, api_key: apiKey } = config.grpc.account;
 const apiChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
 const apiClient = grpc.createClient(APIDefinition, apiChannel);
+
+const accountChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
+const accountClient = grpc.createClient(AccountDefinition, accountChannel);
 
 const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
 const s3 = new aws.S3({
@@ -259,10 +262,9 @@ let methods = {
 
         return buffer;
     },
-    processLanguage: function (header) {
-        if(!header)
+    processLanguage: function (paramPackData) {
+        if(!paramPackData)
             return translations.EN;
-        let paramPackData = this.decodeParamPack(header);
         switch (paramPackData.language_id) {
             case '0':
                 return translations.JA

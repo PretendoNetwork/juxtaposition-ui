@@ -2,79 +2,61 @@ const config = require('../../config.json');
 const util = require('../util');
 
 async function auth(request, response, next) {
-    if(request.path.includes('/css/') || request.path.includes('/fonts/')
-        || request.path.includes('/js/') || request.path.includes('/icons/')
-        || request.path.includes('/headers/') || request.path.includes('/paintings/')
-        || request.path.includes('/screenshots/') || request.path.includes('/web/')
-        || request.path.includes('/images/')) {
-        if(request.subdomains.indexOf('juxt') !== -1) {
+    // Web files
+    if(request.path.includes('/css/') || request.path.includes('/fonts/') || request.path.includes('/js/') || request.path === '/favicon.ico') {
+        if(request.subdomains.includes('juxt'))
             request.directory = 'web';
-            request.lang = util.data.processLanguage();
-        }
-        else {
+        else
             request.directory = request.subdomains[1];
-        }
         return next()
     }
-    if(request.subdomains.indexOf('juxt') !== -1) {
+    // Juxt Website
+    if(request.subdomains.includes('juxt')) {
+        request.lang = util.data.processLanguage();
+        request.token = request.cookies.access_token;
+        request.pid = request.cookies.access_token ? await util.data.getPid(request.cookies.access_token) : null;
+        request.paramPackData = null;
         request.directory = 'web';
-        if(request.path === '/login' || request.path === '/favicon.ico' || request.path.includes('/users/')
-            || request.path.includes('/titles/') ||
+        // Open access pages
+        if(request.path.includes('/users/') ||
+            (request.path.includes('/titles/') && request.path !== '/titles/show') ||
             (request.path.includes('/posts/') && !request.path.includes('/empathy'))) {
-            request.lang = util.data.processLanguage();
-            request.pid = request.cookies.access_token ? await util.data.getPid(request.cookies.access_token) : 1000000000;
-            request.paramPackData = null;
-            request.directory = 'web';
+            if(!request.pid)
+                request.pid = 1000000000;
             return next();
         }
-        else {
-            if(request.cookies.access_token === undefined || request.cookies.access_token === null)
-            {
-                return response.redirect('/login');
-            }
-            let pid = await util.data.getPid(request.cookies.access_token);
-            if(pid === null)
-                return response.redirect('/login');
-            else {
-                request.lang = util.data.processLanguage();
-                request.pid = pid;
-                request.paramPackData = null;
-                request.directory = 'web';
-                return next();
-            }
+        // Login endpoint
+        if(request.path === '/login') {
+            if(request.pid)
+                return response.redirect('/titles/show?src=login');
+            return next();
         }
+        if(!request.pid)
+            return response.redirect('/login');
+
+        return next();
     }
     else {
-        let token = request.headers["x-nintendo-servicetoken"];
-        if(!token) {
+        request.pid = request.headers["x-nintendo-servicetoken"] ? await util.data.processServiceToken(request.headers["x-nintendo-servicetoken"]) : null;
+        request.paramPackData = request.headers["x-nintendo-parampack"] ? util.data.decodeParamPack(request.headers["x-nintendo-parampack"]) : null;
+        response.header('X-Nintendo-WhiteList', config.whitelist);
+
+        if(!request.pid) {
+            return response.render('portal/partials/ban_notification.ejs', {
+                user: null,
+                error: "Unable to parse service token. Are you using a Nintendo Network ID?"
+            });
+        }
+        if(!request.paramPackData) {
             return response.render('portal/partials/ban_notification.ejs', {
                 user: null,
                 error: "Missing auth headers"
             });
         }
-        else {
-            let pid = util.data.processServiceToken(token);
-            let paramPackData;
-            if(request.headers["x-nintendo-parampack"])
-                paramPackData = util.data.decodeParamPack(request.headers["x-nintendo-parampack"]);
-            else
-                paramPackData = null;
-            if(pid === null) {
-                return response.render('portal/partials/ban_notification.ejs', {
-                    user: null,
-                    error: "Unable to parse service token. Are you using a Nintendo Network ID?"
-                });
-            }
-            else {
-                response.header('X-Nintendo-WhiteList', config.whitelist);
-                let paramPack = request.headers["x-nintendo-parampack"] || undefined;
-                request.lang = util.data.processLanguage(paramPack);
-                request.pid = pid;
-                request.paramPackData = paramPackData;
-                request.directory = request.subdomains[1];
-                return next();
-            }
-        }
+
+        request.lang = util.data.processLanguage(request.paramPackData);
+        request.directory = request.subdomains[1];
+        return next();
     }
 }
 

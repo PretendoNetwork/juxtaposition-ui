@@ -58,46 +58,9 @@ router.post('/', async (req, res) => {
         });
     }
     let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.network';
-    res.cookie('access_token', login.accessToken, { domain : cookieDomain, maxAge: login.expiresIn * 60 });
+    res.cookie('access_token', login.accessToken, { domain : cookieDomain, maxAge: login.expiresIn * 60 * 60 });
     res.cookie('refresh_token', login.refreshToken, { domain : cookieDomain });
     res.redirect('/');
-    /*let password_hash = await util.data.nintendoPasswordHash(password, user.pid);
-    let auth, token;
-    await request.post({
-        url: `https://${config.account_server_domain}/v1/api/oauth20/access_token/generate`,
-        headers: {
-            'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
-            'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"],
-            'X-Nintendo-Title-ID': '0005001010040100'
-        },
-        form: {
-            user_id: username,
-            password_type: 'hash',
-            password: password_hash,
-            grant_type: 'password'
-        }
-    }, function (error, response, body) {
-        if (!error && response.statusCode === 200) {
-            parseString(body, async function (err, result) {
-                auth = result.OAuth20.access_token[0].token[0];
-                await request.get({
-                    url: 'https://' + config.account_server_domain + "/v1/api/provider/service_token/@me",
-                    headers: {
-                        'X-Nintendo-Client-ID': config["X-Nintendo-Client-ID"],
-                        'X-Nintendo-Client-Secret': config["X-Nintendo-Client-Secret"],
-                        'X-Nintendo-Title-ID': '000500301001610A',
-                        'authorization': `Bearer ${auth}`,
-                    }
-                }, function (error, response, body) {
-                    if (!error && response.statusCode === 200) {
-                        parseString(body, async function (err, result) {
-
-                });
-            });
-        }
-        else
-            return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
-    });*/
 });
 
 

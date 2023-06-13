@@ -6,7 +6,6 @@ const { POST } = require('../../../../models/post');
 const moment = require('moment');
 const {CONVERSATION} = require("../../../../models/conversation");
 const crypto = require("crypto");
-const {friends} = require("grpc");
 const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
 
