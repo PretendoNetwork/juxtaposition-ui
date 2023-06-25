@@ -3,11 +3,11 @@
 <%- include('partials/head', { title: community.name }); %>
 <body>
 <div id="body">
-    <header id="header" style="background: url('http://mii.olv.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')">
+    <header id="header" style="background: url('https://pretendo-cdn.b-cdn.net/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')">
         <h1 id="page-title" class="community">
             <span>
                 <span class="icon-container">
-                    <img src="http://mii.olv.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png" class="icon">
+                    <img src="https://pretendo-cdn.b-cdn.net/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png" class="icon">
                 </span>
                 <span class="community-name">
                     <%= community.name %>
@@ -43,9 +43,9 @@
         </div>
         <menu class="tab-header">
             <li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
-                <a href="/titles/<%= community.community_id %>/new" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
+                <a href="/titles/<%= community.olive_community_id %>/new" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
             </li>
-            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
+            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.olive_community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
         </menu>
         <div class="tab-body post-list">
             <%- include('partials/' + template, { bundle }); %>
