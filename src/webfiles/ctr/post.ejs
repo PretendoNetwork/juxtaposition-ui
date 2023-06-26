@@ -1,37 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>3DS Testing</title>
-    <script src="/js/pjax.js"></script>
-    <script src="/js/juxt.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-</head>
+<%- include('partials/head', { title: lang.global.activity_feed }); %>
 <body>
-<div id="main">
-    <div class="top-screen">
-        <div class="header-description">
-            <p>
-
-            </p>
+<div id="body">
+    <header id="header" class="buttons">
+        <h1 id="page-title" class=""><%= post.screen_name %></h1>
+        <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+            <a id="header-post-button" class="header-button left" href="#"
+               data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list"
+               data-module-show="add-post-page" data-header="false"
+               data-message="<%= lang.new_post.post_to %> <%= community.name %>">Reply + </a>
+        <%}%>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+        <div class="post-wrapper parent">
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid, yeah: true }); %>
         </div>
-        <div id="" class="header-icon"><img class="community-page-info-icon" src="<%= user.pfp_uri %>"></div>
-        <h2 class="header-title">Post</h2>
-    </div>
-    <div class="bottom-screen">
-        <div class="communities-wrapper" id="popular-communities" style="margin-top: 15px">
-            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
-        </div>
-        <span class="replies-line"></span>
         <% replies.forEach(function(post) { %>
-        <div class="communities-wrapper" id="popular-communities" style="margin-top: 15px">
-            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
-        </div>
-        <span class="replies-line"></span>
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true, pid: pid  }); %>
         <% }); %>
-        <div class="toolbar-padding"></div>
     </div>
+    <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+        <%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
+    <%}%>
 </div>
-<body onload="onStart()"></body>
 </body>
 </html>

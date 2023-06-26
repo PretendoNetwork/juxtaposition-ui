@@ -19,7 +19,7 @@ var Pjax = {
 
         return this;
     },
-    initElements: function() {
+    refresh: function() {
         var els = document.querySelectorAll(this.elements);
         if (!els) return;
         console.log(this.elements);
@@ -60,7 +60,7 @@ var Pjax = {
                 oldElement.outerHTML = newElement.outerHTML;
             }
             console.log(data);
-            Pjax.initElements();
+            Pjax.refresh();
             Pjax.href = data.responseURL;
             document.dispatchEvent(Pjax.events.PjaxDone);
         }

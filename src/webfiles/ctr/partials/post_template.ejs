@@ -25,7 +25,7 @@
                 </a>
             <%}%>
             <%if(post.is_spoiler) {%>
-                <div class="spoiler-wrapper">
+                <div class="spoiler-wrapper" id="spoiler-<%= post.id %>">
                     <button data-post-id="<%= post.id %>">Show Spoiler</button>
                 </div>
             <%}%>

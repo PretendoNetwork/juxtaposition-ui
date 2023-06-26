@@ -1,5 +1,8 @@
 var pjax;
+var updateCheck = setInterval(checkForUpdates, 30000);
+
 cave.toolbar_setCallback(1, back)
+cave.toolbar_setCallback(99, back)
 cave.toolbar_setCallback(2, function() {
     cave.toolbar_setActiveButton(2);
     pjax.loadUrl('/feed');
@@ -15,7 +18,7 @@ cave.toolbar_setCallback(4, function() {
 })
 cave.toolbar_setCallback(5, function() {
     cave.toolbar_setActiveButton(5);
-    pjax.loadUrl('/users/menu')
+    pjax.loadUrl('/users/me')
 })
 cave.toolbar_setCallback(8, function() {
 
@@ -33,7 +36,7 @@ function initPostModules() {
                 header = el.getAttribute("data-header"),
                 sound = el.getAttribute("data-sound"),
                 message = el.getAttribute("data-message");
-            //if(sound) wiiuSound.playSoundByName(sound, 3);
+            if(sound) cave.snd_playSe(sound);
             if(!show || !hide) return;
             document.getElementById(hide).style.display = 'none';
             document.getElementById(show).style.display = 'block';
@@ -46,17 +49,103 @@ function initPostModules() {
                 cave.toolbar_setWideButtonMessage(message);
                 cave.toolbar_setMode(1);
                 cave.toolbar_setButtonType(1);
-                cave.toolbar_setCallback(1, function() {
+                function tempBk() {
                     document.getElementById("close-modal-button").click();
-                })
+                }
+                cave.toolbar_setCallback(1, tempBk);
+                cave.toolbar_setCallback(99, tempBk);
+
             }
             else {
                 cave.toolbar_setMode(0);
                 cave.toolbar_setButtonType(0);
                 cave.toolbar_setCallback(1, back);
+                cave.toolbar_setCallback(99, back);
             }
-            //wiiuBrowser.showLoadingIcon(false);
+            cave.transition_end();
             initNewPost();
+        });
+    }
+}
+function initMorePosts() {
+    var els = document.querySelectorAll(".load-more[data-href]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            GET(el.getAttribute('data-href'), function a(data) {
+                var response = data.responseText;
+                if(response && data.status === 200) {
+                    el.parentElement.outerHTML = response;
+                    initPosts();
+                    initMorePosts();
+                }
+                else
+                    el.parentElement.outerHTML = "";
+            })
+
+        });
+    }
+}
+function initPosts() {
+    var els = document.querySelectorAll(".post-content[data-href]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
+        });
+    }
+    initYeah();
+    initSpoilers();
+}
+function initYeah() {
+    var els = document.querySelectorAll("button[data-post]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].onclick = yeah;
+    }
+}
+
+function yeah(e) {
+    var el = e.currentTarget, id = el.getAttribute("data-post");
+    var parent = document.getElementById(id);
+    var count = document.getElementById("count-" + id);
+    el.disabled = true;
+    var params = "postID=" + id;
+    if(classList.contains(el, 'selected')) {
+        classList.remove(el, 'selected');
+        classList.remove(parent, 'yeah');
+        if(count) count.innerText -= 1;
+        cave.snd_playSe('SE_OLV_CANCEL');
+
+    }
+    else {
+        classList.add(el, 'selected');
+        classList.add(parent, 'yeah');
+        if(count) count.innerText = ++count.innerText;
+        cave.snd_playSe('SE_OLV_MII_ADD');
+    }
+
+    POST('/posts/empathy', params, function a(data) {
+        var post = JSON.parse(data.responseText);
+        if(!post || post.status !== 200) {
+            // Apparently there was an actual error code for not being able to yeah a post, who knew!
+            // TODO: Find more of these
+            return cave.error_callErrorViewer(155927);
+        }
+        el.disabled = false;
+        if(count) count.innerText = post.count;
+    });
+}
+function initSpoilers() {
+    var els = document.querySelectorAll("button[data-post-id]");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].addEventListener("click", function(e) {
+            var el = e.currentTarget;
+            classList.remove(document.getElementById('post-' + el.getAttribute('data-post-id')), 'spoiler');
+            document.getElementById('spoiler-' + el.getAttribute('data-post-id')).outerHTML = '';
+            cave.snd_playSe('SE_OLV_OK');
         });
     }
 }
@@ -77,13 +166,12 @@ function stopLoading() {
 }
 
 function initAll() {
-    pjax = Pjax.init({
-        elements: "a[data-pjax]",
-        selectors: ["title", "#body"]
-    })
-    pjax.initElements();
-    console.log("Pjax initialized." + pjax);
-    stopLoading();
+    console.log('fuck you!!!')
+    initPosts();
+    initMorePosts();
+    initPostModules();
+    checkForUpdates();
+    pjax.refresh();
 }
 
 var PostStorage = {
@@ -125,6 +213,18 @@ var PostStorage = {
     }
 }
 
+var classList = {
+    contains: function (el, string) {
+        return el.className.indexOf(string) !== -1;
+    },
+    add: function (el, string) {
+        el.className += ' ' + string;
+    },
+    remove: function (el, string) {
+        el.className = el.className.replace(string, '');
+    }
+}
+
 function EULA() {
     cave.lls_setItem('agree_olv', '1');
 }
@@ -135,12 +235,20 @@ function testOffline() {
     POST('/test', text, function() {window.alert('sent')});
 }
 
+function checkForUpdates() {
+    GET('/notifications.json', function updates(data) {
+        var notificationObj = JSON.parse(data.responseText);
+        var count = notificationObj.message_count + notificationObj.notification_count;
+        cave.toolbar_setNotificationCount(count);
+    });
+}
+
 function POST(url, data, callback) {
-    //wiiuBrowser.showLoadingIcon(true);
+    cave.transition_begin()
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if(this.readyState === 4) {
-            //wiiuBrowser.showLoadingIcon(false);
+            cave.transition_end();
             return callback(this);
         }
     }
@@ -149,24 +257,31 @@ function POST(url, data, callback) {
     xhttp.send(data);
 }
 function GET(url, callback) {
-    //wiiuBrowser.showLoadingIcon(true);
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if(this.readyState === 4) {
-            //wiiuBrowser.showLoadingIcon(false);
             return callback(this);
         }
     };
     xhttp.open("GET", url, true);
     xhttp.send();
 }
-document.addEventListener("DOMContentLoaded", initAll);
+document.addEventListener("DOMContentLoaded", function() {
+    pjax = Pjax.init({
+        elements: "a[data-pjax]",
+        selectors: ["title", "#body"]
+    })
+    console.debug("Pjax initialized.", pjax);
+    initAll();
+    stopLoading();
+});
 document.addEventListener("PjaxRequest", function(e) {
     console.log(e);
     cave.transition_begin();
 });
 document.addEventListener("PjaxLoaded", function(e) { console.log(e);});
 document.addEventListener("PjaxDone", function(e) {
+    initAll();
     if(pjax.canGoBack())
         cave.toolbar_setButtonType(1);
     else

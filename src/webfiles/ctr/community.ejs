@@ -3,11 +3,11 @@
 <%- include('partials/head', { title: community.name }); %>
 <body>
 <div id="body">
-    <header id="header" style="background: url('https://pretendo-cdn.b-cdn.net/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')">
+    <header id="header" style="background: url('http://mii.olv.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')">
         <h1 id="page-title" class="community">
             <span>
                 <span class="icon-container">
-                    <img src="https://pretendo-cdn.b-cdn.net/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png" class="icon">
+                    <img src="http://mii.olv.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/64.png" class="icon">
                 </span>
                 <span class="community-name">
                     <%= community.name %>
@@ -26,7 +26,7 @@
             </span>
         </h1>
         <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0 && community.open) {%>
-            <a onclick="initPostModules()" id="header-post-button" class="header-button left" href="#"
+            <a id="header-post-button" class="header-button left" href="#"
                data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list"
                data-module-show="add-post-page" data-header="false"
                data-message="<%= lang.new_post.post_to %> <%= community.name %>">Post + </a>
