@@ -36,7 +36,8 @@ function initPostModules() {
             hide = el.getAttribute("data-module-hide"),
             header = el.getAttribute("data-header"),
             sound = el.getAttribute("data-sound"),
-            message = el.getAttribute("data-message");
+            message = el.getAttribute("data-message"),
+            screenshot = el.getAttribute("data-screenshot");
         if(sound) cave.snd_playSe(sound);
         if(!show || !hide) return;
         document.getElementById(hide).style.display = 'none';
@@ -45,6 +46,13 @@ function initPostModules() {
             document.getElementById("header").style.display = 'block';
         else
             document.getElementById("header").style.display = 'none';
+        if(screenshot) {
+            var screenshotButton = document.getElementById('screenshot-button');
+            if(!cave.capture_isEnabled()) {
+                classList.add(screenshotButton, 'none');
+                screenshotButton.onclick = null;
+            }
+        }
         if(message) {
             cave.toolbar_setWideButtonMessage(message);
             cave.toolbar_setMode(1);
@@ -293,6 +301,32 @@ function newPainting(reset) {
             document.getElementById('memo-value').value = cave.memo_getImageBmp();
         }
     }, 250);
+}
+
+function follow(el) {
+    var id = el.getAttribute("data-community-id");
+    var count = document.getElementById("followers");
+    el.disabled = true;
+    var params = "id=" + id;
+    if(classList.contains(el, 'selected')) {
+        classList.remove(el, 'selected');
+        cave.snd_playSe('SE_OLV_CANCEL');
+    }
+    else {
+        classList.add(el, 'selected');
+        cave.snd_playSe('SE_OLV_MII_ADD');
+    }
+
+    POST(el.getAttribute("data-url"), params, function a(data) {
+        var element = JSON.parse(data.responseText);
+        if(!element || element.status !== 200) {
+            // Apparently there was an actual error code for not being able to yeah a post, who knew!
+            // TODO: Find more of these
+            return cave.error_callErrorViewer(155927);
+        }
+        el.disabled = false;
+        count.innerText = element.count;
+    });
 }
 
 function POST(url, data, callback) {

@@ -29,10 +29,9 @@
             <a id="header-communities-button" class="header-button left" href="/users/me/settings" data-pjax="#body">Settings</a>
         <%}%>
         <%if(pnid.pid !== pid) {%>
-        <a href="#" class="header-button right favorite-button favorite-button-mini button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>"></a>
-        <%if(friends.indexOf(pid) !== -1) {%>
-        <a href="/friend_messages/new/<%=userContent.pid%>" class="middle message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
-        <%}%>
+        <button type="button" class="submit follow yeah-button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>">
+            <span class="sprite yeah"></span>
+        </button>
         <%}%>
     </header>
     <div class="body-content tab2-content" id="community-post-list">

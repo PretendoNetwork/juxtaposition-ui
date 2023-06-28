@@ -28,18 +28,20 @@
         <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0 && community.open) {%>
             <a id="header-post-button" class="header-button left" href="#"
                data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list"
-               data-module-show="add-post-page" data-header="false"
+               data-module-show="add-post-page" data-header="false" data-screenshot="true"
                data-message="<%= lang.new_post.post_to %> <%= community.name %>">Post + </a>
         <%}%>
         <%if(children){%>
             <a id="header-communities-button" class="right" href="related" data-pjax="#body">Related Communities</a>
         <%}%>
+        <%if(community.open){%>
+        <button type="button" class="submit follow yeah-button <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>selected<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>">
+            <span class="sprite yeah"></span>
+        </button>
+        <%}%>
     </header>
     <div class="body-content tab2-content" id="community-post-list">
         <div class="community-info info-content with-header-banner">
-            <%if(community.open){%>
-            <a href="#" class="favorite-button button <%if(userContent.followed_communities.indexOf(community.community_id) !== -1){ %>checked<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.community_id %>"></a>
-            <%}%>
         </div>
         <menu class="tab-header">
             <li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
