@@ -192,7 +192,10 @@ function back() {
 }
 
 function stopLoading() {
+    if(window.location.href.indexOf('/titles/show/first') !== -1)
+        return;
     cave.transition_end();
+    cave.lls_setItem('agree_olv', '1');
     cave.toolbar_setActiveButton(3);
     cave.snd_playBgm('BGM_CAVE_MAIN');
     cave.toolbar_setVisible(true);
@@ -257,11 +260,6 @@ var classList = {
         el.className = el.className.replace(string, '');
     }
 }
-
-function EULA() {
-    cave.lls_setItem('agree_olv', '1');
-}
-
 function testOffline() {
     var posts = PostStorage.getAll();
     var text = JSON.stringify(posts, null,'\t');
