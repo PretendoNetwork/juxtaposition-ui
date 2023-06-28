@@ -29,7 +29,7 @@
             <a id="header-communities-button" class="header-button left" href="/users/me/settings" data-pjax="#body">Settings</a>
         <%}%>
         <%if(pnid.pid !== pid) {%>
-        <button type="button" class="submit follow yeah-button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>">
+        <button type="button" class="submit follow yeah-button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>">
             <span class="sprite yeah"></span>
         </button>
         <%}%>
