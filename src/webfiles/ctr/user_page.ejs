@@ -3,7 +3,7 @@
 <%- include('partials/head', { title: pnid.mii.name }); %>
 <body>
 <div id="body">
-    <header id="header"  class="buttons" style="background: url('<%= cdnURL %>/images/banner.png')">
+    <header id="header" class="buttons">
         <h1 id="page-title" class="community">
             <span>
                 <span class="icon-container">
@@ -36,7 +36,7 @@
         <%}%>
     </header>
     <div class="body-content tab2-content" id="community-post-list">
-        <!--<menu class="tab-header user-page">
+        <menu class="tab-header user-page no-margin">
             <li id="tab-header-post" class="tab-button <%if(selection === 0){ %>selected<%}%>">
                 <a href="<%= link %>" data-sound="SE_WAVE_SELECT_TAB">
                     <span class="new-post"><%= lang.user_page.posts %></span>
@@ -52,17 +52,18 @@
                     <span><%= lang.user_page.following %></span>
                 </a>
             </li>
-            <li id="tab-header-followers" class="tab-button <%if(selection === 3){ %>selected<%}%>">
+            <br>
+            <li id="tab-header-followers" class="tab-button double <%if(selection === 3){ %>selected<%}%>">
                 <a href="<%= link %>followers" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.followers %></span>
                 </a>
             </li>
-            <li id="tab-header-yeahs" class="tab-button <%if(selection === 4){ %>selected<%}%>">
+            <li id="tab-header-yeahs" class="tab-button double <%if(selection === 4){ %>selected<%}%>">
                 <a href="<%= link %>yeahs" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.global.yeahs %></span>
                 </a>
             </li>
-        </menu>-->
+        </menu>
         <div class="tab-body post-list">
             <%- include('partials/' + template, { bundle }); %>
         </div>

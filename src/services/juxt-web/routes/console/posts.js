@@ -2,7 +2,7 @@ const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const { POST } = require('../../../../models/post');
+const {POST} = require('../../../../models/post');
 const multer = require('multer');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit')
@@ -18,10 +18,10 @@ const postLimit = rateLimit({
     standardHeaders: true,
     legacyHeaders: true,
     message: "New post limit reached. Try again in a minute",
-    handler: function(req, res) {
-        if(req.params.post_id)
+    handler: function (req, res) {
+        if (req.params.post_id)
             res.redirect('/posts/' + req.params.post_id.toString());
-        else if(req.body.community_id)
+        else if (req.body.community_id)
             res.redirect('/titles/' + req.body.community_id);
         else {
             res.render(req.directory + '/error.ejs', {
@@ -44,9 +44,9 @@ const yeahLimit = rateLimit({
 
 router.post('/empathy', yeahLimit, async function (req, res) {
     let post = await database.getPostByID(req.body.postID);
-    if(!post)
+    if (!post)
         return res.sendStatus(404);
-    if(post.yeahs.indexOf(req.pid) === -1) {
+    if (post.yeahs.indexOf(req.pid) === -1) {
         await POST.updateOne({
                 id: post.id,
                 yeahs: {
@@ -61,11 +61,16 @@ router.post('/empathy', yeahLimit, async function (req, res) {
                     yeahs: req.pid
                 }
             });
-        res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
-        if(req.pid !== post.pid)
-            await util.data.newNotification({ pid: post.pid, type: "yeah", objectID: post.id, userPID: req.pid, link: `/posts/${post.id}` });
-    }
-    else if(post.yeahs.indexOf(req.pid) !== -1) {
+        res.send({status: 200, id: post.id, count: post.empathy_count + 1});
+        if (req.pid !== post.pid)
+            await util.data.newNotification({
+                pid: post.pid,
+                type: "yeah",
+                objectID: post.id,
+                userPID: req.pid,
+                link: `/posts/${post.id}`
+            });
+    } else if (post.yeahs.indexOf(req.pid) !== -1) {
         await POST.updateOne({
                 id: post.id,
                 yeahs: {
@@ -80,22 +85,23 @@ router.post('/empathy', yeahLimit, async function (req, res) {
                     yeahs: req.pid
                 }
             });
-        res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
-    }
-    else
-        res.send({ status: 423, id: post.id, count: post.empathy_count });
+        res.send({status: 200, id: post.id, count: post.empathy_count - 1});
+    } else
+        res.send({status: 423, id: post.id, count: post.empathy_count});
 });
 
-router.post('/new', postLimit, upload.none(), async function (req, res) { await newPost(req, res)});
+router.post('/new', postLimit, upload.none(), async function (req, res) {
+    await newPost(req, res)
+});
 
 router.get('/:post_id', async function (req, res) {
     let userSettings = await database.getUserSettings(req.pid);
     let userContent = await database.getUserContent(req.pid);
     let post = await database.getPostByID(req.params.post_id.toString());
-    if(post === null) return res.redirect('/404');
-    if(post.parent) {
+    if (post === null) return res.redirect('/404');
+    if (post.parent) {
         post = await database.getPostByID(post.parent);
-        if(post === null)
+        if (post === null)
             return res.sendStatus(404);
         return res.redirect(`/posts/${post.id}`);
     }
@@ -117,26 +123,28 @@ router.get('/:post_id', async function (req, res) {
     });
 });
 
-router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) { await newPost(req, res);});
+router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
+    await newPost(req, res);
+});
 
 async function newPost(req, res) {
     let userSettings = await database.getUserSettings(req.pid), parentPost = null, postID = await generatePostUID(21);
     let community = await database.getCommunityByID(req.body.community_id);
-    if(!community || !userSettings || !req.user) {
+    if (!community || !userSettings || !req.user) {
         res.status(403);
         console.log('missing data')
-        return res.redirect(`/titles/${community.olive_community_id}/new`);
+        return res.redirect(`/titles/show`);
     }
-    if(req.params.post_id && (req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '')) {
+    if (req.params.post_id && (req.body.body === '' && req.body.painting === '' && req.body.screenshot === '')) {
         res.status(422);
         return res.redirect('/posts/' + req.params.post_id.toString());
     }
-    if(req.params.post_id) {
+    if (req.params.post_id) {
         parentPost = await database.getPostByID(req.params.post_id.toString());
-        if(!parentPost)
+        if (!parentPost)
             return res.sendStatus(403);
     }
-    if(!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0)
+    if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0)
         && (community.type >= 2) && !(parentPost && community.allows_comments && community.open)) {
         res.status(403);
         return res.redirect(`/titles/${community.olive_community_id}/new`);
@@ -144,7 +152,10 @@ async function newPost(req, res) {
 
     let painting = "", paintingURI = "", screenshot = null;
     if (req.body._post_type === 'painting' && req.body.painting) {
-        painting = req.body.painting.replace(/\0/g, "").trim();
+        if(req.body.bmp === 'true')
+            painting = await util.data.processPainting(req.body.painting.replace(/\0/g, "").trim(), false);
+        else
+            painting = req.body.painting;
         paintingURI = await util.data.processPainting(painting, true);
         await util.data.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
     }
@@ -175,17 +186,17 @@ async function newPost(req, res) {
             break;
     }
     let body = req.body.body;
-    if(body)
+    if (body)
         body = req.body.body.replace(/[^A-Za-z\d\s-_!@#$%^&*(){}‛¨ƒºª«»“”„¿¡←→↑↓√§¶†‡¦–—⇒⇔¤¢€£¥™©®+×÷=±∞ˇ˘˙¸˛˜′″µ°¹²³♭♪•…¬¯‰¼½¾♡♥●◆■▲▼☆★♀♂,./?;:'"\\<>]/g, "");
-    if(body.length > 280)
-        body = body.substring(0,280);
+    if (body.length > 280)
+        body = body.substring(0, 280);
     const document = {
         title_id: community.title_id[0],
         community_id: community.olive_community_id,
         screen_name: userSettings.screen_name,
         body: body,
         painting: painting,
-        screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: "",
+        screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : "",
         country_id: req.paramPackData ? req.paramPackData.country_id : 49,
         created_at: new Date(),
         feeling_id: req.body.feeling_id,
@@ -204,20 +215,25 @@ async function newPost(req, res) {
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
     console.log('duplicate test' + duplicatePost && req.params.post_id)
-    if(duplicatePost && req.params.post_id)
+    if (duplicatePost && req.params.post_id)
         return res.redirect('/posts/' + req.params.post_id.toString());
     console.log('last empty check' + document.body === '' && document.painting === '' && document.screenshot === '')
-    if(document.body === '' && document.painting === '' && document.screenshot === '')
+    if (document.body === '' && document.painting === '' && document.screenshot === '')
         return res.redirect('/titles/' + community.olive_community_id + '/new');
     const newPost = new POST(document);
     newPost.save();
-    if(parentPost) {
+    if (parentPost) {
         parentPost.reply_count = parentPost.reply_count + 1;
         parentPost.save();
     }
-    if(parentPost && (parentPost.pid !== PNID.pid))
-        await util.data.newNotification({ pid: parentPost.pid, type: "reply", user: req.pid, link: `/posts/${parentPost.id}` });
-    if(parentPost)
+    if (parentPost && (parentPost.pid !== PNID.pid))
+        await util.data.newNotification({
+            pid: parentPost.pid,
+            type: "reply",
+            user: req.pid,
+            link: `/posts/${parentPost.id}`
+        });
+    if (parentPost)
         res.redirect('/posts/' + req.params.post_id.toString());
     else
         res.redirect('/titles/' + community.olive_community_id + '/new');
@@ -225,7 +241,7 @@ async function newPost(req, res) {
 
 async function generatePostUID(length) {
     let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, "").substring(0, length);
-    const inuse = await POST.findOne({ id });
+    const inuse = await POST.findOne({id});
     id = (inuse ? await generatePostUID() : id);
     return id;
 }

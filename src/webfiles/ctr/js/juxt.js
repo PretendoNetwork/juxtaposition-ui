@@ -26,45 +26,49 @@ cave.toolbar_setCallback(8, function() {
 
 function initPostModules() {
     var els = document.querySelectorAll("[data-module-show]");
-    console.log(els)
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
-        els[i].addEventListener("click", function(e) {
-            var el = e.currentTarget,
-                show = el.getAttribute("data-module-show"),
-                hide = el.getAttribute("data-module-hide"),
-                header = el.getAttribute("data-header"),
-                sound = el.getAttribute("data-sound"),
-                message = el.getAttribute("data-message");
-            if(sound) cave.snd_playSe(sound);
-            if(!show || !hide) return;
-            document.getElementById(hide).style.display = 'none';
-            document.getElementById(show).style.display = 'block';
-            if(header === 'true')
-                document.getElementById("header").style.display = 'block';
-            else
-                document.getElementById("header").style.display = 'none';
-            console.log(message);
-            if(message) {
-                cave.toolbar_setWideButtonMessage(message);
-                cave.toolbar_setMode(1);
-                cave.toolbar_setButtonType(1);
-                function tempBk() {
-                    document.getElementById("close-modal-button").click();
-                }
-                cave.toolbar_setCallback(1, tempBk);
-                cave.toolbar_setCallback(99, tempBk);
-
+        els[i].onclick = postModel;
+    }
+    function postModel(e) {
+        var el = e.currentTarget,
+            show = el.getAttribute("data-module-show"),
+            hide = el.getAttribute("data-module-hide"),
+            header = el.getAttribute("data-header"),
+            sound = el.getAttribute("data-sound"),
+            message = el.getAttribute("data-message");
+        if(sound) cave.snd_playSe(sound);
+        if(!show || !hide) return;
+        document.getElementById(hide).style.display = 'none';
+        document.getElementById(show).style.display = 'block';
+        if(header === 'true')
+            document.getElementById("header").style.display = 'block';
+        else
+            document.getElementById("header").style.display = 'none';
+        if(message) {
+            cave.toolbar_setWideButtonMessage(message);
+            cave.toolbar_setMode(1);
+            cave.toolbar_setButtonType(1);
+            function tempBk() {
+                document.getElementById("close-modal-button").click();
             }
-            else {
+            cave.toolbar_setCallback(1, tempBk);
+            cave.toolbar_setCallback(99, tempBk);
+            cave.toolbar_setCallback(8, function () {
                 cave.toolbar_setMode(0);
                 cave.toolbar_setButtonType(0);
-                cave.toolbar_setCallback(1, back);
-                cave.toolbar_setCallback(99, back);
-            }
-            cave.transition_end();
-            initNewPost();
-        });
+                document.getElementById("submit").click();
+            });
+
+        }
+        else {
+            cave.toolbar_setMode(0);
+            cave.toolbar_setButtonType(0);
+            cave.toolbar_setCallback(1, back);
+            cave.toolbar_setCallback(99, back);
+        }
+        cave.transition_end();
+        initNewPost();
     }
 }
 function initMorePosts() {
@@ -73,6 +77,7 @@ function initMorePosts() {
     for (var i = 0; i < els.length; i++) {
         els[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
+            cave.snd_playSe('SE_OLV_OK');
             GET(el.getAttribute('data-href'), function a(data) {
                 var response = data.responseText;
                 if(response && data.status === 200) {
@@ -104,38 +109,36 @@ function initYeah() {
     for (var i = 0; i < els.length; i++) {
         els[i].onclick = yeah;
     }
-}
+    function yeah(e) {
+        var el = e.currentTarget, id = el.getAttribute("data-post");
+        var parent = document.getElementById(id);
+        var count = document.getElementById("count-" + id);
+        el.disabled = true;
+        var params = "postID=" + id;
+        if(classList.contains(el, 'selected')) {
+            classList.remove(el, 'selected');
+            classList.remove(parent, 'yeah');
+            if(count) count.innerText -= 1;
+            cave.snd_playSe('SE_OLV_CANCEL');
 
-function yeah(e) {
-    var el = e.currentTarget, id = el.getAttribute("data-post");
-    var parent = document.getElementById(id);
-    var count = document.getElementById("count-" + id);
-    el.disabled = true;
-    var params = "postID=" + id;
-    if(classList.contains(el, 'selected')) {
-        classList.remove(el, 'selected');
-        classList.remove(parent, 'yeah');
-        if(count) count.innerText -= 1;
-        cave.snd_playSe('SE_OLV_CANCEL');
-
-    }
-    else {
-        classList.add(el, 'selected');
-        classList.add(parent, 'yeah');
-        if(count) count.innerText = ++count.innerText;
-        cave.snd_playSe('SE_OLV_MII_ADD');
-    }
-
-    POST('/posts/empathy', params, function a(data) {
-        var post = JSON.parse(data.responseText);
-        if(!post || post.status !== 200) {
-            // Apparently there was an actual error code for not being able to yeah a post, who knew!
-            // TODO: Find more of these
-            return cave.error_callErrorViewer(155927);
         }
-        el.disabled = false;
-        if(count) count.innerText = post.count;
-    });
+        else {
+            classList.add(el, 'selected');
+            classList.add(parent, 'yeah');
+            if(count) count.innerText = ++count.innerText;
+            cave.snd_playSe('SE_OLV_MII_ADD');
+        }
+        POST('/posts/empathy', params, function a(data) {
+            var post = JSON.parse(data.responseText);
+            if(!post || post.status !== 200) {
+                // Apparently there was an actual error code for not being able to yeah a post, who knew!
+                // TODO: Find more of these
+                return cave.error_callErrorViewer(155927);
+            }
+            el.disabled = false;
+            if(count) count.innerText = post.count;
+        });
+    }
 }
 function initSpoilers() {
     var els = document.querySelectorAll("button[data-post-id]");
@@ -149,6 +152,37 @@ function initSpoilers() {
         });
     }
 }
+function initTabs() {
+    var els = document.querySelectorAll(".tab-button");
+    if (!els) return;
+    for (var i = 0; i < els.length; i++) {
+        els[i].onclick = tabs;
+    }
+    function tabs(e) {
+        e.preventDefault();
+        cave.transition_begin();
+        var el = e.currentTarget;
+        var child = el.children[0];
+
+        for(var i = 0; i < els.length; i++) {
+            if(classList.contains(els[i], 'selected'))
+                classList.remove(els[i], 'selected');
+        }
+        classList.add(el, "selected");
+
+        GET(child.getAttribute('href') + "?pjax=true", function a(data) {
+            var response = data.responseText;
+            if(response && data.status === 200) {
+                document.getElementsByClassName("tab-body")[0].innerHTML = response;
+                pjax.history.push(child.href);
+                initPosts();
+                initMorePosts();
+                cave.transition_end();
+            }
+        })
+
+    }
+}
 
 function back() {
     if(!pjax.canGoBack())
@@ -158,7 +192,6 @@ function back() {
 }
 
 function stopLoading() {
-    //loadTab(3);
     cave.transition_end();
     cave.toolbar_setActiveButton(3);
     cave.snd_playBgm('BGM_CAVE_MAIN');
@@ -166,10 +199,10 @@ function stopLoading() {
 }
 
 function initAll() {
-    console.log('fuck you!!!')
     initPosts();
     initMorePosts();
     initPostModules();
+    initTabs();
     checkForUpdates();
     pjax.refresh();
 }
@@ -243,6 +276,27 @@ function checkForUpdates() {
     });
 }
 
+function newText() {
+    classList.remove(document.getElementById('memo-sprite'), 'selected');
+    classList.remove(document.getElementById('post-memo'), 'selected');
+    classList.add(document.getElementById('text-sprite'), 'selected');
+    classList.add(document.getElementById('post-text'), 'selected');
+}
+function newPainting(reset) {
+    if(reset) cave.memo_clear();
+    classList.remove(document.getElementById('text-sprite'), 'selected');
+    classList.remove(document.getElementById('post-text'), 'selected');
+    classList.add(document.getElementById('memo-sprite'), 'selected');
+    classList.add(document.getElementById('post-memo'), 'selected');
+    cave.memo_open();
+    setTimeout(function () {
+        if(cave.memo_hasValidImage()) {
+            document.getElementById('memo').src = 'data:image/png;base64,' + cave.memo_getImageBmp();
+            document.getElementById('memo-value').value = cave.memo_getImageBmp();
+        }
+    }, 250);
+}
+
 function POST(url, data, callback) {
     cave.transition_begin()
     var xhttp = new XMLHttpRequest();
@@ -282,6 +336,7 @@ document.addEventListener("PjaxRequest", function(e) {
 document.addEventListener("PjaxLoaded", function(e) { console.log(e);});
 document.addEventListener("PjaxDone", function(e) {
     initAll();
+    cave.brw_scrollImmediately(0,0);
     if(pjax.canGoBack())
         cave.toolbar_setButtonType(1);
     else

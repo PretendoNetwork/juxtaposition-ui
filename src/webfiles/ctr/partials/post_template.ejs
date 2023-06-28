@@ -8,7 +8,7 @@
                 <span class="screen-name"><%= post.screen_name %></span>
                 <span class="timestamp">- <%= moment(post.created_at).fromNow() %></span>
                 <%if(post.topic_tag) {%>
-                <a href="/topics?topic_tag=<%=post.topic_tag%>">
+                <a href="/topics?topic_tag=<%=post.topic_tag%>" data-pjax="#body">
                     <span>
                         <span class="sprite tag"></span>
                         <span class="tags"><%=post.topic_tag%></span>
@@ -47,8 +47,8 @@
                 <button type="button" class="submit yeah-button <%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%>" data-post="<%= post.id %>">
                     <span class="sprite yeah"></span>
                 </button>
-                <a <%if(!yeah) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
-                    <%if(!yeah) {%>
+                <a <%if(!locals.yeah) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
+                    <%if(!locals.yeah) {%>
                         <span class="sprite feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
                         <%if(!reply) {%>
                         <span class="sprite reply"><%=post.reply_count %></span>
@@ -58,12 +58,13 @@
             </div>
         </div>
     </div>
-    <%if(yeah && post.yeahs.length > 0) {%>
+    <%if(locals.yeah && post.yeahs.length > 0) {%>
         <h6 class="yeah-text"><span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span> people gave this post a yeah.</h6>
         <div class="yeah-list">
-            <%for(var yeah of post.yeahs) {%>
+            <% var length = post.yeahs.length > 10 ? 10 : post.yeahs.length%>
+            <%for(var i = 0; i < length; i++) {%>
                 <a href="/users/<%= yeah %>" class="mii-icon-container" data-pjax="#body">
-                    <img src="https://mii.olv.pretendo.cc/mii/<%= yeah %>/normal_face.png" class="mii-icon">
+                    <img src="http://mii.olv.pretendo.cc/mii/<%= post.yeahs[i] %>/normal_face.png" class="mii-icon">
                 </a>
             <%}%>
         </div>

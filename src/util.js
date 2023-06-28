@@ -187,15 +187,12 @@ let methods = {
             const tga = this.createBMPTgaBuffer(bitmap.width, bitmap.height, bitmap.data, false);
 
             let output;
-            try
-            {
+            try {
                 output = pako.deflate(tga, {level: 6});
             }
-            catch (err)
-            {
+            catch (err) {
                 console.error(err);
             }
-
             return new Buffer(output).toString('base64')
         }
     },
