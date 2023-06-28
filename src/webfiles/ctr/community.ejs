@@ -32,10 +32,10 @@
                data-message="<%= lang.new_post.post_to %> <%= community.name %>">Post + </a>
         <%}%>
         <%if(children){%>
-            <a id="header-communities-button" class="right" href="related" data-pjax="#body">Related Communities</a>
+            <a id="header-communities-button" class="right" href="/titles/<%= community.olive_community_id %>/related" data-pjax="#body">Related Communities</a>
         <%}%>
         <%if(community.open){%>
-        <button type="button" class="submit follow yeah-button <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>">
+        <button type="button" class="submit follow yeah-button <%if(children) {%>suggested<%}%> <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>">
             <span class="sprite yeah"></span>
         </button>
         <%}%>

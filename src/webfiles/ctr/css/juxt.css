@@ -790,15 +790,19 @@ menu.tab-header.no-margin {
 }
 .submit.follow.yeah-button {
     position: absolute;
-    bottom: -29px;
+    bottom: -31px;
     left: 185px;
     margin: 0;
-    line-height: 13px;
+    line-height: 15px;
     font-size: 13px;
     background: -webkit-gradient(linear,left top,left bottom,from(#fff),color-stop(.5,#fff),to(#e6e6e6))0 0;
     color: #323232;
     border: 1px solid #cecece;
     border-radius: 0 0 8px 8px;
+}
+
+.submit.follow.yeah-button.suggested {
+    left: 135px;
 }
 
 #screenshot-button.none {
