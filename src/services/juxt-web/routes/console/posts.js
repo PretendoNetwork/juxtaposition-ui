@@ -226,7 +226,7 @@ async function newPost(req, res) {
         parentPost.reply_count = parentPost.reply_count + 1;
         parentPost.save();
     }
-    if (parentPost && (parentPost.pid !== PNID.pid))
+    if (parentPost && (parentPost.pid !== req.user.pid))
         await util.data.newNotification({
             pid: parentPost.pid,
             type: "reply",

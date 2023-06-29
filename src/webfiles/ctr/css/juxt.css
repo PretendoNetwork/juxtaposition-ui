@@ -810,3 +810,86 @@ menu.tab-header.no-margin {
     pointer-events: none;
     cursor: initial;
 }
+
+
+.arrow-button {
+    display: inline-block;
+    position: absolute;
+    width: 240px;
+    height: 65px;
+}
+.body.message .id-name {
+    margin-left: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #969696;
+}
+.body.message span {
+    font-size: 10px;
+    color: #646464;
+}
+.body.message .nick-name {
+    font-size: 14px;
+    color: #000;
+}
+
+.message-post-list .post {
+    background: transparent;
+    border-radius: 0;
+    border: none;
+}
+
+.message-post-list .mii-icon-container {
+    float: right;
+}
+
+.message-post-list .other-post .mii-icon-container {
+    float: left;
+}
+
+.message-post-list .post.my-post .post-body {
+    float:right;
+    background:#673db6;
+    background:-webkit-gradient(linear,left top,left bottom,from(#9d6ff3),color-stop(.05,#9d6ff3),color-stop(1,#673db6),to(#673db6))0 0;
+    color:#fff
+}
+.message-post-list .post .post-body {
+    float:left;
+    position:relative;
+    background:#fff;
+    border-radius:0;
+    max-width:230px;
+    min-height:20px;
+    padding:5px 10px;
+    font-size: 10px;
+    border: 1px solid #666
+}
+.message-post-list .post .post-content {
+    min-width:230px;
+    word-wrap:break-word;
+    white-space:pre-wrap;
+    margin-bottom:5px
+}
+.message-post-list .post::after,
+.settings-list-content .settings-list>li:after {
+    content:"";
+    display:block;
+    clear:both
+}
+.message-viewer-bubble-sent-memo {
+    width:225px;
+    height:84px;
+}
+.message-viewer-bubble-sent-screenshot {
+    width:225px;
+}
+
+.message-post-list .post.my-post header > span {
+    text-align: right;
+    width: 265px;
+    display: inline-block;
+}
+
+.message-post-list .post header {
+    color: #969696;
+}

@@ -52,16 +52,23 @@
                 </a>
             </li>
             <br>
-            <li id="tab-header-followers" class="tab-button double <%if(selection === 3){ %>selected<%}%>">
+            <li id="tab-header-followers" class="tab-button <%if(pnid.pid !== pid) {%>double<%}%> <%if(selection === 3){ %>selected<%}%>">
                 <a href="<%= link %>followers" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.user_page.followers %></span>
                 </a>
             </li>
-            <li id="tab-header-yeahs" class="tab-button double <%if(selection === 4){ %>selected<%}%>">
+            <li id="tab-header-yeahs" class="tab-button <%if(pnid.pid !== pid) {%>double<%}%> <%if(selection === 4){ %>selected<%}%>">
                 <a href="<%= link %>yeahs" data-sound="SE_WAVE_SELECT_TAB">
                     <span><%= lang.global.yeahs %></span>
                 </a>
             </li>
+            <%if(pnid.pid === pid) {%>
+            <li id="tab-header-requests" class="tab-button">
+                <a href="/news/friend_requests" data-sound="SE_WAVE_SELECT_TAB">
+                    <span>Requests</span>
+                </a>
+            </li>
+            <%}%>
         </menu>
         <div class="tab-body post-list">
             <%- include('partials/' + template, { bundle }); %>
