@@ -303,6 +303,10 @@ function newPainting(reset) {
     }, 250);
 }
 
+function newScreenshot(topScreen) {
+    var screenshot = topScreen ? cave.capture_getLowerImage();
+}
+
 function follow(el) {
     var id = el.getAttribute("data-community-id");
     var count = document.getElementById("followers");

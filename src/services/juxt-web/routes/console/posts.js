@@ -6,7 +6,7 @@ const {POST} = require('../../../../models/post');
 const multer = require('multer');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit')
-const {CONTENT} = require("../../../../models/content");
+const {REPORT} = require("../../../../models/report");
 const upload = multer({dest: 'uploads/'});
 const snowflake = require('node-snowflake').Snowflake;
 const crypto = require('crypto')
@@ -125,6 +125,27 @@ router.get('/:post_id', async function (req, res) {
 
 router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
     await newPost(req, res);
+});
+
+router.post('/:post_id/report', upload.none(), async function (req, res) {
+    const { reason, message, post_id } = req.body;
+    const post = await database.getPostByID(post_id);
+    if(!reason || !post_id || !post)
+        return res.redirect('/404');
+
+    const reportDoc = {
+        pid: post.pid,
+        reported_by: req.pid,
+        post_id,
+        reason,
+        message,
+        created_at: new Date()
+    }
+
+    const reportObj = new REPORT(reportDoc);
+    await reportObj.save();
+
+    return res.redirect(`/posts/${post.id}`);
 });
 
 async function newPost(req, res) {
