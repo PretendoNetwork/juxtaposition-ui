@@ -1,8 +1,13 @@
 <div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%> <%if(post.is_spoiler) {%>spoiler<%}%>">
+    <% if(post.removed) {%>
+        <div class="post-body-content removed">
+            <h2>Post has been removed.</h2>
+        </div>
+    <%} else {%>
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
         <img src="<%= post.mii_face_url.replace('http:', 'https:') %>" class="mii-icon">
     </a>
-    <div class="post-body-content">
+    <div class="post-body-content removed">
         <div class="post-body <%if(userContent.likes && userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>" id="<%= post.id %>">
             <header>
                 <span class="screen-name"><%= post.screen_name %></span>
@@ -49,6 +54,11 @@
             <div class="post-buttons">
                 <button type="button" class="submit yeah-button <%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%>" data-post="<%= post.id %>"></button>
                 <a <%if(!yeah) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
+                    <% if(reply && post.pid === pid) {%>
+                        <div>
+                            <button type="button" class="submit remove" data-post="<%= post.id %>" onclick="deletePost(this)"></button>
+                        </div>
+                    <%}%>
                     <%if(!yeah) {%>
                         <span class="feeling" id="count-<%= post.id %>"><%=post.empathy_count %></span>
                         <%if(!reply) {%>
@@ -68,5 +78,6 @@
             </a>
         <%}%>
     </div>
+    <%}%>
     <%}%>
 </div>

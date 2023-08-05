@@ -5,11 +5,23 @@
 <%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
 <div id="body">
     <header id="header">
-        <h1 id="page-title" class="left"><%= post.screen_name %></h1>
+        <h1 id="page-title" class="left">
+            <%if(post.removed) {%>
+                Removed Post
+            <%} else {%>
+                <%= post.screen_name %>
+            <%}%>
+        </h1>
+        <%if(!post.removed) {%>
         <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
         <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
-        <a id="header-communities-button" class="report" href="#" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false">Report Post</a>
+        <% if(post.pid === pid) {%>
+            <a id="header-communities-button" class="delete" href="#" data-post="<%=post.id%>" onclick="deletePost(this)">Delete Post</a>
+        <%} else {%>
+            <a id="header-communities-button" class="report" href="#" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false">Report Post</a>
+        <%}%>
+        <%}%>
     </header>
     <div class="body-content post-list" id="post">
         <div class="post-wrapper parent">

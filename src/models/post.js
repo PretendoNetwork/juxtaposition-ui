@@ -98,14 +98,14 @@ PostSchema.methods.downReply = async function() {
     await this.save();
 };
 
-PostSchema.methods.remove = async function(reason) {
-    this.set('remove', true);
+PostSchema.methods.removePost = async function(reason) {
+    this.set('removed', true);
     this.set('removed_reason', reason)
     await this.save();
 };
 
 PostSchema.methods.unRemove = async function(reason) {
-    this.set('remove', false);
+    this.set('removed', false);
     this.set('removed_reason', reason)
     await this.save();
 };

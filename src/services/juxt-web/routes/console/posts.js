@@ -8,7 +8,6 @@ const moment = require('moment');
 const rateLimit = require('express-rate-limit')
 const {REPORT} = require("../../../../models/report");
 const upload = multer({dest: 'uploads/'});
-const snowflake = require('node-snowflake').Snowflake;
 const crypto = require('crypto')
 const router = express.Router();
 
@@ -121,6 +120,20 @@ router.get('/:post_id', async function (req, res) {
         mii_image_CDN: config.mii_image_CDN,
         pid: req.pid
     });
+});
+
+router.delete('/:post_id', async function (req, res) {
+    let post = await database.getPostByID(req.params.post_id);
+    if(!post) return res.sendStatus(404);
+    if(req.pid !== post.pid) return res.sendStatus(401);
+
+    await post.removePost('User requested removal');
+
+    res.statusCode = 200;
+    if(post.parent)
+        res.send(`/posts/${post.parent}`);
+    else
+        res.send('/users/me');
 });
 
 router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {

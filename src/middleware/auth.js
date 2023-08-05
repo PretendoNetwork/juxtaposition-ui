@@ -5,7 +5,11 @@ const db = require('../database');
 
 async function auth(request, response, next) {
     // Web files
-    if(isStartOfPath(request.path, '/css/') || isStartOfPath(request.path, '/fonts/') || isStartOfPath(request.path, '/js/') || request.path === '/favicon.ico') {
+    if(isStartOfPath(request.path, '/css/') ||
+        isStartOfPath(request.path, '/fonts/') ||
+        isStartOfPath(request.path, '/js/') ||
+        request.path === '/favicon.ico' ||
+        isStartOfPath(request.path, '/image/')) {
         request.lang = util.data.processLanguage();
         if(request.subdomains.includes('juxt'))
             request.directory = 'web';

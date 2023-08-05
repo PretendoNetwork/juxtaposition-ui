@@ -18,7 +18,7 @@ function initNavBar() {
     }
 }
 function initYeah() {
-    var els = document.querySelectorAll("button[data-post]");
+    var els = document.querySelectorAll("button[data-post].yeah-button");
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
         els[i].removeEventListener('click', yeah);
@@ -314,6 +314,22 @@ function exit() {
         wiiuBrowser.closeApplication();
     }
 }
+
+function deletePost(post) {
+    var id = post.getAttribute('data-post');
+    if(!id) return;
+    var confirm = wiiuDialog.confirm('Are you sure you want to delete your post? This cannot be undone.', 'No', 'Yes');
+    if(confirm) {
+        DELETE('/posts/' + id, function a(data) {
+            if(!data || data.status !== 200) {
+                return wiiuErrorViewer.openByCodeAndMessage('5980030', 'Post was not able to be deleted. Please try again later.')
+            }
+            console.log(data);
+            alert('Post has been deleted.')
+            return window.location.href = data.responseText;
+        });
+    }
+}
 function checkForUpdates() {
     GET('/notifications.json', function updates(data) {
         var notificationObj = JSON.parse(data.responseText);
@@ -370,6 +386,19 @@ function GET(url, callback) {
         }
     };
     xhttp.open("GET", url, true);
+    xhttp.send();
+}
+
+function DELETE(url, callback) {
+    wiiuBrowser.showLoadingIcon(true);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if(this.readyState === 4) {
+            wiiuBrowser.showLoadingIcon(false);
+            return callback(this);
+        }
+    };
+    xhttp.open("DELETE", url, true);
     xhttp.send();
 }
 
