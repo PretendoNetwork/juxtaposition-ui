@@ -81,9 +81,9 @@
     },
     "setup": {
         "welcome": "Sveiki atvykę į Juxtaposition!",
-        "beta": "Beta įspėjimas",
+        "beta": "Įspėjimas dėl Beta versijos",
         "beta_text": {
-            "first": "Tu tuoj išbandysi pirmają Juxt beta versiją. Tai reiškia kad, dalykai gali pasikeisti kuriuo metu tau naudojant Juxt.",
+            "first": "Tu tuoj išbandysi pirmają Juxt beta versiją. Tai reiškia kad, dalykai gali pasikeisti betkuriuo metu kai tu naudojant Juxt.",
             "second": "Tai gali apimti visišką databazės išvalymą betos pabaigoje arba perijodo metu.",
             "third": "Svetainė, jos programinis turinys, ir visas čia rastas turinys yra paduota \"kaip yra\" ir \"kaip pasiekiama\".Pretendo tinklas nesuteikia jokių tiesioginių ar numanomų garantijų dėl svetainės, jos programinės įrangos ar bet kokio turinio tinkamumo ar tinkamumo naudoti."
         },
