@@ -30,5 +30,6 @@ console.use('/', routes.PORTAL_WEB);
 console.use('/login', routes.WEB_LOGIN);
 console.use('/robots.txt', routes.ROBOTS);
 console.use('/web', routes.PWA);
+console.use('/admin', routes.ADMIN);
 
 module.exports = router;

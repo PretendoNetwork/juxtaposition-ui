@@ -29,7 +29,8 @@ router.get('/me/settings', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
+        pid: req.pid,
+        moderator: req.moderator
     });
 });
 
@@ -149,7 +150,8 @@ async function userPage(req, res, userID) {
         pid: req.pid,
         link,
         friends,
-        parentUserContent
+        parentUserContent,
+        moderator: req.moderator
     });
 }
 
@@ -169,7 +171,7 @@ async function userRelations(req, res, userID) {
     let followers, communities, communityMap, selection;
 
     if(req.params.type === 'yeahs') {
-        let posts = await POST.find({ yeahs: req.pid }).sort({created_at: -1});
+        let posts = await POST.find({ yeahs: req.pid, removed: false }).sort({created_at: -1});
         /*let posts = await POST.aggregate([
             { $match: { id: { $in: likesArray } } },
             {$addFields: {
@@ -214,7 +216,8 @@ async function userRelations(req, res, userID) {
                 pid: req.pid,
                 link,
                 friends,
-                parentUserContent
+                parentUserContent,
+                moderator: req.moderator
             });
     }
 
@@ -265,7 +268,8 @@ async function userRelations(req, res, userID) {
         mii_image_CDN: config.mii_image_CDN,
         pid: req.pid,
         link,
-        parentUserContent
+        parentUserContent,
+        moderator: req.moderator
     });
 }
 
@@ -298,7 +302,8 @@ async function morePosts(req, res, userID) {
             cdnURL: config.CDN_domain,
             lang: req.lang,
             mii_image_CDN: config.mii_image_CDN,
-            pid: req.pid
+            pid: req.pid,
+            moderator: req.moderator
         });
     }
     else
@@ -313,7 +318,7 @@ async function moreYeahPosts(req, res, userID) {
     if(!offset) offset = 0;
     let likesArray = await userContent.likes.slice().reverse();
     let posts = await POST.aggregate([
-        { $match: { id: { $in: likesArray } } },
+        { $match: { id: { $in: likesArray }, removed: false } },
         {$addFields: {
                 "__order": { $indexOfArray: [ likesArray, "$id" ] }
             }},
@@ -345,7 +350,8 @@ async function moreYeahPosts(req, res, userID) {
             cdnURL: config.CDN_domain,
             lang: req.lang,
             mii_image_CDN: config.mii_image_CDN,
-            pid: req.pid
+            pid: req.pid,
+            moderator: req.moderator
         });
     }
     else

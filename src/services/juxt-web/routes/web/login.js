@@ -54,7 +54,8 @@ router.post('/', async (req, res) => {
             message: message,
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            pid: pid
+            pid: pid,
+            moderator: req.moderator
         });
     }
     let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.network';

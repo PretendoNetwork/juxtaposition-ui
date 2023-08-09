@@ -7,6 +7,7 @@ const { ENDPOINT } = require('./models/endpoint');
 const { NOTIFICATION } = require('./models/notifications');
 const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
+const { REPORT } = require('./models/report');
 
 const { uri, database, options } = mongooseConfig;
 const logger = require('./logger');
@@ -441,6 +442,21 @@ async function getUnreadNotificationCount(pid) {
     }).countDocuments();
 }
 
+async function getAllReports(offset, limit) {
+    verifyConnected();
+    return REPORT.find().sort({created_at: -1}).skip(offset).limit(limit);
+}
+
+async function getReportsByUser(pid, offset, limit) {
+    verifyConnected();
+    return REPORT.find({ reported_by: pid }).sort({created_at: -1}).skip(offset).limit(limit);
+}
+
+async function getReportsByPost(postID, offset, limit) {
+    verifyConnected();
+    return REPORT.find({ post_id: postID }).sort({created_at: -1}).skip(offset).limit(limit);
+}
+
 
 module.exports = {
     connect,
@@ -490,5 +506,8 @@ module.exports = {
     getNotification,
     getLastNotification,
     getAllUserPosts,
-    getRemovedUserPosts
+    getRemovedUserPosts,
+    getAllReports,
+    getReportsByUser,
+    getReportsByPost
 };

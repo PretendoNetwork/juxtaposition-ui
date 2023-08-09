@@ -444,7 +444,15 @@ iframe {
 .body.messages > .text {
     padding-bottom: 0.5ch;
 }
-
+.report h4, .report p {
+    margin: 10px 0 0 0;
+}
+.list-content-with-icon-and-text li.reports {
+    flex-direction: column;
+}
+.reports .hover:hover {
+    background: unset;
+}
 @media screen and (max-width:1400px) {
     .communities-wrapper {
         max-width:600px;

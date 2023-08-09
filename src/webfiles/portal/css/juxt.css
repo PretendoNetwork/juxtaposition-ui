@@ -1806,3 +1806,19 @@ a.report {
  margin-right: 10px !important;
  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='url(%23grad1)' viewBox='0 0 256 256' width='50' height='50'%3E%3ClinearGradient xmlns='http://www.w3.org/2000/svg' id='grad1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%23495167;stop-opacity:1'/%3E%3Cstop offset='100%25' style='stop-color:%23676E87;stop-opacity:1'/%3E%3C/linearGradient%3E%3Cpath d='M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z' stroke='url(%23grad1)' stroke-width='3'/%3E%3C/svg%3E")no-repeat 5px 7px,-webkit-gradient(linear,left top,left bottom,from(#fff),color-stop(.5,#fff),color-stop(.8,#f6f6f6),color-stop(.96,#f5f5f5),to(#bbb))0 0 !important;
 }
+.post-body-content.removed {
+ position: relative;
+ width: 1000px;
+ padding: 15px;
+ z-index: 2;
+ background: #fff;
+ border-radius: 20px;
+ box-shadow: 0 3px 10px rgba(0,0,0,.6);
+ overflow: clip;
+}
+img.lost {
+ height: 400px;
+ position: absolute;
+ right: 0;
+ bottom: 0;
+}

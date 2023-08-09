@@ -45,6 +45,7 @@ router.get('/', async function (req, res) {
         pid: req.pid,
         bundle,
         template: 'posts_list',
+        moderator: req.moderator
     });
 });
 
@@ -77,7 +78,8 @@ router.get('/more', async function (req, res) {
             cdnURL: config.CDN_domain,
             lang: req.lang,
             mii_image_CDN: config.mii_image_CDN,
-            pid: req.pid
+            pid: req.pid,
+            moderator: req.moderator
         });
     }
     else

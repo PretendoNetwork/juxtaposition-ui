@@ -25,7 +25,7 @@
             </span>
             </span>
         </h1>
-        <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0 && community.open) {%>
+        <% if(((community.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
             <a id="header-post-button" class="header-button left" href="#"
                data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list"
                data-module-show="add-post-page" data-header="false" data-screenshot="true"

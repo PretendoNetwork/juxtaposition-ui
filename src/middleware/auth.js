@@ -34,6 +34,8 @@ async function auth(request, response, next) {
 
     // Ban check
     if(request.user) {
+        // Set moderator status
+        request.moderator = request.user.accessLevel >= 2;
         const user = await db.getUserSettings(request.pid);
         if(user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
             user.account_status = 0;

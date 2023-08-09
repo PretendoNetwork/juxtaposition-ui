@@ -27,7 +27,8 @@ router.get('/my_news', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         pid: req.pid,
-        template: 'notifications'
+        template: 'notifications',
+        moderator: req.moderator
     });
     notifications.filter(noti => noti.read === false).forEach(function(notification) {
         notification.markRead();
@@ -58,7 +59,8 @@ router.get('/friend_requests', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         pid: req.pid,
-        template: 'requests'
+        template: 'requests',
+        moderator: req.moderator
     });
 });
 

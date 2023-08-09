@@ -9,6 +9,7 @@ router.get('/', async function (req, res) {
         return res.render(req.directory + '/guest_notice.ejs', {
             cdnURL: config.CDN_domain,
             lang: req.lang,
+            moderator: req.moderator
         });
     }
 
@@ -18,7 +19,8 @@ router.get('/', async function (req, res) {
         res.render(req.directory + '/first_run.ejs', {
             cdnURL: config.CDN_domain,
             lang: req.lang,
-            pid: req.pid
+            pid: req.pid,
+            moderator: req.moderator
         });
     }
 
@@ -43,6 +45,7 @@ router.get('/first', async function (req, res) {
     res.render(req.directory + '/first_run.ejs', {
         cdnURL: config.CDN_domain,
         lang: req.lang,
+        moderator: req.moderator
     });
 });
 

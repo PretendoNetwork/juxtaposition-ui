@@ -118,16 +118,20 @@ router.get('/:post_id', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
+        pid: req.pid,
+        moderator: req.moderator
     });
 });
 
 router.delete('/:post_id', async function (req, res) {
     let post = await database.getPostByID(req.params.post_id);
     if(!post) return res.sendStatus(404);
-    if(req.pid !== post.pid) return res.sendStatus(401);
-
-    await post.removePost('User requested removal');
+    if(req.pid !== post.pid && !req.moderator) return res.sendStatus(401);
+    console.log(req.query.reason)
+    if(req.moderator && req.pid !== post.pid)
+        await post.removePost(req.query.reason, req.pid);
+    else
+        await post.removePost('User requested removal', req.pid);
 
     res.statusCode = 200;
     if(post.parent)
@@ -245,7 +249,8 @@ async function newPost(req, res) {
         platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
         region_id: req.paramPackData ? req.paramPackData.region_id : 2,
         verified: (req.user.access_level >= 2),
-        parent: parentPost ? parentPost.id : null
+        parent: parentPost ? parentPost.id : null,
+        moderator: req.moderator
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
     console.log('duplicate test' + duplicatePost && req.params.post_id)

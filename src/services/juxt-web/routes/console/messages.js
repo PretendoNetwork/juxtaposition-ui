@@ -19,7 +19,8 @@ router.get('/', async function (req, res) {
         cdnURL: config.CDN_domain,
         usersMap: usersMap,
         lang: req.lang,
-        mii_image_CDN: config.mii_image_CDN
+        mii_image_CDN: config.mii_image_CDN,
+        moderator: req.moderator
     });
 });
 
@@ -117,7 +118,8 @@ router.post('/new', async function (req, res, next) {
         platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
         region_id: req.paramPackData ? req.paramPackData.region_id : 2,
         verified: (req.user.accessLevel >= 2),
-        message_to_pid: req.body.message_to_pid
+        message_to_pid: req.body.message_to_pid,
+        moderator: req.moderator
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
     if(duplicatePost && req.params.post_id)
@@ -205,7 +207,8 @@ router.get('/:message_id', async function (req, res) {
         cdnURL: config.CDN_domain,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        pid: req.pid
+        pid: req.pid,
+        moderator: req.moderator
     });
     await conversation.markAsRead(req.pid);
 });

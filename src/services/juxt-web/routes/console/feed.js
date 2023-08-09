@@ -42,6 +42,7 @@ router.get('/', async function (req, res) {
         pid: req.pid,
         bundle,
         template: 'posts_list',
+        moderator: req.moderator
     });
 });
 
@@ -61,7 +62,8 @@ router.get('/more', async function (req, res) {
         userContent,
         lang: req.lang,
         mii_image_CDN: config.mii_image_CDN,
-        link: `/feed/more?offset=${offset + posts.length}&pjax=true`
+        link: `/feed/more?offset=${offset + posts.length}&pjax=true`,
+        moderator: req.moderator
     }
 
     if(posts.length > 0)
@@ -75,7 +77,8 @@ router.get('/more', async function (req, res) {
             cdnURL: config.CDN_domain,
             lang: req.lang,
             mii_image_CDN: config.mii_image_CDN,
-            pid: req.pid
+            pid: req.pid,
+            moderator: req.moderator
         });
     }
     else
