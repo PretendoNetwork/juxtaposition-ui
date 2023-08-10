@@ -125,14 +125,16 @@ function initPostModules() {
         els[i].addEventListener("click", function(e) {
             var el = e.currentTarget,
                 show = el.getAttribute("data-module-show"),
-                hide = el.getAttribute("data-module-hide"),
-                header = el.getAttribute("data-header"),
-                menu = el.getAttribute("data-menu"),
-                sound = el.getAttribute("data-sound");
-            if(sound) wiiuSound.playSoundByName(sound, 3);
+                hide = el.getAttribute("data-module-hide");
             if(!show || !hide) return;
             document.getElementById(hide).style.display = 'none';
             document.getElementById(show).style.display = 'block';
+
+                var header = el.getAttribute("data-header"),
+                menu = el.getAttribute("data-menu"),
+                sound = el.getAttribute("data-sound");
+            if(sound) wiiuSound.playSoundByName(sound, 3);
+
             if(header === 'true')
                 document.getElementById("header").style.display = 'block';
             else
@@ -161,9 +163,10 @@ function initSounds() {
     var els = document.querySelectorAll("[data-sound]");
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
-        els[i].addEventListener("click", function(e) {
-            wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
-        });
+        els[i].addEventListener("click", playSound);
+    }
+    function playSound(e) {
+        wiiuSound.playSoundByName(e.currentTarget.getAttribute('data-sound'), 3);
     }
 }
 function initScreenShots() {
@@ -329,6 +332,17 @@ function deletePost(post) {
             return window.location.href = data.responseText;
         });
     }
+}
+
+function reportPost(post) {
+    var id = post.getAttribute('data-post');
+    var button = document.getElementById('report-launcher');
+    var form = document.getElementById('report-form');
+    if(!id || !button || !form) return;
+
+    form.action = '/posts/' + id + '/report';
+    console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, "$1-$2-$3-$4-$5-$6"));
+    button.click();
 }
 function checkForUpdates() {
     GET('/notifications.json', function updates(data) {

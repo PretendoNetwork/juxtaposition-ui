@@ -127,9 +127,8 @@ router.delete('/:post_id', async function (req, res) {
     let post = await database.getPostByID(req.params.post_id);
     if(!post) return res.sendStatus(404);
     if(req.pid !== post.pid && !req.moderator) return res.sendStatus(401);
-    console.log(req.query.reason)
     if(req.moderator && req.pid !== post.pid)
-        await post.removePost(req.query.reason, req.pid);
+        await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
     else
         await post.removePost('User requested removal', req.pid);
 
@@ -248,15 +247,13 @@ async function newPost(req, res) {
         pid: req.pid,
         platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
         region_id: req.paramPackData ? req.paramPackData.region_id : 2,
-        verified: (req.user.access_level >= 2),
+        verified: req.moderator,
         parent: parentPost ? parentPost.id : null,
         moderator: req.moderator
     };
     let duplicatePost = await database.getDuplicatePosts(req.pid, document);
-    console.log('duplicate test' + duplicatePost && req.params.post_id)
     if (duplicatePost && req.params.post_id)
         return res.redirect('/posts/' + req.params.post_id.toString());
-    console.log('last empty check' + document.body === '' && document.painting === '' && document.screenshot === '')
     if (document.body === '' && document.painting === '' && document.screenshot === '')
         return res.redirect('/titles/' + community.olive_community_id + '/new');
     const newPost = new POST(document);

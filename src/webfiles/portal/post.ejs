@@ -16,10 +16,11 @@
         <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
         <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
-        <% if(post.pid === pid) {%>
+        <% if(post.pid === pid || moderator) {%>
             <a id="header-communities-button" class="delete" href="#" data-post="<%=post.id%>" onclick="deletePost(this)">Delete Post</a>
         <%} else {%>
-            <a id="header-communities-button" class="report" href="#" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false">Report Post</a>
+            <a id="report-launcher" style="display: none" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false"></a>
+            <a id="header-communities-button" class="report" href="#" data-post="<%= post.id %>" onclick="reportPost(this)">Report Post</a>
         <%}%>
         <%}%>
     </header>
@@ -38,7 +39,7 @@
         <header class="add-post-page-header">
             <h1 class="page-title">Report Post</h1>
         </header>
-        <form method="post" action="/posts/<%=post.id%>/report" id="posts-form" data-is-own-title="1" data-is-identified="1">
+        <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
             <input type="hidden" name="post_id" value="<%= post.id %>"/>
             <div class="add-post-page-content report">
                 <p>

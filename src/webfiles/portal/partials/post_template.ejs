@@ -53,8 +53,13 @@
             </div>
             <div class="post-buttons">
                 <button type="button" class="submit yeah-button <%if(post.yeahs && post.yeahs.indexOf(userContent.pid) !== -1){ %> selected <%}%>" data-post="<%= post.id %>"></button>
-                <a <%if(!yeah) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
-                    <% if(reply && post.pid === pid) {%>
+                <a <%if(!yeah && !reply) {%>href="/posts/<%= post.id %>"<%}%> class="to-permalink-button" data-pjax="#body">
+                    <% if(reply && post.pid !== pid && !moderator) {%>
+                        <div>
+                            <button type="button" class="submit report" data-post="<%= post.id %>" onclick="reportPost(this)"></button>
+                        </div>
+                    <%}%>
+                    <% if(reply && post.pid === pid || reply && moderator) {%>
                         <div>
                             <button type="button" class="submit remove" data-post="<%= post.id %>" onclick="deletePost(this)"></button>
                         </div>
