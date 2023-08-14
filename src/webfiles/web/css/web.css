@@ -453,12 +453,25 @@ iframe {
 .reports .hover:hover {
     background: unset;
 }
-@media screen and (max-width:1400px) {
+.reports button {
+    margin-bottom: 1em;
+}
+
+@media screen and (max-width:1200px) {
     .communities-wrapper {
         max-width:600px;
         grid-template-columns:auto auto;
         grid-row-gap:10px;
         grid-column-gap:10px
+    }
+    header {
+        align-items: center;
+    }
+    header p {
+        display: none;
+    }
+    header a {
+        padding: .25em 0.5em .25em 0.5em;
     }
 }
 @media screen and (max-width:1000px) {

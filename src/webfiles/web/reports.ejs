@@ -9,7 +9,7 @@
     <div id="toast"></div>
     <div id="wrapper">
         <% if(reports.length === 0) {%>
-            <li><p>No Reports found</p></li>
+            <p>No Reports found</p>
         <%} else { %>
         <ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
             <% reports.forEach(function(report) { %>
@@ -68,7 +68,7 @@
                     </div>
                     <% let post = posts.find((post) => post.id === report.post_id) %>
                     <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
-                    <button onclick="remove(this)" data-id="<%=post.id%>">Remove Post</button>
+                    <button onclick="remove(this)" data-id="<%=report._id%>">Remove Post</button>
                 </li>
 
             <% });} %>
@@ -81,10 +81,10 @@
         const reason = prompt("Provide explanation for removing post:")
         if(!id || !reason) return;
 
-        fetch(`/posts/${id}?reason=${reason}`, {
+        fetch(`/admin/${id}?reason=${reason}`, {
             method: 'DELETE',
         })
-            .then(res => res.text()) // or res.json()
+            .then(res => res.text())
             .then(res => console.log(res))
     }
 </script>

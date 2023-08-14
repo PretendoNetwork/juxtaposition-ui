@@ -10,7 +10,7 @@ router.get('/', async function (req, res) {
     if(!req.moderator)
         return res.redirect('/login');
 
-    const reports = await database.getAllReports();
+    const reports = await database.getAllOpenReports();
     const communityMap = await util.data.getCommunityHash();
     const userContent = await database.getUserContent(req.pid);
     const userMap = util.data.getUserHash();
@@ -38,6 +38,20 @@ router.get('/', async function (req, res) {
         reports,
         posts
     });
+});
+
+router.delete('/:reportID', async function (req, res) {
+    let report = await database.getReportById(req.params.reportID);
+    if(!report) return res.sendStatus(402);
+    let post = await database.getPostByID(report.post_id);
+    if(!post) return res.sendStatus(404);
+
+    if(!req.moderator) return res.sendStatus(401);
+
+    await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
+    await report.resolve(req.pid);
+
+    return res.sendStatus(200);
 });
 
 module.exports = router;

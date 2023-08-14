@@ -447,6 +447,11 @@ async function getAllReports(offset, limit) {
     return REPORT.find().sort({created_at: -1}).skip(offset).limit(limit);
 }
 
+async function getAllOpenReports(offset, limit) {
+    verifyConnected();
+    return REPORT.find({ resolved: false }).sort({created_at: -1}).skip(offset).limit(limit);
+}
+
 async function getReportsByUser(pid, offset, limit) {
     verifyConnected();
     return REPORT.find({ reported_by: pid }).sort({created_at: -1}).skip(offset).limit(limit);
@@ -455,6 +460,11 @@ async function getReportsByUser(pid, offset, limit) {
 async function getReportsByPost(postID, offset, limit) {
     verifyConnected();
     return REPORT.find({ post_id: postID }).sort({created_at: -1}).skip(offset).limit(limit);
+}
+
+async function getReportById(id) {
+    verifyConnected();
+    return REPORT.findById(id);
 }
 
 
@@ -508,6 +518,8 @@ module.exports = {
     getAllUserPosts,
     getRemovedUserPosts,
     getAllReports,
+    getAllOpenReports,
     getReportsByUser,
-    getReportsByPost
+    getReportsByPost,
+    getReportById
 };
