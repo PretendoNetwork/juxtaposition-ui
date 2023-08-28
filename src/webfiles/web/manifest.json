@@ -6,7 +6,7 @@
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
-  "start_url": "/activity-feed",
+  "start_url": "/feed",
   "icons": [
     {
       "src": "https://juxt.pretendo.network/web/icons/icon-72x72.png",
