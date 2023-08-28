@@ -9,7 +9,7 @@ async function auth(request, response, next) {
         isStartOfPath(request.path, '/fonts/') ||
         isStartOfPath(request.path, '/js/') ||
         request.path === '/favicon.ico' ||
-        request.path === '/web/manifest.json' ||
+        isStartOfPath(request.path, '/web/')  ||
         isStartOfPath(request.path, '/image/')) {
         request.lang = util.data.processLanguage();
         if(request.subdomains.includes('juxt'))
