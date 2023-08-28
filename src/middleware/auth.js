@@ -20,7 +20,12 @@ async function auth(request, response, next) {
 
     // Get pid and fetch user data
     if(request.cookies.access_token) {
-        request.user = request.cookies.access_token ? await util.data.getUserDataFromToken(request.cookies.access_token).catch((e)=>{}) : null;
+        try {
+            request.user = await util.data.getUserDataFromToken(request.cookies.access_token);
+        }
+        catch(e) {
+            return response.render('web/login.ejs', {toast: 'Unable to reach the account server. Try again later.', cdnURL: config.CDN_domain,});
+        }
         request.pid = request.user ? request.user.pid : null;
     }
     else if(request.headers["x-nintendo-servicetoken"]) {
