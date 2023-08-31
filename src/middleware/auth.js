@@ -10,6 +10,7 @@ async function auth(request, response, next) {
         isStartOfPath(request.path, '/js/') ||
         request.path === '/favicon.ico' ||
         isStartOfPath(request.path, '/web/')  ||
+        isStartOfPath(request.path, '/images/')  ||
         isStartOfPath(request.path, '/image/')) {
         request.lang = util.data.processLanguage();
         if(request.subdomains.includes('juxt'))
