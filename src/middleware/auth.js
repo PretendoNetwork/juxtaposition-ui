@@ -41,6 +41,10 @@ async function auth(request, response, next) {
 
     // Ban check
     if(request.user) {
+		if (request.user.serverAccessLevel !== 'test' && requets.user.serverAccessLevel !== 'test') {
+			response.status(500);
+			return response.send('No access. Must be tester or dev');
+		}
         // Set moderator status
         request.moderator = request.user.accessLevel >= 2;
         const user = await db.getUserSettings(request.pid);
