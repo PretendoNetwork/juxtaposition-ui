@@ -18,16 +18,16 @@
         "next": "Volgende"
     },
     "all_communities": {
-        "text": "Alle Communities",
+        "text": "Alle Gemeenschappen",
         "announcements": "Aankondigingen",
         "ann_string": "Klik hier om recente aankondigen te bekijken!",
-        "popular_places": "Populaire Communities",
-        "new_communities": "Nieuwe Communities",
+        "popular_places": "Populaire Gemeenschappen",
+        "new_communities": "Nieuwe Gemeenschappen",
         "show_all": "Alles weergeven",
-        "search": "Zoek communities..."
+        "search": "Zoek gemeenschappen..."
     },
     "community": {
-        "follow": "Volg Community",
+        "follow": "Volg gemeenschap",
         "following": "Volgend",
         "followers": "Volgers",
         "posts": "Posts",
