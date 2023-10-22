@@ -9,12 +9,19 @@ const console = express.Router();
 // Create subdomains
 logger.info('[JUXT-WEB] Creating \'Web\' subdomain');
 router.use(subdomain('juxt', console));
+router.use(subdomain('juxt-beta', console));
+router.use(subdomain('juxt-dev', console));
 
 logger.info('[JUXT-WEB] Creating \'Wii U\' subdomain');
 router.use(subdomain('portal.olv', console));
+router.use(subdomain('portal-beta.olv', console));
+router.use(subdomain('portal-dev.olv', console));
+
 
 logger.info('[JUXT-WEB] Creating \'3DS\' subdomain');
 router.use(subdomain('ctr.olv', console));
+router.use(subdomain('ctr-beta.olv', console));
+router.use(subdomain('ctr-dev.olv', console));
 
 // Setup routes
 console.use('/titles/show', routes.PORTAL_SHOW);

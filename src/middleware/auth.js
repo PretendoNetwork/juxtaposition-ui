@@ -13,10 +13,10 @@ async function auth(request, response, next) {
         isStartOfPath(request.path, '/images/')  ||
         isStartOfPath(request.path, '/image/')) {
         request.lang = util.data.processLanguage();
-        if(request.subdomains.includes('juxt'))
+        if(includes(request, 'juxt'))
             request.directory = 'web';
         else
-            request.directory = request.subdomains[1];
+            request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
         return next()
     }
 
@@ -67,7 +67,7 @@ async function auth(request, response, next) {
     }
 
     // Juxt Website
-    if(request.subdomains.includes('juxt')) {
+    if(includes(request, 'juxt')) {
         request.lang = util.data.processLanguage();
         request.token = request.cookies.access_token;
         request.paramPackData = null;
@@ -120,13 +120,17 @@ async function auth(request, response, next) {
             });
 
         request.lang = util.data.processLanguage(request.paramPackData);
-        request.directory = request.subdomains[1];
+        request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
         return next();
     }
 }
 
 function isStartOfPath(path, value) {
     return path.indexOf(value) === 0;
+}
+
+function includes(request, domain) {
+    return request.subdomains.findIndex(element => element.includes(domain)) !== -1
 }
 
 module.exports = auth;

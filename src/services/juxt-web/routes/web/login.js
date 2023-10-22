@@ -58,8 +58,8 @@ router.post('/', async (req, res) => {
             moderator: req.moderator
         });
     }
-    let cookieDomain = (req.hostname === 'juxt.miiverse.cc') ? '.miiverse.cc' : '.pretendo.network';
-    let expiration = (req.hostname === 'juxt.miiverse.cc') ? login.expiresIn * 60 * 60 * 24 : login.expiresIn * 60 * 60
+    let cookieDomain = (req.hostname.indexOf('miiverse') !== -1) ? '.miiverse.cc' : '.pretendo.network';
+    let expiration = (req.hostname.indexOf('miiverse') !== -1) ? login.expiresIn * 60 * 60 * 24 : login.expiresIn * 60 * 60
     res.cookie('access_token', login.accessToken, { domain : cookieDomain, maxAge: expiration });
     res.cookie('refresh_token', login.refreshToken, { domain : cookieDomain });
     res.redirect('/');
