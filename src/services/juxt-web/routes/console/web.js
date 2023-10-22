@@ -1,10 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var xml = require('object-to-xml');
+const express = require('express');
+const router = express.Router();
 const database = require('../../../../database');
-const util = require('../../../../util');
-var path = require('path');
-const {data} = require("../../../../util");
+const { POST } = require('../../../../models/post');
+const path = require('path');
 
 router.get('/', function (req, res) {
     res.redirect('/titles/show')
@@ -20,6 +18,11 @@ router.get('/js/:filename', function (req, res) {
     res.sendFile('/js/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
 });
 
+router.get('/images/:filename', function (req, res) {
+    res.set("Content-Type", "image/png");
+    res.sendFile('/images/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
+});
+
 router.get('/fonts/:filename', function (req, res) {
     res.set("Content-Type", "font/woff");
     res.sendFile('/fonts/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
@@ -27,7 +30,7 @@ router.get('/fonts/:filename', function (req, res) {
 
 router.get('/favicon.ico', function (req, res) {
     res.set("Content-Type", "image/x-icon");
-    res.sendFile('/css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
+    res.sendFile('/images/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
 });
 
 router.get('/icons/:image_id.png', async function (req, res) {
@@ -132,12 +135,14 @@ router.get('/:post_id/oembed.json', async function (req, res) {
 
 router.get('/downloadUserData.json', async function (req, res) {
     res.set("Content-Type", "text/json");
-    let posts = await database.getUserPostsOffset(req.pid, 100000, 0);
-    let user = await database.getUserSettings(req.pid);
-    user += await database.getUserContent(req.pid);
+    res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
+    let posts = await POST.find({ pid: req.pid })
+    let userContent = await database.getUserSettings(req.pid);
+    let userSettings = await database.getUserContent(req.pid);
     let doc = {
-        "user": user,
-        "content": posts,
+        "user_content": userContent,
+        "user_settings": userSettings,
+        "posts": posts,
     }
     res.send(doc)
 });

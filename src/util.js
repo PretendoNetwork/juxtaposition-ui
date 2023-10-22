@@ -1,22 +1,38 @@
 const crypto = require('crypto');
 const NodeRSA = require('node-rsa');
 const fs = require('fs-extra');
-const { isAfter, subHours } = require("date-fns");
 const database = require('./database');
 const logger = require('./logger');
+const grpc = require('nice-grpc');
 const config = require('../config.json');
 const { SETTINGS } = require('./models/settings');
 const { CONTENT } = require('./models/content');
 const { NOTIFICATION } = require('./models/notifications');
+const { COMMUNITY } = require('./models/communities');
+const { AccountDefinition } = require('pretendo-grpc/dist/account/account_service');
+const { FriendsDefinition } = require('pretendo-grpc/dist/friends/friends_service');
+const { APIDefinition } = require('pretendo-grpc/dist/api/api_service');
 const translations = require('./translations')
-var HashMap = require('hashmap');
-let TGA = require('tga');
-let pako = require('pako');
-let PNG = require('pngjs').PNG;
-var bmp = require("bmp-js");
+const HashMap = require('hashmap');
+const TGA = require('tga');
+const pako = require('pako');
+const PNG = require('pngjs').PNG;
+const bmp = require("bmp-js");
 const aws = require('aws-sdk');
+const crc32 = require('crc/crc32');
 let communityMap = new HashMap();
 let userMap = new HashMap();
+
+const { ip: friendsIP, port: friendsPort, api_key: friendsKey } = config.grpc.friends;
+const friendsChannel = grpc.createChannel(`${friendsIP}:${friendsPort}`);
+const friendsClient = grpc.createClient(FriendsDefinition, friendsChannel);
+
+const { ip: apiIP, port: apiPort, api_key: apiKey } = config.grpc.account;
+const apiChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
+const apiClient = grpc.createClient(APIDefinition, apiChannel);
+
+const accountChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
+const accountClient = grpc.createClient(AccountDefinition, accountChannel);
 
 const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
 const s3 = new aws.S3({
@@ -29,28 +45,28 @@ nameCache();
 
 function nameCache() {
     database.connect().then(async e => {
-        let communities = await database.getCommunities();
+        let communities = await COMMUNITY.find();
         if(communities !== null) {
             for(let i = 0; i < communities.length; i++ ) {
                 if(communities[i].title_id !== null) {
                     for(let j = 0; j < communities[i].title_id.length; j++) {
                         communityMap.set(communities[i].title_id[j], communities[i].name);
-                        communityMap.set(communities[i].title_id[j] + '-id', communities[i].community_id);
+                        communityMap.set(communities[i].title_id[j] + '-id', communities[i].olive_community_id);
                     }
-                    communityMap.set(communities[i].community_id, communities[i].name);
+                    communityMap.set(communities[i].olive_community_id, communities[i].name);
                 }
             }
+            logger.success('Created community index of ' + communities.length + ' communities');
         }
-        logger.success('Created community index of ' + communities.length + ' communities')
         let users = await database.getUsersSettings(-1);
         if(users !== null) {
             for(let i = 0; i < users.length; i++ ) {
                 if(users[i].pid !== null) {
-                    userMap.set(users[i].pid.toString(), users[i].screen_name);
+                    userMap.set(users[i].pid, users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu,""));
                 }
             }
+            logger.success('Created user index of ' + users.length + ' users')
         }
-        logger.success('Created user index of ' + users.length + ' users')
 
     }).catch(error => {
         logger.error(error);
@@ -58,8 +74,8 @@ function nameCache() {
 }
 
 let methods = {
-    create_user: async function(pid, experience, notifications, region) {
-        const pnid = await database.getPNID(pid);
+    create_user: async function(pid, experience, notifications) {
+        const pnid = await this.getUserDataFromPid(pid);
         if(!pnid)
             return;
         let newSettings = {
@@ -91,80 +107,54 @@ let methods = {
         }
         return out;
     },
-    processServiceToken: function(token) {
+    processServiceToken: function(encryptedToken) {
         try
         {
-            let B64token = Buffer.from(token, 'base64');
+            let B64token = Buffer.from(encryptedToken, 'base64');
             let decryptedToken = this.decryptToken(B64token);
-            return decryptedToken.readUInt32LE(0x2);
+            const token = this.unpackToken(decryptedToken);
+            return token.pid;
         }
         catch(e)
         {
-            //console.log(e)
+            console.log(e)
             return null;
         }
 
     },
     decryptToken: function(token) {
-        // Access and refresh tokens use a different format since they must be much smaller
-        // Assume a small length means access or refresh token
-        if (token.length <= 32) {
-            const cryptoPath = `${__dirname}/../certs/access`;
-            const aesKey = Buffer.from(fs.readFileSync(`${cryptoPath}/aes.key`, { encoding: 'utf8' }), 'hex');
-
-            const iv = Buffer.alloc(16);
-
-            const decipher = crypto.createDecipheriv('aes-128-cbc', aesKey, iv);
-
-            let decryptedBody = decipher.update(token);
-            decryptedBody = Buffer.concat([decryptedBody, decipher.final()]);
-
-            return decryptedBody;
+        if (!config.aes_key) {
+            throw new Error('Service token AES key not found. Set config.aes_key');
         }
 
-        const cryptoPath = `${__dirname}/certs/access`;
+        const iv = Buffer.alloc(16);
+        const key = Buffer.from(config.aes_key, 'hex');
 
-        const cryptoOptions = {
-            private_key: fs.readFileSync(`${cryptoPath}/private.pem`),
-            hmac_secret: config.account_server_secret
-        };
+        const expectedChecksum = token.readUint32BE();
+        const encryptedBody = token.subarray(4);
 
-        const privateKey = new NodeRSA(cryptoOptions.private_key, 'pkcs1-private-pem', {
-            environment: 'browser',
-            encryptionScheme: {
-                'hash': 'sha256',
-            }
-        });
+        const decipher = crypto.createDecipheriv('aes-256-cbc', key, iv);
 
-        const cryptoConfig = token.subarray(0, 0x82);
-        const signature = token.subarray(0x82, 0x96);
-        const encryptedBody = token.subarray(0x96);
-
-        const encryptedAESKey = cryptoConfig.subarray(0, 128);
-        const point1 = cryptoConfig.readInt8(0x80);
-        const point2 = cryptoConfig.readInt8(0x81);
-
-        const iv = Buffer.concat([
-            Buffer.from(encryptedAESKey.subarray(point1, point1 + 8)),
-            Buffer.from(encryptedAESKey.subarray(point2, point2 + 8))
+        const decrypted = Buffer.concat([
+            decipher.update(encryptedBody),
+            decipher.final()
         ]);
 
-        const decryptedAESKey = privateKey.decrypt(encryptedAESKey);
-
-        const decipher = crypto.createDecipheriv('aes-128-cbc', decryptedAESKey, iv);
-
-        let decryptedBody = decipher.update(encryptedBody);
-        decryptedBody = Buffer.concat([decryptedBody, decipher.final()]);
-
-        const hmac = crypto.createHmac('sha1', cryptoOptions.hmac_secret).update(decryptedBody);
-        const calculatedSignature = hmac.digest();
-
-        if (Buffer.compare(calculatedSignature, signature) !== 0) {
-            console.log('Token signature did not match');
-            return null;
+        if (expectedChecksum !== crc32(decrypted)) {
+            throw new Error('Checksum did not match. Failed decrypt. Are you using the right key?');
         }
 
-        return decryptedBody;
+        return decrypted;
+    },
+    unpackToken: function(token) {
+        return {
+            system_type: token.readUInt8(0x0),
+            token_type: token.readUInt8(0x1),
+            pid: token.readUInt32LE(0x2),
+            expire_time: token.readBigUInt64LE(0x6),
+            title_id: token.readBigUInt64LE(0xE),
+            access_level: token.readInt8(0x16)
+        };
     },
     processPainting: async function (painting, isTGA) {
         if (isTGA) {
@@ -197,15 +187,12 @@ let methods = {
             const tga = this.createBMPTgaBuffer(bitmap.width, bitmap.height, bitmap.data, false);
 
             let output;
-            try
-            {
+            try {
                 output = pako.deflate(tga, {level: 6});
             }
-            catch (err)
-            {
+            catch (err) {
                 console.error(err);
             }
-
             return new Buffer(output).toString('base64')
         }
     },
@@ -272,10 +259,9 @@ let methods = {
 
         return buffer;
     },
-    processLanguage: function (header) {
-        if(!header)
+    processLanguage: function (paramPackData) {
+        if(!paramPackData)
             return translations.EN;
-        let paramPackData = this.decodeParamPack(header);
         switch (paramPackData.language_id) {
             case '0':
                 return translations.JA
@@ -316,53 +302,130 @@ let methods = {
         await s3.putObject(awsPutParams).promise();
     },
     newNotification: async function(notification) {
-        // Check if a notification with the same pid and type already exists in the database
-        let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: notification.type });
-
-        if (existingNotification) {
-            // Check if the notification is less than 24 hours old
-            let notificationIsLessThan24HoursOld = isAfter(new Date(), subHours(existingNotification.lastUpdated, 24));
-
-            if (notificationIsLessThan24HoursOld) {
-                if(existingNotification.users.filter(e => (e.user === notification.user)))
-                    return;
-                // If the notification is less than 24 hours old, add the new user and timestamp to the list of users for that notification
+        const now = new Date();
+        if(notification.type === 'follow') {
+            // { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
+            let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
+            if(existingNotification) {
+                existingNotification.lastUpdated = now;
+                existingNotification.read = false;
+                return await existingNotification.save();
+            }
+            const last10min = new Date(now.getTime() - 10 * 60 * 1000);
+            existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow', lastUpdated: { $gte: last10min } });
+            if(existingNotification) {
                 existingNotification.users.push({
-                    user: notification.user,
-                    timestamp: new Date()
+                    user: notification.objectID,
+                    timeStamp: now
                 });
-                existingNotification.lastUpdated = new Date();
-                await existingNotification.save();
-            } else {
-                // If the notification is more than 24 hours old, create a new notification
+                existingNotification.lastUpdated = now;
+                existingNotification.link = notification.link;
+                existingNotification.objectID = notification.objectID;
+                existingNotification.read = false;
+                return await existingNotification.save();
+            }
+            else {
                 let newNotification = new NOTIFICATION({
                     pid: notification.pid,
                     type: notification.type,
                     users: [{
-                        user: notification.user,
+                        user: notification.objectID,
+                        timestamp: now
+                    }],
+                    link: notification.link,
+                    objectID: notification.objectID,
+                    read: false,
+                    lastUpdated: now
+                });
+                await newNotification.save();
+            }
+        }
+        /*else if(notification.type === 'yeah') {
+            // { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
+            let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
+            if(existingNotification) {
+                existingNotification.lastUpdated = new Date();
+                return await existingNotification.save();
+            }
+            existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'yeah' });
+            if(existingNotification) {
+                existingNotification.users.push({
+                    user: notification.objectID,
+                    timeStamp: new Date()
+                });
+                existingNotification.lastUpdated = new Date();
+                existingNotification.link = notification.link;
+                existingNotification.objectID = notification.objectID;
+                return await existingNotification.save();
+            }
+            else {
+                let newNotification = new NOTIFICATION({
+                    pid: notification.pid,
+                    type: notification.type,
+                    users: [{
+                        user: notification.objectID,
                         timestamp: new Date()
                     }],
                     link: notification.link,
+                    objectID: notification.objectID,
                     read: false,
                     lastUpdated: new Date()
                 });
                 await newNotification.save();
             }
-        } else {
-            // If a notification with the same pid and type does not already exist, add a new notification to the database
-            let newNotification = new NOTIFICATION({
-                pid: notification.pid,
-                type: notification.type,
-                users: [{
-                    user: notification.user,
-                    timestamp: new Date()
-                }],
-                link: notification.link,
-                read: false,
-                lastUpdated: new Date()
-            });
-            await newNotification.save();
-        }
+        }*/
+    },
+    getFriends: async function(pid) {
+        const pids =  await friendsClient.getUserFriendPIDs({
+            pid: pid
+        }, {
+            metadata: grpc.Metadata({
+                'X-API-Key': friendsKey
+            })
+        });
+        return pids.pids;
+    },
+    getFriendRequests: async function(pid) {
+        const requests = await friendsClient.getUserFriendRequestsIncoming({
+            pid: pid
+        }, {
+            metadata: grpc.Metadata({
+                'X-API-Key': friendsKey
+            })
+        });
+        return requests.friendRequests;
+    },
+    login: async function(username, password) {
+        return await apiClient.login({
+            username: username,
+            password: password,
+            grantType: 'password'
+        }, {
+            metadata: grpc.Metadata({
+                'X-API-Key': apiKey
+            })
+        });
+    },
+    getUserDataFromToken: async function(token) {
+        return apiClient.getUserData({}, {
+            metadata: grpc.Metadata({
+                'X-API-Key': apiKey,
+                'X-Token': token
+            })
+        });
+    },
+    getUserDataFromPid: async function(pid) {
+      return accountClient.getUserData({
+          pid: pid
+      }, {
+          metadata: grpc.Metadata({
+              'X-API-Key': apiKey
+          })
+      });
+    },
+    getPid: async function(token) {
+        const user = await this.getUserDataFromToken(token);
+        return user.pid;
     }
 };
 exports.data = methods;

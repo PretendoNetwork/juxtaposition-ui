@@ -1,59 +1,15 @@
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
-    <script src="https://portal.cdn.pretendo.cc/js/pjax.min.js"></script>
-    <script src="https://portal.cdn.pretendo.cc/js/juxt.js"></script>
-    <link rel="manifest" href="/web/manifest.json">
-    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-195842548-1');
-    </script>
-
+    <%- include('partials/head'); %>
 </head>
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.activity_feed %></h2>
-    <%- include('nav_bar', { selection: 1 }); %>
+    <%- include('partials/nav_bar', { selection: 1, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper">
-        <% if(posts.length === 0) {%>
-            <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
-        <%} else { %>
-            <% posts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-            <% }); %>
-        <%}%>
-    </div>
-    <div id="wrapper">
-        <button id="load-more-posts-button" data-offset="20" onclick="loadFeedPosts(this)"><%= lang.global.more %></button>
+        <%- include('partials/' + template, { bundle }); %>
     </div>
 </div>
-<script>
-    window.onscroll = function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            document.getElementById('load-more-posts-button').click();
-        }
-    };
-    function copyToClipboard(text) {
-        let inputc = document.getElementsByTagName("header")[0].appendChild(document.createElement("input"));
-        inputc.value = text;
-        inputc.focus();
-        inputc.select();
-        document.execCommand('copy');
-        inputc.parentNode.removeChild(inputc);
-        Toast("Copied to clipboard.");
-    }
-    function Toast(text) {
-        var x = document.getElementById("toast");
-        x.innerText = text;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    }
-</script>
 </body>
 </html>

@@ -18,13 +18,13 @@
     <meta property="og:title" content="Juxtaposition">
     <meta property="og:description" content="An open source Nintendo Network replacement that aims to build custom servers for the WiiU and 3DS family of consoles">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://juxt.pretendo.cc/">
+    <meta property="og:url" content="https://juxt.pretendo.network/">
     <meta property="og:image" content="https://pretendo.network/assets/images/opengraph/opengraph-image.png">
     <meta property="og:image:alt" content="Juxtaposition">
     <meta property="og:site_name" content="Juxtaposition">
 
     <!-- twitter embeds -->
-    <meta name="twitter:url" content="https://juxt.pretendo.cc/">
+    <meta name="twitter:url" content="https://juxt.pretendo.network/">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@PretendoNetwork">
     <meta name="twitter:title" content="Pretendo Network">
@@ -46,7 +46,7 @@
 <body>
 <div class="main-body">
     <link rel="stylesheet" href="/css/login.css">
-
+    <div id="toast"></div>
     <div class="wrapper">
         <div class="account-form-wrapper">
             <a class="logotype" href="https://pretendo.network">
@@ -66,8 +66,6 @@
                     </g>
                 </svg>
             </a>
-            <%var message %>
-            <%if(endpoint.status === 0) {%>
             <form action="/login" method="post" class="account">
                 <h2>Juxtaposition Sign in</h2>
                 <p>Enter your account details below</p>
@@ -78,7 +76,7 @@
                 <div>
                     <label for="password">Password</label>
                     <input name="password" id="password" type="password" required="">
-                    <a href="https://pretendo.network/account/passwordreset" class="pwdreset">Forgot your password?</a>
+                    <a href="https://pretendo.network/account/forgot-password" class="pwdreset">Forgot your password?</a>
                 </div>
                 <input name="grant_type" id="grant_type" type="hidden" value="password">
                 <div class="buttons">
@@ -86,23 +84,18 @@
                     <a href="https://pretendo.network/account/register" class="register">Don't have an account?</a>
                 </div>
             </form>
-            <%}%>
-            <%switch (endpoint.status) {
-                case 3:
-                    message = "Juxt is currently undergoing maintenance. Please try again later.";
-                    break;
-                case 4:
-                    message = "Juxt is currently closed. Thank you for your interest.";
-                    break;
-                default:
-                    message = "Juxt is currently unavailable. Please try again later.";
-                    break;
-            } if(endpoint.status !== 0) {%>
-                <h2><%= message %></h2>
-                <h3>View current server status <a href="https://stats.uptimerobot.com/R7E4wiGjJq">here.</a></h3>
-            <%}%>
-
         </div>
     </div>
 </div>
+<script>
+    function Toast(text) {
+        let x = document.getElementById("toast");
+        x.innerText = text;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+    <%if(toast) {%>
+        Toast("<%=toast%>");
+    <%}%>
+</script>
 </body></html>

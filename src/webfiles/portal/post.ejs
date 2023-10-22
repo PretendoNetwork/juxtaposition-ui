@@ -1,143 +1,75 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <meta content="<%= post.screen_name %>" property="og:title" />
-    <meta content="<%= post.body %>" property="og:description" />
-    <meta content="https://portal.olv.pretendo.cc/posts/<%= post.id %>" property="og:url" />
-    <meta content="#1F8A42" data-react-helmet="true" name="theme-color" />
-    <meta content="<%= community.name %> - <%= post.empathy_count%> Yeahs!" property="og:site_name">
-    <meta name="twitter:card" content="summary_large_image" />
-    <% if(post.screenshot !== '') { %>
-        <meta property="og:image" content="https://portal.cdn.pretendo.cc/screenshot/<%= post.id %>.png" />
-    <%}%>
-    <% if(post.painting !== '') { %>
-        <meta property="og:image" content="https://portal.cdn.pretendo.cc/drawing/<%= post.id %>.png" />
-    <%}%>
-</head>
+<html lang="en">
+<%- include('partials/head', { title: lang.global.activity_feed }); %>
 <body>
-<%- include('nav_bar', { selection: -1 }); %>
-<div id="main">
-    <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
-        <div class="overlay-content" style="position: fixed">
-            <div id="post-window" class="post-wrapper">
-                <!--Start of Main Post-->
-                <form class="post-emotion-radio" action="/posts/<%= post.id %>/new" method="post" enctype="multipart/form-data">
-                    <table>
-                        <tr>
-                            <td colspan="2">
-                                <h1 class="communities-header" style="padding-left: 50px; padding-top: 10px">Reply to <%= post.screen_name %></h1>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= userContent.pid %>/normal_face.png">
-                                <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
-                                <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
-                                <input type="hidden" id="_post_type" name="_post_type" value="body">
-                            </td>
-                            <td>
-                                <div class="post-emotions-wrapper">
-                                    <label for="post-emotion-0">
-                                        <input type="radio" name="emotion" id="post-emotion-0" value="0" onclick="changeMiiImageReaction(this)" checked>
-                                        <span class="post-emotion-0"></span>
-                                    </label>
-                                    <label for="post-emotion-1">
-                                        <input type="radio" name="emotion" id="post-emotion-1" value="1" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-1"></span>
-                                    </label>
-                                    <label for="post-emotion-2">
-                                        <input type="radio" name="emotion" id="post-emotion-2" value="2" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-2"></span>
-                                    </label>
-                                    <label for="post-emotion-3">
-                                        <input type="radio" name="emotion" id="post-emotion-3" value="3" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-3"></span>
-                                    </label>
-                                    <label for="post-emotion-4">
-                                        <input type="radio" name="emotion" id="post-emotion-4" value="4" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-4"></span>
-                                    </label>
-                                    <label for="post-emotion-5">
-                                        <input type="radio" name="emotion" id="post-emotion-5" value="5" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-5"></span>
-                                    </label>
-                                </div>
-                                <div class="post-emotions-arrow-left"></div>
-                            </td>
-                            <td>
-                                <div class="post-screenshot-picker" onclick="loadScreenshots()">
-                                    <div class="post-screenshot-picker-icon"></div>
-                                    <div class="post-screenshot-picker-dropdown">
-                                        <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(true);"></div>
-                                        <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = wiiuMainApplication.getScreenShot(false);"></div>
-                                        <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
-                                        <input type="hidden" id="screenshot-value" name="screenshot" value="">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
-                            </td>
-                            <td rowspan="2" id="post-text-input">
-                                <textarea class="post-textarea" id="comment" name="body" maxlength="280" placeholder="<%= lang.new_post.text_hint %>" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.new_post.swearing %>');}"></textarea>
-                            </td>
-                            <td rowspan="2" id="post-painting-input" style="display: none;">
-                                <div class="post-memo">
-                                    <img class="post-memo-preview" id="memo" width="640px" height="240px" src="" style="display: none;" onclick="newPainting(false)">
-                                    <input type="hidden" id="memo-value" name="painting" value="">
-                                </div>
-                            </td>
-                            <br>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="post-type-button-painting" onclick="swapPostType(1);newPainting(false)"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <label class="checkbox-container checkbox-post">Spoilers
-                                    <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr style="height: 70px">
-                            <td class="post-close-button-wrapper" colspan="2">
-                                <div class="post-close-button" onclick="toggleOverlay();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
-                            </td>
-                            <td>
-                                <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuBrowser.lockUserOperation(true);wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div id="overlay-filter">
-        <%- include('scroll_wrapper', { text: "Post", lang: lang }); %>
-        <%if(userContent.pid !== 1000000000 && userSettings.account_status === 0) {%>
-            <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </div>
+<%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class="left">
+            <%if(post.removed) {%>
+                Removed Post
+            <%} else {%>
+                <%= post.screen_name %>
+            <%}%>
+        </h1>
+        <%if(!post.removed) {%>
+        <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+        <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
-        <div class="community-page-post-box" style="margin-top: 75px">
-            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
-            <span class="replies-line"></span>
-            <% replies.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
-                <span class="replies-line"></span>
-            <% }); %>
+        <% if(post.pid === pid || moderator) {%>
+            <a id="header-communities-button" class="delete" href="#" data-post="<%=post.id%>" onclick="deletePost(this)">Delete Post</a>
+        <%} else {%>
+            <a id="report-launcher" style="display: none" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false"></a>
+            <a id="header-communities-button" class="report" href="#" data-post="<%= post.id %>" onclick="reportPost(this)">Report Post</a>
+        <%}%>
+        <%}%>
+    </header>
+    <div class="body-content post-list" id="post">
+        <div class="post-wrapper parent">
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, pid: pid, yeah: true }); %>
         </div>
-        <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
+        <% replies.forEach(function(post) { %>
+            <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true, pid: pid  }); %>
+        <% }); %>
+    </div>
+    <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+    <%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
+    <%}%>
+    <div id="report-post-page" class="add-post-page official-user-post" style="display: none">
+        <header class="add-post-page-header">
+            <h1 class="page-title">Report Post</h1>
+        </header>
+        <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
+            <input type="hidden" name="post_id" value="<%= post.id %>"/>
+            <div class="add-post-page-content report">
+                <p>
+                    You are about to report a post with content which violates the Juxtaposition Code of Conduct.
+                    This report will be sent to Pretendo's Juxtaposition administrators and not to the creator of the post.
+                </p>
+                <div>
+                    <h4>Violation Type:</h4>
+                    <select name="reason" id="report">
+                        <option value="0">Spoiler</option>
+                        <option value="1">Personal Information</option>
+                        <option value="2">Violent Content</option>
+                        <option value="3">Inappropriate/Harmful Conduct</option>
+                        <option value="4">Hateful/Bullying</option>
+                        <option value="5">Advertising</option>
+                        <option value="6">Sexually Explicit</option>
+                        <option value="7">Piracy</option>
+                        <option value="8">Inappropriate Behavior in Game</option>
+                        <option value="9">Other</option>
+                    </select>
+                </div>
+                <textarea name="message" class="textarea-text" value="" maxlength="280" placeholder="Enter additional comments or information"></textarea>
+            </div>
+            <input type="button" class="olv-modal-close-button fixed-bottom-button left"
+                   value="Cancel" data-sound="SE_WAVE_CANCEL"
+                   data-module-show="post" data-module-hide="report-post-page"
+                   data-header="true" data-menu="true">
+            <input type="submit" class="post-button fixed-bottom-button" value="Submit" onclick="wiiuBrowser.lockUserOperation(true);">
+        </form>
     </div>
 </div>
-<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>

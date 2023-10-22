@@ -8,12 +8,13 @@ const PostSchema = new Schema({
     app_data: String,
     painting: String,
     screenshot: String,
+    screenshot_length: Number,
     search_key: {
         type: [String],
         default: undefined
     },
     topic_tag: {
-        type: [String],
+        type: String,
         default: undefined
     },
     community_id: {
@@ -40,7 +41,12 @@ const PostSchema = new Schema({
     },
     empathy_count: {
         type: Number,
-        default: 0
+        default: 0,
+        min: 0
+    },
+    country_id: {
+        type: Number,
+        default: 49
     },
     language_id: {
         type: Number,
@@ -68,47 +74,43 @@ const PostSchema = new Schema({
         type: Boolean,
         default: false
     },
-    removed_reason: String
+    removed_reason: String,
+    removed_by: Number,
+    removed_at: Date,
+    yeahs: [Number]
 });
-
-
-PostSchema.methods.upEmpathy = async function() {
-    const empathy = this.get('empathy_count');
-    this.set('empathy_count', empathy + 1);
-
-    await this.save();
-};
-
-PostSchema.methods.downEmpathy = async function() {
-    const empathy = this.get('empathy_count');
-    this.set('empathy_count', empathy - 1);
-
-    await this.save();
-};
 
 PostSchema.methods.upReply = async function() {
     const replyCount = this.get('reply_count');
-    this.set('reply_count', replyCount + 1);
+    if(replyCount + 1 < 0)
+        this.set('reply_count', 0);
+    else
+        this.set('reply_count', replyCount + 1);
 
     await this.save();
 };
 
 PostSchema.methods.downReply = async function() {
     const replyCount = this.get('reply_count');
-    this.set('reply_count', replyCount - 1);
+    if(replyCount - 1 < 0)
+        this.set('reply_count', 0);
+    else
+        this.set('reply_count', replyCount - 1);
 
     await this.save();
 };
 
-PostSchema.methods.remove = async function(reason) {
-    this.set('remove', true);
-    this.set('removed_reason', reason)
+PostSchema.methods.removePost = async function(reason, pid) {
+    this.set('removed', true);
+    this.set('removed_reason', reason);
+    this.set('removed_by', pid);
+    this.set('removed_at', new Date())
     await this.save();
 };
 
 PostSchema.methods.unRemove = async function(reason) {
-    this.set('remove', false);
-    this.set('removed_reason', reason)
+    this.set('removed', false);
+    this.set('removed_reason', reason);
     await this.save();
 };
 

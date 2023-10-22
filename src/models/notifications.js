@@ -4,6 +4,7 @@ const  NotificationSchema = new Schema({
     pid: String,
     type: String,
     link: String,
+    objectID: String,
     users: [{
         user: String,
         timestamp: Date
