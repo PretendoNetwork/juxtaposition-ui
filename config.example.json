@@ -3,12 +3,13 @@
         "port": 80
     },
     "account_server_domain": "",
+    "account_server": "",
     "account_server_secret": "",
     "X-Nintendo-Client-ID": "",
     "X-Nintendo-Client-Secret": "",
     "mongoose": {
         "uri": "mongodb://localhost:27017",
-        "database": "name",
+        "database": "database",
         "options": {
             "useNewUrlParser": true,
             "useUnifiedTopology": true
@@ -16,13 +17,16 @@
     },
     "account_db": {
         "uri": "mongodb://localhost:27017",
-        "database": "name",
+        "database": "database",
         "options": {
             "useNewUrlParser": true,
             "useUnifiedTopology": true
         }
     },
-    "authorized_PNIDs" : [
-        0
-    ]
+    "aws": {
+        "spaces": {
+            "key": "",
+            "secret": ""
+        }
+    }
 }

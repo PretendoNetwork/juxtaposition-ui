@@ -1,167 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>3DS Testing</title>
-    <script src="/js/pjax.js"></script>
-    <script src="/js/juxt.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-</head>
+<%- include('partials/head', { title: community.name }); %>
 <body>
-<div id="main">
-    <div class="top-screen" <%if(community.CTR_browser_header) {%>style="background: url('<%=community.CTR_browser_header%>')"<%}%>>
-        <div class="header-description">
-            <p>
-                <% community.description %>
-            </p>
-        </div>
-        <div id="" class="header-icon"><img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png"></div>
-        <h2 class="header-title"><%= community.name %></h2>
-    </div>
-    <div class="bottom-screen">
-
-        <div id="windowOverlay" class="overlay" style="margin-bottom: 0">
-            <div class="overlay-content" style="position: fixed">
-                <div id="post-window" class="post-wrapper">
-                    <!--Start of Main Post-->
-                    <form class="post-emotion-radio" action="/posts/new" method="post" enctype="multipart/form-data">
-                        <table>
-                            <tr>
-                                <td>
-                                    <div class="post-emotions-wrapper">
-                                        <label for="post-emotion-0">
-                                            <input type="radio" name="emotion" id="post-emotion-0" value="0" checked onclick="selectEmotion(this)">
-                                            <span class="selected-post-emotion-0"></span>
-                                        </label>
-                                        <label for="post-emotion-1">
-                                            <input type="radio" name="emotion" id="post-emotion-1" value="1" onclick="selectEmotion(this)">
-                                            <span class="post-emotion-1"></span>
-                                        </label>
-                                        <label for="post-emotion-2">
-                                            <input type="radio" name="emotion" id="post-emotion-2" value="2" onclick="selectEmotion(this)">
-                                            <span class="post-emotion-2"></span>
-                                        </label>
-                                        <label for="post-emotion-3">
-                                            <input type="radio" name="emotion" id="post-emotion-3" value="3" onclick="selectEmotion(this)">
-                                            <span class="post-emotion-3"></span>
-                                        </label>
-                                        <label for="post-emotion-4">
-                                            <input type="radio" name="emotion" id="post-emotion-4" value="4" onclick="selectEmotion(this)">
-                                            <span class="post-emotion-4"></span>
-                                        </label>
-                                        <label for="post-emotion-5">
-                                            <input type="radio" name="emotion" id="post-emotion-5" value="5" onclick="selectEmotion(this)">
-                                            <span class="post-emotion-5"></span>
-                                        </label>
-                                    </div>
-                                    <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
-                                    <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
-                                    <input type="hidden" id="_post_type" name="_post_type" value="body">
-                                </td>
-                                <td>
-                                    <div class="post-screenshot-picker" onclick="loadScreenshots()">
-                                        <div class="post-screenshot-picker-icon"></div>
-                                        <div class="post-screenshot-picker-dropdown">
-                                            <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="document.getElementById('screenshot-value').value = cave.capture_getUpperImageLeftDetail();"></div>
-                                            <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="document.getElementById('screenshot-value').value = cave.capture_getLowerImage();"></div>
-                                            <div onclick="document.getElementById('screenshot-value').value = ''; loadScreenshots()">No Screenshot</div>
-                                            <input type="hidden" id="screenshot-value" name="screenshot" value="">
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
-                                </td>
-                                <td rowspan="2" id="post-text-input">
-                                    <textarea class="post-textarea" id="comment" name="body" placeholder="Tap here to make a post." rows="4" cols="50" onchange="if(cave.checkWord(this.value) === -2) { this.value = ''; alert('Post cannot contain explicit language');}"></textarea>
-                                </td>
-                                <td rowspan="2" id="post-painting-input" style="display: none;">
-                                    <div class="post-memo">
-                                        <img class="post-memo-preview" id="memo" width="170px" height="77px" src="" style="display: none;" onclick="newPainting(false)">
-                                        <input type="hidden" id="memo-value" name="painting" value="">
-                                    </div>
-                                </td>
-                                <br>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="post-type-button-painting" onclick="swapPostType(1);newPainting(false)"></div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="2">
-                                    <label class="checkbox-container checkbox-post">Spoilers
-                                        <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="cave.snd_playSe('SE_OLV_OK');">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr style="height: 70px">
-                                <td class="post-close-button-wrapper" colspan="2">
-                                    <div class="post-close-button" onclick="hideNewPostScreen();cave.memo_clear();">
-                                        <p style="margin-top: -2px;">X <b>Close</b></p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <input type="submit" value="Post" class="submit-button" onclick="cave.snd_playSe('SE_OLV_OK');">
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div id="community-related-wrapper">
-            <div class="related-button-text">
-                Related
-            </div>
-        </div>
-        <%if(user.followed_communities.indexOf(community.id) !== -1){ %>
-            <div class="community-page-follow-button selected" id="<%= community.community_id %>" onclick="followCommunity(this)">
-                <p class="community-page-follow-button-text" style="color: #FFFFFF">Following</p>
-            </div>
-        <%} else {%>
-        <div class="community-page-follow-button" id="<%= community.community_id %>" onclick="followCommunity(this)" <%if(user.pid === 1000000000) {%> style="display: none" <%}%>>
-            <p class="community-page-follow-button-text">Follow</p>
-        </div>
+<div id="body">
+    <header id="header" style="background: url('http://mii.olv.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/3DS.png')">
+        <h1 id="page-title" class="community">
+            <span>
+                <span class="icon-container">
+                    <img src="http://mii.olv.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/64.png" class="icon">
+                </span>
+                <span class="community-name">
+                    <%= community.name %>
+                </span>
+                <span class="text">
+                    <span>
+                        <span class="sprite posts"></span>
+                        <%= bundle.numPosts %>
+                    </span>
+                    <span>|
+                        <span class="sprite followers"></span>
+                        <span id="followers"><%= community.followers %></span>
+                    </span>
+                </span>
+            </span>
+            </span>
+        </h1>
+        <% if(((community.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+            <a id="header-post-button" class="header-button left" href="#"
+               data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list"
+               data-module-show="add-post-page" data-header="false" data-screenshot="true"
+               data-message="<%= lang.new_post.post_to %> <%= community.name %>">Post + </a>
         <%}%>
-        <button class="community-page-new-post-button" onclick="showNewPostScreen()">New Post</button>
-        <div class="community-page-posts-wrapper">
-            <table class="community-page-posts-header">
-                <tbody>
-                <tr>
-                    <td>
-                        <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active">Recent posts</h4>
-                    </td>
-                    <td>
-                        <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab">Popular posts</h4>
-                    </td>
-                    <td>
-                        <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab">Verified posts</h4>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-
-            <div id="wrapper">
-
-                <% if(totalNumPosts === 0) {%>
-                    <p class="no-posts-text">No Posts</p>
-                <%} else { %>
-                        <button id="load-more-posts-button" data-offset="20" onclick="loadCommunityPosts(this)"><%= lang.global.more %></button>
-                        <% newPosts.forEach(function(post) { %>
-                            <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-                        <% }); %>
-                <%}%>
-            </div>
+        <%if(children){%>
+            <a id="header-communities-button" class="right" href="/titles/<%= community.olive_community_id %>/related" data-pjax="#body">Related Communities</a>
+        <%}%>
+        <%if(community.open){%>
+        <button type="button" class="submit follow yeah-button <%if(children) {%>suggested<%}%> <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>">
+            <span class="sprite yeah"></span>
+        </button>
+        <%}%>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+        <div class="community-info info-content with-header-banner">
         </div>
-        <div class="toolbar-padding"></div>
+        <menu class="tab-header">
+            <li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
+                <a href="/titles/<%= community.olive_community_id %>/new" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
+            </li>
+            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.olive_community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
+        </menu>
+        <div class="tab-body post-list">
+            <%- include('partials/' + template, { bundle }); %>
+        </div>
     </div>
-    <body onload="onStart()"></body>
+    <%- include('partials/new_post', { pid, lang, id: community.olive_community_id, name: community.name, url: '/posts/new', show: 'community-post-list', message_pid: '' }); %>
+</div>
 </body>
 </html>

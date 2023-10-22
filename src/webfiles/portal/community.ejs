@@ -1,169 +1,53 @@
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-    <meta content="<%= community.name %> - Juxtaposition Community" property="og:title" />
-    <meta content="<%= community.followers%> Followers" property="og:site_name">
-    <meta content="<%= community.description %>" property="og:description" />
-    <meta content="https://portal.olv.pretendo.cc/communities/<%= community.community_id %>/new" property="og:url" />
-    <meta content="https://portal.cdn.pretendo.cc/icons/<%= community.community_id %>.png" property="og:image" />
-    <meta content="#1F8A42" data-react-helmet="true" name="theme-color" />
-</head>
+<!DOCTYPE html>
+<html lang="en">
+<%- include('partials/head', { title: community.name }); %>
 <body>
-<%- include('nav_bar', { selection: 2 }); %>
-<div id="main">
-    <div id="windowOverlay" class="overlay">
-        <div class="overlay-content">
-            <div id="post-window" class="post-wrapper">
-                <!--Start of Main Post-->
-                <form class="post-emotion-radio" action="/posts/new" method="post" enctype="multipart/form-data">
-                    <table>
-                        <tr>
-                            <td colspan="2">
-                                <h1 class="communities-header" style="padding-left: 50px; padding-top: 10px"><%= lang.new_post.post_to %> <%= community.name %></h1>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <img class="post-user-icon" src="<%= mii_image_CDN %>/<%= user.pid %>/normal_face.png">
-                                <input type="hidden" id="olive_title_id" name="olive_title_id" value="<%= community.title_id[0] %>">
-                                <input type="hidden" id="olive_community_id" name="olive_community_id" value="<%= community.community_id %>">
-                                <input type="hidden" id="_post_type" name="_post_type" value="body">
-                            </td>
-                            <td>
-                                <div class="post-emotions-wrapper">
-                                    <label for="post-emotion-0">
-                                        <input type="radio" name="emotion" id="post-emotion-0" value="0" onclick="changeMiiImageReaction(this)" checked>
-                                        <span class="post-emotion-0"></span>
-                                    </label>
-                                    <label for="post-emotion-1">
-                                        <input type="radio" name="emotion" id="post-emotion-1" value="1" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-1"></span>
-                                    </label>
-                                    <label for="post-emotion-2">
-                                        <input type="radio" name="emotion" id="post-emotion-2" value="2" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-2"></span>
-                                    </label>
-                                    <label for="post-emotion-3">
-                                        <input type="radio" name="emotion" id="post-emotion-3" value="3" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-3"></span>
-                                    </label>
-                                    <label for="post-emotion-4">
-                                        <input type="radio" name="emotion" id="post-emotion-4" value="4" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-4"></span>
-                                    </label>
-                                    <label for="post-emotion-5">
-                                        <input type="radio" name="emotion" id="post-emotion-5" value="5" onclick="changeMiiImageReaction(this)">
-                                        <span class="post-emotion-5"></span>
-                                    </label>
-                                </div>
-                                <div class="post-emotions-arrow-left"></div>
-                            </td>
-                            <td>
-                                <div class="post-screenshot-picker" onclick="loadScreenshots()">
-                                    <div class="post-screenshot-picker-icon"></div>
-                                    <div class="post-screenshot-picker-dropdown">
-                                        <div><img src="" class="post-screenshot-preview" id="post-top-screen-preview" onclick="selectScreenshot(1)"></div>
-                                        <div><img src="" class="post-screenshot-preview" id="post-bottom-screen-preview" onclick="selectScreenshot(2)"></div>
-                                        <div onclick="selectScreenshot(0)">No Screenshot</div>
-                                        <input type="hidden" id="screenshot-value" name="screenshot" value="">
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="post-type-button-text selected" onclick="swapPostType(0)"></div>
-                            </td>
-                            <td rowspan="2" id="post-text-input">
-                                <textarea class="post-textarea" id="comment" name="body" maxlength="280" placeholder="<%= lang.new_post.text_hint %>" rows="4" cols="50" onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.new_post.swearing %>');}"></textarea>
-                            </td>
-                            <td rowspan="2" id="post-painting-input" style="display: none;">
-                                <div class="post-memo">
-                                    <img class="post-memo-preview" id="memo" width="640px" height="240px" src="" style="display: none;" onclick="newPainting(false)">
-                                    <input type="hidden" id="memo-value" name="painting" value="">
-                                </div>
-                            </td>
-                            <br>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="post-type-button-painting" onclick="swapPostType(1);newPainting(false)"></div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2">
-                                <label class="checkbox-container checkbox-post">Spoilers
-                                    <input type="checkbox" id="spoiler" name="spoiler" value="true" onclick="wiiuSound.playSoundByName('SE_WAVE_MENU', 1);">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr style="height: 70px">
-                            <td class="post-close-button-wrapper" colspan="2">
-                                <div class="post-close-button" onclick="toggleOverlay();wiiuMemo.reset();">X <b><%= lang.global.close %></b></div>
-                            </td>
-                            <td>
-                                <input type="submit" value="Post" class="submit-button" style="margin-left: -124px;" onclick="wiiuBrowser.lockUserOperation(true);wiiuSound.playSoundByName('SE_WAVE_MENU', 1);wiiuSound.playSoundByName('BGM_OLV_MAIN_LOOP_NOWAIT', 3);">
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div id="overlay-filter">
-        <div class="community-page-header" style="background-image: url('<%= cdnURL %>/banner/<%= community.community_id %>.png')"></div>
-        <%- include('scroll_wrapper', { text: community.name, lang: lang }); %>
-        <%if(user.pid !== 1000000000 && user.account_status === 0) {%>
-            <div id="community-new-post-wrapper" onclick="showNewPostScreen()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            </div>
+<%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <% if(((community.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+        <a id="header-post-button" class="header-button" href="#" data-sound="SE_WAVE_SELECT_TAB" data-module-hide="community-post-list" data-module-show="add-post-page" data-header="false" data-menu="false">Post</a>
         <%}%>
-        <div class="community-page-info-container"  style="height: 170px;">
-            <div class="community-page-follow-button-wrapper <%if(user.followed_communities.indexOf(community.community_id) !== -1){ %>selected<%}%>" <%if(user.pid !== 1000000000) {%>onclick="followCommunity()"<%}%>>
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 25 25" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart" fill="#716e74" stroke="#716e74"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                <p class="community-page-follow-button-text" id="<%= community.community_id %>"><%= community.followers %> <%= lang.community.followers %></p>
-            </div>
-            <img class="community-page-info-icon" src="<%= cdnURL %>/icons/<%= community.community_id %>.png">
-            <h2 class="community-page-title"><%= community.name %></h2>
-            <h4 class="community-page-description"><%= community.description %></h4>
+        <%if(children){%>
+        <a id="header-communities-button" href="related" data-pjax="#body">Related Communities</a>
+        <%}%>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+        <div class="header-banner-container">
+            <img src="https://mii.olv.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png" class="header-banner with-top-button"></div>
+
+        <div class="community-info info-content with-header-banner">
+            <span class="icon-container"><img src="https://mii.olv.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png" class="icon"></span>
+            <%if(community.open){%>
+            <a href="#" class="favorite-button button <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>checked<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>"></a>
+            <%}%>
+            <span class="title"><%= community.name %></span>
+            <span class="text">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><polygon points="128 160 96 160 96 128 192 32 224 64 128 160" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polygon><line x1="164" y1="60" x2="196" y2="92" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><path d="M216,128.6V208a8,8,0,0,1-8,8H48a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h79.4" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
+                    <%= bundle.numPosts %>
+                </span>
+                <span>|
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="23" fill="#ffffff" viewBox="0 0 256 200"><rect width="256" height="256" fill="none"></rect><line x1="204" y1="136" x2="244" y2="136" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><line x1="224" y1="116" x2="224" y2="156" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></line><circle cx="108" cy="100" r="60" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></circle><path d="M22.2,200a112,112,0,0,1,171.6,0" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></path></svg>
+                    <span id="followers"><%= community.followers %></span>
+                </span>
+            </span>
         </div>
-        <div>
-            <table class="community-page-posts-header switcher" style="-webkit-transform: translate(-35%, -35%);">
-                <tbody>
-                <tr>
-                    <td>
-                        <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
-                    </td>
-                    <td>
-                        <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
-                    </td>
-                    <td>
-                        <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <menu class="tab-header">
+            <li id="tab-header-post" class="tab-button <%if(type === 0){ %>selected<%}%>">
+                <a href="/titles/<%= community.olive_community_id %>/new" data-sound="SE_WAVE_SELECT_TAB"><span class="new-post"><%= lang.community.recent %></span></a>
+            </li>
+            <li id="tab-header-hot-post" class="tab-button <%if(type === 1){ %>selected<%}%>"><a href="/titles/<%= community.olive_community_id %>/hot" data-sound="SE_WAVE_SELECT_TAB"><span><%= lang.community.popular %></span></a></li>
+        </menu>
+        <div id="new-post-button-container" class="none">
+            <a href="#" class="button" data-offset="10"><%= lang.global.more %></a>
+            <div id="new-post"></div>
         </div>
-        <div class="community-page-post-box" style="margin-top: 120px;">
-            <div id="wrapper">
-                <% if(totalNumPosts === 0) {%>
-                    <p class="no-posts-text"><%= lang.global.no_posts %></p>
-                <%} else { %>
-                    <button id="load-more-posts-button" data-offset="20"  onclick="loadCommunityPosts(this)"><%= lang.global.more %></button>
-                    <% newPosts.forEach(function(post) { %>
-                        <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
-                    <% }); %>
-                <%}%>
-            </div>
+        <div class="tab-body post-list">
+            <%- include('partials/' + template, { bundle }); %>
         </div>
-        <br>
-        <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
     </div>
+    <%- include('partials/new_post', { pid, lang, id: community.olive_community_id, name: community.name, url: '/posts/new', show: 'community-post-list', message_pid: '' }); %>
 </div>
-<br>
-<body onload="stopLoading(); wiiuBrowser.showLoadingIcon(!1);wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>

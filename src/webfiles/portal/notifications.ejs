@@ -1,48 +1,28 @@
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-</head>
+<!DOCTYPE html>
+<%- include('partials/head', { title: lang.global.notifications }); %>
 <body>
-<%- include('nav_bar', { selection: 4 }); %>
-<div id="main">
-    <h1 id="title" class="page-header"><%= lang.global.notifications %></h1>
-    <%- include('scroll_wrapper', { text: lang.global.notifications, lang: lang }); %>
-    <div class="community-page-posts-wrapper">
-        <table cellspacing="0">
-            <tbody id="messages-list">
-            <% if(user.notification_list.length === 0) {%>
-                <p class="no-posts-text"><%= lang.notifications.none %></p>
-            <%} else { %>
-                <% for(let i = user.notification_list.length - 1; i >= 0; i--) { %>
-                    <% var content; if(user.notification_list[i].content.indexOf('NEW_FOLLOWER') !== -1) content = user.notification_list[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = user.notification_list[i].content %>
-                    <% if(i === user.notification_list.length - 1) { %>
-                    <tr class="message-wrapper" data-pjax="<%=user.notification_list[i].link%>">
-                        <td class="messages-unread-badge-wrapper top">
-                            <%if(!user.notification_list[i].read) {%><div class="unread-badge"></div><%}%>
-                        </td>
-                        <td class="messages-list-wrapper top">
-                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
-                        </td>
-                    </tr>
-                    <%} else {%>
-                    <tr class="message-wrapper" data-pjax="<%=user.notification_list[i].link%>">
-                        <td class="messages-unread-badge-wrapper">
-                            <%if(!user.notification_list[i].read) {%><div class="unread-badge"></div><%}%>
-                        </td>
-                        <td class="messages-list-wrapper">
-                            <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
-                        </td>
-                    </tr>
-                    <%}%>
-                <%}%>
-            <%}%>
-            </tbody>
-        </table>
+<%- include('partials/nav_bar', { selection: 4, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class="">Notifications</h1>
+    </header>
+    <div class="body-content tab2-content" id="news-page">
+        <menu class="tab-header">
+            <li id="tab-header-my-news" class="tab-button <%if(selection === 0){ %>selected<%}%>" data-show-post-button="1">
+                <a href="/news/my_news" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+                    <span class="new-post">Updates</span>
+                </a>
+            </li>
+            <li id="tab-header-friend-request" class="tab-button <%if(selection === 1){ %>selected<%}%>">
+                <a href="/news/friend_requests" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+                    <span>Friend Requests</span>
+                </a>
+            </li>
+        </menu>
+        <div class="tab-body">
+            <%- include('partials/' + template, { bundle }); %>
+        </div>
     </div>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
-<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>

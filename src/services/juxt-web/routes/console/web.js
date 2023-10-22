@@ -1,12 +1,11 @@
-var express = require('express');
-var router = express.Router();
-var xml = require('object-to-xml');
+const express = require('express');
+const router = express.Router();
 const database = require('../../../../database');
-const util = require('../../../../util');
-var path = require('path');
+const { POST } = require('../../../../models/post');
+const path = require('path');
 
 router.get('/', function (req, res) {
-    res.redirect('/activity-feed')
+    res.redirect('/titles/show')
 });
 
 router.get('/css/:filename', function (req, res) {
@@ -19,6 +18,11 @@ router.get('/js/:filename', function (req, res) {
     res.sendFile('/js/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
 });
 
+router.get('/images/:filename', function (req, res) {
+    res.set("Content-Type", "image/png");
+    res.sendFile('/images/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
+});
+
 router.get('/fonts/:filename', function (req, res) {
     res.set("Content-Type", "font/woff");
     res.sendFile('/fonts/' + req.params.filename, {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
@@ -26,20 +30,20 @@ router.get('/fonts/:filename', function (req, res) {
 
 router.get('/favicon.ico', function (req, res) {
     res.set("Content-Type", "image/x-icon");
-    res.sendFile('/css/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
+    res.sendFile('/images/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
 });
 
 router.get('/icons/:image_id.png', async function (req, res) {
     res.set("Content-Type", "image/png");
     let community = await database.getCommunityByID(req.params.image_id.toString());
-    if(community !== null) {
+    if(community !== null && community.browser_icon) {
         if(community.browser_icon.indexOf('data:image/png;base64,') !== -1)
             res.send(Buffer.from(community.browser_icon.replace('data:image/png;base64,',''), 'base64'));
         else
             res.send(Buffer.from(community.browser_icon, 'base64'));
     }
     else {
-        let user = await database.getUserByPID(req.params.image_id.toString());
+        let user = await database.getUserSettings(req.params.image_id.toString());
         if(user !== null)
             if(user.pfp_uri.indexOf('data:image/png;base64,') !== -1)
                 res.send(Buffer.from(user.pfp_uri.replace('data:image/png;base64,',''), 'base64'));
@@ -75,7 +79,7 @@ router.get('/tip/:image_id.png', async function (req, res) {
 router.get('/banner/:image_id.png', async function (req, res) {
     res.set("Content-Type", "image/png");
     let community = await database.getCommunityByID(req.params.image_id.toString());
-    if(community !== null)
+    if(community !== null && community.WiiU_browser_header !== undefined)
         if(community.WiiU_browser_header.indexOf('data:image/png;base64,') !== -1)
             res.send(Buffer.from(community.WiiU_browser_header.replace('data:image/png;base64,',''), 'base64'));
         else
@@ -109,18 +113,14 @@ router.get('/drawing/:image_id.png', async function (req, res) {
 });
 
 router.get('/notifications.json', async function (req, res) {
-    let user = await database.getUserByPID(req.pid);
-    if(!user)
-        return res.sendStatus(403);
+    let notifications = await database.getUnreadNotificationCount(req.pid);
     let messagesCount = await database.getUnreadConversationCount(req.pid);
-    if(user.notification_list) {
-        res.send(
-            {
-                message_count: messagesCount,
-                notification_count: user.notification_list.filter(notification => notification.read === false).length,
-            }
-        )
-    }
+    res.send(
+        {
+            message_count: messagesCount,
+            notification_count: notifications,
+        }
+    )
 });
 
 router.get('/:post_id/oembed.json', async function (req, res) {
@@ -135,11 +135,14 @@ router.get('/:post_id/oembed.json', async function (req, res) {
 
 router.get('/downloadUserData.json', async function (req, res) {
     res.set("Content-Type", "text/json");
-    let posts = await database.getUserPostsOffset(req.pid, 100000, 0);
-    let user = await database.getUserByPID(req.pid);
+    res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
+    let posts = await POST.find({ pid: req.pid })
+    let userContent = await database.getUserSettings(req.pid);
+    let userSettings = await database.getUserContent(req.pid);
     let doc = {
-        "user": user,
-        "content": posts,
+        "user_content": userContent,
+        "user_settings": userSettings,
+        "posts": posts,
     }
     res.send(doc)
 });

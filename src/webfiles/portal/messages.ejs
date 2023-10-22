@@ -1,58 +1,45 @@
-<html>
-<head>
-    <link rel="stylesheet" type="text/css" href="<%= cdnURL %>/css/juxt.css">
-    <script src="<%= cdnURL %>/js/pjax.min.js"></script>
-    <script src="<%= cdnURL %>/js/juxt.js"></script>
-</head>
+<!DOCTYPE html>
+<%- include('partials/head', { title: lang.global.messages }); %>
 <body>
-<%- include('nav_bar', { selection: 3 }); %>
-<div id="main">
-    <h1 id="title" class="page-header"><%= lang.global.messages %></h1>
-    <div class="community-page-posts-wrapper">
-        <table cellspacing="0" style="margin-top: 25px">
-            <tbody id="messages-list">
+<%- include('partials/nav_bar', { selection: 3, pid: pid }); %>
+<div id="body">
+    <header id="header">
+        <h1 id="page-title" class=""><%= lang.global.messages %></h1>
+    </header>
+    <div class="body-content" id="messages-list">
+        <ul class="list-content-with-icon-and-text arrow-list">
             <% if(conversations.length === 0) {%>
                 <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
             <%} else { %>
                 <% conversations.forEach(function(conversation) { %>
-                    <%
-                        // get the PID of the opposite user
-                        var userObj, me /*= conversation.users[0].toString() === user.pid.toString() ? conversation.users[1] : conversation.users[0];*/
-                        if(conversation.users[0].pid.toString() === user.pid.toString()) {
-                            userObj = conversation.users[1];
-                            me = conversation.users[0];
-                        }
-                        else if(conversation.users[1].pid.toString() === user.pid.toString()) {
-                            userObj = conversation.users[0];
-                            me = conversation.users[1];
-                        }
-
-                    %>
-                    <tr class="message-wrapper" onclick="showMessage('<%= conversation.id %>')">
-                        <td class="messages-unread-badge-wrapper">
-                            <%if(!me.read) {%><div class="unread-badge"></div><%}%>
-                        </td>
-                        <td>
-                                <img class="community-page-post-user-icon <%if(userObj.official) {%> verified<%}%>" src="<%= mii_image_CDN %>/<%= userObj.pid %>/normal_face.png">
-                                <span class="message-page-verified-user-badge community-page-verified" style=""></span>
-                        </td>
-                        <td>
-                            <h2 class="message-list-title <%if(userObj.official) {%>verified-badge<%}%>"><%= usersMap.get(userObj.pid) %></h2>
-                            <h4 class="message-list-timestamp <%if(userObj.official) {%>verified<%}%>"> - <%= moment(conversation.last_updated).fromNow() %></h4>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td colspan="2" class="message-list-preview"><%= conversation.message_preview %></td>
-                    </tr>
-                <% }); %>
-            <%}%>
-            </tbody>
-        </table>
+                        <%
+                            // get the PID of the opposite user
+                            var userObj, me;
+                            if(conversation.users[0].pid === pid) {
+                                userObj = conversation.users[1];
+                                me = conversation.users[0];
+                            }
+                            else if(conversation.users[1].pid === pid) {
+                                userObj = conversation.users[0];
+                                me = conversation.users[1];
+                            }
+                        %>
+                        <li>
+                            <a href="/users/show?pid=<%= userObj.pid %>" data-pjax="#body"
+                               class="icon-container trigger"><img src="https://mii.olv.pretendo.cc/mii/<%= userObj.pid %>/normal_face.png" class="icon<%if(userObj.official) {%> verified<%}%>"></a>
+                            <a href="/friend_messages/<%= conversation.id %>" data-pjax="#body" class="arrow-button"></a>
+                            <div class="body">
+                                <p class="title">
+                                    <span class="nick-name"><%= usersMap.get(userObj.pid) %></span>
+                                    <span class="id-name">@<%= usersMap.get(userObj.pid) %></span>
+                                </p>
+                                <span class="timestamp"><%= moment(conversation.last_updated).fromNow() %></span>
+                                <p class="text"><%= conversation.message_preview %></p>
+                            </div>
+                        </li>
+                <% });} %>
+        </ul>
     </div>
-    <img src="" onerror="wiiuBrowser.showLoadingIcon(!1);window.scroll(0, 0);">
 </div>
-<body onload="stopLoading();wiiuBrowser.lockUserOperation(false);">
 </body>
 </html>
