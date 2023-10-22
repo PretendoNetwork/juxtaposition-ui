@@ -1,6 +1,6 @@
-var express = require('express');
+const express = require('express');
 const path = require("path");
-var router = express.Router();
+const router = express.Router();
 
 router.get('/icons/:filename', function (req, res) {
     res.set("Content-Type", "image/png");

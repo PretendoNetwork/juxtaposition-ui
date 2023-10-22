@@ -1,58 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>3DS Testing</title>
-    <script src="/js/pjax.js"></script>
-    <script src="/js/juxt.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-</head>
+<%- include('partials/head', { title: 'Notifications and Messages' }); %>
 <body>
-<div id="main">
-    <div class="top-screen">
-        <div class="header-description">
-            <p>
-                Here you can view notifications. You'll get notifications when someone follows you, or replies to your post.
-            </p>
+<div id="body">
+    <header id="header" class="">
+        <h1 id="page-title" class="">Notifications and Messages</h1>
+    </header>
+    <div class="body-content tab2-content" id="news-page">
+        <menu class="tab-header no-margin">
+            <li id="tab-header-my-news" class="tab-button <%if(selection === 0){ %>selected<%}%>" data-show-post-button="1">
+                <a href="/news/my_news" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+                    <span class="new-post">Updates</span>
+                </a>
+            </li>
+            <li id="tab-header-friend-request" class="tab-button <%if(selection === 1){ %>selected<%}%>">
+                <a href="/friend_messages" data-pjax-cache-container="#body" data-pjax-replace="1" data-sound="SE_WAVE_SELECT_TAB">
+                    <span><%= lang.global.messages %></span>
+                </a>
+            </li>
+        </menu>
+        <div class="tab-body">
+            <%- include('partials/' + template, { bundle }); %>
         </div>
-        <div id="headers-news-icon" class="header-icon"></div>
-        <h2 class="header-title">Notifications</h2>
     </div>
-    <div class="bottom-screen">
-        <div id="messages-list-wrapper">
-            <table cellspacing="0">
-                <tbody id="messages-list">
-                <% if(user.notification_list.length === 0) {%>
-                    <p class="no-posts-text"><%= lang.notifications.none %></p>
-                <%} else { %>
-                    <% for(let i = user.notification_list.length - 1; i >= 0; i--) { %>
-                        <% var content; if(user.notification_list[i].content.indexOf('NEW_FOLLOWER') !== -1) content = user.notification_list[i].content.replace('NEW_FOLLOWER', lang.notifications.new_follower); else content = user.notification_list[i].content %>
-                        <% if(i === user.notification_list.length - 1) { %>
-                        <tr class="message-wrapper" data-pjax="<%=user.notification_list[i].link%>">
-                            <td class="messages-unread-badge-wrapper top">
-                                <%if(!user.notification_list[i].read) {%><div class="unread-badge"></div><%}%>
-                            </td>
-                            <td class="messages-list-wrapper top">
-                                <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
-                            </td>
-                        </tr>
-                        <%} else {%>
-                        <tr class="message-wrapper" data-pjax="<%=user.notification_list[i].link%>">
-                            <td class="messages-unread-badge-wrapper">
-                                <%if(!user.notification_list[i].read) {%><div class="unread-badge"></div><%}%>
-                            </td>
-                            <td class="messages-list-wrapper">
-                                <h3 class="notifications-list-content"><%= content %><span style="color: rgba(113,141,148,1)"> - <%= moment(user.notification_list[i].created_at).fromNow() %></span></h3>
-                            </td>
-                        </tr>
-                        <%}%>
-                    <%}%>
-                <%}%>
-                </tbody>
-            </table>
-        </div>
-        <div class="toolbar-padding"></div>
-    </div>
-    <body onload="onStart()"></body>
+</div>
 </body>
 </html>

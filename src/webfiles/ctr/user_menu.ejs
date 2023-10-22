@@ -1,53 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>3DS Testing</title>
-    <script src="/js/pjax.js"></script>
-    <script src="/js/juxt.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/juxt.css">
-</head>
+<%- include('partials/head', { title: 'Whoops!' }); %>
 <body>
-<div id="main">
-    <div class="top-screen">
-        <div class="header-description">
-            <p>
-                Here you can change your profile and settings. You can also search for other users here.
-            </p>
-        </div>
-        <div id="" class="header-icon"><img class="community-page-info-icon" src="<%= user.pfp_uri %>"></div>
-        <h2 class="header-title">User Menu</h2>
-    </div>
-    <div class="bottom-screen">
-        <div class="communities-wrapper" id="popular-communities" style="margin-top: 15px">
-            <table>
-                <tbody>
-                    <tr>
-                        <td>
-                            <button class="user-menu-button" data-pjax="/users/me">Profile</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="user-menu-button" data-pjax="/users/me">Search</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="user-menu-button" data-pjax="/communities/announcements">Juxt Announcements</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <button class="user-menu-button" data-pjax="/users/me">Settings/Other</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="toolbar-padding"></div>
+<div id="body">
+    <header id="header" class="">
+        <h1 id="page-title" class="">User Menu</h1>
+    </header>
+    <div class="body-content tab2-content" id="community-post-list">
+        <p>Howdy! We're not quite done here yet.</p>
+        <p>Check back soon for updates!</p>
     </div>
 </div>
-<body onload="onStart()"></body>
 </body>
 </html>

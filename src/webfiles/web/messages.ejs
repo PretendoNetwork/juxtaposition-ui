@@ -1,78 +1,51 @@
-<html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="<%= /*cdnURL*/ %>/css/juxt.css">
-    <script src="https://portal.cdn.pretendo.cc/js/pjax.min.js"></script>
-    <script src="https://portal.cdn.pretendo.cc/js/juxt.js"></script>
-    <link rel="manifest" href="/web/manifest.json">
-    <!-- Global site tag (gtag.js) - Google Analytics Testing-->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-195842548-1"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'UA-195842548-1');
-    </script>
-
+    <%- include('partials/head'); %>
 </head>
 <body>
 <div id="main">
     <h2 id="title" class="page-header"><%= lang.global.messages %></h2>
-    <%- include('nav_bar', { selection: 3 }); %>
+    <%- include('partials/nav_bar', { selection: 3, pid: pid }); %>
     <div id="toast"></div>
     <div id="wrapper">
         <% if(conversations.length === 0) {%>
-            <p class="no-posts-text"><%= lang.messages.coming_soon %></p>
+            <li><p><%= lang.messages.coming_soon %><</p></li>
         <%} else { %>
+            <ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
             <% conversations.forEach(function(conversation) { %>
-                <a class="notifications-list-content" href="<%=user.notification_list[i].link%>">
-                    <div class="unread-badge" <%if(!position.read) {%>style="background-color: unset"<%}%>></div>
-                    <td>
-                        <%if(position.official) {%>
-                            <img class="community-page-post-user-icon verified" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
-                            <span class="message-page-verified-user-badge community-page-verified" style=""></span>
-                        <%} else {%>
-                            <img class="community-page-post-user-icon" src="<%= mii_image_CDN %>/<%= position.pid %>/normal_face.png">
-                            <span class="community-page-verified-user-badge community-page-verified" style="display: none;"></span>
-                        <%}%>
-                    </td>
-                    <td>
-                        <h2 class="message-list-title"><%= position.screen_name %></h2>
-                        <h4 class="message-list-timestamp"> - <%= moment(conversation.last_message_sent).fromNow() %></h4>
-                    </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td colspan="2" class="message-list-preview"><%= conversation.message_preview %></td>
-                    </tr>
-                </a>
-            <%});%>
-        <%}%>
+                <%
+                    // get the PID of the opposite user
+                    var userObj, me;
+                    if(conversation.users[0].pid === pid) {
+                        userObj = conversation.users[1];
+                        me = conversation.users[0];
+                    }
+                    else if(conversation.users[1].pid === pid) {
+                        userObj = conversation.users[0];
+                        me = conversation.users[1];
+                    }
+                %>
+                    <li>
+                        <div class="hover">
+                            <a href="/users/<%= userObj.pid %>" data-pjax="#body" class="icon-container notify">
+                                <img src="https://pretendo-cdn.b-cdn.net/mii/<%= userObj.pid %>/normal_face.png" class="icon">
+                            </a>
+                            <a class="body messages" href="/friend_messages/<%= conversation.id %>">
+                                <span class="text">
+                                    <span class="nick-name"><%= usersMap.get(userObj.pid) %></span>
+                                    <span class="timestamp">@<%= usersMap.get(userObj.pid) %></span>
+                                </span>
+                                <span class="text">
+                                    <span class="link"> <%= conversation.message_preview %></span>
+                                    <span class="timestamp"> - <%= moment(conversation.last_updated).fromNow() %></span>
+                                </span>
+                            </a>
+                        </div>
+                    </li>
+
+        <% });} %>
+        </ul>
     </div>
 </div>
-<script>
-    window.onscroll = function(ev) {
-        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-            document.getElementById('load-more-posts-button').click();
-        }
-    };
-    function copyToClipboard(text) {
-        let inputc = document.getElementsByTagName("header")[0].appendChild(document.createElement("input"));
-        inputc.value = text;
-        inputc.focus();
-        inputc.select();
-        document.execCommand('copy');
-        inputc.parentNode.removeChild(inputc);
-        Toast("Copied to clipboard.");
-    }
-    function Toast(text) {
-        var x = document.getElementById("toast");
-        x.innerText = text;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    }
-</script>
-
 </body>
 </html>

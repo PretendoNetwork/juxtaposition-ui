@@ -1,30 +1,28 @@
 const { Schema, model } = require('mongoose');
 
 const PostSchema = new Schema({
+    id: String,
     title_id: String,
     screen_name: String,
     body: String,
     app_data: String,
     painting: String,
-    painting_uri: String,
     screenshot: String,
-    url: String,
+    screenshot_length: Number,
     search_key: {
         type: [String],
         default: undefined
     },
     topic_tag: {
-        type: [String],
+        type: String,
         default: undefined
     },
     community_id: {
         type: String,
         default: undefined
     },
-    country_id: Number,
     created_at: Date,
     feeling_id: Number,
-    id: String,
     is_autopost: {
         type: Number,
         default: 0
@@ -43,7 +41,12 @@ const PostSchema = new Schema({
     },
     empathy_count: {
         type: Number,
-        default: 0
+        default: 0,
+        min: 0
+    },
+    country_id: {
+        type: Number,
+        default: 49
     },
     language_id: {
         type: Number,
@@ -51,14 +54,10 @@ const PostSchema = new Schema({
     },
     mii: String,
     mii_face_url: String,
-    number: {
-        type: Number,
-        default: 1
-    },
     pid: Number,
     platform_id: Number,
     region_id: Number,
-    parent_post: String,
+    parent: String,
     reply_count: {
         type: Number,
         default: 0
@@ -67,42 +66,51 @@ const PostSchema = new Schema({
         type: Boolean,
         default: false
     },
-    parent: {
-        type: String,
-        default: null
-    },
     message_to_pid: {
         type: String,
         default: null
-    }
+    },
+    removed: {
+        type: Boolean,
+        default: false
+    },
+    removed_reason: String,
+    removed_by: Number,
+    removed_at: Date,
+    yeahs: [Number]
 });
-
-
-PostSchema.methods.upEmpathy = async function() {
-    const empathy = this.get('empathy_count');
-    this.set('empathy_count', empathy + 1);
-
-    await this.save();
-};
-
-PostSchema.methods.downEmpathy = async function() {
-    const empathy = this.get('empathy_count');
-    this.set('empathy_count', empathy - 1);
-
-    await this.save();
-};
 
 PostSchema.methods.upReply = async function() {
     const replyCount = this.get('reply_count');
-    this.set('reply_count', replyCount + 1);
+    if(replyCount + 1 < 0)
+        this.set('reply_count', 0);
+    else
+        this.set('reply_count', replyCount + 1);
 
     await this.save();
 };
 
 PostSchema.methods.downReply = async function() {
     const replyCount = this.get('reply_count');
-    this.set('reply_count', replyCount - 1);
+    if(replyCount - 1 < 0)
+        this.set('reply_count', 0);
+    else
+        this.set('reply_count', replyCount - 1);
 
+    await this.save();
+};
+
+PostSchema.methods.removePost = async function(reason, pid) {
+    this.set('removed', true);
+    this.set('removed_reason', reason);
+    this.set('removed_by', pid);
+    this.set('removed_at', new Date())
+    await this.save();
+};
+
+PostSchema.methods.unRemove = async function(reason) {
+    this.set('removed', false);
+    this.set('removed_reason', reason);
     await this.save();
 };
 
