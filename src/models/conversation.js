@@ -44,14 +44,11 @@ ConversationSchema.methods.newMessage = async function(message, senderPID) {
 	await this.save();
 }
 
-ConversationSchema.methods.markAsRead = async function(pid) {
-    let users = this.get('users');
-    if(users[0].pid === pid)
-        users[0].read = true;
-    else if(users[1].pid === pid)
-        users[1].read = true;
-    this.set('users', users)
-    this.markModified('users');
+ConversationSchema.methods.markAsRead = async function(receiverPID) {
+    const receiver = this.users.find(user => user.pid === receiverPID);
+	if (receiver) {
+		receiver.read = true;
+	}
     await this.save();
 }
 
