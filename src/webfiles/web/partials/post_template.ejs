@@ -15,13 +15,13 @@
                 <h4><%= post.body %></h4>
             <%}%>
             <% if(post.screenshot !== '') { %>
-                <img id="<%= post.id %>" class="screenshot" src="https://pretendo-cdn.b-cdn.net/<%= post.screenshot %>">
+                <img id="<%= post.id %>" class="screenshot" src="https://pretendo-cdn.b-cdn.net<%= post.screenshot %>">
             <%}%>
             <% if(post.painting !== '') { %>
                 <img id="<%= post.id%>" class="painting" src="https://pretendo-cdn.b-cdn.net/paintings/<%=post.pid%>/<%=post.id%>.png">
             <%}%>
             <% if(post.url) { %>
-                    <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe width="760" height="427.5" src="<%= post.url.replace('watch?v=','embed/') %>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <%}%>
     </div>
     <div class="post-buttons-wrapper">
