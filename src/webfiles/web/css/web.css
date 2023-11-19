@@ -599,4 +599,17 @@ iframe {
         width:60px;
         height:60px
     }
+    list-content-with-icon-and-text li.reports > * {
+        width: 100%;
+        overflow: clip;
+    }
+
+    li.reports .posts-wrapper {
+        margin-left: -1em;
+    }
+
+    li.reports .hover {
+        width: auto;
+        padding: 0.5em 0.25em;
+    }
 }

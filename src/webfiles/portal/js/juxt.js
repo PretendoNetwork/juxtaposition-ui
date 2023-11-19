@@ -1,3 +1,4 @@
+/* eslint-disable */
 var scrollPosition, pjax;
 var updateCheck = setInterval(checkForUpdates, 30000);
 var inputCheck = setInterval(input, 100);
@@ -338,9 +339,11 @@ function reportPost(post) {
     var id = post.getAttribute('data-post');
     var button = document.getElementById('report-launcher');
     var form = document.getElementById('report-form');
-    if(!id || !button || !form) return;
+    var formID = document.getElementById('report-post-id');
+    if(!id || !button || !form || !formID) return;
 
     form.action = '/posts/' + id + '/report';
+    formID.value = id;
     console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, "$1-$2-$3-$4-$5-$6"));
     button.click();
 }

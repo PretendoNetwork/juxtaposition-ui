@@ -40,7 +40,7 @@
             <h1 class="page-title">Report Post</h1>
         </header>
         <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
-            <input type="hidden" name="post_id" value="<%= post.id %>"/>
+            <input type="hidden" name="post_id" id="report-post-id" value="<%= post.id %>"/>
             <div class="add-post-page-content report">
                 <p>
                     You are about to report a post with content which violates the Juxtaposition Code of Conduct.
