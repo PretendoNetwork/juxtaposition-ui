@@ -26,6 +26,8 @@ async function auth(request, response, next) {
             request.user = await util.data.getUserDataFromToken(request.cookies.access_token);
         }
         catch(e) {
+            response.clearCookie('access_token');
+            response.clearCookie('refresh_token');
             return response.render('web/login.ejs', {toast: 'Unable to reach the account server. Try again later.', cdnURL: config.CDN_domain,});
         }
         request.pid = request.user ? request.user.pid : null;
