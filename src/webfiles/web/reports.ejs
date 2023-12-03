@@ -69,6 +69,7 @@
                     <% let post = posts.find((post) => post.id === report.post_id) %>
                     <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
                     <button onclick="remove(this)" data-id="<%=report._id%>">Remove Post</button>
+					<button onclick="ignore(this)" data-id="<%=report._id%>">Ignore Report</button>
                 </li>
 
             <% });} %>
@@ -85,7 +86,18 @@
             method: 'DELETE',
         })
             .then(res => res.text())
-            .then(res => console.log(res))
+            .then(res => location.reload())
+    }
+	function ignore(element) {
+        const id = element.getAttribute("data-id");
+        const reason = prompt("Provide explanation for ignoring this report:")
+        if(!id || !reason) return;
+
+        fetch(`/admin/${id}?reason=${reason}`, {
+            method: 'PUT',
+        })
+            .then(res => res.text())
+            .then(res => location.reload())
     }
 </script>
 </body>

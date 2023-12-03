@@ -42,6 +42,10 @@ router.get('/', async function (req, res) {
 });
 
 router.delete('/:reportID', async function (req, res) {
+	if (!req.moderator) {
+		return res.sendStatus(401);
+	}
+
 	const report = await database.getReportById(req.params.reportID);
 	if (!report) {
 		return res.sendStatus(402);
@@ -51,12 +55,23 @@ router.delete('/:reportID', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
+	await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
+	await report.resolve(req.pid, req.query.reason ? req.query.reason : 'Removed by moderator');
+
+	return res.sendStatus(200);
+});
+
+router.put('/:reportID', async function (req, res) {
 	if (!req.moderator) {
 		return res.sendStatus(401);
 	}
 
-	await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
-	await report.resolve(req.pid);
+	const report = await database.getReportById(req.params.reportID);
+	if (!report) {
+		return res.sendStatus(402);
+	}
+
+	await report.resolve(req.pid, req.query.reason);
 
 	return res.sendStatus(200);
 });
