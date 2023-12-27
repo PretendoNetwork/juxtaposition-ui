@@ -402,6 +402,15 @@ const methods = {
 			})
 		});
 	},
+	refreshLogin: async function(refreshToken) {
+		return await apiClient.login({
+			refreshToken: refreshToken
+		}, {
+			metadata: grpc.Metadata({
+				'X-API-Key': apiKey
+			})
+		});
+	},
 	getUserDataFromToken: async function(token) {
 		return apiClient.getUserData({}, {
 			metadata: grpc.Metadata({

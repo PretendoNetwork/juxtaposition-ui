@@ -1,4 +1,9 @@
 <div class="posts-wrapper" id="<%= post.id %>">
+<% if(post.removed) {%>
+	<div class="post-body-content removed">
+		<h3>Post has been removed.</h3>
+	</div>
+<%} else {%>
     <div class="post-user-info-wrapper" id="<%= post.id %>">
             <img class="user-icon <%if(post.verified) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net<%= post.mii_face_url.substring(post.mii_face_url.lastIndexOf('/mii')) %>" data-pjax="/users/show?pid=<%= post.pid %>">
         <div class="post-meta-wrapper">
@@ -29,5 +34,9 @@
         <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 13 13.311"><g id="Icon_feather-corner-down-right" data-name="Icon feather-corner-down-right" transform="translate(-5.25 -5.25)"><path id="Path_47" data-name="Path 47" d="M22.5,15l3.594,3.594L22.5,22.188" transform="translate(-8.594 -4.688)" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path id="Path_48" data-name="Path 48" d="M6,6v5.031a2.875,2.875,0,0,0,2.875,2.875H17.5" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></g></svg><h4><%= post.reply_count %></h4></span>
         <span onclick="copyToClipboard('https://juxt.pretendo.network/posts/<%=post.id%>');"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></span>
     </div>
+<%}%>
 </div>
+<%if(locals.mainPost && !post.removed) {%>
+    <button class="report" onclick="ignore(this)" data-id="<%=post.id%>">Report Post</button>
+<%}%>
 

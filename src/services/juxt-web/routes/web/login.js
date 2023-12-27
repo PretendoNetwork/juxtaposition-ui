@@ -70,6 +70,7 @@ router.post('/', async (req, res) => {
 	const expiration = (req.hostname.indexOf('miiverse') !== -1) ? login.expiresIn * 60 * 60 * 24 : login.expiresIn * 60 * 60;
 	res.cookie('access_token', login.accessToken, { domain : cookieDomain, maxAge: expiration });
 	res.cookie('refresh_token', login.refreshToken, { domain : cookieDomain });
+	res.cookie('token_type', 'Bearer', { domain : cookieDomain });
 	res.redirect('/');
 });
 

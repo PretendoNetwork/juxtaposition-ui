@@ -28,7 +28,16 @@ async function auth(request, response, next) {
 		} catch (e) {
 			response.clearCookie('access_token');
 			response.clearCookie('refresh_token');
-			return response.render('web/login.ejs', {toast: 'Unable to reach the account server. Try again later.', cdnURL: config.CDN_domain,});
+			if (request.path === '/login') {
+				request.lang = util.data.processLanguage();
+				request.token = request.cookies.access_token;
+				request.paramPackData = null;
+				request.directory = 'web';
+				return next();
+			} else {
+				//return response.render('web/login.ejs', {toast: 'Unable to reach the account server. Try again later.', cdnURL: config.CDN_domain,});
+				return response.redirect('/login');
+			}
 		}
 		request.pid = request.user ? request.user.pid : null;
 	} else if (request.headers['x-nintendo-servicetoken']) {
@@ -42,10 +51,10 @@ async function auth(request, response, next) {
 
 	// Ban check
 	if (request.user) {
-		if (request.user.serverAccessLevel !== 'test' && request.user.serverAccessLevel !== 'dev') {
-			response.status(500);
-			return response.send('No access. Must be tester or dev');
-		}
+		//if (request.user.serverAccessLevel !== 'test' && request.user.serverAccessLevel !== 'dev') {
+		//	response.status(500);
+		//	return response.send('No access. Must be tester or dev');
+		//}
 		// Set moderator status
 		request.moderator = request.user.accessLevel >= 2;
 		const user = await db.getUserSettings(request.pid);

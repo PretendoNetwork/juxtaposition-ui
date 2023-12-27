@@ -1,14 +1,15 @@
 const express = require('express');
 const database = require('../../../../database');
 const { POST } = require('../../../../models/post');
+const { SETTINGS } = require('../../../../models/settings');
 const util = require('../../../../util');
 const moment = require('moment');
 const config = require('../../../../../config.json');
 const router = express.Router();
 
-router.get('/', async function (req, res) {
+router.get('/posts', async function (req, res) {
 	if (!req.moderator) {
-		return res.redirect('/login');
+		return res.redirect('/titles/show');
 	}
 
 	const reports = await database.getAllOpenReports();
@@ -38,6 +39,68 @@ router.get('/', async function (req, res) {
 		userContent,
 		reports,
 		posts
+	});
+});
+
+router.get('/accounts', async function (req, res) {
+	if (!req.moderator) {
+		return res.redirect('/titles/show');
+	}
+
+	const users = await database.getUsersContent();
+	const userMap = await util.data.getUserHash();
+	res.render(req.directory + '/users.ejs', {
+		lang: req.lang,
+		moment: moment,
+		cdnURL: config.CDN_domain,
+		mii_image_CDN: config.mii_image_CDN,
+		pid: req.pid,
+		moderator: req.moderator,
+		userMap,
+		users
+	});
+});
+
+router.get('/accounts/:pid', async function (req, res) {
+	if (!req.moderator) {
+		return res.redirect('/titles/show');
+	}
+	const pnid = await util.data.getUserDataFromPid(req.params.pid).catch((e) => {
+		console.log(e.details);
+	});
+	const userContent = await database.getUserContent(req.params.pid);
+	if (isNaN(req.params.pid) || !pnid || !userContent) {
+		return res.redirect('/404');
+	}
+	const userSettings = await database.getUserSettings(req.params.pid);
+	const posts = await database.getNumberUserPostsByID(req.params.pid, config.post_limit);
+	const communityMap = await util.data.getCommunityHash();
+
+	res.render(req.directory + '/moderate_user.ejs', {
+		lang: req.lang,
+		moment: moment,
+		cdnURL: config.CDN_domain,
+		mii_image_CDN: config.mii_image_CDN,
+		pid: req.pid,
+		moderator: req.moderator,
+		userSettings,
+		userContent,
+		posts,
+		communityMap,
+		pnid
+	});
+});
+
+router.post('/accounts/:pid', async (request, response) => {
+	const { pid } = request.params;
+	await SETTINGS.findOneAndUpdate({pid: pid}, {
+		account_status: request.body.account_status,
+		ban_lift_date: request.body.ban_lift_date,
+		ban_reason: `${request.user.username} (${request.pid}): ${request.body.ban_reason}`
+	});
+
+	response.json({
+		error: false
 	});
 });
 
