@@ -40,7 +40,7 @@
     <h2 id="title" class="page-header">Post</h2>
     <%- include('partials/nav_bar', { selection: 2, pid: pid }); %>
     <div id="toast"></div>
-    <div class="community-page-post-box">
+    <div class="community-page-post-box" id="post">
         <div id="wrapper">
                 <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, mainPost: true }); %>
                 <span class="replies-line"></span>

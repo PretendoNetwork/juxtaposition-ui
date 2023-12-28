@@ -142,7 +142,7 @@ function initPostModules() {
 				return;
 			}
 			document.getElementById(hide).style.display = 'none';
-			document.getElementById(show).style.display = 'block';
+			document.getElementById(show).style.display = '';
 			if (header === 'true') {
 				document.getElementById('header').style.display = 'block';
 			} else {
@@ -332,4 +332,16 @@ function downloadURI(uri, name) {
 	link.click();
 	document.body.removeChild(link);
 	delete link;
+}
+function reportPost(post) {
+	const id = post.getAttribute('data-post');
+	const button = document.getElementById('report-launcher');
+	const form = document.getElementById('report-form');
+	const formID = document.getElementById('report-post-id');
+	if(!id || !button || !form || !formID) return;
+
+	form.action = '/posts/' + id + '/report';
+	formID.value = id;
+	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, "$1-$2-$3-$4-$5-$6"));
+	button.click();
 }
