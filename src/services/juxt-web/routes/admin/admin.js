@@ -91,15 +91,19 @@ router.get('/accounts/:pid', async function (req, res) {
 	});
 });
 
-router.post('/accounts/:pid', async (request, response) => {
-	const { pid } = request.params;
+router.post('/accounts/:pid', async (req, res) => {
+	if (!req.moderator) {
+		return res.redirect('/titles/show');
+	}
+
+	const { pid } = req.params;
 	await SETTINGS.findOneAndUpdate({pid: pid}, {
-		account_status: request.body.account_status,
-		ban_lift_date: request.body.ban_lift_date,
-		ban_reason: `${request.user.username} (${request.pid}): ${request.body.ban_reason}`
+		account_status: req.body.account_status,
+		ban_lift_date: req.body.ban_lift_date,
+		ban_reason: `${req.user.username} (${req.pid}): ${req.body.ban_reason}`
 	});
 
-	response.json({
+	res.json({
 		error: false
 	});
 });
