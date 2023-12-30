@@ -135,10 +135,9 @@ router.get('/notifications.json', async function (req, res) {
 
 router.get('/:post_id/oembed.json', async function (req, res) {
 	const post = await database.getPostByID(req.params.post_id.toString());
-	const user = await database.getUserByPID(post.pid);
 	const doc = {
-		'author_name': user.user_id,
-		'author_url': 'https://portal.olv.pretendo.cc/users/show?pid=' + user.pid,
+		'author_name': post.screen_name,
+		'author_url': 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
 	};
 	res.send(doc);
 });

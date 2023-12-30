@@ -113,6 +113,7 @@ router.get('/:post_id', async function (req, res) {
 	const community = await database.getCommunityByID(post.community_id);
 	const communityMap = await util.data.getCommunityHash();
 	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
+	const postPNID = await util.data.getUserDataFromPid(post.pid);
 	res.render(req.directory + '/post.ejs', {
 		moment: moment,
 		userSettings: userSettings,
@@ -125,6 +126,7 @@ router.get('/:post_id', async function (req, res) {
 		lang: req.lang,
 		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
+		postPNID,
 		moderator: req.moderator
 	});
 });
