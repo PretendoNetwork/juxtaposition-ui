@@ -3,23 +3,20 @@
     <title>Juxt - <%= pnid.mii.name %></title>
     <%- include('partials/head'); %>
     <!-- Google / Search Engine Tags -->
-    <meta itemprop="name" content="Juxt - <%= pnid.mii.name %>">
+    <meta itemprop="name" content="<%= pnid.mii.name %> (@<%= pnid.username %>)">
     <%if(userSettings.profile_comment_visibility){%><meta itemprop="description" content="<%= userSettings.profile_comment%>"> <%}%>
-    <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/smile_open_mouth.png">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Juxt - <%= pnid.mii.name %>"/>
+    <meta property="og:title" content="<%= pnid.mii.name %> (@<%= pnid.username %>)"/>
     <%if(userSettings.profile_comment_visibility){%><meta property="og:description" content="<%= userSettings.profile_comment%>"/><%}%>
     <meta property="og:url" content="https://juxt.pretendo.network/users/<%= userSettings.pid %>"/>
-    <meta property="og:image" content="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/smile_open_mouth.png"/>
     <meta property="og:site_name" content="Juxtaposition"/>
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="Juxt - <%= pnid.mii.name %>"/>
+    <meta name="twitter:title" content="<%= pnid.mii.name %> (@<%= pnid.username %>)"/>
     <%if(userSettings.profile_comment_visibility){%><meta name="twitter:description" content="<%= userSettings.profile_comment%>"/><%}%>
     <meta name="twitter:site" content="@PretendoNetwork"/>
-    <meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/smile_open_mouth.png"/>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
 
 </head>
@@ -124,7 +121,7 @@
                     <h4 id="user-page-download-tab"><a href="/downloadUserData.json">Download</a></h4>
                 </div>
                 <%}%>
-				<% if (moderator) { %>
+				<% if (moderator && pnid.pid !== pid) { %>
 				<div>
 					<h4 id="user-page-download-tab"><a class="moderate" href="/admin/accounts/<%= pnid.pid %>">Moderate User</a></h4>
 				</div>

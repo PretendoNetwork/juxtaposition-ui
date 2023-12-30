@@ -24,12 +24,14 @@
     <%} else if(post.painting !== '') { %>
 	<meta property="og:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
     <%}%>
-    <meta property="og:site_name" content="Juxtaposition" />
+    <meta property="og:site_name" content="Juxtaposition - Pretendo Network" />
 
     <!-- Twitter Meta Tags -->
     <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="Juxt - Post by <%= post.screen_name %>"/>
-    <meta name="twitter:description" content="<%= community.name %> - <%= post.empathy_count%> Yeahs!"/>
+    <meta name="twitter:title" content=""<%= post.screen_name %> (@<%= postPNID.username %>) - <%= community.name %>"/>
+    <meta name="twitter:description" content="<%= post.body %>
+
+<%= post.reply_count %> 🗨️  <%= post.empathy_count %> ❤️"/>
     <meta name="twitter:site" content="@PretendoNetwork"/>
     <% if(post.screenshot !== '') { %>
 	<meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net<%= post.screenshot %>"/>
