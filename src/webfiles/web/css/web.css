@@ -742,7 +742,20 @@ button.report {
 	box-shadow: inset 2px 0 0#ddd
 }
 
-@media screen and (max-width: 1200px) {
+.header-button {
+	position: fixed;
+	bottom: 5%;
+	right: 5%;
+	width: 60px;
+	height: 60px;
+	background: var(--btn-secondary);
+	color: var(--text);
+	font-size: 25px;
+	padding: 0;
+	z-index: 100;
+  }
+
+@media screen and (max-width: 1400px) {
 	.communities-wrapper {
 		max-width: 600px;
 		grid-template-columns: auto auto;
@@ -936,4 +949,7 @@ button.report {
 	.scroll-focus.mii-icon-container {
 		display: none;
 	}
+	.header-button {
+		bottom: 8%;
+	  }
 }

@@ -16,7 +16,7 @@
         <% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
         <a id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">Reply</a>
         <%}%>
-        <% if(post.pid === pid || moderator) {%>
+        <% if(post.pid === pid) {%>
             <a id="header-communities-button" class="delete" href="#" data-post="<%=post.id%>" onclick="deletePost(this)">Delete Post</a>
         <%} else {%>
             <a id="report-launcher" style="display: none" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false"></a>

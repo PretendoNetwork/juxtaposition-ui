@@ -1,3 +1,5 @@
+/*eslint-env browser*/
+/*eslint no-var: "off"*/
 if (typeof cave !== 'undefined') {
 	window.addEventListener('error', handleError, true);
 

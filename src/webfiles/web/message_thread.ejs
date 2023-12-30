@@ -9,8 +9,9 @@
     <div id="toast"></div>
     <div id="wrapper">
 		<div class="body-content message-post-list" id="message-page">
+		<!--<button id="header-post-button" class="header-button" href="#" data-module-hide="message-page" data-module-show="add-post-page" data-header="false" data-menu="false">+</button>-->
         <% messages.forEach(function(message) { %>
-            <div id="message-<%= message.post_id%>" class="post scroll <%if(message.pid === pid) {%>my-post<%} else {%>other-post<%}%>">
+            <div id="message-<%= message.id %>" class="post scroll <%if(message.pid === pid) {%>my-post<%} else {%>other-post<%}%>">
                 <a href="/users/show?pid=<%= message.pid %>" data-pjax="#body" class="scroll-focus mii-icon-container">
                     <img src="https://pretendo-cdn.b-cdn.net<%= message.mii_face_url.substring(message.mii_face_url.lastIndexOf('/mii')) %>" class="mii-icon">
                 </a>
