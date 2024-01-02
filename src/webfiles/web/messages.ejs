@@ -9,7 +9,7 @@
     <div id="toast"></div>
     <div id="wrapper">
         <% if(conversations.length === 0) {%>
-            <li><p><%= lang.messages.coming_soon %><</p></li>
+            <li style="list-style: none;"><p><%= lang.messages.coming_soon %></p></li>
         <%} else { %>
             <ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
             <% conversations.forEach(function(conversation) { %>

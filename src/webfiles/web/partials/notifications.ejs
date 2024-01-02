@@ -1,5 +1,5 @@
 <ul class="list-content-with-icon-and-text arrow-list" id="news-list-content">
-<%if(bundle.notifications === undefined) {%><li><p><%= lang.notifications.none %></p></li><%}%>
+<%if(bundle.notifications.length === 0) {%><li style="border-bottom: none;"><p><%= lang.notifications.none %></p></li><%}%>
 <% for(var notification of bundle.notifications) {%>
     <% if(notification.type === 'follow') {%>
     <li>

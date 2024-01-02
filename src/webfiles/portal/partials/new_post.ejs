@@ -66,7 +66,7 @@
                 <menu class="textarea-menu">
                     <li class="textarea-menu-text">
                         <input type="radio" name="_post_type" value="body" checked data-sound="">
-                        <textarea name="body" class="textarea-text" value="" maxlength="280" placeholder="Enter text here..."></textarea>
+                        <textarea name="body" class="textarea-text" value="" maxlength="280" placeholder="Enter text here..." onchange="if(wiiuFilter.checkWord(this.value) === -2) { this.value = ''; alert('<%= lang.user_settings.swearing %>');}"></textarea>
                     </li>
                     <li class="textarea-menu-memo">
                         <input type="radio" name="_post_type" value="painting" data-sound="" onclick="newPainting(false)">

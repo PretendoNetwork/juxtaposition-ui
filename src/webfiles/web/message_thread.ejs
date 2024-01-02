@@ -7,9 +7,32 @@
     <h2 id="title" class="page-header"><%= userMap.get(user2.pid) %></h2>
     <%- include('partials/nav_bar', { selection: 3, pid: pid }); %>
     <div id="toast"></div>
-    <div id="wrapper" style="height: 80%;padding: 2em;text-align:center">
-        <h2>Messages are not quite ready yet. Check back soon!</h2>
+    <div id="wrapper">
+		<div class="body-content message-post-list" id="message-page">
+		<!--<button id="header-post-button" class="header-button" href="#" data-module-hide="message-page" data-module-show="add-post-page" data-header="false" data-menu="false">+</button>-->
+        <% messages.forEach(function(message) { %>
+            <div id="message-<%= message.id %>" class="post scroll <%if(message.pid === pid) {%>my-post<%} else {%>other-post<%}%>">
+                <a href="/users/show?pid=<%= message.pid %>" data-pjax="#body" class="scroll-focus mii-icon-container">
+                    <img src="https://pretendo-cdn.b-cdn.net<%= message.mii_face_url.substring(message.mii_face_url.lastIndexOf('/mii')) %>" class="mii-icon">
+                </a>
+                <div class="post-body">
+                    <%if(message.screenshot) {%>
+                        <img class="message-viewer-bubble-sent-screenshot" src="https://pretendo-cdn.b-cdn.net<%= message.screenshot %>">
+                    <%}%>
+                    <%if(message.painting) {%>
+                        <img class="message-viewer-bubble-sent-memo" src="https://pretendo-cdn.b-cdn.net/paintings/<%=message.pid%>/<%=message.id%>.png">
+                    <%}else {%>
+                        <p class="post-content"><%= message.body %></p>
+                    <%}%>
+                </div>
+				<footer>
+                    <span class="timestamp"><%= moment(message.created_at).fromNow()%></span>
+                </footer>
+            </div>
+        <%});%>
+		</div>
     </div>
+	<img src="" onerror="setTimeout(function() { window.scrollTo(0, 50000); }, 500)">
 </div>
 </body>
 </html>

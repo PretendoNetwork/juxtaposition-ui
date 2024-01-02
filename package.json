@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/PretendoNetwork/juxt-web#readme",
   "dependencies": {
+    "@pretendonetwork/grpc": "^1.0.6",
     "aws-sdk": "^2.1192.0",
     "body-parser": "^1.19.0",
     "colors": "^1.4.0",
@@ -43,7 +44,6 @@
     "node-snowflake": "0.0.1",
     "pako": "^2.0.2",
     "pngjs": "^6.0.0",
-    "pretendo-grpc": "github:PretendoNetwork/grpc-ts",
     "sharp": "^0.31.3",
     "tga": "^1.0.4",
     "xml2js": "^0.4.23",
