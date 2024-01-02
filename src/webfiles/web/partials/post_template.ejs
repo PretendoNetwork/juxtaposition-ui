@@ -6,11 +6,11 @@
 		<h3>Post has been removed.</h3>
 	</div>
 <%} else {%>
-	<% if(post.removed && moderator) {%>
+	<% if (post.removed && moderator) { %>
 		<div class="post-body-content removed">
 			<h3>Post has been removed.</h3>
 		</div>
-	<%}>
+	<% } %>
     <div class="post-user-info-wrapper" id="<%= post.id %>">
             <img class="user-icon <%if(post.verified) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net<%= post.mii_face_url.substring(post.mii_face_url.lastIndexOf('/mii')) %>" data-pjax="/users/show?pid=<%= post.pid %>">
         <div class="post-meta-wrapper">
