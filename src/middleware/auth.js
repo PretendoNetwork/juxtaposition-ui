@@ -56,7 +56,7 @@ async function auth(request, response, next) {
 		//	return response.send('No access. Must be tester or dev');
 		//}
 		// Set moderator status
-		request.moderator = request.user.accessLevel >= 2;
+		request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
 		const user = await db.getUserSettings(request.pid);
 		if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
 			user.account_status = 0;

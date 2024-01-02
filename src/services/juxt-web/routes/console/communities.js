@@ -46,6 +46,9 @@ router.get('/all', async function (req, res) {
 });
 
 router.get('/:communityID', async function (req, res) {
+	if (req.params.communityID === '0') {
+		console.log(req.paramPackData);
+	}
 	if (req.query.title_id) {
 		const community = await database.getCommunityByTitleID(req.query.title_id);
 		if (!community) {

@@ -403,16 +403,16 @@ function GET(url, callback) {
 	xhttp.send();
 }
 function DELETE(url, callback) {
-    wiiuBrowser.showLoadingIcon(true);
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if(this.readyState === 4) {
-            wiiuBrowser.showLoadingIcon(false);
-            return callback(this);
-        }
-    };
-    xhttp.open("DELETE", url, true);
-    xhttp.send();
+	cave.transition_begin();
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState === 4) {
+			cave.transition_end();
+			return callback(this);
+		}
+	};
+	xhttp.open('DELETE', url, true);
+	xhttp.send();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
