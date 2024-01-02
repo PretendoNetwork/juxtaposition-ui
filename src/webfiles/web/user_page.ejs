@@ -1,8 +1,10 @@
 <html lang="en">
 <head>
-    <title>Juxt - <%= pnid.mii.name %></title>
+	<% var banned = (userContent.account_status < 0  || userContent.account_status > 1 || pnid.accessLevel < 0); %>
     <%- include('partials/head'); %>
     <!-- Google / Search Engine Tags -->
+	<% if(!banned) { %>
+	<title>Juxt - <%= pnid.mii.name %></title>
     <meta itemprop="name" content="<%= pnid.mii.name %> (@<%= pnid.username %>)">
     <%if(userSettings.profile_comment_visibility){%><meta itemprop="description" content="<%= userSettings.profile_comment%>"> <%}%>
 
@@ -18,7 +20,7 @@
     <%if(userSettings.profile_comment_visibility){%><meta name="twitter:description" content="<%= userSettings.profile_comment%>"/><%}%>
     <meta name="twitter:site" content="@PretendoNetwork"/>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
-
+	<% } %>
 </head>
 <body>
 <div id="main">
@@ -29,9 +31,9 @@
         <div class="community-top">
             <img class="banner" src="https://juxt-web-cdn.b-cdn.net/images/banner.png" alt="">
             <div class="community-info">
-                <img class="user-icon <%if(pnid.accessLevel > 2) {%>verified<%}%>" src="https://pretendo-cdn.b-cdn.net/mii/<%= userSettings.pid %>/normal_face.png">
-                <h2 class="community-title"><%= pnid.mii.name %> @<%= pnid.username %><%if(pnid.accessLevel >= 2) {%><span class="verified-badge">✓</span><%}%></h2>
-                <%if(pnid.pid !== pid && pid !== 1000000000) {%>
+                <img class="user-icon <%if(pnid.accessLevel > 2) {%>verified<%}%>" src="<%if (pnid.deleted || banned) { %>https://juxt-web-cdn.b-cdn.net/images/bandwidthlost.png<% } else { %>https://juxt-web-cdn.b-cdn.net/mii/<%=pnid.pid%>/normal_face.png<%}%>">
+                <h2 class="community-title"><% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %> @<%= pnid.username %><%}%><%if(pnid.accessLevel >= 2) {%><span class="verified-badge">✓</span><%}%></h2>
+                <%if(pnid.pid !== pid && pid !== 1000000000 && !pnid.deleted && !banned) {%>
                 <% var following = parentUserContent.followed_users.indexOf(userContent.pid) !== -1; %>
                 <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
                 <%if(following && userContent.followed_users.indexOf(parentUserContent.pid) !== -1) { /*Is mutual*/%>
@@ -39,6 +41,7 @@
                 <%}%>
                 <%}%>
             </div>
+			<% if (!pnid.deleted && !banned) { %>
             <h4 class="community-description">
                 <!--<%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%>
                     <%if(pnid.tierName) {%>
@@ -129,6 +132,7 @@
             </div>
         </div>
         <%- include('partials/' + template, { bundle }); %>
+		<% } %>
     </div>
 </div>
 </body>

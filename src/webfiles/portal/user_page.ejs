@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+<% var banned = (userContent.account_status < 0  || userContent.account_status > 1 || pnid.accessLevel < 0); %></0>
 <%- include('partials/head', { title: pnid.mii.name }); %>
 <body>
 <%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
@@ -14,16 +15,16 @@
             <img src="<%= cdnURL %>/images/banner.png" class="header-banner with-top-button">
         </div>
         <div class="community-info info-content with-header-banner">
-            <span class="icon-container"><img src="<%if(pnid.deleted){%><%= cdnURL %>/images/bandwidthlost.png<%}else{%>https://mii.olv.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon" alt=""></span>
-            <%if(pnid.pid !== pid && !pnid.deleted) {%>
+            <span class="icon-container"><img src="<%if (banned || pnid.deleted) { %><%= cdnURL %>/images/bandwidthlost.png<% } else { %>https://mii.olv.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon" alt=""></span>
+            <%if(pnid.pid !== pid && !pnid.deleted && !(banned)) {%>
                 <a href="#" class="favorite-button favorite-button-mini button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>"></a>
                 <%if(friends.indexOf(pid) !== -1) { /*Is mutual*/%>
                 <a href="/friend_messages/new/<%=userContent.pid%>" class="message-button favorite-button-mini button" data-sound="SE_WAVE_CHECKBOX_UNCHECK"></a>
                 <%}%>
             <%}%>
-            <span class="title"><%if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %><%}%></span>
+            <span class="title"><% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %><%}%></span>
             <span class="text">
-            <%if(!pnid.deleted){%>
+            <%if(!pnid.deleted && !(banned)){%>
                 <span>
                     @<%= pnid.username %>
                 </span>
@@ -104,7 +105,7 @@
             <%}%>
             </span>
         </div>
-        <%if(!pnid.deleted){%>
+        <%if(!pnid.deleted && !(banned)){%>
         <menu class="tab-header user-page">
             <li id="tab-header-post" class="tab-button <%if(selection === 0){ %>selected<%}%>">
                 <a href="<%= link %>" data-sound="SE_WAVE_SELECT_TAB">
