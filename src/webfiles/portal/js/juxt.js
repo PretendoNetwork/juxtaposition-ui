@@ -1,5 +1,6 @@
 /* eslint-disable */
-var scrollPosition, pjax;
+var scrollPosition, isPostModalOpen, pjax;
+isPostModalOpen = false;
 var updateCheck = setInterval(checkForUpdates, 30000);
 var inputCheck = setInterval(input, 100);
 
@@ -36,13 +37,49 @@ function initYeah() {
             parent.classList.remove('yeah');
             if(count) count.innerText -= 1;
             wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
+            if (document.querySelector('#post-' + id + ' .yeah-list')) {
+                var yeahList = document.querySelector('#post-' + id + ' .yeah-list');
+                var matchesMiiSrc = document.querySelector('#nav-menu-me .mii-icon img').src;
 
+                var childElements = yeahList.children;
+                if (childElements != 1){
+                for (var i = 0; i < childElements.length; i++) {
+                  var childImgSrc = childElements[i].querySelector('img').src;
+                  if (childImgSrc === matchesMiiSrc) {
+                    yeahList.removeChild(childElements[i]);
+                    break;
+                  }
+                }
+              }
+            }
+              
         }
         else {
             el.classList.add('selected');
             parent.classList.add('yeah');
             if(count) count.innerText = ++count.innerText;
             wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
+            if (document.querySelector('#post-' + id + ' .yeah-list')) {
+                var userMii = document.createElement('a');
+                userMii.classList.add('mii-icon-container');
+                userMii.setAttribute('data-pjax', '#body');
+                userMii.setAttribute('data-pjax-state', '');
+            
+                var userMiiImg = document.createElement('img');
+                userMiiImg.classList.add('mii-icon');
+                userMiiImg.src = document.querySelector('#nav-menu-me .mii-icon img').src;
+            
+                userMii.appendChild(userMiiImg);
+            
+                var yeahList = document.querySelector('#post-' + id + ' .yeah-list');
+                
+                if (yeahList.firstChild) {
+                    yeahList.insertBefore(userMii, yeahList.firstChild);
+                } else {
+                    yeahList.appendChild(userMii);
+                }
+            }
+            
         }
 
         POST('/posts/empathy', params, function a(data) {
@@ -104,15 +141,21 @@ function initMorePosts() {
     for (var i = 0; i < els.length; i++) {
         els[i].addEventListener("click", function(e) {
             var el = e.currentTarget;
+            el.disabled = true;
+            el.innerText = "Loading...";
             GET(el.getAttribute('data-href'), function a(data) {
                 var response = data.response;
                 if(response && data.status === 200) {
                     el.parentElement.outerHTML = data.response;
                     initPosts();
                     initMorePosts();
+                    el.disabled = false;
+                    el.innerText = "Load more posts";
                 }
                 else
                     el.parentElement.outerHTML = "";
+                    el.disabled = false;
+                    el.innerText = "Load more posts";
             })
 
         });
@@ -128,6 +171,11 @@ function initPostModules() {
                 show = el.getAttribute("data-module-show"),
                 hide = el.getAttribute("data-module-hide");
             if(!show || !hide) return;
+            if (show === "add-post-page") {
+            isPostModalOpen = true;
+            } else {
+            isPostModalOpen = false;
+            }  
             document.getElementById(hide).style.display = 'none';
             document.getElementById(show).style.display = 'block';
 
@@ -164,6 +212,7 @@ function initSounds() {
     var els = document.querySelectorAll("[data-sound]");
     if (!els) return;
     for (var i = 0; i < els.length; i++) {
+        els[i].removeEventListener("click", playSound);
         els[i].addEventListener("click", playSound);
     }
     function playSound(e) {
@@ -171,8 +220,14 @@ function initSounds() {
     }
 }
 function initScreenShots() {
+    if (wiiuMainApplication.getScreenShot(true)) {
     document.getElementById("top-screen").src = "data:image/png;base64," + wiiuMainApplication.getScreenShot(true);
     document.getElementById("bottom-screen").src = "data:image/png;base64," + wiiuMainApplication.getScreenShot(false);
+    } else {
+    //fallback for titles with screenshot disabled
+    document.getElementById("top-screen").src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC";
+    document.getElementById("bottom-screen").src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC";
+    }
 }
 function initNewPost() {
     initPostEmotion();
@@ -189,7 +244,6 @@ function initSpoilers() {
         });
     }
 }
-
 function initAll() {
     initNavBar();
     initTabs();
@@ -312,7 +366,7 @@ function exit() {
     wiiu.gamepad.update();
 
     if(wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
-        alert('Debug Menu');
+        alert('Debug Menu (totally)');
     else {
         wiiuSound.playSoundByName("SE_WAVE_EXIT", 1);
         wiiuBrowser.closeApplication();
@@ -324,12 +378,14 @@ function deletePost(post) {
     if(!id) return;
     var confirm = wiiuDialog.confirm('Are you sure you want to delete your post? This cannot be undone.', 'No', 'Yes');
     if(confirm) {
+        wiiuDialog.showLoading('Deleting your post...');
         DELETE('/posts/' + id, function a(data) {
             if(!data || data.status !== 200) {
                 return wiiuErrorViewer.openByCodeAndMessage('5980030', 'Post was not able to be deleted. Please try again later.')
             }
             console.log(data);
-            alert('Post has been deleted.')
+            wiiuDialog.hideLoading();
+            wiiuDialog.alert('Post has been deleted.', 'Accept');
             return window.location.href = data.responseText;
         });
     }
@@ -420,7 +476,7 @@ function DELETE(url, callback) {
 }
 
 function back() {
-    if(wiiuBrowser.canHistoryBack()) {
+    if(wiiuBrowser.canHistoryBack() && !isPostModalOpen) {
         document.getElementById('nav-menu-back').classList.add('selected')
         wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
         history.back();
