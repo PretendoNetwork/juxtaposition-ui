@@ -48,6 +48,11 @@
     <div id="toast"></div>
     <div class="community-page-post-box" id="post">
         <div id="wrapper">
+			<%if(!post.removed) {%>
+				<% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+				<button id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">+</button>
+				<%}%>
+			<%}%>
                 <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, mainPost: true }); %>
                 <span class="replies-line"></span>
                 <% replies.forEach(function(post) { %>
@@ -56,6 +61,9 @@
                 <% }); %>
         </div>
     </div>
+	<% if(((community.allows_comments && community.open) || (community.admins && community.admins.indexOf(pid) !== -1)) && userSettings.pid !== 1000000000 && userSettings.account_status === 0) {%>
+		<%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
+	<%}%>
 	<div id="report-post-page" class="add-post-page official-user-post" style="display: none">
         <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
             <input type="hidden" name="post_id" id="report-post-id" value="<%= post.id %>"/>
@@ -91,6 +99,31 @@
 			</div>
         </form>
     </div>
+	<div class="painting-wrapper">
+		<div id="painting-content">
+		<div class="tools">
+			<div>
+				<button class="clear">Clear</button>
+				<button class="undo">Undo</button>
+			</div>
+			<div>
+				<ul class="buttons pencil">
+					<li>
+						<input type="radio" value="0" class="pencil small" name="pencil">
+					</li>
+					<li>
+						<input type="radio" value="1" class="pencil medium" name="pencil">
+					</li>
+					<li>
+						<input type="radio" value="2" class="pencil large" name="pencil">
+					</li>
+				</ul>
+			</div>
+		</div>
+	  <canvas width="320" height="120" id="painting">
+		Your browser does not support the HTML canvas tag.</canvas>
+	</div>
+	</div>
 </div>
 </body>
 </html>

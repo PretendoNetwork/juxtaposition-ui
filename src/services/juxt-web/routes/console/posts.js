@@ -243,7 +243,7 @@ async function newPost(req, res) {
 	if (body) {
 		body = req.body.body.replace(/[^A-Za-z\d\s-_!@#$%^&*(){}‛¨ƒºª«»“”„¿¡←→↑↓√§¶†‡¦–—⇒⇔¤¢€£¥™©®+×÷=±∞ˇ˘˙¸˛˜′″µ°¹²³♭♪•…¬¯‰¼½¾♡♥●◆■▲▼☆★♀♂,./?;:'"\\<>]/g, '');
 	}
-	if (body.length > 280) {
+	if (body.length > 280 && !req.moderator) {
 		body = body.substring(0, 280);
 	}
 	const document = {

@@ -1,3 +1,6 @@
+/*eslint-env browser*/
+/*eslint no-var: "off"*/
+/*eslint @typescript-eslint/explicit-function-return-type: "off"*/
 let pjax;
 setInterval(checkForUpdates, 30000);
 
@@ -144,12 +147,12 @@ function initPostModules() {
 			document.getElementById(hide).style.display = 'none';
 			document.getElementById(show).style.display = '';
 			if (header === 'true') {
-				document.getElementById('header').style.display = 'block';
+				document.getElementById('title').style.display = '';
 			} else {
-				document.getElementById('header').style.display = 'none';
+				document.getElementById('title').style.display = 'none';
 			}
 			if (menu === 'true') {
-				document.getElementById('nav-menu').style.display = 'block';
+				document.getElementById('nav-menu').style.display = '';
 			} else {
 				document.getElementById('nav-menu').style.display = 'none';
 			}
@@ -171,7 +174,6 @@ function initPostEmotion() {
 }
 function initNewPost() {
 	initPostEmotion();
-	initScreenShots();
 }
 function initSpoilers() {
 	const els = document.querySelectorAll('button[data-post-id]');
@@ -303,7 +305,7 @@ function GET(url, callback) {
 }
 
 window.onscroll = function(ev) {
-	if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+	if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && document.getElementById('load-more')) {
 		document.getElementById('load-more').click();
 	}
 };
@@ -344,4 +346,57 @@ function reportPost(post) {
 	formID.value = id;
 	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, "$1-$2-$3-$4-$5-$6"));
 	button.click();
+}
+
+function openText() {
+	const textArea = document.getElementById('new-post-text');
+	const paintingArea = document.getElementById('new-post-memo');
+	const paintingOverlay = document.getElementById('painting-wrapper');
+
+	if (!textArea || !paintingArea || !paintingOverlay) {
+		return;
+	}
+
+	textArea.style.display = '';
+	paintingArea.style.display = 'none';
+	paintingOverlay.style.display = 'none';
+}
+
+function newPainting(clear) {
+	const textArea = document.getElementById('new-post-text');
+	const paintingArea = document.getElementById('new-post-memo');
+	const paintingOverlay = document.getElementById('painting-wrapper');
+	const c = document.getElementById('painting');
+
+	if (!textArea || !paintingArea || !paintingOverlay) {
+		return;
+	}
+
+	if (clear) {
+		clearCanvas();
+	}
+
+	textArea.style.display = 'none';
+	paintingArea.style.display = 'flex';
+	paintingOverlay.style.display = '';
+	scale = c.getBoundingClientRect().width / 320;
+
+}
+
+function closePainting(save) {
+	const paintingArea = document.getElementById('new-post-memo');
+	const paintingOverlay = document.getElementById('painting-wrapper');
+	const memo = document.getElementById('memo');
+	const c = document.getElementById('painting');
+
+	if (!paintingOverlay || !paintingArea || !memo) {
+		return;
+	}
+
+	if (save) {
+		memo.src = c.toDataURL();
+	}
+
+	paintingOverlay.style.display = 'none';
+
 }
