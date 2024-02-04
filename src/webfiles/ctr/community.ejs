@@ -26,7 +26,7 @@
             </span>
         </h1>
         <% if((
-			(community.permissions.open && community.type < 2) || (community.permissions.admins && community.permissions.admins.indexOf(pid) !==-1) ||
+			(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
 			(pnid.accessLevel >= community.permissions.minimum_new_post_access_level)
 			) && userSettings.account_status === 0) {%>
             <a id="header-post-button" class="header-button left" href="#"
@@ -37,7 +37,7 @@
         <%if(children){%>
             <a id="header-communities-button" class="right" href="/titles/<%= community.olive_community_id %>/related" data-pjax="#body">Related Communities</a>
         <%}%>
-        <%if(community.open){%>
+        <%if(community.permissions.open){%>
         <button type="button" class="submit follow yeah-button <%if(children) {%>suggested<%}%> <%if(userContent.followed_communities.indexOf(community.olive_community_id) !== -1){ %>selected<%}%>" onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>">
             <span class="sprite yeah"></span>
         </button>

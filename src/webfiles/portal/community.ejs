@@ -6,7 +6,7 @@
 			<div id="body">
 				<header id="header">
 					<% if((
-						(community.permissions.open && community.type < 2) || (community.permissions.admins && community.permissions.admins.indexOf(pid) !==-1) ||
+						(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
 						(pnid.accessLevel >= community.permissions.minimum_new_post_access_level)
 						) && userSettings.account_status === 0) {%>
 						<a id="header-post-button" class="header-button" href="#" data-sound="SE_WAVE_SELECT_TAB"

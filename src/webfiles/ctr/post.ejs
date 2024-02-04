@@ -6,7 +6,7 @@
     <header id="header" class="buttons">
         <h1 id="page-title" class=""><%= post.screen_name %></h1>
         <% if((
-			(community.permissions.open && community.type < 2) || (community.permissions.admins && community.permissions.admins.indexOf(pid) !==-1) ||
+			(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
 			(pnid.accessLevel >= community.permissions.minimum_new_comment_access_level)
 			) && userSettings.account_status === 0) {%>
             <a id="header-post-button" class="header-button left" href="#"
@@ -30,7 +30,7 @@
         <% }); %>
     </div>
     <% if((
-		(community.permissions.open && community.type < 2) || (community.permissions.admins && community.permissions.admins.indexOf(pid) !==-1) ||
+		(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
 		(pnid.accessLevel >= community.permissions.minimum_new_comment_access_level)
 		) && userSettings.account_status === 0) {%>
         <%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
