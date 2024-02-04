@@ -99,6 +99,16 @@ router.get('/:communityID/:type', async function (req, res) {
 	if (!community) {
 		return res.render(req.directory + '/error.ejs', {code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
 	}
+
+	if (!community.permissions) {
+		community.permissions = {
+			open: community.open,
+			minimum_new_post_access_level: 0,
+			minimum_new_comment_access_level: 0,
+			minimum_new_community_access_level: 0
+		};
+		await community.save();
+	}
 	const communityMap = await util.data.getCommunityHash();
 	let children = await database.getSubCommunities(community.olive_community_id);
 	if (children.length === 0) {
@@ -120,7 +130,7 @@ router.get('/:communityID/:type', async function (req, res) {
 
 	const bundle = {
 		posts,
-		open: community.open,
+		open: community.permissions.open,
 		numPosts,
 		communityMap,
 		userContent,
@@ -151,6 +161,7 @@ router.get('/:communityID/:type', async function (req, res) {
 		lang: req.lang,
 		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
+		pnid: req.user,
 		children,
 		type,
 		bundle,

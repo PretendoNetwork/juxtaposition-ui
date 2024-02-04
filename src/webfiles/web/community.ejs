@@ -34,7 +34,7 @@
             <div class="community-info">
                 <img class="user-icon" src="https://pretendo-cdn.b-cdn.net/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"/>
                 <h2 class="community-title"><%= community.name %></h2>
-                <%if(community.open && pid !== 1000000000){%>
+                <%if(community.permissions.open){%>
                     <% var following = userContent.followed_communities.indexOf(community.olive_community_id) !== -1; %>
                     <a href="#" class="favorite-button <%if(following){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/titles/follow"  data-community-id="<%= community.olive_community_id %>" data-text="<% if(following){ %><%= lang.user_page.follow_user %><%} else {%><%= lang.user_page.following_user %><%}%>"><% if(following){ %> <%= lang.user_page.following_user %> <%} else {%> <%= lang.user_page.follow_user %> <%}%></a>
                 <%}%>

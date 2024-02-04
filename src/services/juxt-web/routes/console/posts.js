@@ -127,6 +127,7 @@ router.get('/:post_id', async function (req, res) {
 		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		postPNID,
+		pnid: req.user,
 		moderator: req.moderator
 	});
 });
@@ -197,8 +198,8 @@ async function newPost(req, res) {
 			return res.sendStatus(403);
 		}
 	}
-	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0)
-        && (community.type >= 2) && !(parentPost && community.allows_comments && community.open)) {
+	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0) && req.user.access_level >= community.permissions.minimum_new_post_access_level
+        && (community.type >= 2) && !(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
 		res.status(403);
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}

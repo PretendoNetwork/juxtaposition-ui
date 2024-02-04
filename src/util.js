@@ -113,6 +113,12 @@ const methods = {
 			const B64token = Buffer.from(encryptedToken, 'base64');
 			const decryptedToken = this.decryptToken(B64token);
 			const token = this.unpackToken(decryptedToken);
+
+			// * Only allow token types 1 (Wii U) and 2 (3DS)
+			if (token.system_type !== 1 && token.system_type !== 2) {
+				return null;
+			}
+
 			return token.pid;
 		} catch (e) {
 			console.log(e);
