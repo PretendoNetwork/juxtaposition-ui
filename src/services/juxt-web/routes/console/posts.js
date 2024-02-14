@@ -242,7 +242,7 @@ async function newPost(req, res) {
 	}
 	let body = req.body.body;
 	if (body) {
-		body = req.body.body.replace(/[\p{L}\p{P}\d$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<>]/g, '');
+		body = req.body.body.replace(/[^\p{L}\p{P}\d\n\r~$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<>]/gu, '');
 	}
 	if (body.length > 280 && !req.moderator) {
 		body = body.substring(0, 280);
