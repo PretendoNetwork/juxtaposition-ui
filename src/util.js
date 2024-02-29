@@ -74,6 +74,8 @@ function nameCache() {
 }
 
 const methods = {
+	// TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
+	INVALID_POST_BODY_REGEX: /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu,
 	create_user: async function(pid, experience, notifications) {
 		const pnid = await this.getUserDataFromPid(pid);
 		if (!pnid) {

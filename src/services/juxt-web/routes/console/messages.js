@@ -97,13 +97,17 @@ router.post('/new', async function (req, res, next) {
 			miiFace = 'normal_face.png';
 			break;
 	}
-	let body = req.body.body;
-	if (body) {
-		body = req.body.body.replace(/[^\p{L}\p{P}\d\n\r~$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<>]/gu, '');
+	const body = req.body.body;
+	if (body && util.INVALID_POST_BODY_REGEX.test(body)) {
+		// TODO - Log this error
+		return res.sendStatus(422);
 	}
-	if (body.length > 280) {
-		body = body.substring(0,280);
+
+	if (body && body.length > 280) {
+		// TODO - Log this error
+		return res.sendStatus(422);
 	}
+
 	const document = {
 		community_id: conversation.id,
 		screen_name: req.user.mii.name,
