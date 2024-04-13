@@ -536,7 +536,7 @@ iframe {
 
 .report h4,
 .report p {
-	margin: 0 5px 0 0
+	margin: 0 0 5px 0;
 }
 
 .list-content-with-icon-and-text li.reports {
@@ -1128,6 +1128,67 @@ input.eraser.large {
 
 /* End of painting stuff */
 
+li.reports .hover {
+		display: flex;
+		user-select: none;
+		cursor: pointer;
+		padding: 0;
+		padding-left: 2ch;
+}
+
+
+summary::before {
+  content: "►";
+  display: flex;
+  flex-direction: revert;
+  position: absolute;
+  margin-left: -1em;
+}
+
+details[open] summary::before {
+  content: "▼";
+}
+
+summary::marker {
+  display: none;
+}
+summary {
+  list-style: none;
+}
+summary {
+  display: flex;
+  align-items: center;
+  padding-left: 1em;
+}
+details {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+li.reports .posts-wrapper {
+	margin-top: 1ch;
+}
+
+li.reports .post-buttons-wrapper {
+	display: none;
+}
+
+li.reports .button-spacer {
+  text-align: center;
+}
+
+.accounts .hover {
+  padding: 0ch;
+}
+.accounts .icon {
+  width: 40px;
+  height: 40px;
+}
+.accounts button > a {
+  text-wrap: nowrap;
+}
+
 @media screen and (max-width: 1400px) {
 	.communities-wrapper {
 		max-width: 600px;
@@ -1307,12 +1368,14 @@ input.eraser.large {
 	}
 
 	li.reports .posts-wrapper {
-		margin-left: -1em
+		margin-left: 0em;
+		width: calc(90vw - 2em);
+		max-width: calc(600px - 2em);
 	}
 
 	li.reports .hover {
 		width: auto;
-		padding: .5em .25em
+		padding: .5em .25em;
 	}
 
 	#message-page {
