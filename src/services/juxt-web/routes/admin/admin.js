@@ -47,8 +47,13 @@ router.get('/accounts', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	const users = await database.getUsersContent();
+	const page = req.query.page ? parseInt(req.query.page) : 0;
+	const search = req.query.search;
+	const limit = 20;
+
+	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
 	const userMap = await util.data.getUserHash();
+
 	res.render(req.directory + '/users.ejs', {
 		lang: req.lang,
 		moment: moment,
@@ -57,9 +62,12 @@ router.get('/accounts', async function (req, res) {
 		pid: req.pid,
 		moderator: req.moderator,
 		userMap,
-		users
+		users,
+		page,
+		search
 	});
 });
+
 
 router.get('/accounts/:pid', async function (req, res) {
 	if (!req.moderator) {

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { FuzzySearch } = require('mongoose-fuzzy-search-next');
 const { mongoose: mongooseConfig } = require('../config.json');
 const { COMMUNITY } = require('./models/communities');
 const { CONTENT } = require('./models/content');
@@ -282,12 +283,21 @@ async function getUsersSettings(numberOfUsers) {
 	}
 }
 
-async function getUsersContent(numberOfUsers) {
+async function getUsersContent(numberOfUsers, offset) {
 	verifyConnected();
 	if (numberOfUsers === -1) {
-		return SETTINGS.find({});
+		return SETTINGS.find({}).skip(offset);
 	} else {
-		return SETTINGS.find({}).limit(numberOfUsers);
+		return SETTINGS.find({}).skip(offset).limit(numberOfUsers);
+	}
+}
+
+async function getUserSettingsFuzzySearch(search_key, numberOfUsers, offset) {
+	verifyConnected();
+	if (numberOfUsers === -1) {
+		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset);
+	} else {
+		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset).limit(numberOfUsers);
 	}
 }
 
@@ -513,6 +523,7 @@ module.exports = {
 	getUsersSettings,
 	getUsersContent,
 	getUserSettings,
+	getUserSettingsFuzzySearch,
 	getUserContent,
 	getNotifications,
 	getUnreadNotificationCount,

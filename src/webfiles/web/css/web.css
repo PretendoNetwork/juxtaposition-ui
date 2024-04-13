@@ -9,7 +9,7 @@
 	--theme-light: #A185D6;
 	--text-secondary-2: #8990C1;
 	--border: rgba(255, 255, 255, 0.1);
-	--background-alt-alt: #383f6b
+	--background-alt-alt: #383f6b;
 }
 
 button,
@@ -744,9 +744,10 @@ button.report {
 	cursor: pointer;
 	border-radius: 1em;
 	font-weight: 700;
-	padding: 1em;
+	padding: 0.5em 1em;
 	text-decoration: none;
-	text-align: center
+	text-align: center;
+	text-wrap: nowrap;
 }
 
 .buttons.tabs>a.selected,
@@ -1187,6 +1188,19 @@ li.reports .button-spacer {
 }
 .accounts button > a {
   text-wrap: nowrap;
+}
+
+#search {
+  margin-top: 16px;
+  width: 20em;
+  height: 2em;
+  border-radius: 1em;
+  padding: 2ch;
+  border: 1px solid var(--background-alt-alt);
+  font-size: 1rem;
+  background-color: var(--background-alt);
+  padding: 12px;
+  color: var(--text);
 }
 
 @media screen and (max-width: 1400px) {

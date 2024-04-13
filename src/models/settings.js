@@ -44,7 +44,11 @@ const SettingsSchema = new Schema({
 	receive_notifications: {
 		type: Boolean,
 		default: true
-	}
+	},
+	created_at: {
+		type: Date,
+		default: Date.now()
+	},
 });
 
 SettingsSchema.methods.updateComment = async function(comment) {
