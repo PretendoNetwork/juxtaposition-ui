@@ -7,6 +7,7 @@
     "account_server_secret": "",
     "X-Nintendo-Client-ID": "",
     "X-Nintendo-Client-Secret": "",
+	"server_environment": "prod",
     "mongoose": {
         "uri": "mongodb://localhost:27017",
         "database": "database",

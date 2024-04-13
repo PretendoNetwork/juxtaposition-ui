@@ -21,6 +21,32 @@ async function auth(request, response, next) {
 		return next();
 	}
 
+	const discovery = await db.getEndPoint(config.server_environment);
+
+	if (!discovery || discovery.status !== 0) {
+		let message = '';
+		const status = discovery ? discovery.status : -1;
+		switch (status) {
+			case 3:
+				message = 'Juxtaposition is currently under maintenance. Please try again later.';
+				break;
+			case 4:
+				message = 'Juxtaposition is now closed. Thank you for your support!';
+				break;
+			default:
+				message = 'Juxtaposition is currently unavailable. Please try again later.';
+				break;
+		}
+		if (includes(request, 'juxt')) {
+			return response.render('web/login.ejs', {toast: message, cdnURL: config.CDN_domain,});
+		} else {
+			return response.render('portal/partials/ban_notification.ejs', {
+				user: null,
+				error: message
+			});
+		}
+	}
+
 	// Get pid and fetch user data
 	if (request.cookies.access_token) {
 		try {
