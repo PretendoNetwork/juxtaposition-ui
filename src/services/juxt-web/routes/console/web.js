@@ -3,6 +3,7 @@ const router = express.Router();
 const database = require('../../../../database');
 const { POST } = require('../../../../models/post');
 const path = require('path');
+const auth = require('../../../../middleware/auth');
 
 router.get('/', function (req, res) {
 	res.redirect('/titles/show');
@@ -122,7 +123,7 @@ router.get('/drawing/:image_id.png', async function (req, res) {
 	}
 });
 
-router.get('/notifications.json', async function (req, res) {
+router.get('/notifications.json', auth, async function (req, res) {
 	const notifications = await database.getUnreadNotificationCount(req.pid);
 	const messagesCount = await database.getUnreadConversationCount(req.pid);
 	res.send(
@@ -133,7 +134,7 @@ router.get('/notifications.json', async function (req, res) {
 	);
 });
 
-router.get('/:post_id/oembed.json', async function (req, res) {
+router.get('/:post_id/oembed.json', auth, async function (req, res) {
 	const post = await database.getPostByID(req.params.post_id.toString());
 	const doc = {
 		'author_name': post.screen_name,
@@ -142,7 +143,7 @@ router.get('/:post_id/oembed.json', async function (req, res) {
 	res.send(doc);
 });
 
-router.get('/downloadUserData.json', async function (req, res) {
+router.get('/downloadUserData.json', auth, async function (req, res) {
 	res.set('Content-Type', 'text/json');
 	res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
 	const posts = await POST.find({ pid: req.pid });

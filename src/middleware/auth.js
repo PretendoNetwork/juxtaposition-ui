@@ -4,23 +4,6 @@ const moment = require('moment/moment');
 const db = require('../database');
 
 async function auth(request, response, next) {
-	// Web files
-	if (isStartOfPath(request.path, '/css/') ||
-        isStartOfPath(request.path, '/fonts/') ||
-        isStartOfPath(request.path, '/js/') ||
-        request.path === '/favicon.ico' ||
-        isStartOfPath(request.path, '/web/')  ||
-        isStartOfPath(request.path, '/images/')  ||
-        isStartOfPath(request.path, '/image/')) {
-		request.lang = util.data.processLanguage();
-		if (includes(request, 'juxt')) {
-			request.directory = 'web';
-		} else {
-			request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
-		}
-		return next();
-	}
-
 	const discovery = await db.getEndPoint(config.server_environment);
 
 	if (!discovery || discovery.status !== 0) {
@@ -37,7 +20,7 @@ async function auth(request, response, next) {
 				message = 'Juxtaposition is currently unavailable. Please try again later.';
 				break;
 		}
-		if (includes(request, 'juxt')) {
+		if (request.directory === 'web') {
 			return response.render('web/login.ejs', {toast: message, cdnURL: config.CDN_domain,});
 		} else {
 			return response.render('portal/partials/ban_notification.ejs', {
@@ -48,7 +31,7 @@ async function auth(request, response, next) {
 	}
 
 	// Get pid and fetch user data
-	if (request.cookies.access_token) {
+	if (request.cookies.access_token && request.directory === 'web') {
 		try {
 			request.user = await util.data.getUserDataFromToken(request.cookies.access_token);
 		} catch (e) {
@@ -58,7 +41,6 @@ async function auth(request, response, next) {
 				request.lang = util.data.processLanguage();
 				request.token = request.cookies.access_token;
 				request.paramPackData = null;
-				request.directory = 'web';
 				return next();
 			} else {
 				//return response.render('web/login.ejs', {toast: 'Unable to reach the account server. Try again later.', cdnURL: config.CDN_domain,});
@@ -66,9 +48,14 @@ async function auth(request, response, next) {
 			}
 		}
 		request.pid = request.user ? request.user.pid : null;
-	} else if (request.headers['x-nintendo-servicetoken']) {
+	} else if (request.headers['x-nintendo-servicetoken'] && request.directory !== 'web') {
 		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.data.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
 		request.user = request.pid ? await util.data.getUserDataFromPid(request.pid) : null;
+	} else {
+		return response.render('portal/partials/ban_notification.ejs', {
+			user: null,
+			error: 'Juxtaposition is currently unavailable. Please try again later.'
+		});
 	}
 
 	// Set headers
@@ -77,10 +64,10 @@ async function auth(request, response, next) {
 
 	// Ban check
 	if (request.user) {
-		//if (request.user.serverAccessLevel !== 'test' && request.user.serverAccessLevel !== 'dev') {
-		//	response.status(500);
-		//	return response.send('No access. Must be tester or dev');
-		//}
+		if (config.server_environment !== 'prod' && request.user.serverAccessLevel !== 'test' && request.user.serverAccessLevel !== 'dev') {
+			response.status(500);
+			return response.send('No access. Must be tester or dev');
+		}
 		// Set moderator status
 		request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
 		const user = await db.getUserSettings(request.pid);
@@ -117,11 +104,8 @@ async function auth(request, response, next) {
 	}
 
 	// Juxt Website
-	if (includes(request, 'juxt')) {
-		request.lang = util.data.processLanguage();
+	if (request.directory === 'web') {
 		request.token = request.cookies.access_token;
-		request.paramPackData = null;
-		request.directory = 'web';
 
 		// Open access pages
 		if (isStartOfPath(request.path, '/users/') ||
@@ -152,16 +136,16 @@ async function auth(request, response, next) {
 				error: 'Unable to parse service token. Are you using a Nintendo Network ID?'
 			});
 		}
-		if (request.user.accessLevel < 3 && !request.paramPackData) {
-			return response.render('portal/partials/ban_notification.ejs', {
-				user: null,
-				error: 'Missing auth headers'
-			});
-		}
 		if (!request.user) {
 			return response.render('portal/partials/ban_notification.ejs', {
 				user: null,
 				error: 'Unable to fetch user data. Please try again later.'
+			});
+		}
+		if (request.user.accessLevel < 3 && !request.paramPackData) {
+			return response.render('portal/partials/ban_notification.ejs', {
+				user: null,
+				error: 'Missing auth headers'
 			});
 		}
 		const userAgent = request.headers['user-agent'];
@@ -173,7 +157,6 @@ async function auth(request, response, next) {
 		}
 
 		request.lang = util.data.processLanguage(request.paramPackData);
-		request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
 		return next();
 	}
 }
