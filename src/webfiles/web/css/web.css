@@ -562,7 +562,17 @@ button.report {
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	padding: 1em
+	padding: 1em;
+	margin: auto;
+	height: 100%;
+	background: none;
+}
+
+#report-post-page > #report-form {
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 #report-form, .add-post-page {
@@ -624,6 +634,11 @@ button.report {
 	border-radius: 0 20px 20px 0;
 	background: #f9f5fb;
   }
+	.report .textarea-text {
+		border-radius: 10px;
+		padding: 1ch;
+		margin-top: 1em;
+	}
   input[type=radio] {
 	-webkit-appearance:none;
 	appearance: none;
