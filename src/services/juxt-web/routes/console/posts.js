@@ -72,7 +72,7 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 		});
 		res.send({status: 200, id: post.id, count: post.empathy_count + 1});
 		if (req.pid !== post.pid) {
-			await util.data.newNotification({
+			await util.newNotification({
 				pid: post.pid,
 				type: 'yeah',
 				objectID: post.id,
@@ -120,9 +120,9 @@ router.get('/:post_id', async function (req, res) {
 		return res.redirect(`/posts/${post.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
-	const postPNID = await util.data.getUserDataFromPid(post.pid);
+	const postPNID = await util.getUserDataFromPid(post.pid);
 	res.render(req.directory + '/post.ejs', {
 		moment: moment,
 		userSettings: userSettings,
@@ -216,16 +216,16 @@ async function newPost(req, res) {
 	let painting = ''; let paintingURI = ''; let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		if (req.body.bmp === 'true') {
-			painting = await util.data.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
+			painting = await util.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
 		} else {
 			painting = req.body.painting;
 		}
-		paintingURI = await util.data.processPainting(painting, true);
-		await util.data.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
+		paintingURI = await util.processPainting(painting, true);
+		await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
 	}
 	if (req.body.screenshot) {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		await util.data.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
+		await util.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
 	}
 
 	let miiFace;
@@ -297,7 +297,7 @@ async function newPost(req, res) {
 		parentPost.save();
 	}
 	if (parentPost && (parentPost.pid !== req.user.pid)) {
-		await util.data.newNotification({
+		await util.newNotification({
 			pid: parentPost.pid,
 			type: 'reply',
 			user: req.pid,

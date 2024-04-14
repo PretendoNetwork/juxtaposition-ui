@@ -47,7 +47,7 @@ router.get('/downloadUserData.json', async function (req, res) {
 
 router.get('/me/settings', async function (req, res) {
 	const userSettings = await database.getUserSettings(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	res.render(req.directory + '/settings.ejs', {
 		communityMap: communityMap,
 		moment: moment,
@@ -109,7 +109,7 @@ router.post('/follow', upload.none(), async function (req, res) {
 		const picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
 		//pid, type, reference_id, origin_pid, title, content
 		if (picked === null) {
-			await util.data.newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
+			await util.newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
 		}
 	} else if (userContent !== null  && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1) {
 		userToFollowContent.removeFromFollowers(userContent.pid);
@@ -137,7 +137,10 @@ router.get('/:pid/:type', async function (req, res) {
 });
 
 async function userPage(req, res, userID) {
-	const pnid = userID === req.pid ? req.user : await util.data.getUserDataFromPid(userID).catch((e) => {
+	if (!userID || isNaN(userID)) {
+		return res.redirect('/404');
+	}
+	const pnid = userID === req.pid ? req.user : await util.getUserDataFromPid(userID).catch((e) => {
 		console.log(e.details);
 	});
 	const userContent = await database.getUserContent(userID);
@@ -147,10 +150,10 @@ async function userPage(req, res, userID) {
 	const userSettings = await database.getUserSettings(userID);
 	const posts = await database.getNumberUserPostsByID(userID, config.post_limit);
 	const numPosts = await database.getTotalPostsByUserID(userID);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	let friends = [];
 	try {
-		friends = await util.data.getFriends(userID);
+		friends = await util.getFriends(userID);
 	} catch (e) {}
 
 	let parentUserContent;
@@ -199,12 +202,12 @@ async function userPage(req, res, userID) {
 }
 
 async function userRelations(req, res, userID) {
-	const pnid = userID === req.pid ? req.user : await util.data.getUserDataFromPid(userID);
+	const pnid = userID === req.pid ? req.user : await util.getUserDataFromPid(userID);
 	const userContent = await database.getUserContent(userID);
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
 	const numPosts = await database.getTotalPostsByUserID(userID);
-	const friends = await util.data.getFriends(userID);
+	const friends = await util.getFriends(userID);
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
 		parentUserContent = await database.getUserContent(req.pid);
@@ -226,7 +229,7 @@ async function userRelations(req, res, userID) {
             { $project: { index: 0, _id: 0 } },
             { $limit: config.post_limit }
         ]);*/
-		const communityMap = await util.data.getCommunityHash();
+		const communityMap = await util.getCommunityHash();
 		const bundle = {
 			posts,
 			open: true,
@@ -278,7 +281,7 @@ async function userRelations(req, res, userID) {
 	} else {
 		followers = await database.getFollowedUsers(userContent);
 		communities = userContent.followed_communities;
-		communityMap = await util.data.getCommunityHash();
+		communityMap = await util.getCommunityHash();
 		selection = 2;
 	}
 
@@ -323,7 +326,7 @@ async function userRelations(req, res, userID) {
 async function morePosts(req, res, userID) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}
@@ -362,7 +365,7 @@ async function moreYeahPosts(req, res, userID) {
 	let offset = parseInt(req.query.offset);
 	const parentUserContent = await database.getUserContent(userID);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}

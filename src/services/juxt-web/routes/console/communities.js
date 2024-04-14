@@ -69,7 +69,7 @@ router.get('/:communityID/related', async function (req, res) {
 	if (!community) {
 		return res.render(req.directory + '/error.ejs', {code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
 	}
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
 	if (!children) {
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
@@ -109,7 +109,7 @@ router.get('/:communityID/:type', async function (req, res) {
 		};
 		await community.save();
 	}
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	let children = await database.getSubCommunities(community.olive_community_id);
 	if (children.length === 0) {
 		children = null;
@@ -173,7 +173,7 @@ router.get('/:communityID/:type', async function (req, res) {
 router.get('/:communityID/:type/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	let posts;
 	const community = await database.getCommunityByID(req.params.communityID);
 	if (!community) {

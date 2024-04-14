@@ -4,7 +4,7 @@ async function detectVersion(request, response, next) {
 	// Check the domain and set the directory
 	if (includes(request, 'juxt')) {
 		request.directory = 'web';
-		request.lang = util.data.processLanguage();
+		request.lang = util.processLanguage();
 	} else {
 		request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
 	}

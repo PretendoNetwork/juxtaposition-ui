@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/my_news', async function (req, res) {
 	const notifications = await database.getNotifications(req.pid, 25, 0);
-	const userMap = util.data.getUserHash();
+	const userMap = util.getUserHash();
 	const bundle = {
 		notifications,
 		userMap
@@ -37,10 +37,10 @@ router.get('/my_news', async function (req, res) {
 });
 
 router.get('/friend_requests', async function (req, res) {
-	let requests = (await util.data.getFriendRequests(req.pid)).reverse();
+	let requests = (await util.getFriendRequests(req.pid)).reverse();
 	const now = new Date();
 	requests = requests.filter(request => new Date(request.expires * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
-	const userMap = util.data.getUserHash();
+	const userMap = util.getUserHash();
 	const bundle = {
 		requests: requests ? requests : [],
 		userMap

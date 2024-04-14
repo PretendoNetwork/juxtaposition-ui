@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const conversations = await database.getConversations(req.pid);
-	const usersMap = await util.data.getUserHash();
+	const usersMap = await util.getUserHash();
 	res.render(req.directory + '/messages.ejs', {
 		moment: moment,
 		pid: req.pid,
@@ -26,9 +26,9 @@ router.get('/', async function (req, res) {
 
 router.post('/new', async function (req, res, next) {
 	let conversation = await database.getConversationByID(req.body.community_id);
-	const user2 = await util.data.getUserDataFromPid(req.body.message_to_pid);
+	const user2 = await util.getUserDataFromPid(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
-	const friends = await util.data.getFriends(user2.pid);
+	const friends = await util.getFriends(user2.pid);
 	if (req.body.community_id === 0) {
 		return res.sendStatus(404);
 	}
@@ -68,12 +68,12 @@ router.post('/new', async function (req, res, next) {
 	let painting = ''; let paintingURI = ''; let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
-		paintingURI = await util.data.processPainting(painting, true);
-		await util.data.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
+		paintingURI = await util.processPainting(painting, true);
+		await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
 	}
 	if (req.body.screenshot) {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		await util.data.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
+		await util.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
 	}
 
 	let miiFace;
@@ -150,9 +150,9 @@ router.post('/new', async function (req, res, next) {
 });
 
 router.get('/new/:pid', async function (req, res, next) {
-	const user = await util.data.getUserDataFromPid(req.pid);
-	const user2 = await util.data.getUserDataFromPid(req.params.pid);
-	const friends = await util.data.getFriends(user2.pid);
+	const user = await util.getUserDataFromPid(req.pid);
+	const user2 = await util.getUserDataFromPid(req.params.pid);
+	const friends = await util.getFriends(user2.pid);
 	if (!req.user || !user2) {
 		return res.sendStatus(422);
 	}
@@ -214,7 +214,7 @@ router.get('/:message_id', async function (req, res) {
 		res.redirect('/');
 	}
 	const messages = await database.getConversationMessages(conversation.id, 200, 0);
-	const userMap = await util.data.getUserHash();
+	const userMap = await util.getUserHash();
 	res.render(req.directory + '/message_thread.ejs', {
 		moment: moment,
 		user2: user2,

@@ -34,7 +34,7 @@ router.get('/', async function (req, res) {
 
 	const usrMii = await database.getUserSettings(req.pid);
 	if (req.user.mii.name !== usrMii.screen_name) {
-		util.data.setName(req.pid, req.user.mii.name);
+		util.setName(req.pid, req.user.mii.name);
 		usrMii.screen_name = req.user.mii.name;
 		await usrMii.save();
 	}
@@ -58,7 +58,7 @@ router.post('/newUser', async function (req, res) {
 		return res.sendStatus(504);
 	}
 
-	await util.data.create_user(req.pid, req.body.experience, req.body.notifications);
+	await util.create_user(req.pid, req.body.experience, req.body.notifications);
 	if (await database.getUserSettings(req.pid) !== null) {
 		res.sendStatus(200);
 	} else {

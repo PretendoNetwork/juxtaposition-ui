@@ -6,12 +6,27 @@ const util = require('../util');
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data
-	request.pid = request.headers['x-nintendo-servicetoken'] ? await util.data.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
-	request.user = request.pid ? await util.data.getUserDataFromPid(request.pid) : null;
+	request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
+	request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
 
 	// Set headers
-	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.data.decodeParamPack(request.headers['x-nintendo-parampack']) : null;
+	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.decodeParamPack(request.headers['x-nintendo-parampack']) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
+
+	if (!request.user) {
+		try {
+			request.user = await util.getUserDataFromToken(request.cookies.access_token);
+			request.pid = request.user.pid;
+			if (request.user.accessLevel !== 3) {
+				request.user = null;
+				request.pid = null;
+			}
+		} catch (e) {
+			console.log(e);
+			request.user = null;
+			request.pid = null;
+		}
+	}
 
 	// This section includes checks if a user is a developer and adds exceptions for these cases
 	if (!request.pid) {
@@ -40,7 +55,7 @@ async function auth(request, response, next) {
 		});
 	}
 
-	request.lang = util.data.processLanguage(request.paramPackData);
+	request.lang = util.processLanguage(request.paramPackData);
 	return next();
 }
 

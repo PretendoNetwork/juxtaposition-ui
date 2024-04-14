@@ -13,9 +13,9 @@ router.get('/posts', async function (req, res) {
 	}
 
 	const reports = await database.getAllOpenReports();
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const userContent = await database.getUserContent(req.pid);
-	const userMap = util.data.getUserHash();
+	const userMap = util.getUserHash();
 	const postIDs = reports.map(obj => obj.post_id);
 
 	const posts = await POST.aggregate([
@@ -52,7 +52,7 @@ router.get('/accounts', async function (req, res) {
 	const limit = 20;
 
 	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
-	const userMap = await util.data.getUserHash();
+	const userMap = await util.getUserHash();
 
 	res.render(req.directory + '/users.ejs', {
 		lang: req.lang,
@@ -73,7 +73,7 @@ router.get('/accounts/:pid', async function (req, res) {
 	if (!req.moderator) {
 		return res.redirect('/titles/show');
 	}
-	const pnid = await util.data.getUserDataFromPid(req.params.pid).catch((e) => {
+	const pnid = await util.getUserDataFromPid(req.params.pid).catch((e) => {
 		console.log(e.details);
 	});
 	const userContent = await database.getUserContent(req.params.pid);
@@ -82,7 +82,7 @@ router.get('/accounts/:pid', async function (req, res) {
 	}
 	const userSettings = await database.getUserSettings(req.params.pid);
 	const posts = await database.getNumberUserPostsByID(req.params.pid, config.post_limit);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 
 	res.render(req.directory + '/moderate_user.ejs', {
 		lang: req.lang,

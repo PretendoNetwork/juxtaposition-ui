@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	if (!userContent) {
 		return res.redirect('/404');
 	}
@@ -51,7 +51,7 @@ router.get('/', async function (req, res) {
 router.get('/more', async function (req, res) {
 	let offset = parseInt(req.query.offset);
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}

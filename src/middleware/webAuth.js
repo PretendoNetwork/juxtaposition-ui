@@ -5,7 +5,7 @@ const util = require('../util');
 async function webAuth(request, response, next) {
 	// Get pid and fetch user data
 	try {
-		request.user = await util.data.getUserDataFromToken(request.cookies.access_token);
+		request.user = await util.getUserDataFromToken(request.cookies.access_token);
 		request.pid = request.user.pid;
 	} catch (e) {
 		const domain = request.get('host').replace('juxt', '');
@@ -13,7 +13,7 @@ async function webAuth(request, response, next) {
 		response.clearCookie('refresh_token', {domain: domain, path: '/'});
 		response.clearCookie('token_type', {domain: domain, path: '/'});
 		if (request.path === '/login') {
-			request.lang = util.data.processLanguage();
+			request.lang = util.processLanguage();
 			request.token = request.cookies.access_token;
 			request.paramPackData = null;
 			return next();

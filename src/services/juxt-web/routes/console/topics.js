@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const tag = req.query.topic_tag;
 	console.log(tag);
 	if (!userContent || !tag) {
@@ -54,7 +54,7 @@ router.get('/', async function (req, res) {
 router.get('/more', async function (req, res) {
 	const offset = req.query.offset ? parseInt(req.query.offset) : 0;
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.data.getCommunityHash();
+	const communityMap = await util.getCommunityHash();
 	const tag = req.query.topic_tag;
 	if (!tag) {
 		return res.sendStatus(204);

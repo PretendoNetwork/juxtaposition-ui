@@ -13,7 +13,7 @@ router.get('/', async function (req, res) {
 
 router.post('/', async (req, res) => {
 	const { username, password } = req.body;
-	const login = await util.data.login(username, password).catch((e) => {
+	const login = await util.login(username, password).catch((e) => {
 		console.log(e.details);
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
@@ -31,7 +31,7 @@ router.post('/', async (req, res) => {
 		return;
 	}
 
-	const PNID = await util.data.getUserDataFromToken(login.accessToken);
+	const PNID = await util.getUserDataFromToken(login.accessToken);
 	if (!PNID) {
 		return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
 	}
