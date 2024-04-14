@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<% var banned = (userContent.account_status < 0  || userContent.account_status > 1 || pnid.accessLevel < 0); %></0>
+<% var banned = (userSettings.account_status < 0  || userSettings.account_status > 1 || pnid.accessLevel < 0); %></0>
 <%- include('partials/head', { title: pnid.mii.name }); %>
 <body>
 <%- include('partials/nav_bar', { selection: -1, pid: pid }); %>

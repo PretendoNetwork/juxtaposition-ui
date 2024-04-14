@@ -1,6 +1,6 @@
 <html lang="en">
 <head>
-	<% var banned = (userContent.account_status < 0  || userContent.account_status > 1 || pnid.accessLevel < 0); %>
+	<% var banned = (userSettings.account_status < 0  || userSettings.account_status > 1 || pnid.accessLevel < 0); %>
     <%- include('partials/head'); %>
     <!-- Google / Search Engine Tags -->
 	<% if(!banned) { %>
