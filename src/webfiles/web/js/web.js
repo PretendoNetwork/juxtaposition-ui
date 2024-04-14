@@ -279,7 +279,7 @@ function checkForUpdates() {
 			}
 		}
 	};
-	xhttp.open('GET', '/notifications.json', true);
+	xhttp.open('GET', '/users/notifications.json', true);
 	xhttp.send();
 }
 function POST(url, data, callback) {

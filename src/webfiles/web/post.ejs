@@ -49,7 +49,7 @@
     <div class="community-page-post-box" id="post">
         <div id="wrapper">
 			<%if(!post.removed) {%>
-				<% if((
+				<% if(pid !== 1000000000 && (
 		(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
 		(pnid.accessLevel >= community.permissions.minimum_new_comment_access_level)
 		) && userSettings.account_status === 0) {%>
@@ -64,12 +64,6 @@
                 <% }); %>
         </div>
     </div>
-	<% if((
-		(community.permissions.open && community.type < 2) || (community.admins && community.admins.indexOf(pid) !==-1) ||
-		(pnid.accessLevel >= community.permissions.minimum_new_comment_access_level)
-		) && userSettings.account_status === 0) {%>
-		<%- include('partials/new_post', { pid, lang, id: post.community_id, name: post.screen_name, url: `/posts/${post.id}/new`, show: 'post', message_pid: '' }); %>
-	<%}%>
 	<div id="report-post-page" class="add-post-page official-user-post" style="display: none">
         <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
             <input type="hidden" name="post_id" id="report-post-id" value="<%= post.id %>"/>
@@ -104,8 +98,6 @@
             <input type="submit" class="post-button fixed-bottom-button" value="Submit">
 			</div>
         </form>
-    </div>
-	<div class="painting-wrapper">
 		<div id="painting-content">
 		<div class="tools">
 			<div>

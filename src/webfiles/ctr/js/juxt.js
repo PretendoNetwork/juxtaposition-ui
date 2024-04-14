@@ -318,7 +318,7 @@ function testOffline() {
 }
 
 function checkForUpdates() {
-	GET('/notifications.json', function updates(data) {
+	GET('/users/notifications.json', function updates(data) {
 		var notificationObj = JSON.parse(data.responseText);
 		var count =
 		notificationObj.message_count + notificationObj.notification_count;

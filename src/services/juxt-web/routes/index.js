@@ -1,6 +1,5 @@
 module.exports = {
 	PORTAL_SHOW: require('./console/show'),
-	PORTAL_WEB: require('./console/web'),
 	PORTAL_COMMUNITIES: require('./console/communities'),
 	PORTAL_USER: require('./console/userpage'),
 	PORTAL_POST: require('./console/posts'),
@@ -12,4 +11,5 @@ module.exports = {
 	ROBOTS: require('./web/robots'),
 	PWA: require('./web/pwa'),
 	ADMIN: require('./admin/admin'),
+	WEB_FILES: require('./console/web'),
 };

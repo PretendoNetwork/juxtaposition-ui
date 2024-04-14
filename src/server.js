@@ -3,7 +3,6 @@ const express = require('express');
 const morgan = require('morgan');
 const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
-const detectVersion = require('./middleware/detectVersion');
 const database = require('./database');
 const logger = require('./logger');
 const config = require('../config.json');
@@ -32,8 +31,6 @@ app.use(express.urlencoded({
 }));
 
 app.use(cookieParser());
-app.use(detectVersion);
-
 
 // import the servers into one
 app.use(juxt_web);

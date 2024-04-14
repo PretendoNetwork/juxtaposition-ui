@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
 
 	const pid = PNID.pid;
 
-	let discovery = await database.getEndPoint(PNID.serverAccessLevel);
+	let discovery = await database.getEndPoint(config.server_environment);
 	if (!discovery) {
 		discovery = {
 			status: 5

@@ -41,6 +41,15 @@ const yeahLimit = rateLimit({
 	legacyHeaders: true,
 });
 
+router.get('/:post_id/oembed.json', async function (req, res) {
+	const post = await database.getPostByID(req.params.post_id.toString());
+	const doc = {
+		'author_name': post.screen_name,
+		'author_url': 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
+	};
+	res.send(doc);
+});
+
 router.post('/empathy', yeahLimit, async function (req, res) {
 	const post = await database.getPostByID(req.body.postID);
 	if (!post) {

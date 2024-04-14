@@ -17,7 +17,32 @@ router.get('/menu', async function (req, res) {
 });
 
 router.get('/me', async function (req, res) {
-	await userPage(req, res, req.pid); 
+	await userPage(req, res, req.pid);
+});
+
+router.get('/notifications.json', async function (req, res) {
+	const notifications = await database.getUnreadNotificationCount(req.pid);
+	const messagesCount = await database.getUnreadConversationCount(req.pid);
+	res.send(
+		{
+			message_count: messagesCount,
+			notification_count: notifications,
+		}
+	);
+});
+
+router.get('/downloadUserData.json', async function (req, res) {
+	res.set('Content-Type', 'text/json');
+	res.set('Content-Disposition', `attachment; filename="${req.pid}_user_data.json"`);
+	const posts = await POST.find({ pid: req.pid });
+	const userContent = await database.getUserSettings(req.pid);
+	const userSettings = await database.getUserContent(req.pid);
+	const doc = {
+		'user_content': userContent,
+		'user_settings': userSettings,
+		'posts': posts,
+	};
+	res.send(doc);
 });
 
 router.get('/me/settings', async function (req, res) {

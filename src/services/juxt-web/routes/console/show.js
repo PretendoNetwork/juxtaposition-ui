@@ -49,7 +49,7 @@ router.get('/first', async function (req, res) {
 });
 
 router.post('/newUser', async function (req, res) {
-	if (req.pid === null) {
+	if (req.pid === null || !req.new_users || req.directory === 'web') {
 		return res.sendStatus(401);
 	}
 

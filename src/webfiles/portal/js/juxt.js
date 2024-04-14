@@ -348,7 +348,7 @@ function reportPost(post) {
     button.click();
 }
 function checkForUpdates() {
-    GET('/notifications.json', function updates(data) {
+    GET('/users/notifications.json', function updates(data) {
         var notificationObj = JSON.parse(data.responseText);
         var messages = document.getElementById("message-badge");
         var news = document.getElementById("news-badge");
