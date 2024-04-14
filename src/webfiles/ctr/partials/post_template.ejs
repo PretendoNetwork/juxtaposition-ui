@@ -63,7 +63,7 @@
         <div class="yeah-list">
             <% var length = post.yeahs.length > 10 ? 10 : post.yeahs.length%>
             <%for(var i = 0; i < length; i++) {%>
-                <a href="/users/<%= yeah %>" class="mii-icon-container" data-pjax="#body">
+                <a href="/users/<%= post.yeahs[i] %>" class="mii-icon-container" data-pjax="#body">
                     <img src="http://mii.olv.pretendo.cc/mii/<%= post.yeahs[i] %>/normal_face.png" class="mii-icon">
                 </a>
             <%}%>
