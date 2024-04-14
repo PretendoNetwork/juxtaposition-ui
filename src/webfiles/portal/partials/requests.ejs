@@ -10,7 +10,7 @@
                 <div class="body">
                     <p class="text"><span class="nick-name"><%= bundle.userMap.get(request.sender) %></span>
                         <span><%=request.message%></span>
-                        <span class="timestamp"> <%= moment(request.sent * 1000).fromNow() %></span>
+                        <span class="timestamp"> <%= moment(Number(request.sent) * 1000).fromNow() %></span>
                     </p>
                 </div>
             </li>
