@@ -2,29 +2,29 @@
   "language": "日本語",
   "global": {
     "user_page": "ユーザーページ",
-    "activity_feed": "アクティビティフィード",
+    "activity_feed": "みんなの活動",
     "communities": "コミュニティ",
     "messages": "メッセージ",
-    "notifications": "通知",
-    "go_back": "戻る",
-    "back": "戻る",
+    "notifications": "おしらせ",
+    "go_back": "もどる",
+    "back": "もどる",
     "yeahs": "そうだね!",
     "more": "さらに投稿を読み込む",
     "no_posts": "投稿はありません",
     "private": "プライベート",
-    "close": "閉じる",
+    "close": "おわる",
     "save": "保存",
-    "exit": "終了",
+    "exit": "おわる",
     "next": "次へ"
   },
   "all_communities": {
     "text": "すべてのコミュニティ",
     "announcements": "お知らせ",
     "ann_string": "最新のお知らせを見るにはここをタップしてください!",
-    "popular_places": "人気の場所",
+    "popular_places": "人気のコミュニティ",
     "new_communities": "新しいコミュニティ",
     "show_all": "すべて表示",
-    "search": "コミュニティを検索..."
+    "search": "コミュニティをさがす..."
   },
   "community": {
     "follow": "コミュニティをフォロー",
@@ -34,8 +34,8 @@
     "tags": "タグ",
     "recent": "最近の投稿",
     "popular": "人気の投稿",
-    "verified": "検証済みの投稿",
-    "new": "新しい投稿"
+    "verified": "プレイ済みの投稿",
+    "new": "投稿をする"
   },
   "user_page": {
     "country": "国",
@@ -72,7 +72,7 @@
   },
   "new_post": {
     "new_post_text": "新しい投稿",
-    "post_to": "投稿先",
+    "post_to": "投稿先:",
     "text_hint": "投稿するにはここをタップしてください。",
     "swearing": "投稿に露骨な表現を含めることはできません。"
   },
