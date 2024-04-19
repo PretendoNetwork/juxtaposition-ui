@@ -62,7 +62,7 @@ function nameCache() {
 		if (users !== null) {
 			for (let i = 0; i < users.length; i++ ) {
 				if (users[i].pid !== null) {
-					userMap.set(users[i].pid, users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu,''));
+					userMap.set(users[i].pid, users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu,'').replace(/\u202e/g, ''));
 				}
 			}
 			logger.success('Created user index of ' + users.length + ' users');
@@ -223,7 +223,7 @@ function setName(pid, name) {
 		return;
 	}
 	userMap.delete(pid);
-	userMap.set(pid, name);
+	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu,'').replace(/\u202e/g, ''));
 }
 function resizeImage(file, width, height) {
 	sharp(file)
@@ -315,8 +315,8 @@ async function newNotification(notification) {
 			existingNotification.read = false;
 			return await existingNotification.save();
 		}
-		const last10min = new Date(now.getTime() - 10 * 60 * 1000);
-		existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow', lastUpdated: { $gte: last10min } });
+		const last60min = new Date(now.getTime() - 60 * 60 * 1000);
+		existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow', lastUpdated: { $gte: last60min } });
 		if (existingNotification) {
 			existingNotification.users.push({
 				user: notification.objectID,

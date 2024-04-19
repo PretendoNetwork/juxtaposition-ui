@@ -4,6 +4,7 @@ const util = require('../util');
 
 async function webAuth(request, response, next) {
 	// Get pid and fetch user data
+	console.time(`Time Request for token ${request.timerDate}`);
 	try {
 		request.user = await util.getUserDataFromToken(request.cookies.access_token);
 		request.pid = request.user.pid;
@@ -19,6 +20,8 @@ async function webAuth(request, response, next) {
 			return next();
 		}
 	}
+	console.timeEnd(`Time Request for token ${request.timerDate}`);
+	console.timeEnd(`Time Request ${request.timerDate}`);
 
 	request.token = request.cookies.access_token;
 
