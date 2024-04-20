@@ -24,7 +24,7 @@ router.get('/', async function (req, res) {
 	});
 });
 
-router.post('/new', async function (req, res, next) {
+router.post('/new', async function (req, res) {
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await util.getUserDataFromPid(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
@@ -33,7 +33,7 @@ router.post('/new', async function (req, res, next) {
 		return res.sendStatus(404);
 	}
 	if (!conversation) {
-		if (!user || !user2) {
+		if (!req.user || !user2) {
 			return res.sendStatus(422);
 		}
 		const document = {
@@ -149,8 +149,7 @@ router.post('/new', async function (req, res, next) {
 	await conversation.newMessage(postPreviewText, user2.pid);
 });
 
-router.get('/new/:pid', async function (req, res, next) {
-	const user = await util.getUserDataFromPid(req.pid);
+router.get('/new/:pid', async function (req, res) {
 	const user2 = await util.getUserDataFromPid(req.params.pid);
 	const friends = await util.getFriends(user2.pid);
 	if (!req.user || !user2) {

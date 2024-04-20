@@ -29,5 +29,9 @@
             "key": "",
             "secret": ""
         }
-    }
+    },
+	"redis": {
+		"host": "localhost",
+		"port": 6379
+	}
 }

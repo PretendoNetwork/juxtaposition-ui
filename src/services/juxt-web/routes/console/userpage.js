@@ -7,6 +7,7 @@ const moment = require('moment');
 const upload = multer({ dest: 'uploads/' });
 const { POST } = require('../../../../models/post');
 const {SETTINGS} = require('../../../../models/settings');
+const redis = require('../../../../redisCache');
 const router = express.Router();
 
 router.get('/menu', async function (req, res) {
@@ -147,8 +148,15 @@ async function userPage(req, res, userID) {
 	if (isNaN(userID) || !pnid || !userContent) {
 		return res.redirect('/404');
 	}
+
 	const userSettings = await database.getUserSettings(userID);
-	const posts = await database.getNumberUserPostsByID(userID, config.post_limit);
+	let posts = JSON.parse(await redis.getValue(`${userID}-user_page_posts`));
+	if (!posts) {
+		posts = await database.getNumberUserPostsByID(userID, config.post_limit);
+		await redis.setValue(`${userID}-user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
+	}
+
+
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
 	let friends = [];
@@ -171,7 +179,6 @@ async function userPage(req, res, userID) {
 		mii_image_CDN: config.mii_image_CDN,
 		link: `/users/${userID}/more?offset=${posts.length}&pjax=true`
 	};
-
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
@@ -180,6 +187,7 @@ async function userPage(req, res, userID) {
 		});
 	}
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
+
 	res.render(req.directory + '/user_page.ejs', {
 		template: 'posts_list',
 		selection: 0,

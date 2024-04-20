@@ -10,6 +10,9 @@ async function detectVersion(request, response, next) {
 	} else {
 		request.directory = includes(request, 'portal') ? 'portal' : 'ctr';
 	}
+
+	request.isWrite = request.method === 'POST' || request.method === 'PUT' || request.method === 'DELETE';
+
 	next();
 }
 

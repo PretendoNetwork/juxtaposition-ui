@@ -6,8 +6,16 @@ const util = require('../util');
 
 async function auth(request, response, next) {
 	// Get pid and fetch user data
-	request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
-	request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
+	if (request.session && request.session.user && request.session.pid && !request.isWrite) {
+		request.user = request.session.user;
+		request.pid = request.session.pid;
+	} else {
+		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
+		request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
+
+		request.session.user = request.user;
+		request.session.pid = request.pid;
+	}
 
 	// Set headers
 	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.decodeParamPack(request.headers['x-nintendo-parampack']) : null;

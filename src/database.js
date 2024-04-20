@@ -475,6 +475,14 @@ async function getReportsByPost(postID, offset, limit) {
 	return REPORT.find({ post_id: postID }).sort({created_at: -1}).skip(offset).limit(limit);
 }
 
+async function getDuplicateReports(pid, postID) {
+	verifyConnected();
+	return REPORT.findOne({
+		reported_by: pid,
+		post_id: postID
+	});
+}
+
 async function getReportById(id) {
 	verifyConnected();
 	return REPORT.findById(id);
@@ -535,5 +543,6 @@ module.exports = {
 	getAllOpenReports,
 	getReportsByUser,
 	getReportsByPost,
+	getDuplicateReports,
 	getReportById
 };

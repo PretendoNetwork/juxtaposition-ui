@@ -1,10 +1,15 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-var-requires */
 process.title = 'Pretendo - Juxt-Web';
 const express = require('express');
 const morgan = require('morgan');
-const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const RedisStore = require('connect-redis').default;
+
 const database = require('./database');
 const logger = require('./logger');
+const { redisClient } = require('./redisCache');
 const config = require('../config.json');
 
 const { http: { port } } = config;
@@ -31,6 +36,13 @@ app.use(express.urlencoded({
 }));
 
 app.use(cookieParser());
+
+app.use(session({
+	store: new RedisStore({ client: redisClient }),
+	secret: config.aes_key,
+	resave: false,
+	saveUninitialized: false
+}));
 
 // import the servers into one
 app.use(juxt_web);
@@ -63,10 +75,17 @@ app.use((error, request, response) => {
 });
 
 // Starts the server
-logger.info('Starting server');
+async function main() {
+	// Starts the server
+	logger.info('Starting server');
 
-database.connect().then(() => {
+	await database.connect();
+	logger.success('Database connected');
+	await redisClient.connect();
+
 	app.listen(port, () => {
 		logger.success(`Server started on port ${port}`);
 	});
-});
+}
+
+main().catch(console.error);

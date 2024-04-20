@@ -9,6 +9,7 @@ const rateLimit = require('express-rate-limit');
 const {REPORT} = require('../../../../models/report');
 const upload = multer({dest: 'uploads/'});
 const crypto = require('crypto');
+const redis = require('../../../../redisCache');
 const router = express.Router();
 
 const postLimit = rateLimit({
@@ -99,6 +100,7 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 	} else {
 		res.send({status: 423, id: post.id, count: post.empathy_count});
 	}
+	await redis.removeValue(`${post.pid}-user_page_posts`);
 });
 
 router.post('/new', postLimit, upload.none(), async function (req, res) {
@@ -161,6 +163,7 @@ router.delete('/:post_id', async function (req, res) {
 	} else {
 		res.send('/users/me');
 	}
+	await redis.removeValue(`${post.pid}-user_page_posts`);
 });
 
 router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
@@ -172,6 +175,11 @@ router.post('/:post_id/report', upload.none(), async function (req, res) {
 	const post = await database.getPostByID(post_id);
 	if (!reason || !post_id || !post) {
 		return res.redirect('/404');
+	}
+
+	const duplicate = await database.getDuplicateReports(req.pid, post_id);
+	if (duplicate) {
+		return res.redirect(`/posts/${post.id}`);
 	}
 
 	const reportDoc = {
@@ -292,6 +300,7 @@ async function newPost(req, res) {
 	}
 	const newPost = new POST(document);
 	newPost.save();
+	await redis.removeValue(`${newPost.pid}-user_page_posts`);
 	if (parentPost) {
 		parentPost.reply_count = parentPost.reply_count + 1;
 		parentPost.save();
@@ -303,6 +312,7 @@ async function newPost(req, res) {
 			user: req.pid,
 			link: `/posts/${parentPost.id}`
 		});
+		await redis.removeValue(`${parentPost.pid}-user_page_posts`);
 	}
 	if (parentPost) {
 		res.redirect('/posts/' + req.params.post_id.toString());
