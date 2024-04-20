@@ -5,7 +5,7 @@ const util = require('../util');
 async function webAuth(request, response, next) {
 	// Get pid and fetch user data
 
-	if (request.session && request.session.user && request.session.pid && !request.isWrite) {
+	if (request.session && request.session.user && request.session.pid && !request.isWrite && request.cookies.access_token) {
 		request.user = request.session.user;
 		request.pid = request.session.pid;
 	} else {
@@ -35,7 +35,7 @@ async function webAuth(request, response, next) {
 	if (isStartOfPath(request.path, '/users/') ||
 		(isStartOfPath(request.path, '/titles/') && request.path !== '/titles/show') ||
 		(isStartOfPath(request.path, '/posts/') && !request.path.includes('/empathy'))) {
-		if (!request.pid && request.guest_access) {
+		if (!request.pid && request.guest_access && !request.isWrite) {
 			request.pid = 1000000000;
 			return next();
 		} else if (!request.pid) {
