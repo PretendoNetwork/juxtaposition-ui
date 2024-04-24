@@ -100,7 +100,7 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 	} else {
 		res.send({status: 423, id: post.id, count: post.empathy_count});
 	}
-	await redis.removeValue(`${post.pid}-user_page_posts`);
+	await redis.removeValue(`${post.pid}_user_page_posts`);
 });
 
 router.post('/new', postLimit, upload.none(), async function (req, res) {
@@ -163,7 +163,7 @@ router.delete('/:post_id', async function (req, res) {
 	} else {
 		res.send('/users/me');
 	}
-	await redis.removeValue(`${post.pid}-user_page_posts`);
+	await redis.removeValue(`${post.pid}_user_page_posts`);
 });
 
 router.post('/:post_id/new', postLimit, upload.none(), async function (req, res) {
@@ -295,12 +295,11 @@ async function newPost(req, res) {
 	if (duplicatePost && req.params.post_id) {
 		return res.redirect('/posts/' + req.params.post_id.toString());
 	}
-	if (document.body === '' && document.painting === '' && document.screenshot === '') {
+	if (document.body === '' && document.painting === '' && document.screenshot === '' || duplicatePost) {
 		return res.redirect('/titles/' + community.olive_community_id + '/new');
 	}
 	const newPost = new POST(document);
 	newPost.save();
-	await redis.removeValue(`${newPost.pid}-user_page_posts`);
 	if (parentPost) {
 		parentPost.reply_count = parentPost.reply_count + 1;
 		parentPost.save();
@@ -312,12 +311,13 @@ async function newPost(req, res) {
 			user: req.pid,
 			link: `/posts/${parentPost.id}`
 		});
-		await redis.removeValue(`${parentPost.pid}-user_page_posts`);
 	}
 	if (parentPost) {
 		res.redirect('/posts/' + req.params.post_id.toString());
+		await redis.removeValue(`${parentPost.pid}_user_page_posts`);
 	} else {
 		res.redirect('/titles/' + community.olive_community_id + '/new');
+		await redis.removeValue(`${req.pid}_user_page_posts`);
 	}
 }
 

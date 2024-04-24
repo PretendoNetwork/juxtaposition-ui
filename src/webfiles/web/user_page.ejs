@@ -94,7 +94,7 @@
                 </div>
                 <div>
                     <h4><%= lang.user_page.birthday %></h4>
-                    <h4><%if(userSettings.birthday_visibility){%><%=moment.utc(pnid.birthdate).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></h4>
+                    <h4><%if(userSettings.birthday_visibility){%><%=moment.utc(pnid.birthdate || pnid.birthday).format("MMM Do")%><%}else {%><%= lang.global.private %><%}%></h4>
                 </div>
                 <div>
                     <h4><%= lang.user_page.game_experience %></h4>

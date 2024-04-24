@@ -153,7 +153,7 @@ async function userPage(req, res, userID) {
 	let posts = JSON.parse(await redis.getValue(`${userID}-user_page_posts`));
 	if (!posts) {
 		posts = await database.getNumberUserPostsByID(userID, config.post_limit);
-		await redis.setValue(`${userID}-user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
+		await redis.setValue(`${userID}_user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
 	}
 
 

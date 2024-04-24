@@ -231,16 +231,29 @@ router.get('/:communityID/:type/more', async function (req, res) {
 router.post('/follow', upload.none(), async function (req, res) {
 	const community = await database.getCommunityByID(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
+	const popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
+	let updated = false;
+
 	if (userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) === -1) {
 		community.upFollower();
 		userContent.addToCommunities(community.olive_community_id);
 		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
+		updated = true;
 	} else if (userContent !== null  && userContent.followed_communities.indexOf(community.olive_community_id) !== -1) {
 		community.downFollower();
 		userContent.removeFromCommunities(community.olive_community_id);
 		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
+		updated = true;
 	} else {
 		res.send({ status: 423, id: community.olive_community_id, count: community.followers });
+	}
+
+	if (popularCommunities && updated) {
+		const index = popularCommunities.findIndex((element) => element.olive_community_id === community.olive_community_id);
+		if (index !== -1) {
+			popularCommunities[index].followers = community.followers;
+			redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+		}
 	}
 });
 
