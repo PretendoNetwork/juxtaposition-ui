@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const crypto = require('crypto');
 const database = require('./database');
 const logger = require('./logger');

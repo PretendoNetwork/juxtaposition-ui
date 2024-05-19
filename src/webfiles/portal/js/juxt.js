@@ -1,4 +1,3 @@
-/* eslint-disable */
 var scrollPosition, pjax;
 var updateCheck = setInterval(checkForUpdates, 30000);
 var inputCheck = setInterval(input, 100);

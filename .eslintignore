@@ -1,2 +1,4 @@
 dist
 *.min.js
+# temporarily disable eslint in webfiles as settings aren't right
+src/webfiles/*

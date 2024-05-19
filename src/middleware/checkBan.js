@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const config = require('../../config.json');
 const moment = require('moment/moment');
 const db = require('../database');

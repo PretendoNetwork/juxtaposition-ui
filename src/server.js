@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
 process.title = 'Pretendo - Juxt-Web';
 const express = require('express');
 const morgan = require('morgan');

@@ -4,6 +4,9 @@
         "commonjs": true,
         "es6": true
     },
+    "plugins": [
+        "@typescript-eslint"
+    ],
     "parser": "@typescript-eslint/parser",
     "globals": {
         "BigInt": true
@@ -12,10 +15,10 @@
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended"
     ],
-    "plugins": [
-        "@typescript-eslint"
-    ],
     "rules": {
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "@typescript-eslint/no-extra-semi": "error",
+        "@typescript-eslint/keyword-spacing": "error",
         "require-atomic-updates": "warn",
         "no-case-declarations": "off",
         "no-empty": "off",
@@ -25,15 +28,8 @@
         "prefer-const": "error",
         "no-var": "error",
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
         "no-extra-semi": "off",
-        "@typescript-eslint/no-extra-semi": "error",
-        "@typescript-eslint/no-empty-interface": "warn",
-        "@typescript-eslint/no-inferrable-types": "off",
-        "@typescript-eslint/typedef": "error",
-        "@typescript-eslint/explicit-function-return-type": "error",
         "keyword-spacing": "off",
-        "@typescript-eslint/keyword-spacing": "error",
         "curly": "error",
         "brace-style": "error",
         "one-var": [
@@ -55,5 +51,23 @@
             "error",
             "always"
         ]
-    }
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts"],
+            "rules": {
+                "@typescript-eslint/no-empty-interface": "warn",
+                "@typescript-eslint/no-inferrable-types": "off",
+                "@typescript-eslint/typedef": "error",
+                "@typescript-eslint/explicit-function-return-type": "error"
+            }
+        },
+        {
+            "files": ["**/*.js"],
+            "rules": {
+                // This rule does not work for js files
+                "@typescript-eslint/no-var-requires": "off"
+            }
+        }
+    ]
 }
