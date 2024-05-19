@@ -20,6 +20,7 @@ const aws = require('aws-sdk');
 const crc32 = require('crc/crc32');
 const communityMap = new HashMap();
 const userMap = new HashMap();
+const sharp = require('sharp');
 
 const { ip: friendsIP, port: friendsPort, api_key: friendsKey } = config.grpc.friends;
 const friendsChannel = grpc.createChannel(`${friendsIP}:${friendsPort}`);
@@ -42,7 +43,7 @@ const s3 = new aws.S3({
 nameCache();
 
 function nameCache() {
-	database.connect().then(async e => {
+	database.connect().then(async _ => {
 		const communities = await COMMUNITY.find();
 		if (communities !== null) {
 			for (let i = 0; i < communities.length; i++ ) {

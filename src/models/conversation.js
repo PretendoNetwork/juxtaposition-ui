@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const moment = require('moment');
 const snowflake = require('node-snowflake').Snowflake;
 
 const user = new Schema({
