@@ -59,7 +59,7 @@ router.get('/more', async function (req, res) {
 	if (!tag) {
 		return res.sendStatus(204);
 	}
-	const posts = await POST.find({ topic_tag: req.query.topic_tag }).sort({ created_at: -1}).limit(parseInt(req.query.limit));
+	const posts = await POST.find({ topic_tag: req.query.topic_tag }).sort({ created_at: -1}).skip(offset).limit(parseInt(req.query.limit));
 
 	const bundle = {
 		posts,
@@ -69,7 +69,7 @@ router.get('/more', async function (req, res) {
 		userContent,
 		lang: req.lang,
 		mii_image_CDN: config.mii_image_CDN,
-		link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
+		link: `/topics/more?tag=${tag}&offset=${offset + posts.length}&pjax=true`
 	};
 
 	if (posts.length > 0) {
