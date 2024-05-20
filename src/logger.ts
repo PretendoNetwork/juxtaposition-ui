@@ -1,5 +1,7 @@
-const fs = require('fs-extra');
-require('colors');
+import fs from 'fs-extra';
+import colors from 'colors';
+
+colors.enable();
 
 const root = __dirname;
 fs.ensureDirSync(`${root}/logs`);
@@ -11,9 +13,9 @@ const streams = {
 	warn: fs.createWriteStream(`${root}/logs/warn.log`),
 	info: fs.createWriteStream(`${root}/logs/info.log`),
 	audit: fs.createWriteStream(`${root}/logs/audit.log`),
-};
+} as const;
 
-function success(input) {
+export function success(input: string): void {
 	const time = new Date();
 	input = `[${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}] [SUCCESS]: ${input}`;
 	streams.success.write(`${input}\n`);
@@ -21,7 +23,7 @@ function success(input) {
 	console.log(`${input}`.green.bold);
 }
 
-function error(input) {
+export function error(input: string): void {
 	const time = new Date();
 	input = `[${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}] [ERROR]: ${input}`;
 	streams.error.write(`${input}\n`);
@@ -29,7 +31,7 @@ function error(input) {
 	console.log(`${input}`.red.bold);
 }
 
-function warn(input) {
+export function warn(input: string): void {
 	const time = new Date();
 	input = `[${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}] [WARN]: ${input}`;
 	streams.warn.write(`${input}\n`);
@@ -37,7 +39,7 @@ function warn(input) {
 	console.log(`${input}`.yellow.bold);
 }
 
-function info(input) {
+export function info(input: string): void {
 	const time = new Date();
 	input = `[${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}] [INFO]: ${input}`;
 	streams.info.write(`${input}\n`);
@@ -45,7 +47,7 @@ function info(input) {
 	console.log(`${input}`.cyan.bold);
 }
 
-function audit(input) {
+export function audit(input: string): void {
 	const time = new Date();
 	input = `[${time.getHours()}:${time.getMinutes()}:${time.getSeconds()}] [Audit]: ${input}`;
 	streams.audit.write(`${input}\n`);
@@ -53,7 +55,7 @@ function audit(input) {
 	console.log(`${input}`.white.bold);
 }
 
-module.exports = {
+export default {
 	success,
 	error,
 	warn,
