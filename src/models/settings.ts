@@ -1,6 +1,7 @@
-const { Schema, model } = require('mongoose');
+import { HydratedSettingsDocument, ISettings, ISettingsMethods, SettingsModel } from '@/types/mongoose/settings';
+import { Schema, model } from 'mongoose';
 
-const SettingsSchema = new Schema({
+export const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMethods>({
 	pid: Number,
 	screen_name: String,
 	account_status: {
@@ -51,49 +52,44 @@ const SettingsSchema = new Schema({
 	},
 });
 
-SettingsSchema.methods.updateComment = async function(comment) {
+SettingsSchema.method<HydratedSettingsDocument>('updateComment', async function(comment: string) {
 	this.set('profile_comment', comment);
 	await this.save();
-};
+});
 
-SettingsSchema.methods.updateSkill = async function(skill) {
+SettingsSchema.method<HydratedSettingsDocument>('updateSkill', async function(skill: number) {
 	this.set('game_skill', skill);
 	await this.save();
-};
+});
 
-SettingsSchema.methods.commentVisible = async function(active) {
+SettingsSchema.method<HydratedSettingsDocument>('commentVisible', async function(active: boolean) {
 	this.set('profile_comment_visibility', active);
 	await this.save();
-};
+});
 
-SettingsSchema.methods.skillVisible = async function(active) {
+SettingsSchema.method<HydratedSettingsDocument>('skillVisible', async function(active: boolean) {
 	this.set('game_skill_visibility', active);
 	await this.save();
-};
+});
 
-SettingsSchema.methods.birthdayVisible = async function(active) {
+SettingsSchema.method<HydratedSettingsDocument>('birthdayVisible', async function(active: boolean) {
 	this.set('birthday_visibility', active);
 	await this.save();
-};
+});
 
-SettingsSchema.methods.relationshipVisible = async function(active) {
+SettingsSchema.method<HydratedSettingsDocument>('relationshipVisible', async function(active: boolean) {
 	this.set('relationship_visibility', active);
 	await this.save();
-};
+});
 
-SettingsSchema.methods.countryVisible = async function(active) {
+SettingsSchema.method<HydratedSettingsDocument>('countryVisible', async function(active: boolean) {
 	this.set('country_visibility', active);
 	await this.save();
-};
+});
 
-SettingsSchema.methods.favCommunityVisible = async function(active) {
+SettingsSchema.method<HydratedSettingsDocument>('favCommunityVisible', async function(active: boolean) {
 	this.set('profile_favorite_community_visibility', active);
 	await this.save();
-};
+});
 
-const SETTINGS = model('SETTINGS', SettingsSchema);
-
-module.exports = {
-	SettingsSchema,
-	SETTINGS
-};
+export const SETTINGS = model<ISettings, SettingsModel>('SETTINGS', SettingsSchema);
