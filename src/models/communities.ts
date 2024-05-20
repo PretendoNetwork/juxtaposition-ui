@@ -1,6 +1,7 @@
-const { Schema, model } = require('mongoose');
+import { CommunityModel, HydratedCommunityDocument, ICommunity, ICommunityMethods, IPermissions, PermissionsModel } from '@/types/mongoose/communities';
+import { Schema, model } from 'mongoose';
 
-const PermissionsSchema = new Schema({
+export const PermissionsSchema = new Schema<IPermissions, PermissionsModel>({
 	open: {
 		type: Boolean,
 		default: true
@@ -19,7 +20,7 @@ const PermissionsSchema = new Schema({
 	},
 });
 
-const  CommunitySchema = new Schema({
+export const CommunitySchema = new Schema<ICommunity, CommunityModel, ICommunityMethods>({
 	platform_id: Number,
 	name: String,
 	description: String,
@@ -76,37 +77,32 @@ const  CommunitySchema = new Schema({
 	permissions: PermissionsSchema,
 });
 
-CommunitySchema.methods.upEmpathy = async function() {
+CommunitySchema.method<HydratedCommunityDocument>('upEmpathy', async function() {
 	const empathy = this.get('empathy_count');
 	this.set('empathy_count', empathy + 1);
 
 	await this.save();
-};
+});
 
-CommunitySchema.methods.downEmpathy = async function() {
+CommunitySchema.method<HydratedCommunityDocument>('downEmpathy', async function(): Promise<void> {
 	const empathy = this.get('empathy_count');
 	this.set('empathy_count', empathy - 1);
 
 	await this.save();
-};
+});
 
-CommunitySchema.methods.upFollower = async function() {
+CommunitySchema.method<HydratedCommunityDocument>('upFollower', async function(): Promise<void> {
 	const followers = this.get('followers');
 	this.set('followers', followers + 1);
 
 	await this.save();
-};
+});
 
-CommunitySchema.methods.downFollower = async function() {
+CommunitySchema.method<HydratedCommunityDocument>('downFollower', async function(): Promise<void> {
 	const followers = this.get('followers');
 	this.set('followers', followers - 1);
 
 	await this.save();
-};
+});
 
-const COMMUNITY = model('COMMUNITY', CommunitySchema);
-
-module.exports = {
-	CommunitySchema,
-	COMMUNITY
-};
+export const COMMUNITY = model<ICommunity, CommunityModel>('COMMUNITY', CommunitySchema);
