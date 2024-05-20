@@ -1,6 +1,7 @@
-const { Schema, model } = require('mongoose');
+import { HydratedReportDocument, IReport, IReportMethods, ReportModel } from '@/types/mongoose/report';
+import { Schema, model } from 'mongoose';
 
-const ReportSchema = new Schema({
+export const ReportSchema = new Schema<IReport, ReportModel, IReportMethods>({
 	pid: Number,
 	reported_by: Number,
 	post_id: String,
@@ -19,17 +20,12 @@ const ReportSchema = new Schema({
 	resolved_at: Date,
 });
 
-ReportSchema.methods.resolve = async function(pid, note) {
+ReportSchema.method<HydratedReportDocument>('resolve', async function(pid, note) {
 	this.set('resolved', true);
 	this.set('resolved_by', pid);
 	this.set('resolved_at', new Date());
 	this.set('note', note);
 	await this.save();
-};
+});
 
-const REPORT = model('REPORT', ReportSchema);
-
-module.exports = {
-	ReportSchema,
-	REPORT
-};
+export const REPORT = model('REPORT', ReportSchema);
