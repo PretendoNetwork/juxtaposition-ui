@@ -1,6 +1,7 @@
-const { Schema, model } = require('mongoose');
+import { HydratedPostDocument, IPost, IPostMethods, PostModel } from '@/types/mongoose/post';
+import { Schema, model } from 'mongoose';
 
-const PostSchema = new Schema({
+export const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 	id: String,
 	title_id: String,
 	screen_name: String,
@@ -80,7 +81,7 @@ const PostSchema = new Schema({
 	yeahs: [Number]
 });
 
-PostSchema.methods.upReply = async function() {
+PostSchema.method<HydratedPostDocument>('upReply', async function() {
 	const replyCount = this.get('reply_count');
 	if (replyCount + 1 < 0) {
 		this.set('reply_count', 0);
@@ -89,9 +90,9 @@ PostSchema.methods.upReply = async function() {
 	}
 
 	await this.save();
-};
+});
 
-PostSchema.methods.downReply = async function() {
+PostSchema.method<HydratedPostDocument>('downReply', async function() {
 	const replyCount = this.get('reply_count');
 	if (replyCount - 1 < 0) {
 		this.set('reply_count', 0);
@@ -100,25 +101,20 @@ PostSchema.methods.downReply = async function() {
 	}
 
 	await this.save();
-};
+});
 
-PostSchema.methods.removePost = async function(reason, pid) {
+PostSchema.method<HydratedPostDocument>('removePost', async function(reason: string, pid: number) {
 	this.set('removed', true);
 	this.set('removed_reason', reason);
 	this.set('removed_by', pid);
 	this.set('removed_at', new Date());
 	await this.save();
-};
+});
 
-PostSchema.methods.unRemove = async function(reason) {
+PostSchema.method<HydratedPostDocument>('unRemove', async function(reason: string) {
 	this.set('removed', false);
 	this.set('removed_reason', reason);
 	await this.save();
-};
+});
 
-const POST = model('POST', PostSchema);
-
-module.exports = {
-	PostSchema,
-	POST
-};
+export const POST = model<IPost, PostModel>('POST', PostSchema);
