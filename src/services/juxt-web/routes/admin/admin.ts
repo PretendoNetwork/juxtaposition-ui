@@ -173,4 +173,4 @@ router.put('/:reportID', async function (req, res) {
 	return res.sendStatus(200);
 });
 
-module.exports = router;
+export default router;
