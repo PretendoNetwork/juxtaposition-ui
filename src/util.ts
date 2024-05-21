@@ -1,26 +1,34 @@
-const crypto = require('crypto');
-const database = require('./database');
-const logger = require('./logger');
-const grpc = require('nice-grpc');
-const config = require('../config.json');
-const { SETTINGS } = require('./models/settings');
-const { CONTENT } = require('./models/content');
-const { NOTIFICATION } = require('./models/notifications');
-const { COMMUNITY } = require('./models/communities');
-const { AccountDefinition } = require('@pretendonetwork/grpc/account/account_service');
-const { FriendsDefinition } = require('@pretendonetwork/grpc/friends/friends_service');
-const { APIDefinition } = require('@pretendonetwork/grpc/api/api_service');
-const translations = require('./translations');
-const HashMap = require('hashmap');
-const TGA = require('tga');
-const pako = require('pako');
-const PNG = require('pngjs').PNG;
-const bmp = require('bmp-js');
-const aws = require('aws-sdk');
-const crc32 = require('crc/crc32');
-const communityMap = new HashMap();
-const userMap = new HashMap();
-const sharp = require('sharp');
+import crypto from 'crypto';
+import database from './database';
+import logger from './logger';
+import grpc from 'nice-grpc';
+import config from '../config.json';
+import { SETTINGS } from './models/settings';
+import { CONTENT } from './models/content';
+import { NOTIFICATION } from './models/notifications';
+import { COMMUNITY } from './models/communities';
+import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
+import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
+import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
+import translations from './translations';
+import HashMap from 'hashmap';
+import TGA from 'tga';
+import pako from 'pako';
+import { PNG } from 'pngjs';
+import bmp from 'bmp-js';
+import aws from 'aws-sdk';
+import crc32 from 'crc/crc32';
+import sharp from 'sharp';
+import { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
+import { LoginResponse as ApiLoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
+import { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
+import { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
+import { HydratedNotificationDocument } from './types/mongoose/notifications';
+import { ParamPack } from './types/common/param-pack';
+import { Token } from './types/common/token';
+
+const communityMap = new HashMap<string, string>();
+const userMap = new HashMap<number, string>();
 
 const { ip: friendsIP, port: friendsPort, api_key: friendsKey } = config.grpc.friends;
 const friendsChannel = grpc.createChannel(`${friendsIP}:${friendsPort}`);
@@ -42,7 +50,7 @@ const s3 = new aws.S3({
 
 nameCache();
 
-function nameCache() {
+function nameCache(): void {
 	database.connect().then(async _ => {
 		const communities = await COMMUNITY.find();
 		if (communities !== null) {
@@ -74,14 +82,14 @@ function nameCache() {
 
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
 const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
-async function create_user(pid, experience, notifications) {
-	const pnid = await this.getUserDataFromPid(pid);
+async function create_user(pid: number, experience: number, notifications: boolean): Promise<void> {
+	const pnid = await getUserDataFromPid(pid);
 	if (!pnid) {
 		return;
 	}
 	const newSettings = {
 		pid: pid,
-		screen_name: pnid.mii.name,
+		screen_name: pnid.mii?.name,
 		game_skill: experience,
 		receive_notifications: notifications,
 	};
@@ -94,25 +102,27 @@ async function create_user(pid, experience, notifications) {
 	const newContentObj = new CONTENT(newContent);
 	await newContentObj.save();
 
-	this.setName(pid, pnid.mii.name);
+	setName(pid, pnid.mii?.name);
 }
-function decodeParamPack(paramPack) {
+
+function decodeParamPack(paramPack: string): ParamPack {
 	/*  Decode base64 */
-	let dec = Buffer.from(paramPack, 'base64').toString('ascii');
+	const decoded = Buffer.from(paramPack, 'base64').toString('ascii');
 	/*  Remove starting and ending '/', split into array */
-	dec = dec.slice(1, -1).split('\\');
+	const parts = decoded.slice(1, -1).split('\\');
 	/*  Parameters are in the format [name, val, name, val]. Copy into out{}. */
-	const out = {};
-	for (let i = 0; i < dec.length; i += 2) {
-		out[dec[i].trim()] = dec[i + 1].trim();
+	const out: { [key: string]: string } = {};
+	for (let i = 0; i < parts.length; i += 2) {
+		out[parts[i].trim()] = parts[i + 1].trim();
 	}
-	return out;
+	return out as unknown as ParamPack;
 }
-function processServiceToken(encryptedToken) {
+
+function processServiceToken(encryptedToken: string): number | null {
 	try {
 		const B64token = Buffer.from(encryptedToken, 'base64');
-		const decryptedToken = this.decryptToken(B64token);
-		const token = this.unpackToken(decryptedToken);
+		const decryptedToken = decryptToken(B64token);
+		const token = unpackToken(decryptedToken);
 
 		// * Only allow token types 1 (Wii U) and 2 (3DS)
 		if (token.system_type !== 1 && token.system_type !== 2) {
@@ -126,7 +136,8 @@ function processServiceToken(encryptedToken) {
 	}
 
 }
-function decryptToken(token) {
+
+function decryptToken(token: Buffer): Buffer {
 	if (!config.aes_key) {
 		throw new Error('Service token AES key not found. Set config.aes_key');
 	}
@@ -150,7 +161,8 @@ function decryptToken(token) {
 
 	return decrypted;
 }
-function unpackToken(token) {
+
+function unpackToken(token: Buffer): Token {
 	return {
 		system_type: token.readUInt8(0x0),
 		token_type: token.readUInt8(0x1),
@@ -160,14 +172,16 @@ function unpackToken(token) {
 		access_level: token.readInt8(0x16)
 	};
 }
-async function processPainting(painting, isTGA) {
+
+function processPainting(painting: string, isTGA: boolean): string | null {
 	if (isTGA) {
 		const paintingBuffer = Buffer.from(painting, 'base64');
-		let output = '';
+		let output: Uint8Array;
 		try {
 			output = pako.inflate(paintingBuffer);
 		} catch (err) {
 			console.error(err);
+			return null;
 		}
 		let tga;
 		try {
@@ -180,24 +194,27 @@ async function processPainting(painting, isTGA) {
 			width: tga.width,
 			height: tga.height
 		});
-		png.data = tga.pixels;
-		return PNG.sync.write(png);
+		png.data = Buffer.from(tga.pixels);
+		return PNG.sync.write(png).toString('base64');
 		//return `data:image/png;base64,${pngBuffer.toString('base64')}`;
 	} else {
 		const paintingBuffer = Buffer.from(painting, 'base64');
 		const bitmap = bmp.decode(paintingBuffer);
-		const tga = this.createBMPTgaBuffer(bitmap.width, bitmap.height, bitmap.data, false);
+		const tga = createBMPTgaBuffer(bitmap.width, bitmap.height, bitmap.data, false);
 
-		let output;
+		let output: Uint8Array;
 		try {
 			output = pako.deflate(tga, {level: 6});
+			return Buffer.from(output).toString('base64');
 		} catch (err) {
 			console.error(err);
 		}
-		return new Buffer(output).toString('base64');
+
+		return null;
 	}
 }
-function nintendoPasswordHash(password, pid) {
+
+function nintendoPasswordHash(password: string, pid: number): string {
 	const pidBuffer = Buffer.alloc(4);
 	pidBuffer.writeUInt32LE(pid);
 
@@ -208,31 +225,35 @@ function nintendoPasswordHash(password, pid) {
 	]);
 	return crypto.createHash('sha256').update(unpacked).digest().toString('hex');
 }
-function getCommunityHash() {
+
+function getCommunityHash(): HashMap<string, string> {
 	return communityMap;
 }
-function getUserHash() {
+
+function getUserHash(): HashMap<number, string> {
 	return userMap;
 }
-function refreshCache() {
+
+function refreshCache(): void {
 	nameCache();
 }
-function setName(pid, name) {
+
+function setName(pid: number, name: string | undefined): void {
 	if (!pid || !name) {
 		return;
 	}
 	userMap.delete(pid);
 	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu,'').replace(/\u202e/g, ''));
 }
-function resizeImage(file, width, height) {
-	sharp(file)
+
+// TODO is this used?
+async function resizeImage(file: sharp.SharpOptions, width: number, height: number): Promise<Buffer> {
+	return sharp(file)
 		.resize({ height: height, width: width })
-		.toBuffer()
-		.then(data => {
-			return data;
-		});
+		.toBuffer();
 }
-function createBMPTgaBuffer(width, height, pixels, dontFlipY) {
+
+function createBMPTgaBuffer(width: number, height: number, pixels: Buffer, dontFlipY: boolean): Buffer {
 	const buffer = Buffer.alloc(18 + pixels.length);
 	// write header
 	buffer.writeInt8(0, 0);
@@ -261,7 +282,8 @@ function createBMPTgaBuffer(width, height, pixels, dontFlipY) {
 
 	return buffer;
 }
-function processLanguage(paramPackData) {
+
+function processLanguage(paramPackData?: ParamPack): typeof translations.EN {
 	if (!paramPackData) {
 		return translations.EN;
 	}
@@ -294,7 +316,8 @@ function processLanguage(paramPackData) {
 			return translations.EN;
 	}
 }
-async function uploadCDNAsset(bucket, key, data, acl) {
+
+async function uploadCDNAsset(bucket: string, key: string, data: Buffer, acl: string): Promise<void> {
 	const awsPutParams = {
 		Body: data,
 		Key: key,
@@ -304,7 +327,8 @@ async function uploadCDNAsset(bucket, key, data, acl) {
 
 	await s3.putObject(awsPutParams).promise();
 }
-async function newNotification(notification) {
+
+async function newNotification(notification: HydratedNotificationDocument): Promise<void> {
 	const now = new Date();
 	if (notification.type === 'follow') {
 		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
@@ -312,7 +336,7 @@ async function newNotification(notification) {
 		if (existingNotification) {
 			existingNotification.lastUpdated = now;
 			existingNotification.read = false;
-			return await existingNotification.save();
+			await existingNotification.save();
 		}
 		const last60min = new Date(now.getTime() - 60 * 60 * 1000);
 		existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'follow', lastUpdated: { $gte: last60min } });
@@ -325,7 +349,7 @@ async function newNotification(notification) {
 			existingNotification.link = notification.link;
 			existingNotification.objectID = notification.objectID;
 			existingNotification.read = false;
-			return await existingNotification.save();
+			await existingNotification.save();
 		} else {
 			const newNotification = new NOTIFICATION({
 				pid: notification.pid,
@@ -342,42 +366,9 @@ async function newNotification(notification) {
 			await newNotification.save();
 		}
 	}
-	/*else if(notification.type === 'yeah') {
-		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
-		let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
-		if(existingNotification) {
-			existingNotification.lastUpdated = new Date();
-			return await existingNotification.save();
-		}
-		existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, type: 'yeah' });
-		if(existingNotification) {
-			existingNotification.users.push({
-				user: notification.objectID,
-				timeStamp: new Date()
-			});
-			existingNotification.lastUpdated = new Date();
-			existingNotification.link = notification.link;
-			existingNotification.objectID = notification.objectID;
-			return await existingNotification.save();
-		}
-		else {
-			let newNotification = new NOTIFICATION({
-				pid: notification.pid,
-				type: notification.type,
-				users: [{
-					user: notification.objectID,
-					timestamp: new Date()
-				}],
-				link: notification.link,
-				objectID: notification.objectID,
-				read: false,
-				lastUpdated: new Date()
-			});
-			await newNotification.save();
-		}
-	}*/
 }
-async function getFriends(pid) {
+
+async function getFriends(pid: number): Promise<number[]> {
 	try {
 		const pids =  await friendsClient.getUserFriendPIDs({
 			pid: pid
@@ -391,7 +382,8 @@ async function getFriends(pid) {
 		return [];
 	}
 }
-async function getFriendRequests(pid) {
+
+async function getFriendRequests(pid: number): Promise<FriendRequest[]> {
 	try {
 		const requests = await friendsClient.getUserFriendRequestsIncoming({
 			pid: pid
@@ -405,7 +397,8 @@ async function getFriendRequests(pid) {
 		return [];
 	}
 }
-async function login(username, password) {
+
+async function login(username: string, password: string): Promise<ApiLoginResponse> {
 	return await apiClient.login({
 		username: username,
 		password: password,
@@ -416,7 +409,8 @@ async function login(username, password) {
 		})
 	});
 }
-async function refreshLogin(refreshToken) {
+
+async function refreshLogin(refreshToken: string): Promise<ApiLoginResponse> {
 	return await apiClient.login({
 		refreshToken: refreshToken
 	}, {
@@ -425,7 +419,8 @@ async function refreshLogin(refreshToken) {
 		})
 	});
 }
-async function getUserDataFromToken(token) {
+
+async function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
 	return apiClient.getUserData({}, {
 		metadata: grpc.Metadata({
 			'X-API-Key': apiKey,
@@ -433,7 +428,8 @@ async function getUserDataFromToken(token) {
 		})
 	});
 }
-async function getUserDataFromPid(pid) {
+
+async function getUserDataFromPid(pid: number): Promise<AccountGetUserDataResponse> {
 	return accountClient.getUserData({
 		pid: pid
 	}, {
@@ -442,11 +438,14 @@ async function getUserDataFromPid(pid) {
 		})
 	});
 }
-async function getPid(token) {
-	const user = await this.getUserDataFromToken(token);
+
+// TODO is this right?
+export async function getPid(token: string): Promise<number> {
+	const user = await getUserDataFromToken(token);
 	return user.pid;
 }
-module.exports = {
+
+export default {
 	decodeParamPack,
 	processServiceToken,
 	decryptToken,
