@@ -1,6 +1,7 @@
-const util = require('../util');
+import util from '../util';
+import { Request, Response, NextFunction } from 'express';
 
-async function detectVersion(request, response, next) {
+export async function detectVersion(request: Request, response: Response, next: NextFunction): Promise<void> {
 	request.timerDate = Date.now();
 	console.time(`Time Request ${request.timerDate}`);
 	// Check the domain and set the directory
@@ -16,8 +17,10 @@ async function detectVersion(request, response, next) {
 	next();
 }
 
-function includes(request, domain) {
+function includes(request: Request, domain: string): boolean {
 	return request.subdomains.findIndex(element => element.includes(domain)) !== -1;
 }
 
-module.exports = detectVersion;
+export default {
+	detectVersion
+};
