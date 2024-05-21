@@ -1,11 +1,16 @@
-const express = require('express');
-const database = require('../../../../database');
-const config = require('../../../../../config.json');
-const util = require('../../../../util');
-const moment = require('moment');
+import express from 'express';
+import database from '../../../../database';
+import config from '../../../../../config.json';
+import util from '../../../../util';
+import moment from 'moment';
 const router = express.Router();
 
 router.get('/my_news', async function (req, res) {
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	const notifications = await database.getNotifications(req.pid, 25, 0);
 	const userMap = util.getUserHash();
 	const bundle = {
@@ -37,6 +42,11 @@ router.get('/my_news', async function (req, res) {
 });
 
 router.get('/friend_requests', async function (req, res) {
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	let requests = (await util.getFriendRequests(req.pid)).reverse();
 	const now = new Date();
 	requests = requests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));
@@ -66,4 +76,4 @@ router.get('/friend_requests', async function (req, res) {
 	});
 });
 
-module.exports = router;
+export default router;
