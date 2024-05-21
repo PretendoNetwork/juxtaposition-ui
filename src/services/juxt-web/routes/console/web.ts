@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import path from 'path';
+
 const router = express.Router();
-const path = require('path');
 
 router.get('/', function (req, res) {
 	res.redirect('/titles/show');
@@ -31,4 +32,4 @@ router.get('/favicon.ico', function (req, res) {
 	res.sendFile('/images/favicon.ico', {root: path.join(__dirname, '../../../../webfiles/' + req.directory)});
 });
 
-module.exports = router;
+export default router;
