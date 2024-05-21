@@ -1,6 +1,7 @@
-const util = require('../util');
+import util from '../util';
+import { Request, Response, NextFunction } from 'express';
 
-async function webAuth(request, response, next) {
+export async function webAuth(request: Request, response: Response, next: NextFunction): Promise<void> {
 	// Get pid and fetch user data
 
 	if (request.session && request.session.user && request.session.pid && !request.isWrite && request.cookies.access_token) {
@@ -14,14 +15,14 @@ async function webAuth(request, response, next) {
 			request.session.user = request.user;
 			request.session.pid = request.pid;
 		} catch (e) {
-			const domain = request.get('host').replace('juxt', '');
+			const domain = request.get('host')?.replace('juxt', '');
 			response.clearCookie('access_token', {domain: domain, path: '/'});
 			response.clearCookie('refresh_token', {domain: domain, path: '/'});
 			response.clearCookie('token_type', {domain: domain, path: '/'});
 			if (request.path === '/login') {
 				request.lang = util.processLanguage();
 				request.token = request.cookies.access_token;
-				request.paramPackData = null;
+				delete request.paramPackData;
 				return next();
 			}
 		}
@@ -54,13 +55,10 @@ async function webAuth(request, response, next) {
 	return next();
 }
 
-function isStartOfPath(path, value) {
+function isStartOfPath(path: string, value: string): boolean {
 	return path.indexOf(value) === 0;
 }
 
-BigInt.prototype['toJSON'] = function () {
-	return this.toString();
+export default {
+	webAuth
 };
-
-
-module.exports = webAuth;
