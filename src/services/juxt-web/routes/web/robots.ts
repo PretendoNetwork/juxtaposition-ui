@@ -1,5 +1,6 @@
-const express = require('express');
-const path = require('path');
+import express from 'express';
+import path from 'path';
+
 const router = express.Router();
 
 router.get('/', function (req, res) {
@@ -7,5 +8,4 @@ router.get('/', function (req, res) {
 	res.sendFile('robots.txt', {root: path.join(__dirname, '../../../../webfiles/web')});
 });
 
-
-module.exports = router;
+export default router;
