@@ -1,8 +1,10 @@
-const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
-const moment = require('moment');
+import express from 'express';
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
+import moment from 'moment';
+import { HydratedPostDocument } from '@/types/mongoose/post';
+
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -49,13 +51,19 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/more', async function (req, res) {
-	let offset = parseInt(req.query.offset);
-	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
-	if (!offset) {
-		offset = 0;
+
+	let offset = 0;
+	if (typeof req.query?.offset === 'string') {
+		offset = parseInt(req.query.offset);
 	}
-	const posts = await database.getNewsFeedOffset(userContent, config.post_limit, offset);
+
+	const userContent = await database.getUserContent(req.pid);
+	const communityMap = util.getCommunityHash();
+
+	let posts: HydratedPostDocument[] = [];
+	if (userContent) {
+		posts = await database.getNewsFeedOffset(userContent, config.post_limit, offset);
+	}
 
 	const bundle = {
 		posts,
@@ -87,4 +95,4 @@ router.get('/more', async function (req, res) {
 	}
 });
 
-module.exports = router;
+export default router;
