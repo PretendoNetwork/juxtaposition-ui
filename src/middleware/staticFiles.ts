@@ -1,6 +1,7 @@
-const util = require('../util');
+import util from '../util';
+import { Request, Response, NextFunction } from 'express';
 
-async function staticFiles(request, response, next) {
+export async function staticFiles(request: Request, response: Response, next: NextFunction): Promise<void> {
 	// Web files
 	if (isStartOfPath(request.path, '/css/') ||
         isStartOfPath(request.path, '/fonts/') ||
@@ -21,13 +22,16 @@ async function staticFiles(request, response, next) {
 	} else if (request.path === '/') {
 		return response.redirect('/titles/show');
 	} else {
-		return response.sendStatus(404);
+		response.sendStatus(404);
+		return;
 	}
 }
 
-function isStartOfPath(path, value) {
+function isStartOfPath(path: string, value: string): boolean {
 	return path.indexOf(value) === 0;
 }
 
 
-module.exports = staticFiles;
+export default {
+	staticFiles
+};
