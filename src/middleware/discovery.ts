@@ -1,7 +1,8 @@
-const config = require('../../config.json');
-const db = require('../database');
+import config from '../../config.json';
+import db from '../database';
+import { Request, Response, NextFunction } from 'express';
 
-async function checkDiscovery(request, response, next) {
+export async function checkDiscovery(request: Request, response: Response, next: NextFunction): Promise<void> {
 	const discovery = await db.getEndPoint(config.server_environment);
 
 	if (!discovery || discovery.status !== 0) {
@@ -34,4 +35,6 @@ async function checkDiscovery(request, response, next) {
 	next();
 }
 
-module.exports = checkDiscovery;
+export default {
+	checkDiscovery
+};
