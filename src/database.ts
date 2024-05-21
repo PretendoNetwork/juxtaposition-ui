@@ -99,7 +99,7 @@ export async function getTotalPostsByCommunity(community: ICommunity): Promise<n
 	}).countDocuments();
 }
 
-export async function getPostByID(postID: number): Promise<HydratedPostDocument | null> {
+export async function getPostByID(postID: string): Promise<HydratedPostDocument | null> {
 	verifyConnected();
 
 	return POST.findOne({
@@ -331,14 +331,15 @@ export async function getUsersContent(numberOfUsers: number, offset: number): Pr
 	}
 }
 
-export async function getUserSettingsFuzzySearch(search_key: string, numberOfUsers: number, offset: number): Promise<HydratedSettingsDocument[]> {
+export async function getUserSettingsFuzzySearch(search_key: string, numberOfUsers?: number, offset?: number): Promise<HydratedSettingsDocument[]> {
 	verifyConnected();
 
-	if (numberOfUsers === -1) {
-		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset);
-	} else {
-		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset).limit(numberOfUsers);
-	}
+	const options = {
+		offset,
+		limit: numberOfUsers
+	};
+
+	return SETTINGS.find(FuzzySearch(['screen_name'], search_key), {}, options);
 }
 
 export async function getUserSettings(pid: number | null): Promise<HydratedSettingsDocument | null> {
@@ -351,7 +352,11 @@ export async function getUserSettings(pid: number | null): Promise<HydratedSetti
 	return SETTINGS.findOne({pid: pid});
 }
 
-export async function getUserContent(pid: number): Promise<HydratedContentDocument | null> {
+export async function getUserContent(pid: number | null): Promise<HydratedContentDocument | null> {
+	if (!pid) {
+		return null;
+	}
+
 	verifyConnected();
 
 	return CONTENT.findOne({pid: pid});
@@ -522,10 +527,16 @@ export async function getAllReports(offset: number, limit: number): Promise<Hydr
 	return REPORT.find().sort({created_at: -1}).skip(offset).limit(limit);
 }
 
-export async function getAllOpenReports(offset: number, limit: number): Promise<HydratedReportDocument[]> {
+export async function getAllOpenReports(offset?: number, limit?: number): Promise<HydratedReportDocument[]> {
 	verifyConnected();
 
-	return REPORT.find({ resolved: false }).sort({created_at: -1}).skip(offset).limit(limit);
+	const options = {
+		sort: { created_at: -1 },
+		offset,
+		limit
+	};
+
+	return REPORT.find({ resolved: false }, {}, options);
 }
 
 export async function getReportsByUser(pid: number, offset: number, limit: number): Promise<HydratedReportDocument[]> {
@@ -607,5 +618,6 @@ export default {
 	getAllOpenReports,
 	getReportsByUser,
 	getReportsByPost,
-	getReportById
+	getReportById,
+	getUserSettingsFuzzySearch
 };

@@ -1,13 +1,15 @@
-const express = require('express');
-const database = require('../../../../database');
-const { POST } = require('../../../../models/post');
-const { SETTINGS } = require('../../../../models/settings');
-const util = require('../../../../util');
-const moment = require('moment');
-const config = require('../../../../../config.json');
+import express from 'express';
+import database from '../../../../database';
+import { POST } from '../../../../models/post';
+import { SETTINGS } from '../../../../models/settings';
+import util from '../../../../util';
+import moment from 'moment';
+import config from '../../../../../config.json';
+import { HydratedPostDocument } from '@/types/mongoose/post';
+
 const router = express.Router();
 
-router.get('/posts', async function (req, res) {
+router.get('/posts', async function (req, res): Promise<void> {
 	if (!req.moderator) {
 		return res.redirect('/titles/show');
 	}
@@ -18,7 +20,7 @@ router.get('/posts', async function (req, res) {
 	const userMap = util.getUserHash();
 	const postIDs = reports.map(obj => obj.post_id);
 
-	const posts = await POST.aggregate([
+	const posts = await POST.aggregate<HydratedPostDocument>([
 		{ $match: { id: { $in: postIDs } } },
 		{$addFields: {
 			'__order': { $indexOfArray: [ postIDs, '$id' ] }
@@ -47,8 +49,14 @@ router.get('/accounts', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 
-	const page = req.query.page ? parseInt(req.query.page) : 0;
-	const search = req.query.search;
+	let search: string;
+	if (typeof req.query.search === 'string') {
+		search = req.query.search;
+	} else {
+		search = '';
+	}
+
+	const page = (req.query.page && typeof req.query.page === 'string') ? parseInt(req.query.page) : 0;
 	const limit = 20;
 
 	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
@@ -69,20 +77,21 @@ router.get('/accounts', async function (req, res) {
 });
 
 
-router.get('/accounts/:pid', async function (req, res) {
+router.get('/accounts/:pid', async function (req, res): Promise<void> {
 	if (!req.moderator) {
 		return res.redirect('/titles/show');
 	}
-	const pnid = await util.getUserDataFromPid(req.params.pid).catch((e) => {
+	const pid = parseInt(req.params.pid);
+	const pnid = await util.getUserDataFromPid(pid).catch((e) => {
 		console.log(e.details);
 	});
-	const userContent = await database.getUserContent(req.params.pid);
-	if (isNaN(req.params.pid) || !pnid || !userContent) {
+	const userContent = await database.getUserContent(pid);
+	if (isNaN(pid) || !pnid || !userContent) {
 		return res.redirect('/404');
 	}
-	const userSettings = await database.getUserSettings(req.params.pid);
-	const posts = await database.getNumberUserPostsByID(req.params.pid, config.post_limit);
-	const communityMap = await util.getCommunityHash();
+	const userSettings = await database.getUserSettings(pid);
+	const posts = await database.getNumberUserPostsByID(pid, config.post_limit);
+	const communityMap = util.getCommunityHash();
 
 	res.render(req.directory + '/moderate_user.ejs', {
 		lang: req.lang,
@@ -108,7 +117,7 @@ router.post('/accounts/:pid', async (req, res) => {
 	await SETTINGS.findOneAndUpdate({pid: pid}, {
 		account_status: req.body.account_status,
 		ban_lift_date: req.body.ban_lift_date,
-		ban_reason: `${req.user.username} (${req.pid}): ${req.body.ban_reason}`
+		ban_reason: `${req.user?.username} (${req.pid}): ${req.body.ban_reason}`
 	});
 
 	res.json({
@@ -117,11 +126,12 @@ router.post('/accounts/:pid', async (req, res) => {
 });
 
 router.delete('/:reportID', async function (req, res) {
-	if (!req.moderator) {
+	if (!req.moderator || !req.pid) {
 		return res.sendStatus(401);
 	}
 
-	const report = await database.getReportById(req.params.reportID);
+	const reportID = parseInt(req.params.reportID);
+	const report = await database.getReportById(reportID);
 	if (!report) {
 		return res.sendStatus(402);
 	}
@@ -130,23 +140,35 @@ router.delete('/:reportID', async function (req, res) {
 		return res.sendStatus(404);
 	}
 
-	await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
-	await report.resolve(req.pid, req.query.reason ? req.query.reason : 'Removed by moderator');
+	let reason: string = 'Removed by moderator';
+	if (req.query.reason && typeof req.query.reason === 'string') {
+		reason = req.query.reason;
+	}
+
+	await post.removePost(reason, req.pid);
+	await report.resolve(req.pid, reason);
 
 	return res.sendStatus(200);
 });
 
 router.put('/:reportID', async function (req, res) {
-	if (!req.moderator) {
+	if (!req.moderator || !req.pid) {
 		return res.sendStatus(401);
 	}
 
-	const report = await database.getReportById(req.params.reportID);
+	const reportID = parseInt(req.params.reportID);
+
+	const report = await database.getReportById(reportID);
 	if (!report) {
 		return res.sendStatus(402);
 	}
 
-	await report.resolve(req.pid, req.query.reason);
+	let reason = '';
+	if (req.query.reason && typeof req.query.reason === 'string') {
+		reason = req.query.reason;
+	}
+
+	await report.resolve(req.pid, reason);
 
 	return res.sendStatus(200);
 });
