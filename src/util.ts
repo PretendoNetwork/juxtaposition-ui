@@ -1,31 +1,30 @@
-import crypto from 'crypto';
-import database from './database';
-import logger from './logger';
-import grpc from 'nice-grpc';
-import config from '../config.json';
-import { SETTINGS } from './models/settings';
-import { CONTENT } from './models/content';
-import { NOTIFICATION } from './models/notifications';
-import { COMMUNITY } from './models/communities';
 import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service';
-import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
-import translations from './translations';
+import { LoginResponse as ApiLoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
+import { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
+import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
+import aws from 'aws-sdk';
+import bmp from 'bmp-js';
+import crc32 from 'crc/crc32';
+import crypto from 'crypto';
 import HashMap from 'hashmap';
-import TGA from 'tga';
+import grpc from 'nice-grpc';
 import pako from 'pako';
 import { PNG } from 'pngjs';
-import bmp from 'bmp-js';
-import aws from 'aws-sdk';
-import crc32 from 'crc/crc32';
 import sharp from 'sharp';
-import { GetUserDataResponse as ApiGetUserDataResponse } from '@pretendonetwork/grpc/api/get_user_data_rpc';
-import { LoginResponse as ApiLoginResponse } from '@pretendonetwork/grpc/api/login_rpc';
-import { GetUserDataResponse as AccountGetUserDataResponse } from '@pretendonetwork/grpc/account/get_user_data_rpc';
-import { FriendRequest } from '@pretendonetwork/grpc/friends/friend_request';
-import { HydratedNotificationDocument } from './types/mongoose/notifications';
+import TGA from 'tga';
+import config from '../config.json';
+import database from './database';
+import logger from './logger';
+import { COMMUNITY } from './models/communities';
+import { CONTENT } from './models/content';
+import { NOTIFICATION } from './models/notifications';
+import { SETTINGS } from './models/settings';
+import translations from './translations';
 import { ParamPack } from './types/common/param-pack';
 import { Token } from './types/common/token';
+import { User } from './types/common/user';
+import { HydratedNotificationDocument } from './types/mongoose/notifications';
 
 const communityMap = new HashMap<string, string>();
 const userMap = new HashMap<number, string>();
@@ -426,7 +425,7 @@ async function refreshLogin(refreshToken: string): Promise<ApiLoginResponse> {
 	});
 }
 
-async function getUserDataFromToken(token: string): Promise<ApiGetUserDataResponse> {
+async function getUserDataFromToken(token: string): Promise<User> {
 	return apiClient.getUserData({}, {
 		metadata: grpc.Metadata({
 			'X-API-Key': apiKey,
@@ -435,7 +434,7 @@ async function getUserDataFromToken(token: string): Promise<ApiGetUserDataRespon
 	});
 }
 
-async function getUserDataFromPid(pid: number): Promise<AccountGetUserDataResponse> {
+async function getUserDataFromPid(pid: number): Promise<User> {
 	return accountClient.getUserData({
 		pid: pid
 	}, {

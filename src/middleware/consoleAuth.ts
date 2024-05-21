@@ -8,7 +8,7 @@ export async function auth(request: Request, response: Response, next: NextFunct
 		request.user = request.session.user;
 		request.pid = request.session.pid;
 	} else {
-		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.get('x-nintendo-servicetoken')) : null;
+		request.pid = request.get('x-nintendo-servicetoken') ? await util.processServiceToken(request.get('x-nintendo-servicetoken')) : null;
 		request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
 
 		request.session.user = request.user;
@@ -16,7 +16,7 @@ export async function auth(request: Request, response: Response, next: NextFunct
 	}
 
 	// Set headers
-	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.decodeParamPack(request.get('x-nintendo-parampack')) : null;
+	request.paramPackData = request.get('x-nintendo-parampack') ? util.decodeParamPack(request.get('x-nintendo-parampack')) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
 	if (!request.user) {

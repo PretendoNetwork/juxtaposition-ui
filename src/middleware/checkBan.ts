@@ -1,15 +1,17 @@
-const config = require('../../config.json');
-const moment = require('moment/moment');
-const db = require('../database');
+import config from '../../config.json';
+import moment from 'moment/moment';
+import db from '../database';
+import { Request, Response, NextFunction } from 'express';
 
-async function checkBan(request, response, next) {
+export async function checkBan(request: Request, response: Response, next: NextFunction): Promise<void> {
 	if (!request.user && !request.guest_access && request.path !== '/login') {
-		return response.status(401).send('Ban Check Failed: No user or guest access');
+		response.status(401).send('Ban Check Failed: No user or guest access');
+		return;
 	} else if (!request.user && (request.guest_access || request.path === '/login')) {
 		return next();
 	}
 
-	if (config.server_environment !== 'prod' && request.user.serverAccessLevel !== 'test' && request.user.serverAccessLevel !== 'dev') {
+	if (config.server_environment !== 'prod' && request.user?.serverAccessLevel !== 'test' && request.user?.serverAccessLevel !== 'dev') {
 		response.status(500);
 		if (request.directory === 'web') {
 			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev', cdnURL: config.CDN_domain,});
@@ -21,7 +23,7 @@ async function checkBan(request, response, next) {
 		}
 	}
 	// Set moderator status
-	request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
+	request.moderator = request.user?.accessLevel == 2 || request.user?.accessLevel == 3;
 	const user = await db.getUserSettings(request.pid);
 	if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
 		user.account_status = 0;
@@ -29,18 +31,18 @@ async function checkBan(request, response, next) {
 	}
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
-	if (user && (user.account_status < 0 || user.account_status > 1 || request.user.accessLevel < 0)) {
+	if (user && (user.account_status < 0 || user.account_status > 1 || (request.user?.accessLevel ?? 0) < 0)) {
 		if (request.directory === 'web') {
 			let banMessage = '';
 			switch (user.account_status) {
 				case 2:
-					banMessage = `${request.user.username} has been banned until: ${ moment(user.ban_lift_date) }. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
+					banMessage = `${request.user?.username} has been banned until: ${ moment(user.ban_lift_date) }. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
 					break;
 				case 3:
-					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
+					banMessage = `${request.user?.username} has been banned forever. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
 					break;
 				default:
-					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the developers in the Discord server.`;
+					banMessage = `${request.user?.username} has been banned. \n\nIf you have any questions contact the developers in the Discord server.`;
 			}
 			return response.render('web/login.ejs', {toast: banMessage, cdnURL: config.CDN_domain,});
 		} else {
@@ -50,12 +52,14 @@ async function checkBan(request, response, next) {
 				cdnURL: config.CDN_domain,
 				lang: request.lang,
 				pid: request.pid,
-				PNID: request.user.username,
-				networkBan: request.user.accessLevel < 0
+				PNID: request.user?.username,
+				networkBan: (request.user?.accessLevel ?? 0) < 0
 			});
 		}
 	}
 	next();
 }
 
-module.exports = checkBan;
+export default {
+	checkBan
+};

@@ -341,7 +341,11 @@ export async function getUserSettingsFuzzySearch(search_key: string, numberOfUse
 	}
 }
 
-export async function getUserSettings(pid: number): Promise<HydratedSettingsDocument | null> {
+export async function getUserSettings(pid: number | null): Promise<HydratedSettingsDocument | null> {
+	if (!pid) {
+		return null;
+	}
+
 	verifyConnected();
 
 	return SETTINGS.findOne({pid: pid});
