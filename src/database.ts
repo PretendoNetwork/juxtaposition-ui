@@ -1,41 +1,51 @@
-const mongoose = require('mongoose');
-const { FuzzySearch } = require('mongoose-fuzzy-search-next');
-const { mongoose: mongooseConfig } = require('../config.json');
-const { COMMUNITY } = require('./models/communities');
-const { CONTENT } = require('./models/content');
-const { CONVERSATION } = require('./models/conversation');
-const { ENDPOINT } = require('./models/endpoint');
-const { NOTIFICATION } = require('./models/notifications');
-const { POST } = require('./models/post');
-const { SETTINGS } = require('./models/settings');
-const { REPORT } = require('./models/report');
+import { set, connect as _connect, connection as _connection, Connection } from 'mongoose';
+import { FuzzySearch } from 'mongoose-fuzzy-search-next';
+import { mongoose as mongooseConfig } from '../config.json';
+import { COMMUNITY } from './models/communities';
+import { CONTENT } from './models/content';
+import { CONVERSATION } from './models/conversation';
+import { ENDPOINT } from './models/endpoint';
+import { NOTIFICATION } from './models/notifications';
+import { POST } from './models/post';
+import { SETTINGS } from './models/settings';
+import { REPORT } from './models/report';
 
 const { uri, database, options } = mongooseConfig;
-const logger = require('./logger');
+import { info } from './logger';
+import { HydratedCommunityDocument, ICommunity } from './types/mongoose/communities';
+import { HydratedPostDocument, IPost } from './types/mongoose/post';
+import { HydratedEndpointDocument } from './types/mongoose/endpoint';
+import { HydratedSettingsDocument } from './types/mongoose/settings';
+import { HydratedContentDocument, IContent } from './types/mongoose/content';
+import { HydratedConversationDocument } from './types/mongoose/conversation';
+import { HydratedNotificationDocument } from './types/mongoose/notifications';
+import { HydratedReportDocument } from './types/mongoose/report';
 
-let connection;
-mongoose.set('strictQuery', true);
+let connection: Connection;
+set('strictQuery', true);
 
-async function connect() {
-	await mongoose.connect(`${uri}/${database}`, options);
-	connection = mongoose.connection;
-	connection.on('connected', function () {
-		logger.info(`MongoDB connected ${this.name}`);
+export async function connect(): Promise<void> {
+	await _connect(`${uri}/${database}`, options);
+	connection = _connection;
+	connection.on('connected', function (this: Connection) {
+		info(`MongoDB connected ${this.name}`);
 	});
+	// Should this use the logger?
 	connection.on('error', console.error.bind(console, 'connection error:'));
 	connection.on('close', () => {
 		connection.removeAllListeners();
 	});
 }
 
-function verifyConnected() {
+function verifyConnected(): void {
 	if (!connection) {
 		connect();
 	}
 }
 
-async function getCommunities(numberOfCommunities) {
+export async function getCommunities(numberOfCommunities: number): Promise<HydratedCommunityDocument[]> {
 	verifyConnected();
+
 	if (numberOfCommunities === -1) {
 		return COMMUNITY.find({ parent: null, type: [0,2] });
 	} else {
@@ -43,39 +53,45 @@ async function getCommunities(numberOfCommunities) {
 	}
 }
 
-async function getMostPopularCommunities(numberOfCommunities) {
+export async function getMostPopularCommunities(numberOfCommunities: number): Promise<HydratedCommunityDocument[]> {
 	verifyConnected();
+
 	return COMMUNITY.find({ parent: null, type: 0 }).sort({followers: -1}).limit(numberOfCommunities);
 }
 
-async function getNewCommunities(numberOfCommunities) {
+export async function getNewCommunities(numberOfCommunities: number): Promise<HydratedCommunityDocument[]> {
 	verifyConnected();
+
 	return COMMUNITY.find({ parent: null, type: 0 }).sort([['created_at', -1]]).limit(numberOfCommunities);
 }
 
-async function getSubCommunities(communityID) {
+export async function getSubCommunities(communityID: string): Promise<HydratedCommunityDocument[]> {
 	verifyConnected();
+
 	return COMMUNITY.find({
 		parent: communityID
 	});
 }
 
-async function getCommunityByTitleID(title_id) {
+export async function getCommunityByTitleID(title_id: string): Promise<HydratedCommunityDocument | null> {
 	verifyConnected();
+
 	return COMMUNITY.findOne({
 		title_id: title_id
 	});
 }
 
-async function getCommunityByID(community_id) {
+export async function getCommunityByID(community_id: string): Promise<HydratedCommunityDocument | null> {
 	verifyConnected();
+
 	return COMMUNITY.findOne({
 		olive_community_id: community_id
 	});
 }
 
-async function getTotalPostsByCommunity(community) {
+export async function getTotalPostsByCommunity(community: ICommunity): Promise<number> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
@@ -83,15 +99,17 @@ async function getTotalPostsByCommunity(community) {
 	}).countDocuments();
 }
 
-async function getPostByID(postID) {
+export async function getPostByID(postID: number): Promise<HydratedPostDocument | null> {
 	verifyConnected();
+
 	return POST.findOne({
 		id: postID
 	});
 }
 
-async function getPostsByUserID(userID) {
+export async function getPostsByUserID(userID: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		pid: userID,
 		parent: null,
@@ -99,16 +117,18 @@ async function getPostsByUserID(userID) {
 	});
 }
 
-async function getPostReplies(postID, number) {
+export async function getPostReplies(postID: number, number: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		parent: postID,
 		removed: false
 	}).limit(number);
 }
 
-async function getDuplicatePosts(pid, post) {
+export async function getDuplicatePosts(pid: number, post: IPost): Promise<HydratedPostDocument | null> {
 	verifyConnected();
+
 	return POST.findOne({
 		pid: pid,
 		body: post.body,
@@ -119,8 +139,9 @@ async function getDuplicatePosts(pid, post) {
 	});
 }
 
-async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
+export async function getUserPostRepliesAfterTimestamp(post: IPost, numberOfPosts: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		parent: post.pid,
 		created_at: { $lt: post.created_at },
@@ -129,8 +150,9 @@ async function getUserPostRepliesAfterTimestamp(post, numberOfPosts) {
 	}).limit(numberOfPosts);
 }
 
-async function getNumberUserPostsByID(userID, number) {
+export async function getNumberUserPostsByID(userID: number, number: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		pid: userID,
 		parent: null,
@@ -139,8 +161,9 @@ async function getNumberUserPostsByID(userID, number) {
 	}).sort({ created_at: -1}).limit(number);
 }
 
-async function getTotalPostsByUserID(userID) {
+export async function getTotalPostsByUserID(userID: number): Promise<number> {
 	verifyConnected();
+
 	return POST.find({
 		pid: userID,
 		parent: null,
@@ -149,8 +172,9 @@ async function getTotalPostsByUserID(userID) {
 	}).countDocuments();
 }
 
-async function getHotPostsByCommunity(community, numberOfPosts) {
+export async function getHotPostsByCommunity(community: ICommunity, numberOfPosts: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
@@ -158,8 +182,9 @@ async function getHotPostsByCommunity(community, numberOfPosts) {
 	}).sort({empathy_count: -1}).limit(numberOfPosts);
 }
 
-async function getNumberNewCommunityPostsByID(community, number) {
+export async function getNumberNewCommunityPostsByID(community: ICommunity, number: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
@@ -167,8 +192,9 @@ async function getNumberNewCommunityPostsByID(community, number) {
 	}).sort({ created_at: -1}).limit(number);
 }
 
-async function getNumberPopularCommunityPostsByID(community, limit, offset) {
+export async function getNumberPopularCommunityPostsByID(community: ICommunity, limit: number, offset: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
@@ -176,8 +202,9 @@ async function getNumberPopularCommunityPostsByID(community, limit, offset) {
 	}).sort({ empathy_count: -1}).skip(offset).limit(limit);
 }
 
-async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
+export async function getNumberVerifiedCommunityPostsByID(community: ICommunity, limit: number, offset: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community.olive_community_id,
 		verified: true,
@@ -186,8 +213,9 @@ async function getNumberVerifiedCommunityPostsByID(community, limit, offset) {
 	}).sort({ created_at: -1}).skip(offset).limit(limit);
 }
 
-async function getPostsByCommunity(community, numberOfPosts) {
+export async function getPostsByCommunity(community: ICommunity, numberOfPosts: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
@@ -195,8 +223,9 @@ async function getPostsByCommunity(community, numberOfPosts) {
 	}).limit(numberOfPosts);
 }
 
-async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
+export async function getPostsByCommunityKey(community: ICommunity, numberOfPosts: number, search_key: string): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+	
 	return POST.find({
 		community_id: community.olive_community_id,
 		search_key: search_key,
@@ -205,8 +234,9 @@ async function getPostsByCommunityKey(community, numberOfPosts, search_key) {
 	}).limit(numberOfPosts);
 }
 
-async function getNewPostsByCommunity(community, limit, offset) {
+export async function getNewPostsByCommunity(community: ICommunity, limit: number, offset: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
@@ -214,16 +244,18 @@ async function getNewPostsByCommunity(community, limit, offset) {
 	}).sort({ created_at: -1 }).skip(offset).limit(limit);
 }
 
-async function getAllUserPosts(pid) {
+export async function getAllUserPosts(pid: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		pid: pid,
 		message_to_pid: null
 	});
 }
 
-async function getRemovedUserPosts(pid) {
+export async function getRemovedUserPosts(pid: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		pid: pid,
 		message_to_pid: null,
@@ -231,8 +263,9 @@ async function getRemovedUserPosts(pid) {
 	});
 }
 
-async function getUserPostsAfterTimestamp(post, numberOfPosts) {
+export async function getUserPostsAfterTimestamp(post: IPost, numberOfPosts: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		pid: post.pid,
 		created_at: { $lt: post.created_at },
@@ -242,8 +275,9 @@ async function getUserPostsAfterTimestamp(post, numberOfPosts) {
 	}).limit(numberOfPosts);
 }
 
-async function getUserPostsOffset(pid, limit, offset) {
+export async function getUserPostsOffset(pid: number, limit: number, offset: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		pid: pid,
 		parent: null,
@@ -252,8 +286,9 @@ async function getUserPostsOffset(pid, limit, offset) {
 	}).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
-async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
+export async function getCommunityPostsAfterTimestamp(post: IPost, numberOfPosts: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: post.community_id,
 		created_at: { $lt: post.created_at },
@@ -262,20 +297,23 @@ async function getCommunityPostsAfterTimestamp(post, numberOfPosts) {
 	}).limit(numberOfPosts);
 }
 
-async function getEndpoints() {
+export async function getEndpoints(): Promise<HydratedEndpointDocument[]> {
 	verifyConnected();
+
 	return ENDPOINT.find({});
 }
 
-async function getEndPoint(accessLevel) {
+export async function getEndPoint(accessLevel: string): Promise<HydratedEndpointDocument | null> {
 	verifyConnected();
+
 	return ENDPOINT.findOne({
 		server_access_level: accessLevel
 	});
 }
 
-async function getUsersSettings(numberOfUsers) {
+export async function getUsersSettings(numberOfUsers: number): Promise<HydratedSettingsDocument[]> {
 	verifyConnected();
+
 	if (numberOfUsers === -1) {
 		return SETTINGS.find({});
 	} else {
@@ -283,8 +321,9 @@ async function getUsersSettings(numberOfUsers) {
 	}
 }
 
-async function getUsersContent(numberOfUsers, offset) {
+export async function getUsersContent(numberOfUsers: number, offset: number): Promise<HydratedSettingsDocument[]> {
 	verifyConnected();
+
 	if (numberOfUsers === -1) {
 		return SETTINGS.find({}).skip(offset);
 	} else {
@@ -292,8 +331,9 @@ async function getUsersContent(numberOfUsers, offset) {
 	}
 }
 
-async function getUserSettingsFuzzySearch(search_key, numberOfUsers, offset) {
+export async function getUserSettingsFuzzySearch(search_key: string, numberOfUsers: number, offset: number): Promise<HydratedSettingsDocument[]> {
 	verifyConnected();
+
 	if (numberOfUsers === -1) {
 		return SETTINGS.find(FuzzySearch(['screen_name'], search_key)).skip(offset);
 	} else {
@@ -301,37 +341,42 @@ async function getUserSettingsFuzzySearch(search_key, numberOfUsers, offset) {
 	}
 }
 
-async function getUserSettings(pid) {
+export async function getUserSettings(pid: number): Promise<HydratedSettingsDocument | null> {
 	verifyConnected();
+
 	return SETTINGS.findOne({pid: pid});
 }
 
-async function getUserContent(pid) {
+export async function getUserContent(pid: number): Promise<HydratedContentDocument | null> {
 	verifyConnected();
+
 	return CONTENT.findOne({pid: pid});
 }
 
-async function getFollowingUsers(content) {
+export async function getFollowingUsers(content: IContent): Promise<HydratedSettingsDocument[]> {
 	verifyConnected();
+
 	return SETTINGS.find({
 		pid: content.following_users
 	});
 }
 
-async function getFollowedUsers(content) {
+export async function getFollowedUsers(content: IContent): Promise<HydratedSettingsDocument[]> {
 	verifyConnected();
+	
 	return SETTINGS.find({
 		pid: content.followed_users
 	});
 }
 
-async function getNewsFeed(content, numberOfPosts) {
+export async function getNewsFeed(content: IContent, numberOfPosts: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		$or: [
-			{pid: content.followed_users},
-			{pid: content.pid},
-			{community_id: content.followed_communities},
+			{ pid: content.followed_users },
+			{ pid: content.pid },
+			{ community_id: content.followed_communities },
 		],
 		parent: null,
 		message_to_pid: null,
@@ -339,8 +384,9 @@ async function getNewsFeed(content, numberOfPosts) {
 	}).limit(numberOfPosts).sort({ created_at: -1});
 }
 
-async function getNewsFeedAfterTimestamp(content, numberOfPosts, post) {
+export async function getNewsFeedAfterTimestamp(content: IContent, numberOfPosts: number, post: IPost): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		$or: [
 			{pid: content.followed_users},
@@ -354,8 +400,9 @@ async function getNewsFeedAfterTimestamp(content, numberOfPosts, post) {
 	}).limit(numberOfPosts).sort({ created_at: -1});
 }
 
-async function getNewsFeedOffset(content, limit, offset) {
+export async function getNewsFeedOffset(content: IContent, limit: number, offset: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		$or: [
 			{pid: content.followed_users},
@@ -368,15 +415,17 @@ async function getNewsFeedOffset(content, limit, offset) {
 	}).skip(offset).limit(limit).sort({ created_at: -1});
 }
 
-async function getConversations(pid) {
+export async function getConversations(pid: number): Promise<HydratedConversationDocument[]> {
 	verifyConnected();
+
 	return CONVERSATION.find({
 		'users.pid': pid
 	}).sort({ last_updated: -1});
 }
 
-async function getUnreadConversationCount(pid) {
+export async function getUnreadConversationCount(pid: number): Promise<number> {
 	verifyConnected();
+
 	return CONVERSATION.find({
 		'users': { $elemMatch: {
 			'pid': pid,
@@ -386,16 +435,18 @@ async function getUnreadConversationCount(pid) {
 	}).countDocuments();
 }
 
-async function getConversationByID(community_id) {
+export async function getConversationByID(community_id: number): Promise<HydratedConversationDocument | null> {
 	verifyConnected();
+
 	return CONVERSATION.findOne({
 		type: 3,
 		id: community_id
 	});
 }
 
-async function getConversationMessages(community_id, limit, offset) {
+export async function getConversationMessages(community_id: number, limit: number, offset: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
 	return POST.find({
 		community_id: community_id,
 		parent: null,
@@ -403,8 +454,9 @@ async function getConversationMessages(community_id, limit, offset) {
 	}).sort({created_at: 1}).skip(offset).limit(limit);
 }
 
-async function getConversationByUsers(pids) {
+export async function getConversationByUsers(pids: number[]): Promise<HydratedConversationDocument | null> {
 	verifyConnected();
+
 	return CONVERSATION.findOne({
 		$and: [
 			{'users.pid': pids[0]},
@@ -413,8 +465,9 @@ async function getConversationByUsers(pids) {
 	});
 }
 
-async function getLatestMessage(pid, pid2) {
+export async function getLatestMessage(pid: number, pid2: number): Promise<HydratedConversationDocument | null> {
 	verifyConnected();
+
 	return POST.findOne({
 		$or: [
 			{pid: pid, message_to_pid: pid2},
@@ -424,15 +477,17 @@ async function getLatestMessage(pid, pid2) {
 	});
 }
 
-async function getNotifications(pid, limit, offset) {
+export async function getNotifications(pid: number, limit: number, offset: number): Promise<HydratedNotificationDocument[]> {
 	verifyConnected();
+
 	return NOTIFICATION.find({
 		pid: pid,
 	}).sort({lastUpdated: -1}).skip(offset).limit(limit);
 }
 
-async function getNotification(pid, type, reference_id) {
+export async function getNotification(pid: string, type: string, reference_id: number): Promise<HydratedNotificationDocument | null> {
 	verifyConnected();
+
 	return NOTIFICATION.findOne({
 		pid: pid,
 		type: type,
@@ -440,42 +495,48 @@ async function getNotification(pid, type, reference_id) {
 	});
 }
 
-async function getLastNotification(pid) {
+export async function getLastNotification(pid: number): Promise<HydratedNotificationDocument | null> {
 	verifyConnected();
+
 	return NOTIFICATION.findOne({
 		pid: pid
 	}).sort({lastUpdated: -1}).limit(1);
 }
 
-async function getUnreadNotificationCount(pid) {
+export async function getUnreadNotificationCount(pid: number): Promise<number> {
 	verifyConnected();
+
 	return NOTIFICATION.find({
 		pid: pid,
 		read: false
 	}).countDocuments();
 }
 
-async function getAllReports(offset, limit) {
+export async function getAllReports(offset: number, limit: number): Promise<HydratedReportDocument[]> {
 	verifyConnected();
+
 	return REPORT.find().sort({created_at: -1}).skip(offset).limit(limit);
 }
 
-async function getAllOpenReports(offset, limit) {
+export async function getAllOpenReports(offset: number, limit: number): Promise<HydratedReportDocument[]> {
 	verifyConnected();
+
 	return REPORT.find({ resolved: false }).sort({created_at: -1}).skip(offset).limit(limit);
 }
 
-async function getReportsByUser(pid, offset, limit) {
+export async function getReportsByUser(pid: number, offset: number, limit: number): Promise<HydratedReportDocument[]> {
 	verifyConnected();
+
 	return REPORT.find({ reported_by: pid }).sort({created_at: -1}).skip(offset).limit(limit);
 }
 
-async function getReportsByPost(postID, offset, limit) {
+export async function getReportsByPost(postID: number, offset: number, limit: number): Promise<HydratedReportDocument[]> {
 	verifyConnected();
+
 	return REPORT.find({ post_id: postID }).sort({created_at: -1}).skip(offset).limit(limit);
 }
 
-async function getDuplicateReports(pid, postID) {
+export async function getDuplicateReports(pid: number, postID: number): Promise<HydratedReportDocument | null> {
 	verifyConnected();
 	return REPORT.findOne({
 		reported_by: pid,
@@ -483,13 +544,13 @@ async function getDuplicateReports(pid, postID) {
 	});
 }
 
-async function getReportById(id) {
+export async function getReportById(id: number): Promise<HydratedReportDocument | null> {
 	verifyConnected();
+
 	return REPORT.findById(id);
 }
 
-
-module.exports = {
+export default {
 	connect,
 	getCommunities,
 	getMostPopularCommunities,
@@ -531,7 +592,6 @@ module.exports = {
 	getUsersSettings,
 	getUsersContent,
 	getUserSettings,
-	getUserSettingsFuzzySearch,
 	getUserContent,
 	getNotifications,
 	getUnreadNotificationCount,
@@ -543,6 +603,5 @@ module.exports = {
 	getAllOpenReports,
 	getReportsByUser,
 	getReportsByPost,
-	getDuplicateReports,
 	getReportById
 };
