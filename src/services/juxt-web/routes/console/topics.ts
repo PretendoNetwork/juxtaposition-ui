@@ -1,20 +1,32 @@
-const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
-const moment = require('moment');
-const { POST } = require('../../../../models/post');
+import express from 'express';
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
+import moment from 'moment';
+import { POST } from '../../../../models/post';
+
 const router = express.Router();
 
 router.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = util.getCommunityHash();
 	const tag = req.query.topic_tag;
 	console.log(tag);
 	if (!userContent || !tag) {
 		return res.redirect('/404');
 	}
-	const posts = await POST.find({ topic_tag: req.query.topic_tag }).sort({ created_at: -1}).limit(parseInt(req.query.limit));
+	
+	let limit: number | undefined;
+	if (typeof req.query?.limit === 'string') {
+		limit = parseInt(req.query.limit);
+	}
+
+	const options = {
+		limit,
+		sort: { created_at: -1 }
+	};
+
+	const posts = await POST.find({ topic_tag: req.query.topic_tag }, {}, options);
 
 	const bundle = {
 		posts,
@@ -52,14 +64,30 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/more', async function (req, res) {
-	const offset = req.query.offset ? parseInt(req.query.offset) : 0;
 	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = util.getCommunityHash();
+
+	let limit: number | undefined;
+	if (typeof req.query?.limit === 'string') {
+		limit = parseInt(req.query.limit);
+	}
+
+	let offset: number | undefined;
+	if (typeof req.query?.offset === 'string') {
+		limit = parseInt(req.query.offset);
+	}
+
+	const options = {
+		sort: { created_at: -1 },
+		limit,
+		offset
+	};
+	
 	const tag = req.query.topic_tag;
 	if (!tag) {
 		return res.sendStatus(204);
 	}
-	const posts = await POST.find({ topic_tag: req.query.topic_tag }).sort({ created_at: -1}).skip(offset).limit(parseInt(req.query.limit));
+	const posts = await POST.find({ topic_tag: req.query.topic_tag }, {}, options);
 
 	const bundle = {
 		posts,
@@ -69,7 +97,7 @@ router.get('/more', async function (req, res) {
 		userContent,
 		lang: req.lang,
 		mii_image_CDN: config.mii_image_CDN,
-		link: `/topics/more?tag=${tag}&offset=${offset + posts.length}&pjax=true`
+		link: `/topics/more?tag=${tag}&offset=${(offset ?? 0) + posts.length}&pjax=true`
 	};
 
 	if (posts.length > 0) {
@@ -90,4 +118,4 @@ router.get('/more', async function (req, res) {
 	}
 });
 
-module.exports = router;
+export default router;
