@@ -1,13 +1,14 @@
-const config = require('../../config.json');
-const util = require('../util');
+import config from '../../config.json';
+import util from '../util';
+import { Request, Response, NextFunction } from 'express';
 
-async function auth(request, response, next) {
+export async function auth(request: Request, response: Response, next: NextFunction): Promise<void> {
 	// Get pid and fetch user data
 	if (request.session && request.session.user && request.session.pid && !request.isWrite) {
 		request.user = request.session.user;
 		request.pid = request.session.pid;
 	} else {
-		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.headers['x-nintendo-servicetoken']) : null;
+		request.pid = request.headers['x-nintendo-servicetoken'] ? await util.processServiceToken(request.get('x-nintendo-servicetoken')) : null;
 		request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
 
 		request.session.user = request.user;
@@ -15,7 +16,7 @@ async function auth(request, response, next) {
 	}
 
 	// Set headers
-	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.decodeParamPack(request.headers['x-nintendo-parampack']) : null;
+	request.paramPackData = request.headers['x-nintendo-parampack'] ? util.decodeParamPack(request.get('x-nintendo-parampack')) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
 	if (!request.user) {
@@ -52,17 +53,19 @@ async function auth(request, response, next) {
 			error: 'Missing auth headers'
 		});
 	}
-	const userAgent = request.headers['user-agent'];
-	if (request.user.accessLevel < 3 && (request.cookies.access_token || (!userAgent.includes('Nintendo WiiU') && !userAgent.includes('Nintendo 3DS')))) {
+	const userAgent = request.get('user-agent');
+	if (request.user.accessLevel < 3 && (request.cookies.access_token || (!userAgent?.includes('Nintendo WiiU') && !userAgent?.includes('Nintendo 3DS')))) {
 		return response.render('portal/partials/ban_notification.ejs', {
 			user: null,
 			error: 'Invalid authentication method used.'
 		});
 	}
 
-	request.lang = util.processLanguage(request.paramPackData);
+	request.lang = util.processLanguage(request?.paramPackData ?? undefined);
 	//console.timeEnd(`Time Request ${request.timerDate}`);
 	return next();
 }
 
-module.exports = auth;
+export default {
+	auth
+};

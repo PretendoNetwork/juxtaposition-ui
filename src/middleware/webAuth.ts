@@ -22,7 +22,7 @@ export async function webAuth(request: Request, response: Response, next: NextFu
 			if (request.path === '/login') {
 				request.lang = util.processLanguage();
 				request.token = request.cookies.access_token;
-				delete request.paramPackData;
+				request.paramPackData = null;
 				return next();
 			}
 		}

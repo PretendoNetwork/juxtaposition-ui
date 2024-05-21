@@ -105,7 +105,10 @@ async function create_user(pid: number, experience: number, notifications: boole
 	setName(pid, pnid.mii?.name);
 }
 
-function decodeParamPack(paramPack: string): ParamPack {
+function decodeParamPack(paramPack: string | undefined): ParamPack | null {
+	if (!paramPack) {
+		return null;
+	}
 	/*  Decode base64 */
 	const decoded = Buffer.from(paramPack, 'base64').toString('ascii');
 	/*  Remove starting and ending '/', split into array */
@@ -118,7 +121,10 @@ function decodeParamPack(paramPack: string): ParamPack {
 	return out as unknown as ParamPack;
 }
 
-function processServiceToken(encryptedToken: string): number | null {
+function processServiceToken(encryptedToken: string | undefined): number | null {
+	if (!encryptedToken) {
+		return null;
+	}
 	try {
 		const B64token = Buffer.from(encryptedToken, 'base64');
 		const decryptedToken = decryptToken(B64token);
