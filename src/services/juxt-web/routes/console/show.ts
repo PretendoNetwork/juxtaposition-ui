@@ -1,7 +1,8 @@
-const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
+import express from 'express';
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
+
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -32,11 +33,13 @@ router.get('/', async function (req, res) {
 		res.redirect('/titles');
 	}
 
-	const usrMii = await database.getUserSettings(req.pid);
-	if (req.user.mii.name !== usrMii.screen_name) {
-		util.setName(req.pid, req.user.mii.name);
-		usrMii.screen_name = req.user.mii.name;
-		await usrMii.save();
+	if (req.pid) {
+		const usrMii = await database.getUserSettings(req.pid);
+		if (req?.user?.mii?.name && usrMii && req.user.mii.name !== usrMii?.screen_name) {
+			util.setName(req.pid, req.user.mii.name);
+			usrMii.screen_name = req.user.mii.name;
+			await usrMii.save();
+		}
 	}
 });
 
@@ -67,4 +70,4 @@ router.post('/newUser', async function (req, res) {
 
 });
 
-module.exports = router;
+export default router;
