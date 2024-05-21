@@ -1,8 +1,8 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
 
 router.get('/', async function (req, res) {
 	res.render(req.directory + '/login.ejs', {toast: null, cdnURL: config.CDN_domain,});
@@ -35,14 +35,11 @@ router.post('/', async (req, res) => {
 
 	const pid = PNID.pid;
 
-	let discovery = await database.getEndPoint(config.server_environment);
-	if (!discovery) {
-		discovery = {
-			status: 5
-		};
-	}
+	const discovery = await database.getEndPoint(config.server_environment);
+	const status = discovery?.status ?? 5;
+
 	let message = '';
-	switch (discovery.status) {
+	switch (status) {
 		case 3:
 			message = 'Juxt is currently undergoing maintenance. Please try again later.';
 			break;
@@ -53,7 +50,7 @@ router.post('/', async (req, res) => {
 			message = 'Juxt is currently unavailable. Please try again later.';
 			break;
 	}
-	if (discovery.status !== 0) {
+	if (status !== 0) {
 		return res.render(req.directory + '/error.ejs', {
 			code: 504,
 			message: message,
