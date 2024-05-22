@@ -24,7 +24,7 @@ import translations from './translations';
 import { ParamPack } from './types/common/param-pack';
 import { Token } from './types/common/token';
 import { User } from './types/common/user';
-import { HydratedNotificationDocument } from './types/mongoose/notifications';
+import { INotification } from './types/mongoose/notifications';
 
 const communityMap = new HashMap<string, string>();
 const userMap = new HashMap<number, string>();
@@ -333,7 +333,7 @@ async function uploadCDNAsset(bucket: string, key: string, data: Buffer, acl: st
 	await s3.putObject(awsPutParams).promise();
 }
 
-async function newNotification(notification: HydratedNotificationDocument): Promise<void> {
+async function newNotification(notification: Omit<INotification, 'read' | 'lastUpdated' | 'users'>): Promise<void> {
 	const now = new Date();
 	if (notification.type === 'follow') {
 		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }

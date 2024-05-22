@@ -293,15 +293,21 @@ export async function getUserPostsAfterTimestamp(post: IPost, numberOfPosts: num
 	}).limit(numberOfPosts);
 }
 
-export async function getUserPostsOffset(pid: number, limit: number, offset: number): Promise<HydratedPostDocument[]> {
+export async function getUserPostsOffset(pid: number, limit?: number, offset?: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
+	const options = {
+		limit,
+		offset,
+		sort: { created_at: -1 }
+	};
 
 	return POST.find({
 		pid: pid,
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).skip(offset).limit(limit).sort({ created_at: -1});
+	}, {}, options);
 }
 
 export async function getCommunityPostsAfterTimestamp(post: IPost, numberOfPosts: number): Promise<HydratedPostDocument[]> {
@@ -512,7 +518,7 @@ export async function getNotifications(pid: number, limit: number, offset: numbe
 	}).sort({lastUpdated: -1}).skip(offset).limit(limit);
 }
 
-export async function getNotification(pid: string, type: string, reference_id: number): Promise<HydratedNotificationDocument | null> {
+export async function getNotification(pid: number, type: string, reference_id: number): Promise<HydratedNotificationDocument | null> {
 	verifyConnected();
 
 	return NOTIFICATION.findOne({

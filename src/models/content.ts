@@ -29,25 +29,25 @@ ContentSchema.method<HydratedContentDocument>('removeFromCommunities', async fun
 	await this.save();
 });
 
-ContentSchema.method<HydratedContentDocument>('addToUsers', async function(postID: string): Promise<void> {
+ContentSchema.method<HydratedContentDocument>('addToUsers', async function(postID: number): Promise<void> {
 	const users = this.get('followed_users');
 	users.addToSet(postID);
 	await this.save();
 });
 
-ContentSchema.method<HydratedContentDocument>('removeFromUsers', async function(postID: string): Promise<void> {
+ContentSchema.method<HydratedContentDocument>('removeFromUsers', async function(postID: number): Promise<void> {
 	const users = this.get('followed_users');
 	users.pull(postID);
 	await this.save();
 });
 
-ContentSchema.method<HydratedContentDocument>('addToFollowers', async function(postID: string): Promise<void> {
+ContentSchema.method<HydratedContentDocument>('addToFollowers', async function(postID: number): Promise<void> {
 	const users = this.get('following_users');
 	users.addToSet(postID);
 	await this.save();
 });
 
-ContentSchema.method<HydratedContentDocument>('removeFromFollowers', async function(postID: string): Promise<void> {
+ContentSchema.method<HydratedContentDocument>('removeFromFollowers', async function(postID: number): Promise<void> {
 	const users = this.get('following_users');
 	users.pull(postID);
 	await this.save();

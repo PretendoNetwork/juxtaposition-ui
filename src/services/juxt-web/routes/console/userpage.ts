@@ -1,13 +1,17 @@
-const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
-const multer  = require('multer');
-const moment = require('moment');
+import express from 'express';
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
+import multer from 'multer';
+import moment from 'moment';
+import { POST } from '../../../../models/post';
+import { SETTINGS } from '../../../../models/settings';
+import redis from '../../../../redisCache';
+import { Request, Response } from 'express';
+import { IPost } from '@/types/mongoose/post';
+import { HydratedSettingsDocument } from '@/types/mongoose/settings';
+
 const upload = multer({ dest: 'uploads/' });
-const { POST } = require('../../../../models/post');
-const {SETTINGS} = require('../../../../models/settings');
-const redis = require('../../../../redisCache');
 const router = express.Router();
 
 router.get('/menu', async function (req, res) {
@@ -18,12 +22,23 @@ router.get('/menu', async function (req, res) {
 });
 
 router.get('/me', async function (req, res) {
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	await userPage(req, res, req.pid);
 });
 
 router.get('/notifications.json', async function (req, res) {
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	const notifications = await database.getUnreadNotificationCount(req.pid);
 	const messagesCount = await database.getUnreadConversationCount(req.pid);
+
 	res.send(
 		{
 			message_count: messagesCount,
@@ -67,7 +82,13 @@ router.get('/me/:type', async function (req, res) {
 });
 
 router.post('/me/settings', upload.none(), async function (req, res) {
+
 	const userSettings = await database.getUserSettings(req.pid);
+
+	if (!userSettings) {
+		res.status(400).send('No user settings found');
+		return;
+	}
 
 	userSettings.country_visibility = !!req.body.country;
 	userSettings.birthday_visibility = !!req.body.birthday;
@@ -88,37 +109,50 @@ router.get('/show', async function (req, res) {
 });
 
 router.get('/:pid/more', async function (req, res) {
-	await morePosts(req, res, req.params.pid); 
-});
-
-router.get('/:pid/yeahs/more', async function (req, res) {
-	await moreYeahPosts(req, res, req.params.pid); 
+	await morePosts(req, res, parseInt(req.params.pid));
 });
 
 router.get('/:pid/:type', async function (req, res) {
-	await userRelations(req, res, req.params.pid); 
+	await userRelations(req, res, parseInt(req.params.pid));
 });
 
 // TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
+
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
+	if (!req.body.id) {
+		res.status(400).send('Invalid request body');
+		return;
+	}
+
 	const userToFollowContent = await database.getUserContent(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
-	if (userContent !== null && userContent.followed_users.indexOf(userToFollowContent.pid) === -1) {
-		userToFollowContent.addToFollowers(userContent.pid);
-		userContent.addToUsers(userToFollowContent.pid);
-		res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
-		const picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
-		//pid, type, reference_id, origin_pid, title, content
-		if (picked === null) {
-			await util.newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
+
+	if (userContent && userToFollowContent) {
+
+		if (userContent.followed_users.indexOf(userToFollowContent.pid) === -1) {
+			userToFollowContent.addToFollowers(userContent.pid);
+			userContent.addToUsers(userToFollowContent.pid);
+			res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
+			const picked = await database.getNotification(userToFollowContent.pid, '2', userContent.pid);
+			//pid, type, reference_id, origin_pid, title, content
+			if (picked === null) {
+				await util.newNotification({ pid: userToFollowContent.pid.toString(), type: 'follow', objectID: req.pid?.toString(), link: `/users/${req.pid}` });
+			}
+			return;
+		} else {
+			userToFollowContent.removeFromFollowers(userContent.pid);
+			userContent.removeFromUsers(userToFollowContent.pid);
+			res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
+			return;
 		}
-	} else if (userContent !== null  && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1) {
-		userToFollowContent.removeFromFollowers(userContent.pid);
-		userContent.removeFromUsers(userToFollowContent.pid);
-		res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
-	} else {
-		res.send({ status: 423, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
 	}
+
+	res.send({ status: 423, id: userToFollowContent?.pid, count: (userToFollowContent?.following_users.length ?? 0) - 1 });
 });
 
 router.get('/:pid', async function (req, res) {
@@ -126,7 +160,8 @@ router.get('/:pid', async function (req, res) {
 	if (userID === 'me' || Number(userID) === req.pid) {
 		return res.redirect('/users/me');
 	}
-	await userPage(req, res, userID);
+
+	await userPage(req, res, parseInt(userID));
 });
 
 router.get('/:pid/:type', async function (req, res) {
@@ -134,10 +169,10 @@ router.get('/:pid/:type', async function (req, res) {
 	if (userID === 'me' || Number(userID) === req.pid) {
 		return res.redirect('/users/me');
 	}
-	await userRelations(req, res, userID);
+	await userRelations(req, res, parseInt(userID));
 });
 
-async function userPage(req, res, userID) {
+async function userPage(req: Request, res: Response, userID: number): Promise<void> {
 	if (!userID || isNaN(userID)) {
 		return res.redirect('/404');
 	}
@@ -150,16 +185,18 @@ async function userPage(req, res, userID) {
 	}
 
 	const userSettings = await database.getUserSettings(userID);
-	let posts = JSON.parse(await redis.getValue(`${userID}-user_page_posts`));
-	if (!posts) {
+	const cachedPosts = await redis.getValue(`${userID}-user_page_posts`);
+	let posts: IPost[];
+	if (cachedPosts) {
+		posts = JSON.parse(cachedPosts);
+	} else {
 		posts = await database.getNumberUserPostsByID(userID, config.post_limit);
 		await redis.setValue(`${userID}_user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
 	}
 
-
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
-	let friends = [];
+	let friends: number[] = [];
 	try {
 		friends = await util.getFriends(userID);
 	} catch (e) {}
@@ -209,13 +246,29 @@ async function userPage(req, res, userID) {
 	});
 }
 
-async function userRelations(req, res, userID) {
+async function userRelations(req: Request, res: Response, userID: number | null): Promise<void> {
+	if (!userID) {
+		res.redirect('/404');
+		return;
+	}
+
 	const pnid = userID === req.pid ? req.user : await util.getUserDataFromPid(userID);
+	if (!pnid) {
+		res.redirect('/404');
+		return;
+	}
+
 	const userContent = await database.getUserContent(userID);
+	if (!userContent) {
+		res.redirect('/404');
+		return;
+	}
+
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
 	const userSettings = await database.getUserSettings(userID);
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const friends = await util.getFriends(userID);
+
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
 		parentUserContent = await database.getUserContent(req.pid);
@@ -224,20 +277,10 @@ async function userRelations(req, res, userID) {
 		return res.redirect('/404');
 	}
 
-	let followers; let communities; let communityMap; let selection;
+	const communityMap = util.getCommunityHash();
 
 	if (req.params.type === 'yeahs') {
 		const posts = await POST.find({ yeahs: req.pid, removed: false }).sort({created_at: -1});
-		/*let posts = await POST.aggregate([
-            { $match: { id: { $in: likesArray } } },
-            {$addFields: {
-                    "__order": { $indexOfArray: [ likesArray, "$id" ] }
-                }},
-            { $sort: { "__order": 1 } },
-            { $project: { index: 0, _id: 0 } },
-            { $limit: config.post_limit }
-        ]);*/
-		const communityMap = await util.getCommunityHash();
 		const bundle = {
 			posts,
 			open: true,
@@ -278,6 +321,9 @@ async function userRelations(req, res, userID) {
 		}
 	}
 
+	let followers: HydratedSettingsDocument[];
+	let communities: string[];
+	let selection: number;
 	if (req.params.type === 'friends') {
 		followers = await SETTINGS.find({ pid: friends });
 		communities = [];
@@ -289,13 +335,9 @@ async function userRelations(req, res, userID) {
 	} else {
 		followers = await database.getFollowedUsers(userContent);
 		communities = userContent.followed_communities;
-		communityMap = await util.getCommunityHash();
 		selection = 2;
 	}
 
-	if (followers[0] === '0') {
-		followers.splice(0, 0);
-	}
 	if (communities[0] === '0') {
 		communities.splice(0, 1);
 	}
@@ -331,13 +373,16 @@ async function userRelations(req, res, userID) {
 	});
 }
 
-async function morePosts(req, res, userID) {
-	let offset = parseInt(req.query.offset);
-	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
-	if (!offset) {
-		offset = 0;
+async function morePosts(req: Request, res: Response, userID: number): Promise<void> {
+
+	let offset: number | undefined = undefined;
+	if (typeof req.query.offset === 'string') {
+		offset = parseInt(req.query.offset);
 	}
+
+	const userContent = await database.getUserContent(req.pid);
+	const communityMap = util.getCommunityHash();
+
 	const posts = await database.getUserPostsOffset(userID, config.post_limit, offset);
 
 	const bundle = {
@@ -348,7 +393,7 @@ async function morePosts(req, res, userID) {
 		userContent,
 		lang: req.lang,
 		mii_image_CDN: config.mii_image_CDN,
-		link: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`
+		link: `/users/${userID}/more?offset=${(offset ?? 0) + posts.length}&pjax=true`
 	};
 
 	if (posts.length > 0) {
@@ -369,51 +414,4 @@ async function morePosts(req, res, userID) {
 	}
 }
 
-async function moreYeahPosts(req, res, userID) {
-	let offset = parseInt(req.query.offset);
-	const userContent = await database.getUserContent(req.pid);
-	const communityMap = await util.getCommunityHash();
-	if (!offset) {
-		offset = 0;
-	}
-	const likesArray = await userContent.likes.slice().reverse();
-	const posts = await POST.aggregate([
-		{ $match: { id: { $in: likesArray }, removed: false } },
-		{$addFields: {
-			'__order': { $indexOfArray: [ likesArray, '$id' ] }
-		}},
-		{ $sort: { '__order': 1 } },
-		{ $project: { index: 0, _id: 0 } },
-		{ $skip : offset },
-		{ $limit: config.post_limit }
-	]);
-
-	const bundle = {
-		posts: posts.reverse(),
-		numPosts: posts.length,
-		open: true,
-		communityMap,
-		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		link: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`
-	};
-
-	if (posts.length > 0) {
-		res.render(req.directory + '/partials/posts_list.ejs', {
-			communityMap: communityMap,
-			moment: moment,
-			database: database,
-			bundle,
-			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
-			pid: req.pid,
-			moderator: req.moderator
-		});
-	} else {
-		res.sendStatus(204);
-	}
-}
-module.exports = router;
+export default router;
