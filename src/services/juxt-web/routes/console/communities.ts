@@ -1,20 +1,34 @@
-const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
-const multer = require('multer');
-const moment = require('moment');
+import express from 'express';
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
+import multer from 'multer';
+import moment from 'moment';
+import { POST } from '../../../../models/post';
+import { COMMUNITY } from '../../../../models/communities';
+import redis from '../../../../redisCache';
+import { HydratedCommunityDocument, ICommunity } from '@/types/mongoose/communities';
+import { HydratedPostDocument } from '@/types/mongoose/post';
+
 const upload = multer({dest: 'uploads/'});
 const router = express.Router();
-const { POST } = require('../../../../models/post');
-const { COMMUNITY } = require('../../../../models/communities');
-const redis = require('../../../../redisCache');
 
 router.get('/', async function (req, res) {
-	const newCommunities = JSON.parse(await redis.getValue('newCommunities')) || await database.getNewCommunities(6);
-	let popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
 
-	if (!popularCommunities) {
+	let newCommunities: HydratedCommunityDocument[];
+	const cachedNewCommunities = await redis.getValue('newCommunities');
+	if (cachedNewCommunities) {
+		newCommunities = JSON.parse(cachedNewCommunities);
+	} else {
+		newCommunities = await database.getNewCommunities(6);
+		redis.setValue('newCommunities', JSON.stringify(newCommunities), 60 * 60);
+	}
+
+	let popularCommunities: HydratedCommunityDocument[];
+	const cachedPopularCommunities = await redis.getValue('popularCommunities');
+	if (cachedPopularCommunities) {
+		popularCommunities = JSON.parse(cachedPopularCommunities);
+	} else {
 		const last24Hours = await calculateMostPopularCommunities();
 		popularCommunities = await COMMUNITY.aggregate([
 			{ $match: { olive_community_id: { $in: last24Hours }, parent: null } },
@@ -26,7 +40,6 @@ router.get('/', async function (req, res) {
 			{ $project: { index: 0, _id: 0 } }
 		]);
 		redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
-		redis.setValue('newCommunities', JSON.stringify(newCommunities), 60 * 60);
 	}
 
 	res.render(req.directory + '/communities.ejs', {
@@ -54,7 +67,7 @@ router.get('/all', async function (req, res) {
 });
 
 router.get('/:communityID', async function (req, res) {
-	if (req.query.title_id) {
+	if (typeof req.query.title_id === 'string') {
 		const community = await database.getCommunityByTitleID(req.query.title_id);
 		if (!community) {
 			return res.redirect('/404');
@@ -107,19 +120,22 @@ router.get('/:communityID/:type', async function (req, res) {
 
 	if (!community.permissions) {
 		community.permissions = {
-			open: community.open,
+			open: false,
 			minimum_new_post_access_level: 0,
 			minimum_new_comment_access_level: 0,
 			minimum_new_community_access_level: 0
 		};
 		await community.save();
 	}
-	const communityMap = await util.getCommunityHash();
-	let children = await database.getSubCommunities(community.olive_community_id);
-	if (children.length === 0) {
+	const communityMap = util.getCommunityHash();
+
+	let children: HydratedCommunityDocument[] | null = await database.getSubCommunities(community.olive_community_id);
+	if (children?.length === 0) {
 		children = null;
 	}
-	let posts; let type;
+
+	let posts: HydratedPostDocument[];
+	let type: number;
 
 	if (req.params.type === 'hot') {
 		posts = await database.getNumberPopularCommunityPostsByID(community, config.post_limit);
@@ -176,7 +192,12 @@ router.get('/:communityID/:type', async function (req, res) {
 });
 
 router.get('/:communityID/:type/more', async function (req, res) {
-	let offset = parseInt(req.query.offset);
+
+	let offset: number | undefined;
+	if (typeof req.query.offset === 'string') {
+		offset = parseInt(req.query.offset);
+	}
+
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
 	let posts;
@@ -229,48 +250,57 @@ router.get('/:communityID/:type/more', async function (req, res) {
 });
 
 router.post('/follow', upload.none(), async function (req, res) {
+
 	const community = await database.getCommunityByID(req.body.id);
 	const userContent = await database.getUserContent(req.pid);
-	const popularCommunities = JSON.parse(await redis.getValue('popularCommunities'));
-	let updated = false;
 
-	if (userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) === -1) {
-		community.upFollower();
-		userContent.addToCommunities(community.olive_community_id);
-		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
-		updated = true;
-	} else if (userContent !== null  && userContent.followed_communities.indexOf(community.olive_community_id) !== -1) {
-		community.downFollower();
-		userContent.removeFromCommunities(community.olive_community_id);
-		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
-		updated = true;
-	} else {
-		res.send({ status: 423, id: community.olive_community_id, count: community.followers });
+	let popularCommunities: ICommunity[] | undefined = undefined;
+	const cachedPopularCommunities = await redis.getValue('popularCommunities');
+	if (cachedPopularCommunities) {
+		popularCommunities = JSON.parse(cachedPopularCommunities);
 	}
 
-	if (popularCommunities && updated) {
-		const index = popularCommunities.findIndex((element) => element.olive_community_id === community.olive_community_id);
-		if (index !== -1) {
-			popularCommunities[index].followers = community.followers;
-			redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+	if (userContent && community) {
+
+		if (userContent.followed_communities.indexOf(community.olive_community_id) === -1) {
+			community.upFollower();
+			userContent.addToCommunities(community.olive_community_id);
+			res.send({ status: 200, id: community.olive_community_id, count: community.followers });
+		} else {
+			community.downFollower();
+			userContent.removeFromCommunities(community.olive_community_id);
+			res.send({ status: 200, id: community.olive_community_id, count: community.followers });
 		}
+
+		if (popularCommunities) {
+			const index = popularCommunities.findIndex(element => element.olive_community_id === community.olive_community_id);
+			if (index !== -1) {
+				popularCommunities[index].followers = community.followers;
+				redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
+			}
+		}
+
+		return;
 	}
+
+	res.send({ status: 423, id: community?.olive_community_id, count: community?.followers});
 });
 
-async function calculateMostPopularCommunities() {
+async function calculateMostPopularCommunities(): Promise<string[]> {
 	const now = new Date();
 	const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
 	const posts = await POST.find({ created_at: { $gte: last24Hours },  message_to_pid: null }).lean();
 
-	const communityIds = {};
+	const communityIds: Record<string, number> = {};
 	for (const post of posts) {
 		const communityId = post.community_id;
 		communityIds[communityId] = (communityIds[communityId] || 0) + 1;
 	}
+
 	return Object.entries(communityIds)
 		.sort((a, b) => b[1] - a[1])
 		.map((entry) => entry[0]);
 }
 
-module.exports = router;
+export default router;

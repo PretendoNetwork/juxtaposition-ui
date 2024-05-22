@@ -22,10 +22,9 @@ export async function setValue(key: string, value: string, expireTime: number): 
 	return true;
 }
 
-// TODO once call sites are TS, make this neater
-export async function getValue(key: string): Promise<string | null | false> {
+export async function getValue(key: string): Promise<string | null> {
 	if (!redisClient.isOpen) {
-		return false;
+		return null;
 	}
 
 	const result = await redisClient.get(key);
@@ -40,3 +39,9 @@ export async function removeValue(key: string): Promise<boolean> {
 	await redisClient.del(key);
 	return true;
 }
+
+export default {
+	setValue,
+	getValue,
+	removeValue
+};

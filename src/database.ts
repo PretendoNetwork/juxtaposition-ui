@@ -192,25 +192,37 @@ export async function getNumberNewCommunityPostsByID(community: ICommunity, numb
 	}).sort({ created_at: -1}).limit(number);
 }
 
-export async function getNumberPopularCommunityPostsByID(community: ICommunity, limit: number, offset: number): Promise<HydratedPostDocument[]> {
+export async function getNumberPopularCommunityPostsByID(community: ICommunity, limit?: number, offset?: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
+	const options = {
+		limit,
+		offset,
+		sort: { empath_count: -1 }
+	};
 
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
 		removed: false
-	}).sort({ empathy_count: -1}).skip(offset).limit(limit);
+	}, {}, options);
 }
 
-export async function getNumberVerifiedCommunityPostsByID(community: ICommunity, limit: number, offset: number): Promise<HydratedPostDocument[]> {
+export async function getNumberVerifiedCommunityPostsByID(community: ICommunity, limit?: number, offset?: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
+	const options = {
+		limit,
+		offset,
+		sort: { created_at: -1 }
+	};
 
 	return POST.find({
 		community_id: community.olive_community_id,
 		verified: true,
 		parent: null,
 		removed: false
-	}).sort({ created_at: -1}).skip(offset).limit(limit);
+	}, {}, options);
 }
 
 export async function getPostsByCommunity(community: ICommunity, numberOfPosts: number): Promise<HydratedPostDocument[]> {
@@ -234,14 +246,20 @@ export async function getPostsByCommunityKey(community: ICommunity, numberOfPost
 	}).limit(numberOfPosts);
 }
 
-export async function getNewPostsByCommunity(community: ICommunity, limit: number, offset: number): Promise<HydratedPostDocument[]> {
+export async function getNewPostsByCommunity(community: ICommunity, limit?: number, offset?: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
+
+	const options = {
+		limit,
+		offset,
+		sort: { created_at: -1 }
+	};
 
 	return POST.find({
 		community_id: community.olive_community_id,
 		parent: null,
 		removed: false
-	}).sort({ created_at: -1 }).skip(offset).limit(limit);
+	}, {}, options);
 }
 
 export async function getAllUserPosts(pid: number): Promise<HydratedPostDocument[]> {

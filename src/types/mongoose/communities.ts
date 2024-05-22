@@ -35,6 +35,7 @@ export interface ICommunity {
 	is_recommended: number;
 	app_data: string;
 	permissions: IPermissions;
+	children?: HydratedCommunityDocument[];
 }
 
 export interface ICommunityMethods {
