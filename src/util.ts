@@ -104,20 +104,19 @@ async function create_user(pid: number, experience: number, notifications: boole
 	setName(pid, pnid.mii?.name);
 }
 
-function decodeParamPack(paramPack: string | undefined): ParamPack | null {
-	if (!paramPack) {
-		return null;
-	}
-	/*  Decode base64 */
-	const decoded = Buffer.from(paramPack, 'base64').toString('ascii');
-	/*  Remove starting and ending '/', split into array */
-	const parts = decoded.slice(1, -1).split('\\');
-	/*  Parameters are in the format [name, val, name, val]. Copy into out{}. */
-	const out: { [key: string]: string } = {};
-	for (let i = 0; i < parts.length; i += 2) {
-		out[parts[i].trim()] = parts[i + 1].trim();
-	}
-	return out as unknown as ParamPack;
+export function decodeParamPack(paramPack: string): ParamPack {
+	const values = Buffer.from(paramPack, 'base64').toString().split('\\');
+	const entries = values.filter(value => value).reduce((entries: string[][], value: string, index: number) => {
+		if (0 === index % 2) {
+			entries.push([value]);
+		} else {
+			entries[Math.ceil(index / 2 - 1)].push(value);
+		}
+
+		return entries;
+	}, []);
+
+	return Object.fromEntries(entries);
 }
 
 function processServiceToken(encryptedToken: string | undefined): number | null {
@@ -178,7 +177,12 @@ function unpackToken(token: Buffer): Token {
 	};
 }
 
-function processPainting(painting: string, isTGA: boolean): string | null {
+function processPainting(painting: string | null, isTGA: boolean): string | null {
+
+	if (painting === null) {
+		return null;
+	}
+
 	if (isTGA) {
 		const paintingBuffer = Buffer.from(painting, 'base64');
 		let output: Uint8Array;

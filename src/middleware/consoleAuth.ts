@@ -16,7 +16,8 @@ export async function auth(request: Request, response: Response, next: NextFunct
 	}
 
 	// Set headers
-	request.paramPackData = request.get('x-nintendo-parampack') ? util.decodeParamPack(request.get('x-nintendo-parampack')) : null;
+	const encodedParamPack = request.get('x-nintendo-parampack');
+	request.paramPackData = encodedParamPack ? util.decodeParamPack(encodedParamPack) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
 	if (!request.user) {

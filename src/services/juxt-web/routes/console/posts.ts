@@ -1,15 +1,18 @@
-const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
-const {POST} = require('../../../../models/post');
-const multer = require('multer');
-const moment = require('moment');
-const rateLimit = require('express-rate-limit');
-const {REPORT} = require('../../../../models/report');
+import express from 'express';
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
+import { POST } from '../../../../models/post';
+import multer from 'multer';
+import moment from 'moment';
+import rateLimit from 'express-rate-limit';
+import { REPORT } from '../../../../models/report';
+import crypto from 'crypto';
+import redis from '../../../../redisCache';
+import { Request, Response } from 'express';
+import { IPost } from '@/types/mongoose/post';
+
 const upload = multer({dest: 'uploads/'});
-const crypto = require('crypto');
-const redis = require('../../../../redisCache');
 const router = express.Router();
 
 const postLimit = rateLimit({
@@ -43,19 +46,36 @@ const yeahLimit = rateLimit({
 });
 
 router.get('/:post_id/oembed.json', async function (req, res) {
+
 	const post = await database.getPostByID(req.params.post_id.toString());
+
+	if (!post) {
+		res.sendStatus(404);
+		return;
+	}
+
 	const doc = {
 		'author_name': post.screen_name,
 		'author_url': 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
 	};
+
 	res.send(doc);
 });
 
 router.post('/empathy', yeahLimit, async function (req, res) {
+
 	const post = await database.getPostByID(req.body.postID);
+
 	if (!post) {
-		return res.sendStatus(404);
+		res.sendStatus(404);
+		return;
 	}
+
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	if (post.yeahs.indexOf(req.pid) === -1) {
 		await POST.updateOne({
 			id: post.id,
@@ -74,10 +94,9 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 		res.send({status: 200, id: post.id, count: post.empathy_count + 1});
 		if (req.pid !== post.pid) {
 			await util.newNotification({
-				pid: post.pid,
+				pid: post.pid.toString(),
 				type: 'yeah',
 				objectID: post.id,
-				userPID: req.pid,
 				link: `/posts/${post.id}`
 			});
 		}
@@ -122,7 +141,7 @@ router.get('/:post_id', async function (req, res) {
 		return res.redirect(`/posts/${post.id}`);
 	}
 	const community = await database.getCommunityByID(post.community_id);
-	const communityMap = await util.getCommunityHash();
+	const communityMap = util.getCommunityHash();
 	const replies = await database.getPostReplies(req.params.post_id.toString(), 25);
 	const postPNID = await util.getUserDataFromPid(post.pid);
 	res.render(req.directory + '/post.ejs', {
@@ -144,15 +163,28 @@ router.get('/:post_id', async function (req, res) {
 });
 
 router.delete('/:post_id', async function (req, res) {
+
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	const post = await database.getPostByID(req.params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
 	}
+
 	if (req.pid !== post.pid && !req.moderator) {
 		return res.sendStatus(401);
 	}
+
 	if (req.moderator && req.pid !== post.pid) {
-		await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
+
+		let reason: string = 'Removed by moderator';
+		if (req.query.reason && typeof req.query.reason === 'string') {
+			reason = req.query.reason;
+		}
+		await post.removePost(reason, req.pid);
 	} else {
 		await post.removePost('User requested removal', req.pid);
 	}
@@ -171,6 +203,12 @@ router.post('/:post_id/new', postLimit, upload.none(), async function (req, res)
 });
 
 router.post('/:post_id/report', upload.none(), async function (req, res) {
+
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	const { reason, message, post_id } = req.body;
 	const post = await database.getPostByID(post_id);
 	if (!reason || !post_id || !post) {
@@ -197,7 +235,13 @@ router.post('/:post_id/report', upload.none(), async function (req, res) {
 	return res.redirect(`/posts/${post.id}`);
 });
 
-async function newPost(req, res) {
+async function newPost(req: Request, res: Response): Promise<void> {
+
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+
 	const userSettings = await database.getUserSettings(req.pid); let parentPost = null; const postID = await generatePostUID(21);
 	const community = await database.getCommunityByID(req.body.community_id);
 	if (!community || !userSettings || !req.user) {
@@ -212,24 +256,29 @@ async function newPost(req, res) {
 	if (req.params.post_id) {
 		parentPost = await database.getPostByID(req.params.post_id.toString());
 		if (!parentPost) {
-			return res.sendStatus(403);
+			res.sendStatus(403);
+			return;
 		}
 	}
-	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0) && req.user.access_level >= community.permissions.minimum_new_post_access_level
-        && (community.type >= 2) && !(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
+	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0) && req.user.accessLevel >= community.permissions.minimum_new_post_access_level
+        && (community.type >= 2) && !(parentPost && req.user.accessLevel >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
 		res.status(403);
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let painting = ''; let paintingURI = ''; let screenshot = null;
+	let painting: string | null = '';
+	let paintingURI: string | null = '';
+	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		if (req.body.bmp === 'true') {
-			painting = await util.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
+			painting = util.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
 		} else {
 			painting = req.body.painting;
 		}
-		paintingURI = await util.processPainting(painting, true);
-		await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
+		paintingURI = util.processPainting(painting, true);
+		if (paintingURI) {
+			await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, Buffer.from(paintingURI, 'base64'), 'public-read');
+		}
 	}
 	if (req.body.screenshot) {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
@@ -257,24 +306,38 @@ async function newPost(req, res) {
 			miiFace = 'normal_face.png';
 			break;
 	}
+
 	const body = req.body.body;
-	if (body && util.INVALID_POST_BODY_REGEX.test(body)) {
+	if (typeof body !== 'string' || util.INVALID_POST_BODY_REGEX.test(body)) {
 		// TODO - Log this error
-		return res.sendStatus(422);
+		res.sendStatus(422);
+		return;
 	}
 
 	if (body && body.length > 280) {
 		// TODO - Log this error
-		return res.sendStatus(422);
+		res.sendStatus(422);
+		return;
 	}
-	const document = {
+
+	if (screenshot) {
+		screenshot = `/screenshots/${req.pid}/${postID}.jpg`;
+	} else {
+		screenshot = '';
+	}
+
+	if (!painting) {
+		painting = '';
+	}
+
+	const document: Partial<IPost> = {
 		title_id: community.title_id[0],
 		community_id: community.olive_community_id,
 		screen_name: userSettings.screen_name,
-		body: body,
-		painting: painting,
-		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
-		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
+		body,
+		painting,
+		screenshot,
+		country_id: req.paramPackData ? parseInt(req.paramPackData.country_id) : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
 		id: postID,
@@ -282,16 +345,15 @@ async function newPost(req, res) {
 		is_spoiler: (req.body.spoiler) ? 1 : 0,
 		is_app_jumpable: req.body.is_app_jumpable,
 		language_id: req.body.language_id,
-		mii: req.user.mii.data,
+		mii: req.user.mii?.data ?? '',
 		mii_face_url: `https://mii.olv.pretendo.cc/mii/${req.user.pid}/${miiFace}`,
 		pid: req.pid,
-		platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
-		region_id: req.paramPackData ? req.paramPackData.region_id : 2,
+		platform_id: req.paramPackData ? parseInt(req.paramPackData.platform_id) : 0,
+		region_id: req.paramPackData ? parseInt(req.paramPackData.region_id) : 2,
 		verified: req.moderator,
 		parent: parentPost ? parentPost.id : null,
-		moderator: req.moderator
 	};
-	const duplicatePost = await database.getDuplicatePosts(req.pid, document);
+	const duplicatePost = await database.getDuplicatePosts(req.pid, body, painting, screenshot);
 	if (duplicatePost && req.params.post_id) {
 		return res.redirect('/posts/' + req.params.post_id.toString());
 	}
@@ -306,9 +368,9 @@ async function newPost(req, res) {
 	}
 	if (parentPost && (parentPost.pid !== req.user.pid)) {
 		await util.newNotification({
-			pid: parentPost.pid,
+			pid: parentPost.pid.toString(),
 			type: 'reply',
-			user: req.pid,
+			objectID: req.pid.toString(),
 			link: `/posts/${parentPost.id}`
 		});
 	}
@@ -321,12 +383,12 @@ async function newPost(req, res) {
 	}
 }
 
-async function generatePostUID(length) {
+async function generatePostUID(length: number): Promise<string> {
 	let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, '').substring(0, length);
 	const inuse = await POST.findOne({id});
-	id = (inuse ? await generatePostUID() : id);
+	id = (inuse ? await generatePostUID(length) : id);
 	return id;
 }
 
 
-module.exports = router;
+export default router;

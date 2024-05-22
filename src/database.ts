@@ -117,7 +117,7 @@ export async function getPostsByUserID(userID: number): Promise<HydratedPostDocu
 	});
 }
 
-export async function getPostReplies(postID: number, number: number): Promise<HydratedPostDocument[]> {
+export async function getPostReplies(postID: string, number: number): Promise<HydratedPostDocument[]> {
 	verifyConnected();
 
 	return POST.find({
@@ -126,14 +126,14 @@ export async function getPostReplies(postID: number, number: number): Promise<Hy
 	}).limit(number);
 }
 
-export async function getDuplicatePosts(pid: number, post: IPost): Promise<HydratedPostDocument | null> {
+export async function getDuplicatePosts(pid: number, body: string, painting: string, screenshot: string): Promise<HydratedPostDocument | null> {
 	verifyConnected();
 
 	return POST.findOne({
 		pid: pid,
-		body: post.body,
-		painting: post.painting,
-		screenshot: post.screenshot,
+		body: body,
+		painting: painting,
+		screenshot: screenshot,
 		parent: null,
 		removed: false
 	});
@@ -643,5 +643,6 @@ export default {
 	getReportsByUser,
 	getReportsByPost,
 	getReportById,
-	getUserSettingsFuzzySearch
+	getUserSettingsFuzzySearch,
+	getDuplicateReports
 };
