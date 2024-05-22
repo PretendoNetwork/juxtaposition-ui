@@ -126,10 +126,6 @@ router.post('/accounts/:pid', async (req, res) => {
 });
 
 router.delete('/:reportID', async function (req, res) {
-	if (!req.moderator || !req.pid) {
-		return res.sendStatus(401);
-	}
-
 	const reportID = parseInt(req.params.reportID);
 	const report = await database.getReportById(reportID);
 	if (!report) {
@@ -152,7 +148,7 @@ router.delete('/:reportID', async function (req, res) {
 });
 
 router.put('/:reportID', async function (req, res) {
-	if (!req.moderator || !req.pid) {
+	if (!req.moderator) {
 		return res.sendStatus(401);
 	}
 

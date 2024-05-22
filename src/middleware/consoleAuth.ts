@@ -1,18 +1,23 @@
+import { User } from '@/types/common/user';
 import config from '../../config.json';
 import util from '../util';
 import { Request, Response, NextFunction } from 'express';
 
 export async function auth(request: Request, response: Response, next: NextFunction): Promise<void> {
+
+	let pid: number | null;
+	let user: User | null;
+
 	// Get pid and fetch user data
 	if (request.session && request.session.user && request.session.pid && !request.isWrite) {
-		request.user = request.session.user;
-		request.pid = request.session.pid;
+		user = request.session.user;
+		pid = request.session.pid;
 	} else {
-		request.pid = request.get('x-nintendo-servicetoken') ? await util.processServiceToken(request.get('x-nintendo-servicetoken')) : null;
-		request.user = request.pid ? await util.getUserDataFromPid(request.pid) : null;
+		pid = request.get('x-nintendo-servicetoken') ? await util.processServiceToken(request.get('x-nintendo-servicetoken')) : null;
+		user = pid ? await util.getUserDataFromPid(pid) : null;
 
-		request.session.user = request.user;
-		request.session.pid = request.pid;
+		request.session.user = user;
+		request.session.pid = pid;
 	}
 
 	// Set headers
@@ -20,34 +25,38 @@ export async function auth(request: Request, response: Response, next: NextFunct
 	request.paramPackData = encodedParamPack ? util.decodeParamPack(encodedParamPack) : null;
 	response.header('X-Nintendo-WhiteList', config.whitelist);
 
-	if (!request.user) {
+	if (!user) {
 		try {
 			request.user = await util.getUserDataFromToken(request.cookies.access_token);
 			request.pid = request.user.pid;
 			if (request.user.accessLevel !== 3) {
-				request.user = null;
-				request.pid = null;
+				user = null;
+				pid = null;
 			}
 		} catch (e) {
 			console.log(e);
-			request.user = null;
-			request.pid = null;
+			user = null;
+			pid = null;
 		}
 	}
 
 	// This section includes checks if a user is a developer and adds exceptions for these cases
-	if (!request.pid) {
+	if (!pid) {
 		return response.render('portal/partials/ban_notification.ejs', {
 			user: null,
 			error: 'Unable to parse service token. Are you using a Nintendo Network ID?'
 		});
 	}
-	if (!request.user) {
+	request.pid = pid;
+
+	if (!user) {
 		return response.render('portal/partials/ban_notification.ejs', {
 			user: null,
 			error: 'Unable to fetch user data. Please try again later.'
 		});
 	}
+	request.user = user;
+
 	if (request.user.accessLevel < 3 && !request.paramPackData) {
 		return response.render('portal/partials/ban_notification.ejs', {
 			user: null,

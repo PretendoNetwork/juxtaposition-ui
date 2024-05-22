@@ -12,10 +12,6 @@ import { Snowflake as snowflake } from 'node-snowflake';
 const router = express.Router();
 
 router.get('/', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
 	const conversations = await database.getConversations(req.pid);
 	const usersMap = await util.getUserHash();
 	res.render(req.directory + '/messages.ejs', {
@@ -31,10 +27,6 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/new', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await util.getUserDataFromPid(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
@@ -175,10 +167,6 @@ router.post('/new', async function (req, res) {
 });
 
 router.get('/new/:pid', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
 	const user2 = await util.getUserDataFromPid(parseInt(req.params.pid));
 	const friends = await util.getFriends(user2.pid);
 	if (!req.user || !user2) {
@@ -233,10 +221,6 @@ router.get('/new/:pid', async function (req, res) {
 });
 
 router.get('/:message_id', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
 	const conversation = await database.getConversationByID(req.params.message_id);
 	if (!conversation) {
 		return res.sendStatus(404);

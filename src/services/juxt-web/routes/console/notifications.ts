@@ -6,11 +6,6 @@ import moment from 'moment';
 const router = express.Router();
 
 router.get('/my_news', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
-
 	const notifications = await database.getNotifications(req.pid, 25, 0);
 	const userMap = util.getUserHash();
 	const bundle = {
@@ -42,11 +37,6 @@ router.get('/my_news', async function (req, res) {
 });
 
 router.get('/friend_requests', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
-
 	let requests = (await util.getFriendRequests(req.pid)).reverse();
 	const now = new Date();
 	requests = requests.filter(request => new Date(Number(request.expires) * 1000) > new Date(now.getTime() - 29 * 24 * 60 * 60 * 1000));

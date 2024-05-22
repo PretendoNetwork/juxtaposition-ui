@@ -366,21 +366,13 @@ export async function getUserSettingsFuzzySearch(search_key: string, numberOfUse
 	return SETTINGS.find(FuzzySearch(['screen_name'], search_key), {}, options);
 }
 
-export async function getUserSettings(pid: number | null): Promise<HydratedSettingsDocument | null> {
-	if (!pid) {
-		return null;
-	}
-
+export async function getUserSettings(pid: number): Promise<HydratedSettingsDocument | null> {
 	verifyConnected();
 
 	return SETTINGS.findOne({pid: pid});
 }
 
-export async function getUserContent(pid: number | null): Promise<HydratedContentDocument | null> {
-	if (!pid) {
-		return null;
-	}
-
+export async function getUserContent(pid: number): Promise<HydratedContentDocument | null> {
 	verifyConnected();
 
 	return CONTENT.findOne({pid: pid});

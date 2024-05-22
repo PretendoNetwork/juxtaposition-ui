@@ -71,11 +71,6 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 		return;
 	}
 
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
-
 	if (post.yeahs.indexOf(req.pid) === -1) {
 		await POST.updateOne({
 			id: post.id,
@@ -164,11 +159,6 @@ router.get('/:post_id', async function (req, res) {
 
 router.delete('/:post_id', async function (req, res) {
 
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
-
 	const post = await database.getPostByID(req.params.post_id);
 	if (!post) {
 		return res.sendStatus(404);
@@ -204,11 +194,6 @@ router.post('/:post_id/new', postLimit, upload.none(), async function (req, res)
 
 router.post('/:post_id/report', upload.none(), async function (req, res) {
 
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
-
 	const { reason, message, post_id } = req.body;
 	const post = await database.getPostByID(post_id);
 	if (!reason || !post_id || !post) {
@@ -236,11 +221,6 @@ router.post('/:post_id/report', upload.none(), async function (req, res) {
 });
 
 async function newPost(req: Request, res: Response): Promise<void> {
-
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
 
 	const userSettings = await database.getUserSettings(req.pid); let parentPost = null; const postID = await generatePostUID(21);
 	const community = await database.getCommunityByID(req.body.community_id);

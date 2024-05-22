@@ -448,7 +448,6 @@ async function getUserDataFromPid(pid: number): Promise<User> {
 	});
 }
 
-// TODO is this right?
 export async function getPid(token: string): Promise<number> {
 	const user = await getUserDataFromToken(token);
 	return user.pid;

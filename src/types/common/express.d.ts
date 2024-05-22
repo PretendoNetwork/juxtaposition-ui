@@ -13,8 +13,8 @@ declare global {
 			isWrite: boolean;
 			guest_access: boolean;
 			new_users: boolean;
-			pid: number | null;
-			user: User | null;
+			pid: number;
+			user: User;
 			token: string;
 			paramPackData: ParamPack | null;
 			moderator: boolean;

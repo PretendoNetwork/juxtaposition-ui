@@ -22,20 +22,10 @@ router.get('/menu', async function (req, res) {
 });
 
 router.get('/me', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
-
 	await userPage(req, res, req.pid);
 });
 
 router.get('/notifications.json', async function (req, res) {
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
-
 	const notifications = await database.getUnreadNotificationCount(req.pid);
 	const messagesCount = await database.getUnreadConversationCount(req.pid);
 
@@ -118,11 +108,6 @@ router.get('/:pid/:type', async function (req, res) {
 
 // TODO: Remove the need for a parameter to toggle the following state
 router.post('/follow', upload.none(), async function (req, res) {
-
-	if (!req.pid) {
-		res.status(400).send('PID missing');
-		return;
-	}
 
 	if (!req.body.id) {
 		res.status(400).send('Invalid request body');
