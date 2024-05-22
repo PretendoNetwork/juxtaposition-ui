@@ -1,19 +1,18 @@
 process.title = 'Pretendo - Juxt-Web';
-const express = require('express');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const RedisStore = require('connect-redis').default;
 
-const database = require('./database');
-const logger = require('./logger');
-const { redisClient } = require('./redisCache');
-const config = require('../config.json');
+import express from 'express';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import { default as RedisStore } from 'connect-redis';
+import database from './database';
+import logger from './logger';
+import { redisClient } from './redisCache';
+import config from '../config.json';
+import juxt_web from './services/juxt-web';
 
 const { http: { port } } = config;
 const app = express();
-
-const juxt_web = require('./services/juxt-web');
 
 app.set('etag', false);
 app.disable('x-powered-by');
@@ -58,22 +57,8 @@ app.use((req, res) => {
 	});
 });
 
-// non-404 error handler
-logger.info('Creating non-404 status handler');
-app.use((error, request, response) => {
-	const status = error.status || 500;
-
-	response.status(status);
-
-	response.json({
-		app: 'api',
-		status,
-		error: error.message
-	});
-});
-
 // Starts the server
-async function main() {
+async function main(): Promise<void> {
 	// Starts the server
 	logger.info('Starting server');
 
