@@ -468,12 +468,12 @@ export async function getUnreadConversationCount(pid: number): Promise<number> {
 	}).countDocuments();
 }
 
-export async function getConversationByID(community_id: number): Promise<HydratedConversationDocument | null> {
+export async function getConversationByID(conversation_id: string): Promise<HydratedConversationDocument | null> {
 	verifyConnected();
 
 	return CONVERSATION.findOne({
 		type: 3,
-		id: community_id
+		id: conversation_id
 	});
 }
 

@@ -1,15 +1,21 @@
-const express = require('express');
-const database = require('../../../../database');
-const util = require('../../../../util');
-const config = require('../../../../../config.json');
-const { POST } = require('../../../../models/post');
-const moment = require('moment');
-const {CONVERSATION} = require('../../../../models/conversation');
-const crypto = require('crypto');
-const snowflake = require('node-snowflake').Snowflake;
+import express from 'express';
+import database from '../../../../database';
+import util from '../../../../util';
+import config from '../../../../../config.json';
+import { POST } from '../../../../models/post';
+import moment from 'moment';
+import { CONVERSATION } from '../../../../models/conversation';
+import crypto from 'crypto';
+import { IPost } from '@/types/mongoose/post';
+import { Snowflake as snowflake } from 'node-snowflake';
+
 const router = express.Router();
 
 router.get('/', async function (req, res) {
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
 	const conversations = await database.getConversations(req.pid);
 	const usersMap = await util.getUserHash();
 	res.render(req.directory + '/messages.ejs', {
@@ -25,6 +31,10 @@ router.get('/', async function (req, res) {
 });
 
 router.post('/new', async function (req, res) {
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
 	let conversation = await database.getConversationByID(req.body.community_id);
 	const user2 = await util.getUserDataFromPid(req.body.message_to_pid);
 	const postID = await generatePostUID(21);
@@ -65,13 +75,17 @@ router.post('/new', async function (req, res) {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
-	let painting = ''; let paintingURI = ''; let screenshot = null;
+	let painting = '';
+	let paintingURI: string | null = '';
+	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
-		paintingURI = await util.processPainting(painting, true);
-		await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
+		paintingURI = util.processPainting(painting, true);
+		if (paintingURI) {
+			await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, Buffer.from(paintingURI, 'base64'), 'public-read');
+		}
 	}
-	if (req.body.screenshot) {
+	if (typeof req.body.screenshot === 'string') {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
 		await util.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
 	}
@@ -98,23 +112,35 @@ router.post('/new', async function (req, res) {
 			break;
 	}
 	const body = req.body.body;
-	if (body && util.INVALID_POST_BODY_REGEX.test(body)) {
+	if (typeof body !== 'string' || util.INVALID_POST_BODY_REGEX.test(body)) {
 		// TODO - Log this error
-		return res.sendStatus(422);
+		res.sendStatus(422);
+		return;
 	}
 
 	if (body && body.length > 280) {
 		// TODO - Log this error
-		return res.sendStatus(422);
+		res.sendStatus(422);
+		return;
 	}
 
-	const document = {
+	if (screenshot) {
+		screenshot = `/screenshots/${req.pid}/${postID}.jpg`;
+	} else {
+		screenshot = '';
+	}
+
+	if (!painting) {
+		painting = '';
+	}
+
+	const document: Partial<IPost> = {
 		community_id: conversation.id,
-		screen_name: req.user.mii.name,
+		screen_name: req.user?.mii?.name,
 		body: body,
 		painting: painting,
 		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: '',
-		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
+		country_id: req.paramPackData ? parseInt(req.paramPackData.country_id) : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
 		id: postID,
@@ -122,35 +148,38 @@ router.post('/new', async function (req, res) {
 		is_spoiler: (req.body.spoiler) ? 1 : 0,
 		is_app_jumpable: req.body.is_app_jumpable,
 		language_id: req.body.language_id,
-		mii: req.user.mii.data,
+		mii: req.user?.mii?.data,
 		mii_face_url: `https://mii.olv.pretendo.cc/mii/${req.pid}/${miiFace}`,
 		pid: req.pid,
-		platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
-		region_id: req.paramPackData ? req.paramPackData.region_id : 2,
-		verified: (req.user.accessLevel >= 2),
-		message_to_pid: req.body.message_to_pid,
-		moderator: req.moderator
+		platform_id: req.paramPackData ? parseInt(req.paramPackData.platform_id) : 0,
+		region_id: req.paramPackData ? parseInt(req.paramPackData.region_id) : 2,
+		verified: ((req.user?.accessLevel ?? 0) >= 2),
+		message_to_pid: req.body.message_to_pid
 	};
-	const duplicatePost = await database.getDuplicatePosts(req.pid, document);
-	if (duplicatePost && req.params.post_id) {
-		return res.redirect('/posts/' + req.params.post_id);
-	}
+	// const duplicatePost = await database.getDuplicatePosts(req.pid, body, painting, screenshot);
+	// if (duplicatePost && req.params.post_id) {
+	// 	return res.redirect('/posts/' + req.params.post_id);
+	// }
 	const newPost = new POST(document);
 	newPost.save();
 	res.redirect(`/friend_messages/${conversation.id}`);
-	let postPreviewText;
+	let postPreviewText: string;
 	if (document.painting) {
 		postPreviewText = 'sent a Drawing';
-	} else if (document.body.length > 25) {
-		postPreviewText = document.body.substring(0, 25) + '...';
+	} else if (body.length > 25) {
+		postPreviewText = body.substring(0, 25) + '...';
 	} else {
-		postPreviewText = document.body;
+		postPreviewText = body;
 	}
 	await conversation.newMessage(postPreviewText, user2.pid);
 });
 
 router.get('/new/:pid', async function (req, res) {
-	const user2 = await util.getUserDataFromPid(req.params.pid);
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+	const user2 = await util.getUserDataFromPid(parseInt(req.params.pid));
 	const friends = await util.getFriends(user2.pid);
 	if (!req.user || !user2) {
 		return res.sendStatus(422);
@@ -183,13 +212,13 @@ router.get('/new/:pid', async function (req, res) {
 	if (!conversation) {
 		return res.sendStatus(404);
 	}
-	const body = `${req.user.mii.name} started a new chat!`;
+	const body = `${req.user?.mii?.name} started a new chat!`;
 	const newMessage = {
-		screen_name: req.user.mii.name,
+		screen_name: req.user?.mii?.name,
 		body: body,
 		created_at: new Date(),
 		id: await generatePostUID(21),
-		mii: req.user.mii.data,
+		mii: req.user?.mii?.data,
 		mii_face_url: `https://mii.olv.pretendo.cc/mii/${req.pid}/normal_face.png`,
 		pid: req.pid,
 		verified: (req.user.accessLevel >= 2),
@@ -199,12 +228,16 @@ router.get('/new/:pid', async function (req, res) {
 	};
 	const newPost = new POST(newMessage);
 	newPost.save();
-	await conversation.newMessage(`${req.user.mii.name} started a new chat!`, user2.pid);
+	await conversation.newMessage(`${req.user?.mii?.name} started a new chat!`, user2.pid);
 	res.redirect(`/friend_messages/${conversation.id}`);
 });
 
 router.get('/:message_id', async function (req, res) {
-	const conversation = await database.getConversationByID(req.params.message_id.toString());
+	if (!req.pid) {
+		res.status(400).send('PID missing');
+		return;
+	}
+	const conversation = await database.getConversationByID(req.params.message_id);
 	if (!conversation) {
 		return res.sendStatus(404);
 	}
@@ -229,10 +262,10 @@ router.get('/:message_id', async function (req, res) {
 	await conversation.markAsRead(req.pid);
 });
 
-async function generatePostUID(length) {
+async function generatePostUID(length: number): Promise<string> {
 	let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, '').substring(0, length);
 	const inuse = await POST.findOne({ id });
-	id = (inuse ? await generatePostUID() : id);
+	id = (inuse ? await generatePostUID(length) : id);
 	return id;
 }
 
