@@ -269,5 +269,4 @@ async function generatePostUID(length: number): Promise<string> {
 	return id;
 }
 
-
-module.exports = router;
+export default router;
