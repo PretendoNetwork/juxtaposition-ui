@@ -4,7 +4,7 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { default as RedisStore } from 'connect-redis';
 import logger from '@/logger';
-import database from '@/database';
+import * as database from '@/database';
 import { redisClient } from '@/redisCache';
 import juxt_web from '@/services/juxt-web';
 import config from '../config.json';

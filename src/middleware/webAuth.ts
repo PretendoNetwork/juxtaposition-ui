@@ -1,4 +1,4 @@
-import util from '@/util';
+import * as util from '@/util';
 import type { Request, Response, NextFunction } from 'express';
 
 export async function webAuth(request: Request, response: Response, next: NextFunction): Promise<void> {
@@ -61,8 +61,4 @@ function isStartOfPath(path: string, value: string): boolean {
 
 (BigInt as any).prototype['toJSON'] = function (): string {
 	return this.toString();
-}
-
-export default {
-	webAuth
 };

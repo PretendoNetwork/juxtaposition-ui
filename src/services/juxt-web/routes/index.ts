@@ -1,29 +1,13 @@
-import PORTAL_SHOW from './console/show';
-import PORTAL_COMMUNITIES from './console/communities';
-import PORTAL_USER from './console/userpage';
-import PORTAL_POST from './console/posts';
-import PORTAL_FEED from './console/feed';
-import PORTAL_NEWS from './console/notifications';
-import PORTAL_MESSAGES from './console/messages';
-import PORTAL_TOPICS from './console/topics';
-import WEB_LOGIN from './web/login';
-import ROBOTS from './web/robots';
-import PWA from './web/pwa';
-import ADMIN from './admin/admin';
-import WEB_FILES from './console/web';
-
-export default {
-	PORTAL_SHOW,
-	PORTAL_COMMUNITIES,
-	PORTAL_USER,
-	PORTAL_POST,
-	PORTAL_FEED,
-	PORTAL_NEWS,
-	PORTAL_MESSAGES,
-	PORTAL_TOPICS,
-	WEB_LOGIN,
-	ROBOTS,
-	PWA,
-	ADMIN,
-	WEB_FILES
-};
+export { default as PORTAL_SHOW } from '@/services/juxt-web/routes/console/show';
+export { default as PORTAL_COMMUNITIES } from '@/services/juxt-web/routes/console/communities';
+export { default as PORTAL_USER } from '@/services/juxt-web/routes/console/userpage';
+export { default as PORTAL_POST } from '@/services/juxt-web/routes/console/posts';
+export { default as PORTAL_FEED } from '@/services/juxt-web/routes/console/feed';
+export { default as PORTAL_NEWS } from '@/services/juxt-web/routes/console/notifications';
+export { default as PORTAL_MESSAGES } from '@/services/juxt-web/routes/console/messages';
+export { default as PORTAL_TOPICS } from '@/services/juxt-web/routes/console/topics';
+export { default as WEB_LOGIN } from '@/services/juxt-web/routes/web/login';
+export { default as ROBOTS } from '@/services/juxt-web/routes/web/robots';
+export { default as PWA } from '@/services/juxt-web/routes/web/pwa';
+export { default as ADMIN } from '@/services/juxt-web/routes/admin/admin';
+export { default as WEB_FILES } from '@/services/juxt-web/routes/console/web';

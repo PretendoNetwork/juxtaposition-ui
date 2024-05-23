@@ -1,4 +1,4 @@
-import util from '@/util';
+import * as util from '@/util';
 import type { Request, Response, NextFunction } from 'express';
 
 export async function staticFiles(request: Request, response: Response, next: NextFunction): Promise<void> {
@@ -30,8 +30,3 @@ export async function staticFiles(request: Request, response: Response, next: Ne
 function isStartOfPath(path: string, value: string): boolean {
 	return path.indexOf(value) === 0;
 }
-
-
-export default {
-	staticFiles
-};

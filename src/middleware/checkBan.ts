@@ -1,5 +1,5 @@
 import moment from 'moment/moment';
-import db from '@/database';
+import * as db from '@/database';
 import type { Request, Response, NextFunction } from 'express';
 import config from '../../config.json';
 
@@ -59,7 +59,3 @@ export async function checkBan(request: Request, response: Response, next: NextF
 	}
 	next();
 }
-
-export default {
-	checkBan
-};

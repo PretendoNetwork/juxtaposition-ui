@@ -1,7 +1,7 @@
 import express from 'express';
 import subdomain from 'express-subdomain';
 import logger from '../../logger';
-import routes from './routes';
+import * as routes from './routes';
 import { webAuth } from '../../middleware/webAuth';
 import { auth as consoleAuth }  from '../../middleware/consoleAuth';
 import { checkBan } from '../../middleware/checkBan';

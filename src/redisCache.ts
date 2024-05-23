@@ -40,9 +40,3 @@ export async function removeValue(key: string): Promise<boolean> {
 	await redisClient.del(key);
 	return true;
 }
-
-export default {
-	setValue,
-	getValue,
-	removeValue
-};

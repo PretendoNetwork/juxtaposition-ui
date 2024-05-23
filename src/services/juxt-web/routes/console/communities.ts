@@ -1,11 +1,11 @@
 import express from 'express';
 import multer from 'multer';
 import moment from 'moment';
-import database from '@/database';
-import util from '@/util';
+import * as database from '@/database';
+import * as util from '@/util';
 import { POST } from '@/models/post';
 import { COMMUNITY } from '@/models/communities';
-import redis from '@/redisCache';
+import * as redis from '@/redisCache';
 import type { HydratedCommunityDocument, ICommunity } from '@/types/mongoose/communities';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
 import config from '../../../../../config.json';

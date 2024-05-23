@@ -12,7 +12,7 @@ import { AccountDefinition } from '@pretendonetwork/grpc/account/account_service
 import { APIDefinition } from '@pretendonetwork/grpc/api/api_service';
 import { FriendsDefinition } from '@pretendonetwork/grpc/friends/friends_service';
 import logger from '@/logger';
-import database from '@/database';
+import * as database from '@/database';
 import { COMMUNITY } from '@/models/communities';
 import { CONTENT } from '@/models/content';
 import { NOTIFICATION } from '@/models/notifications';
@@ -80,8 +80,8 @@ function nameCache(): void {
 }
 
 // TODO - This doesn't belong here, just hacking it in. Gonna redo this whole server anyway so fuck it
-const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
-async function create_user(pid: number, experience: number, notifications: boolean): Promise<void> {
+export const INVALID_POST_BODY_REGEX = /[^\p{L}\p{P}\d\n\r$^¨←→↑↓√¦⇒⇔¤¢€£¥™©®+×÷=±∞˘˙¸˛˜°¹²³♭♪¬¯¼½¾♡♥●◆■▲▼☆★♀♂<> ]/gu;
+export async function create_user(pid: number, experience: number, notifications: boolean): Promise<void> {
 	const pnid = await getUserDataFromPid(pid);
 	if (!pnid) {
 		return;
@@ -119,7 +119,7 @@ export function decodeParamPack(paramPack: string): ParamPack {
 	return Object.fromEntries(entries);
 }
 
-function processServiceToken(encryptedToken: string | undefined): number | null {
+export function processServiceToken(encryptedToken: string | undefined): number | null {
 	if (!encryptedToken) {
 		return null;
 	}
@@ -141,7 +141,7 @@ function processServiceToken(encryptedToken: string | undefined): number | null 
 
 }
 
-function decryptToken(token: Buffer): Buffer {
+export function decryptToken(token: Buffer): Buffer {
 	if (!config.aes_key) {
 		throw new Error('Service token AES key not found. Set config.aes_key');
 	}
@@ -166,7 +166,7 @@ function decryptToken(token: Buffer): Buffer {
 	return decrypted;
 }
 
-function unpackToken(token: Buffer): Token {
+export function unpackToken(token: Buffer): Token {
 	return {
 		system_type: token.readUInt8(0x0),
 		token_type: token.readUInt8(0x1),
@@ -177,7 +177,7 @@ function unpackToken(token: Buffer): Token {
 	};
 }
 
-function processPainting(painting: string | null, isTGA: boolean): string | null {
+export function processPainting(painting: string | null, isTGA: boolean): string | null {
 
 	if (painting === null) {
 		return null;
@@ -223,7 +223,7 @@ function processPainting(painting: string | null, isTGA: boolean): string | null
 	}
 }
 
-function nintendoPasswordHash(password: string, pid: number): string {
+export function nintendoPasswordHash(password: string, pid: number): string {
 	const pidBuffer = Buffer.alloc(4);
 	pidBuffer.writeUInt32LE(pid);
 
@@ -235,19 +235,19 @@ function nintendoPasswordHash(password: string, pid: number): string {
 	return crypto.createHash('sha256').update(unpacked).digest().toString('hex');
 }
 
-function getCommunityHash(): HashMap<string, string> {
+export function getCommunityHash(): HashMap<string, string> {
 	return communityMap;
 }
 
-function getUserHash(): HashMap<number, string> {
+export function getUserHash(): HashMap<number, string> {
 	return userMap;
 }
 
-function refreshCache(): void {
+export function refreshCache(): void {
 	nameCache();
 }
 
-function setName(pid: number, name: string | undefined): void {
+export function setName(pid: number, name: string | undefined): void {
 	if (!pid || !name) {
 		return;
 	}
@@ -255,14 +255,14 @@ function setName(pid: number, name: string | undefined): void {
 	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu,'').replace(/\u202e/g, ''));
 }
 
-// TODO is this used?
-async function resizeImage(file: sharp.SharpOptions, width: number, height: number): Promise<Buffer> {
+// ? TODO is this used?
+export async function resizeImage(file: sharp.SharpOptions, width: number, height: number): Promise<Buffer> {
 	return sharp(file)
 		.resize({ height: height, width: width })
 		.toBuffer();
 }
 
-function createBMPTgaBuffer(width: number, height: number, pixels: Buffer, dontFlipY: boolean): Buffer {
+export function createBMPTgaBuffer(width: number, height: number, pixels: Buffer, dontFlipY: boolean): Buffer {
 	const buffer = Buffer.alloc(18 + pixels.length);
 	// write header
 	buffer.writeInt8(0, 0);
@@ -292,7 +292,7 @@ function createBMPTgaBuffer(width: number, height: number, pixels: Buffer, dontF
 	return buffer;
 }
 
-function processLanguage(paramPackData?: ParamPack): typeof translations.EN {
+export function processLanguage(paramPackData?: ParamPack): typeof translations.EN {
 	if (!paramPackData) {
 		return translations.EN;
 	}
@@ -326,7 +326,7 @@ function processLanguage(paramPackData?: ParamPack): typeof translations.EN {
 	}
 }
 
-async function uploadCDNAsset(bucket: string, key: string, data: Buffer, acl: string): Promise<void> {
+export async function uploadCDNAsset(bucket: string, key: string, data: Buffer, acl: string): Promise<void> {
 	const awsPutParams = {
 		Body: data,
 		Key: key,
@@ -337,7 +337,7 @@ async function uploadCDNAsset(bucket: string, key: string, data: Buffer, acl: st
 	await s3.putObject(awsPutParams).promise();
 }
 
-async function newNotification(notification: Omit<INotification, 'read' | 'lastUpdated' | 'users'>): Promise<void> {
+export async function newNotification(notification: Omit<INotification, 'read' | 'lastUpdated' | 'users'>): Promise<void> {
 	const now = new Date();
 	if (notification.type === 'follow') {
 		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
@@ -377,7 +377,7 @@ async function newNotification(notification: Omit<INotification, 'read' | 'lastU
 	}
 }
 
-async function getFriends(pid: number): Promise<number[]> {
+export async function getFriends(pid: number): Promise<number[]> {
 	try {
 		const pids =  await friendsClient.getUserFriendPIDs({
 			pid: pid
@@ -392,7 +392,7 @@ async function getFriends(pid: number): Promise<number[]> {
 	}
 }
 
-async function getFriendRequests(pid: number): Promise<FriendRequest[]> {
+export async function getFriendRequests(pid: number): Promise<FriendRequest[]> {
 	try {
 		const requests = await friendsClient.getUserFriendRequestsIncoming({
 			pid: pid
@@ -407,7 +407,7 @@ async function getFriendRequests(pid: number): Promise<FriendRequest[]> {
 	}
 }
 
-async function login(username: string, password: string): Promise<ApiLoginResponse> {
+export async function login(username: string, password: string): Promise<ApiLoginResponse> {
 	return await apiClient.login({
 		username: username,
 		password: password,
@@ -419,7 +419,7 @@ async function login(username: string, password: string): Promise<ApiLoginRespon
 	});
 }
 
-async function refreshLogin(refreshToken: string): Promise<ApiLoginResponse> {
+export async function refreshLogin(refreshToken: string): Promise<ApiLoginResponse> {
 	return await apiClient.login({
 		refreshToken: refreshToken
 	}, {
@@ -429,7 +429,7 @@ async function refreshLogin(refreshToken: string): Promise<ApiLoginResponse> {
 	});
 }
 
-async function getUserDataFromToken(token: string): Promise<User> {
+export async function getUserDataFromToken(token: string): Promise<User> {
 	return apiClient.getUserData({}, {
 		metadata: grpc.Metadata({
 			'X-API-Key': apiKey,
@@ -438,7 +438,7 @@ async function getUserDataFromToken(token: string): Promise<User> {
 	});
 }
 
-async function getUserDataFromPid(pid: number): Promise<User> {
+export async function getUserDataFromPid(pid: number): Promise<User> {
 	return accountClient.getUserData({
 		pid: pid
 	}, {
@@ -452,30 +452,3 @@ export async function getPid(token: string): Promise<number> {
 	const user = await getUserDataFromToken(token);
 	return user.pid;
 }
-
-export default {
-	decodeParamPack,
-	processServiceToken,
-	decryptToken,
-	unpackToken,
-	processPainting,
-	nintendoPasswordHash,
-	getCommunityHash,
-	getUserHash,
-	refreshCache,
-	setName,
-	resizeImage,
-	createBMPTgaBuffer,
-	processLanguage,
-	uploadCDNAsset,
-	newNotification,
-	getFriends,
-	getFriendRequests,
-	login,
-	refreshLogin,
-	getUserDataFromToken,
-	getUserDataFromPid,
-	getPid,
-	create_user,
-	INVALID_POST_BODY_REGEX
-};

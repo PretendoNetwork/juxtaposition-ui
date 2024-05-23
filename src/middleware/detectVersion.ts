@@ -1,4 +1,4 @@
-import util from '@/util';
+import * as util from '@/util';
 import type { Request, Response, NextFunction } from 'express';
 
 export async function detectVersion(request: Request, response: Response, next: NextFunction): Promise<void> {
@@ -20,7 +20,3 @@ export async function detectVersion(request: Request, response: Response, next: 
 function includes(request: Request, domain: string): boolean {
 	return request.subdomains.findIndex(element => element.includes(domain)) !== -1;
 }
-
-export default {
-	detectVersion
-};

@@ -1,6 +1,6 @@
 import express from 'express';
-import database from '@/database';
-import util from '@/util';
+import * as database from '@/database';
+import * as util from '@/util';
 import config from '../../../../../config.json';
 
 const router = express.Router();
@@ -68,6 +68,5 @@ router.post('/', async (req, res) => {
 	res.cookie('token_type', 'Bearer', { domain : cookieDomain });
 	res.redirect('/');
 });
-
 
 export default router;

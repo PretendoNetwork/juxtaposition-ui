@@ -1,4 +1,4 @@
-import util from '@/util';
+import * as util from '@/util';
 import type { User } from '@/types/common/user';
 import type { Request, Response, NextFunction } from 'express';
 import config from '../../config.json';
@@ -75,7 +75,3 @@ export async function auth(request: Request, response: Response, next: NextFunct
 	//console.timeEnd(`Time Request ${request.timerDate}`);
 	return next();
 }
-
-export default {
-	auth
-};

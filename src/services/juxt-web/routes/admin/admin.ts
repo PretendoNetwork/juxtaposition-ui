@@ -1,9 +1,9 @@
 import moment from 'moment';
 import express from 'express';
-import database from '@/database';
+import * as database from '@/database';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
-import util from '@/util';
+import * as util from '@/util';
 import type { HydratedPostDocument } from '@/types/mongoose/post';
 import config from '../../../../../config.json';
 
@@ -75,7 +75,6 @@ router.get('/accounts', async function (req, res) {
 		search
 	});
 });
-
 
 router.get('/accounts/:pid', async function (req, res): Promise<void> {
 	if (!req.moderator) {

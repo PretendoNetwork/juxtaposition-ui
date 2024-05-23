@@ -3,9 +3,9 @@ import express from 'express';
 import multer from 'multer';
 import moment from 'moment';
 import rateLimit from 'express-rate-limit';
-import database from '../../../../database';
-import util from '@/util';
-import redis from '@/redisCache';
+import * as database from '../../../../database';
+import * as util from '@/util';
+import * as redis from '@/redisCache';
 import { POST } from '@/models/post';
 import { REPORT } from '@/models/report';
 import type { Request, Response } from 'express';
@@ -369,6 +369,5 @@ async function generatePostUID(length: number): Promise<string> {
 	id = (inuse ? await generatePostUID(length) : id);
 	return id;
 }
-
 
 export default router;

@@ -1,9 +1,9 @@
 import express from 'express';
 import multer from 'multer';
 import moment from 'moment';
-import database from '@/database';
-import util from '@/util';
-import redis from '@/redisCache';
+import * as database from '@/database';
+import * as util from '@/util';
+import * as redis from '@/redisCache';
 import { POST } from '@/models/post';
 import { SETTINGS } from '@/models/settings';
 import type { Request, Response } from 'express';

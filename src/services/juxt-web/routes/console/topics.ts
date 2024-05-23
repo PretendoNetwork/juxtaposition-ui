@@ -1,7 +1,7 @@
 import express from 'express';
 import moment from 'moment';
-import database from '@/database';
-import util from '@/util';
+import * as database from '@/database';
+import * as util from '@/util';
 import { POST } from '@/models/post';
 import config from '../../../../../config.json';
 
