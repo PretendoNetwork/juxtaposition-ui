@@ -1,5 +1,5 @@
-import { ContentModel, HydratedContentDocument, IContent, IContentMethods } from '@/types/mongoose/content';
 import { Schema, model } from 'mongoose';
+import type { ContentModel, HydratedContentDocument, IContent, IContentMethods } from '@/types/mongoose/content';
 
 export const ContentSchema = new Schema<IContent, ContentModel, IContentMethods>({
 	pid: Number,

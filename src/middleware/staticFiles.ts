@@ -1,5 +1,5 @@
-import util from '../util';
-import { Request, Response, NextFunction } from 'express';
+import util from '@/util';
+import type { Request, Response, NextFunction } from 'express';
 
 export async function staticFiles(request: Request, response: Response, next: NextFunction): Promise<void> {
 	// Web files

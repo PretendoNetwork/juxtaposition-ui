@@ -1,16 +1,16 @@
+import crypto from 'crypto';
 import express from 'express';
-import database from '../../../../database';
-import util from '../../../../util';
-import config from '../../../../../config.json';
-import { POST } from '../../../../models/post';
 import multer from 'multer';
 import moment from 'moment';
 import rateLimit from 'express-rate-limit';
-import { REPORT } from '../../../../models/report';
-import crypto from 'crypto';
-import redis from '../../../../redisCache';
-import { Request, Response } from 'express';
-import { IPost } from '@/types/mongoose/post';
+import database from '../../../../database';
+import util from '@/util';
+import redis from '@/redisCache';
+import { POST } from '@/models/post';
+import { REPORT } from '@/models/report';
+import type { Request, Response } from 'express';
+import type { IPost } from '@/types/mongoose/post';
+import config from '../../../../../config.json';
 
 const upload = multer({dest: 'uploads/'});
 const router = express.Router();

@@ -1,6 +1,6 @@
-import translations from '../../translations';
-import { ParamPack } from './param-pack';
-import { User } from './user';
+import type translations from '../../translations';
+import type { ParamPack } from './param-pack';
+import type { User } from './user';
 
 declare global {
 

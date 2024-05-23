@@ -1,4 +1,4 @@
-import { Mii } from '@pretendonetwork/grpc/api/mii';
+import type { Mii } from '@pretendonetwork/grpc/api/mii';
 
 export interface User {
 	deleted: boolean;

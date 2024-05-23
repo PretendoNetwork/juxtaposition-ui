@@ -1,5 +1,5 @@
-import { EndpointModel, IEndpoint } from '@/types/mongoose/endpoint';
 import { Schema, model } from 'mongoose';
+import type { EndpointModel, IEndpoint } from '@/types/mongoose/endpoint';
 
 export const endpointSchema = new Schema<IEndpoint, EndpointModel>({
 	status: Number,

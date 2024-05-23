@@ -1,6 +1,7 @@
 import redis from 'redis';
-import logger from './logger';
+import logger from '@/logger';
 import config from '../config.json';
+
 const { host, port } = config.redis;
 
 export const redisClient = redis.createClient({ socket: { host, port } });

@@ -1,6 +1,6 @@
-import { ConversationModel, HydratedConversationDocument, IConversation, IConversationMethods, IUser, UserModel } from '@/types/mongoose/conversation';
 import { Schema, model } from 'mongoose';
 import { Snowflake } from 'node-snowflake';
+import type { ConversationModel, HydratedConversationDocument, IConversation, IConversationMethods, IUser, UserModel } from '@/types/mongoose/conversation';
 
 const user = new Schema<IUser, UserModel>({
 	pid: Number,

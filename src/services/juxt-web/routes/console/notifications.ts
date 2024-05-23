@@ -1,8 +1,9 @@
 import express from 'express';
-import database from '../../../../database';
-import config from '../../../../../config.json';
-import util from '../../../../util';
 import moment from 'moment';
+import database from '@/database';
+import util from '@/util';
+import config from '../../../../../config.json';
+
 const router = express.Router();
 
 router.get('/my_news', async function (req, res) {

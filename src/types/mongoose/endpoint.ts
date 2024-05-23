@@ -1,4 +1,4 @@
-import { Model, HydratedDocument } from 'mongoose';
+import type { Model, HydratedDocument } from 'mongoose';
 
 export interface IEndpoint {
 	status: number;

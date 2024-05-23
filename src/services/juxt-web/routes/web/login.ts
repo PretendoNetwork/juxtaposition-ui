@@ -1,8 +1,9 @@
 import express from 'express';
-const router = express.Router();
-import database from '../../../../database';
-import util from '../../../../util';
+import database from '@/database';
+import util from '@/util';
 import config from '../../../../../config.json';
+
+const router = express.Router();
 
 router.get('/', async function (req, res) {
 	res.render(req.directory + '/login.ejs', {toast: null, cdnURL: config.CDN_domain,});

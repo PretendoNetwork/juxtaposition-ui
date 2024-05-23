@@ -1,5 +1,6 @@
-import express from 'express';
 import path from 'path';
+import express from 'express';
+
 const router = express.Router();
 
 router.get('/icons/:filename', function (req, res) {

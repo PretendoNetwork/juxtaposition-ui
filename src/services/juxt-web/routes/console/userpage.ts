@@ -1,15 +1,15 @@
 import express from 'express';
-import database from '../../../../database';
-import util from '../../../../util';
-import config from '../../../../../config.json';
 import multer from 'multer';
 import moment from 'moment';
-import { POST } from '../../../../models/post';
-import { SETTINGS } from '../../../../models/settings';
-import redis from '../../../../redisCache';
-import { Request, Response } from 'express';
-import { IPost } from '@/types/mongoose/post';
-import { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import database from '@/database';
+import util from '@/util';
+import redis from '@/redisCache';
+import { POST } from '@/models/post';
+import { SETTINGS } from '@/models/settings';
+import type { Request, Response } from 'express';
+import type { IPost } from '@/types/mongoose/post';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import config from '../../../../../config.json';
 
 const upload = multer({ dest: 'uploads/' });
 const router = express.Router();

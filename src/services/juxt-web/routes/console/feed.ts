@@ -1,9 +1,9 @@
 import express from 'express';
-import database from '../../../../database';
-import util from '../../../../util';
-import config from '../../../../../config.json';
 import moment from 'moment';
-import { HydratedPostDocument } from '@/types/mongoose/post';
+import database from '@/database';
+import util from '@/util';
+import type { HydratedPostDocument } from '@/types/mongoose/post';
+import config from '../../../../../config.json';
 
 const router = express.Router();
 

@@ -1,7 +1,7 @@
-import { User } from '@/types/common/user';
+import util from '@/util';
+import type { User } from '@/types/common/user';
+import type { Request, Response, NextFunction } from 'express';
 import config from '../../config.json';
-import util from '../util';
-import { Request, Response, NextFunction } from 'express';
 
 export async function auth(request: Request, response: Response, next: NextFunction): Promise<void> {
 

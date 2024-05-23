@@ -1,6 +1,6 @@
+import db from '@/database';
+import type { Request, Response, NextFunction } from 'express';
 import config from '../../config.json';
-import db from '../database';
-import { Request, Response, NextFunction } from 'express';
 
 export async function checkDiscovery(request: Request, response: Response, next: NextFunction): Promise<void> {
 	const discovery = await db.getEndPoint(config.server_environment);

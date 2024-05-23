@@ -1,5 +1,5 @@
-import { HydratedSettingsDocument, ISettings, ISettingsMethods, SettingsModel } from '@/types/mongoose/settings';
 import { Schema, model } from 'mongoose';
+import type { HydratedSettingsDocument, ISettings, ISettingsMethods, SettingsModel } from '@/types/mongoose/settings';
 
 export const SettingsSchema = new Schema<ISettings, SettingsModel, ISettingsMethods>({
 	pid: Number,

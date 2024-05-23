@@ -1,5 +1,5 @@
-import { HydratedReportDocument, IReport, IReportMethods, ReportModel } from '@/types/mongoose/report';
 import { Schema, model } from 'mongoose';
+import type { HydratedReportDocument, IReport, IReportMethods, ReportModel } from '@/types/mongoose/report';
 
 export const ReportSchema = new Schema<IReport, ReportModel, IReportMethods>({
 	pid: Number,

@@ -1,4 +1,4 @@
-import { Model, Types, HydratedDocument } from 'mongoose';
+import type { Model, Types, HydratedDocument } from 'mongoose';
 
 export interface IUser {
 	user: string;

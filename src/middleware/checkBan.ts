@@ -1,7 +1,7 @@
-import config from '../../config.json';
 import moment from 'moment/moment';
-import db from '../database';
-import { Request, Response, NextFunction } from 'express';
+import db from '@/database';
+import type { Request, Response, NextFunction } from 'express';
+import config from '../../config.json';
 
 export async function checkBan(request: Request, response: Response, next: NextFunction): Promise<void> {
 	if (!request.user && !request.guest_access && request.path !== '/login') {

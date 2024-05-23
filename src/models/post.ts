@@ -1,5 +1,5 @@
-import { HydratedPostDocument, IPost, IPostMethods, PostModel } from '@/types/mongoose/post';
 import { Schema, model } from 'mongoose';
+import type { HydratedPostDocument, IPost, IPostMethods, PostModel } from '@/types/mongoose/post';
 
 export const PostSchema = new Schema<IPost, PostModel, IPostMethods>({
 	id: String,

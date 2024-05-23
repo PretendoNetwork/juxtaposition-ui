@@ -1,13 +1,13 @@
-import express from 'express';
-import database from '../../../../database';
-import util from '../../../../util';
-import config from '../../../../../config.json';
-import { POST } from '../../../../models/post';
-import moment from 'moment';
-import { CONVERSATION } from '../../../../models/conversation';
 import crypto from 'crypto';
-import { IPost } from '@/types/mongoose/post';
+import express from 'express';
+import moment from 'moment';
 import { Snowflake as snowflake } from 'node-snowflake';
+import database from '@/database';
+import util from '@/util';
+import { POST } from '@/models/post';
+import { CONVERSATION } from '@/models/conversation';
+import type { IPost } from '@/types/mongoose/post';
+import config from '../../../../../config.json';
 
 const router = express.Router();
 

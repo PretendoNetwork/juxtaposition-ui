@@ -1,11 +1,11 @@
-import express from 'express';
-import database from '../../../../database';
-import { POST } from '../../../../models/post';
-import { SETTINGS } from '../../../../models/settings';
-import util from '../../../../util';
 import moment from 'moment';
+import express from 'express';
+import database from '@/database';
+import { POST } from '@/models/post';
+import { SETTINGS } from '@/models/settings';
+import util from '@/util';
+import type { HydratedPostDocument } from '@/types/mongoose/post';
 import config from '../../../../../config.json';
-import { HydratedPostDocument } from '@/types/mongoose/post';
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.get('/posts', async function (req, res): Promise<void> {
 	}
 
 	const reports = await database.getAllOpenReports();
-	const communityMap = await util.getCommunityHash();
+	const communityMap = util.getCommunityHash();
 	const userContent = await database.getUserContent(req.pid);
 	const userMap = util.getUserHash();
 	const postIDs = reports.map(obj => obj.post_id);
@@ -60,7 +60,7 @@ router.get('/accounts', async function (req, res) {
 	const limit = 20;
 
 	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
-	const userMap = await util.getUserHash();
+	const userMap = util.getUserHash();
 
 	res.render(req.directory + '/users.ejs', {
 		lang: req.lang,

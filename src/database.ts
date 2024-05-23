@@ -1,36 +1,36 @@
-import { set, connect as _connect, connection as _connection, Connection } from 'mongoose';
+import mongoose from 'mongoose';
 import { FuzzySearch } from 'mongoose-fuzzy-search-next';
+import { info } from '@/logger';
+import { COMMUNITY } from '@/models/communities';
+import { CONTENT } from '@/models/content';
+import { CONVERSATION } from '@/models/conversation';
+import { ENDPOINT } from '@/models/endpoint';
+import { NOTIFICATION } from '@/models/notifications';
+import { POST } from '@/models/post';
+import { SETTINGS } from '@/models/settings';
+import { REPORT } from '@/models/report';
+import type { HydratedCommunityDocument, ICommunity } from '@/types/mongoose/communities';
+import type { HydratedPostDocument, IPost } from '@/types/mongoose/post';
+import type { HydratedEndpointDocument } from '@/types/mongoose/endpoint';
+import type { HydratedSettingsDocument } from '@/types/mongoose/settings';
+import type { HydratedContentDocument, IContent } from '@/types/mongoose/content';
+import type { HydratedConversationDocument } from '@/types/mongoose/conversation';
+import type { HydratedNotificationDocument } from '@/types/mongoose/notifications';
+import type { HydratedReportDocument } from '@/types/mongoose/report';
 import { mongoose as mongooseConfig } from '../config.json';
-import { COMMUNITY } from './models/communities';
-import { CONTENT } from './models/content';
-import { CONVERSATION } from './models/conversation';
-import { ENDPOINT } from './models/endpoint';
-import { NOTIFICATION } from './models/notifications';
-import { POST } from './models/post';
-import { SETTINGS } from './models/settings';
-import { REPORT } from './models/report';
 
 const { uri, database, options } = mongooseConfig;
-import { info } from './logger';
-import { HydratedCommunityDocument, ICommunity } from './types/mongoose/communities';
-import { HydratedPostDocument, IPost } from './types/mongoose/post';
-import { HydratedEndpointDocument } from './types/mongoose/endpoint';
-import { HydratedSettingsDocument } from './types/mongoose/settings';
-import { HydratedContentDocument, IContent } from './types/mongoose/content';
-import { HydratedConversationDocument } from './types/mongoose/conversation';
-import { HydratedNotificationDocument } from './types/mongoose/notifications';
-import { HydratedReportDocument } from './types/mongoose/report';
 
-let connection: Connection;
-set('strictQuery', true);
+let connection: mongoose.Connection;
+mongoose.set('strictQuery', true);
 
 export async function connect(): Promise<void> {
-	await _connect(`${uri}/${database}`, options);
-	connection = _connection;
-	connection.on('connected', function (this: Connection) {
+	await mongoose.connect(`${uri}/${database}`, options);
+	connection = mongoose.connection;
+	connection.on('connected', function (this: mongoose.Connection) {
 		info(`MongoDB connected ${this.name}`);
 	});
-	// Should this use the logger?
+	// ? Should this use the logger?
 	connection.on('error', console.error.bind(console, 'connection error:'));
 	connection.on('close', () => {
 		connection.removeAllListeners();

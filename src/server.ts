@@ -1,15 +1,15 @@
-process.title = 'Pretendo - Juxt-Web';
-
 import express from 'express';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import { default as RedisStore } from 'connect-redis';
-import database from './database';
-import logger from './logger';
-import { redisClient } from './redisCache';
+import logger from '@/logger';
+import database from '@/database';
+import { redisClient } from '@/redisCache';
+import juxt_web from '@/services/juxt-web';
 import config from '../config.json';
-import juxt_web from './services/juxt-web';
+
+process.title = 'Pretendo - Juxt-Web';
 
 const { http: { port } } = config;
 const app = express();

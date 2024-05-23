@@ -1,5 +1,5 @@
-import { HydratedNotificationDocument, INotification, INotificationMethods, NotificationModel } from '@/types/mongoose/notifications';
 import { Schema, model } from 'mongoose';
+import type { HydratedNotificationDocument, INotification, INotificationMethods, NotificationModel } from '@/types/mongoose/notifications';
 
 export const NotificationSchema = new Schema<INotification, NotificationModel, INotificationMethods>({
 	pid: String,

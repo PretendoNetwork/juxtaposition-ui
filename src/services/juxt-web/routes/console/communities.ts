@@ -1,14 +1,14 @@
 import express from 'express';
-import database from '../../../../database';
-import util from '../../../../util';
-import config from '../../../../../config.json';
 import multer from 'multer';
 import moment from 'moment';
-import { POST } from '../../../../models/post';
-import { COMMUNITY } from '../../../../models/communities';
-import redis from '../../../../redisCache';
-import { HydratedCommunityDocument, ICommunity } from '@/types/mongoose/communities';
-import { HydratedPostDocument } from '@/types/mongoose/post';
+import database from '@/database';
+import util from '@/util';
+import { POST } from '@/models/post';
+import { COMMUNITY } from '@/models/communities';
+import redis from '@/redisCache';
+import type { HydratedCommunityDocument, ICommunity } from '@/types/mongoose/communities';
+import type { HydratedPostDocument } from '@/types/mongoose/post';
+import config from '../../../../../config.json';
 
 const upload = multer({dest: 'uploads/'});
 const router = express.Router();
@@ -120,7 +120,7 @@ router.get('/:communityID/:type', async function (req, res) {
 
 	if (!community.permissions) {
 		community.permissions = {
-			open: false,
+			open: (community as any).open,
 			minimum_new_post_access_level: 0,
 			minimum_new_comment_access_level: 0,
 			minimum_new_community_access_level: 0

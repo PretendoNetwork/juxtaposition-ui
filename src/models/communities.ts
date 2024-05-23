@@ -1,5 +1,5 @@
-import { CommunityModel, HydratedCommunityDocument, ICommunity, ICommunityMethods, IPermissions, PermissionsModel } from '@/types/mongoose/communities';
 import { Schema, model } from 'mongoose';
+import type { CommunityModel, HydratedCommunityDocument, ICommunity, ICommunityMethods, IPermissions, PermissionsModel } from '@/types/mongoose/communities';
 
 export const PermissionsSchema = new Schema<IPermissions, PermissionsModel>({
 	open: {
