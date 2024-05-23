@@ -59,6 +59,10 @@ function isStartOfPath(path: string, value: string): boolean {
 	return path.indexOf(value) === 0;
 }
 
+(BigInt as any).prototype['toJSON'] = function (): string {
+	return this.toString();
+}
+
 export default {
 	webAuth
 };
