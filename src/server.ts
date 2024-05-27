@@ -7,6 +7,7 @@ import logger from '@/logger';
 import * as database from '@/database';
 import { redisClient } from '@/redisCache';
 import juxt_web from '@/services/juxt-web';
+import type { Request, Response } from 'express';
 import config from '../config.json';
 
 process.title = 'Pretendo - Juxt-Web';
@@ -54,6 +55,20 @@ app.use((req, res) => {
 		cdnURL: config.CDN_domain,
 		lang: req.lang,
 		pid: req.pid
+	});
+});
+
+// non-404 error handler
+logger.info('Creating non-404 status handler');
+app.use((error: any, request: Request, response: Response) => {
+	const status = error.status || 500;
+
+	response.status(status);
+
+	response.json({
+		app: 'api',
+		status,
+		error: error.message
 	});
 });
 
