@@ -15,6 +15,7 @@
 		}
 	},
 	"include": ["src"],
+	"exclude": ["src/webfiles/**"],
 	"watchOptions": {
 		"watchFile": "useFsEvents",
 		"watchDirectory": "useFsEvents",
