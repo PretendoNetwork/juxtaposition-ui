@@ -1,5 +1,6 @@
 .git
+.env
 node_modules
-config.json
-certs
-src/logs
+dist
+logs
+uploads
