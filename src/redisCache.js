@@ -5,7 +5,9 @@ const logger = require('./logger');
 const config = require('../config.json');
 const { host, port } = config.redis;
 
-const redisClient = redis.createClient({ host, port });
+const redisClient = redis.createClient({
+	url: `redis://${host}:${port}`
+});
 
 redisClient.on('error', (error) => {
 	logger.error(error);

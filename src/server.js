@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 /* eslint-disable @typescript-eslint/no-var-requires */
 process.title = 'Pretendo - Juxt-Web';
+process.on('SIGTERM', () => {
+	process.exit(0);
+});
+
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
