@@ -11,6 +11,10 @@ import type { Request, Response } from 'express';
 import config from '../config.json';
 
 process.title = 'Pretendo - Juxt-Web';
+process.on('SIGTERM', () => {
+	process.exit(0);
+});
+
 
 const { http: { port } } = config;
 const app = express();
