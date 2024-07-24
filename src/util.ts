@@ -30,15 +30,15 @@ const communityMap = new HashMap<string, string>();
 const userMap = new HashMap<number, string>();
 
 const { ip: friendsIP, port: friendsPort, api_key: friendsKey } = config.grpc.friends;
-const friendsChannel = grpc.createChannel(`${friendsIP}:${friendsPort}`);
-const friendsClient = grpc.createClient(FriendsDefinition, friendsChannel);
+const friendsChannel = createChannel(`${friendsIP}:${friendsPort}`);
+const friendsClient = createClient(FriendsDefinition, friendsChannel);
 
 const { ip: apiIP, port: apiPort, api_key: apiKey } = config.grpc.account;
-const apiChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
-const apiClient = grpc.createClient(APIDefinition, apiChannel);
+const apiChannel = createChannel(`${apiIP}:${apiPort}`);
+const apiClient = createClient(APIDefinition, apiChannel);
 
-const accountChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
-const accountClient = grpc.createClient(AccountDefinition, accountChannel);
+const accountChannel = createChannel(`${apiIP}:${apiPort}`);
+const accountClient = createClient(AccountDefinition, accountChannel);
 
 const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
 const s3 = new aws.S3({
@@ -382,7 +382,7 @@ export async function getFriends(pid: number): Promise<number[]> {
 		const pids =  await friendsClient.getUserFriendPIDs({
 			pid: pid
 		}, {
-			metadata: grpc.Metadata({
+			metadata: Metadata({
 				'X-API-Key': friendsKey
 			})
 		});
@@ -397,7 +397,7 @@ export async function getFriendRequests(pid: number): Promise<FriendRequest[]> {
 		const requests = await friendsClient.getUserFriendRequestsIncoming({
 			pid: pid
 		}, {
-			metadata: grpc.Metadata({
+			metadata: Metadata({
 				'X-API-Key': friendsKey
 			})
 		});
@@ -413,7 +413,7 @@ export async function login(username: string, password: string): Promise<ApiLogi
 		password: password,
 		grantType: 'password'
 	}, {
-		metadata: grpc.Metadata({
+		metadata: Metadata({
 			'X-API-Key': apiKey
 		})
 	});
@@ -423,7 +423,7 @@ export async function refreshLogin(refreshToken: string): Promise<ApiLoginRespon
 	return await apiClient.login({
 		refreshToken: refreshToken
 	}, {
-		metadata: grpc.Metadata({
+		metadata: Metadata({
 			'X-API-Key': apiKey
 		})
 	});
@@ -431,7 +431,7 @@ export async function refreshLogin(refreshToken: string): Promise<ApiLoginRespon
 
 export async function getUserDataFromToken(token: string): Promise<User> {
 	return apiClient.getUserData({}, {
-		metadata: grpc.Metadata({
+		metadata: Metadata({
 			'X-API-Key': apiKey,
 			'X-Token': token
 		})
@@ -442,7 +442,7 @@ export async function getUserDataFromPid(pid: number): Promise<User> {
 	return accountClient.getUserData({
 		pid: pid
 	}, {
-		metadata: grpc.Metadata({
+		metadata: Metadata({
 			'X-API-Key': apiKey
 		})
 	});
