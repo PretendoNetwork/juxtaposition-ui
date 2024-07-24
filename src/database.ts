@@ -25,7 +25,7 @@ let connection: mongoose.Connection;
 mongoose.set('strictQuery', true);
 
 export async function connect(): Promise<void> {
-	await mongoose.connect(`${uri}/${database}`, options);
+	await mongoose.connect(`${uri}/${database}`, options as mongoose.ConnectOptions);
 	connection = mongoose.connection;
 	connection.on('connected', function (this: mongoose.Connection) {
 		info(`MongoDB connected ${this.name}`);

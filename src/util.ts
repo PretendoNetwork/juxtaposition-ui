@@ -3,7 +3,7 @@ import bmp from 'bmp-js';
 import crc32 from 'crc/crc32';
 import crypto from 'crypto';
 import HashMap from 'hashmap';
-import grpc from 'nice-grpc';
+import { createChannel, createClient, Metadata } from 'nice-grpc';
 import pako from 'pako';
 import { PNG } from 'pngjs';
 import sharp from 'sharp';
