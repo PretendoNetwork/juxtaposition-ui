@@ -1,0 +1,55 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es6": true
+    },
+    "globals": {
+        "wiiu": "readonly",
+        "wiiuMemo": "readonly",
+        "wiiuBrowser": "readonly",
+        "wiiuSound": "readonly",
+        "wiiuErrorViewer": "readonly",
+        "wiiuDialog": "readonly",
+        "wiiuMainApplication": "readonly",
+        "Olv": "readonly"
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "rules": {
+        "require-atomic-updates": "warn",
+        "no-case-declarations": "off",
+        "no-empty": "off",
+        "no-console": "off",
+        "linebreak-style": "off",
+        "no-global-assign": "off",
+        "prefer-const": "error",
+        "no-var": "error",
+        "no-unused-vars": "off",
+        "no-extra-semi": "off",
+        "keyword-spacing": "off",
+        "curly": "error",
+        "brace-style": "error",
+        "one-var": [
+            "error",
+            "never"
+        ],
+        "indent": [
+            "error",
+            "tab",
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    },
+    "root": true
+}

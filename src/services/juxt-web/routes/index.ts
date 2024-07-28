@@ -1,0 +1,13 @@
+export { default as PORTAL_SHOW } from '@/services/juxt-web/routes/console/show';
+export { default as PORTAL_COMMUNITIES } from '@/services/juxt-web/routes/console/communities';
+export { default as PORTAL_USER } from '@/services/juxt-web/routes/console/userpage';
+export { default as PORTAL_POST } from '@/services/juxt-web/routes/console/posts';
+export { default as PORTAL_FEED } from '@/services/juxt-web/routes/console/feed';
+export { default as PORTAL_NEWS } from '@/services/juxt-web/routes/console/notifications';
+export { default as PORTAL_MESSAGES } from '@/services/juxt-web/routes/console/messages';
+export { default as PORTAL_TOPICS } from '@/services/juxt-web/routes/console/topics';
+export { default as WEB_LOGIN } from '@/services/juxt-web/routes/web/login';
+export { default as ROBOTS } from '@/services/juxt-web/routes/web/robots';
+export { default as PWA } from '@/services/juxt-web/routes/web/pwa';
+export { default as ADMIN } from '@/services/juxt-web/routes/admin/admin';
+export { default as WEB_FILES } from '@/services/juxt-web/routes/console/web';

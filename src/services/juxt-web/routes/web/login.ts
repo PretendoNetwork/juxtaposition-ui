@@ -1,0 +1,72 @@
+import express from 'express';
+import * as database from '@/database';
+import * as util from '@/util';
+import config from '../../../../../config.json';
+
+const router = express.Router();
+
+router.get('/', async function (req, res) {
+	res.render(req.directory + '/login.ejs', {toast: null, cdnURL: config.CDN_domain,});
+});
+
+router.post('/', async (req, res) => {
+	const { username, password } = req.body;
+	const login = await util.login(username, password).catch((e) => {
+		console.log(e.details);
+		switch (e.details) {
+			case 'INVALID_ARGUMENT: User not found':
+				res.render(req.directory + '/login.ejs', {toast: 'Username was invalid.', cdnURL: config.CDN_domain,});
+				break;
+			case 'INVALID_ARGUMENT: Password is incorrect':
+				res.render(req.directory + '/login.ejs', {toast: 'Password was incorrect.', cdnURL: config.CDN_domain,});
+				break;
+			default:
+				res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
+				break;
+		}
+	});
+	if (!login) {
+		return;
+	}
+
+	const PNID = await util.getUserDataFromToken(login.accessToken);
+	if (!PNID) {
+		return res.render(req.directory + '/login.ejs', {toast: 'Invalid username or password.', cdnURL: config.CDN_domain,});
+	}
+
+	const pid = PNID.pid;
+
+	const discovery = await database.getEndPoint(config.server_environment);
+	const status = discovery?.status ?? 5;
+
+	let message = '';
+	switch (status) {
+		case 3:
+			message = 'Juxt is currently undergoing maintenance. Please try again later.';
+			break;
+		case 4:
+			message = 'Juxt is currently closed. Thank you for your interest.';
+			break;
+		default:
+			message = 'Juxt is currently unavailable. Please try again later.';
+			break;
+	}
+	if (status !== 0) {
+		return res.render(req.directory + '/error.ejs', {
+			code: 504,
+			message: message,
+			cdnURL: config.CDN_domain,
+			lang: req.lang,
+			pid: pid,
+			moderator: req.moderator
+		});
+	}
+	const cookieDomain = (req.hostname.indexOf('miiverse') !== -1) ? '.miiverse.cc' : '.pretendo.network';
+	const expiration = (req.hostname.indexOf('miiverse') !== -1) ? login.expiresIn * 60 * 60 * 24 : login.expiresIn * 60 * 60;
+	res.cookie('access_token', login.accessToken, { domain : cookieDomain, maxAge: expiration });
+	res.cookie('refresh_token', login.refreshToken, { domain : cookieDomain });
+	res.cookie('token_type', 'Bearer', { domain : cookieDomain });
+	res.redirect('/');
+});
+
+export default router;
