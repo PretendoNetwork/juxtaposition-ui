@@ -11,7 +11,28 @@ async function checkBan(request, response, next) {
 		return next();
 	}
 
-	if (config.server_environment !== 'prod' && request.user.serverAccessLevel !== 'test' && request.user.serverAccessLevel !== 'dev') {
+	// Set access levels
+	request.tester = request.user.accessLevel >= 1 && request.user.accessLevel <= 3;
+	request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
+	request.developer = request.user.accessLevel == 3;
+
+	// Check if user has access to the environment
+	let accessAllowed = false;
+	switch (config.server_environment) {
+		case 'dev':
+			accessAllowed = request.developer;
+			break;
+		case 'test':
+			accessAllowed = request.tester || request.moderator || request.developer;
+			break;
+		case 'prod':
+			accessAllowed = true;
+			break;
+		default:
+			accessAllowed = false;
+	}
+
+	if (!accessAllowed) {
 		response.status(500);
 		if (request.directory === 'web') {
 			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev', cdnURL: config.CDN_domain,});
@@ -22,9 +43,6 @@ async function checkBan(request, response, next) {
 			});
 		}
 	}
-	// Set moderator status
-	request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
-	request.developer = request.user.accessLevel == 3;
 	const user = await db.getUserSettings(request.pid);
 	if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
 		user.account_status = 0;
