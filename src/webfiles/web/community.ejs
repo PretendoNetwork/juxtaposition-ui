@@ -56,23 +56,13 @@
                 </div>
             </div>
         </div>
+		<div class="buttons tabs">
+			<a id="recent-tab" class="<%if(type === 0){ %>selected<%}%>" href="/titles/<%= community.olive_community_id %>/new"><%= lang.community.recent %></a>
+			<a id="popular-tab" class="<%if(type === 1){ %>selected<%}%>" href="/titles/<%= community.olive_community_id %>/hot"><%= lang.community.popular %></a>
+			<!--<a id="verified-tab" class="<%if(type === 2){ %>selected<%}%>" href="/titles/<%= community.olive_community_id %>/verified"><%= lang.community.verified %></a>-->
+		</div>
         <%- include('partials/' + template, { bundle }); %>
     </div>
-    <!--<table class="community-page-posts-header switcher">
-        <tbody>
-        <tr>
-            <td>
-                <h4 id="recent-tab" onclick="loadPosts(0)" class="community-page-posts-header-tab active"><%= lang.community.recent %></h4>
-            </td>
-            <td>
-                <h4 id="popular-tab" onclick="loadPosts(1)" class="community-page-posts-header-tab"><%= lang.community.popular %></h4>
-            </td>
-            <td>
-                <h4 id="verified-tab" onclick="loadPosts(2)" class="community-page-posts-header-tab"><%= lang.community.verified %></h4>
-            </td>
-        </tr>
-        </tbody>
-    </table>-->
 </div>
 </body>
 </html>
