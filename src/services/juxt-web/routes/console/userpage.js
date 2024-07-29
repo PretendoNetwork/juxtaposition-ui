@@ -227,7 +227,7 @@ async function userRelations(req, res, userID) {
 	let followers; let communities; let communityMap; let selection;
 
 	if (req.params.type === 'yeahs') {
-		const posts = await POST.find({ yeahs: req.pid, removed: false }).sort({created_at: -1});
+		const posts = await POST.find({ yeahs: req.pid, removed: false }).sort({created_at: -1}).limit(config.post_limit);
 		/*let posts = await POST.aggregate([
             { $match: { id: { $in: likesArray } } },
             {$addFields: {
