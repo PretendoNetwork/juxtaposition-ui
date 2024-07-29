@@ -25,9 +25,14 @@ async function auth(request, response, next) {
 		try {
 			request.user = await util.getUserDataFromToken(request.cookies.access_token);
 			request.pid = request.user.pid;
+
+			request.session.user = request.user;
+			request.session.pid = request.pid;
 			if (request.user.accessLevel !== 3) {
 				request.user = null;
 				request.pid = null;
+				request.session.user = null;
+				request.session.pid = null;
 			}
 		} catch (e) {
 			console.log(e);
