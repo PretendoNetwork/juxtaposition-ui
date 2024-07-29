@@ -2,6 +2,7 @@
 <head>
     <title>Post by <%= post.screen_name %></title>
     <%- include('partials/head'); %>
+	<%if(!post.removed) {%>
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="<%= post.screen_name %> (@<%= postPNID.username %>) - <%= community.name %>">
     <meta itemprop="description" content="<%= post.body %>
@@ -39,7 +40,7 @@
 	<meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
     <%}%>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
-
+<% } %>
 </head>
 <body>
 <div id="main">
