@@ -13,14 +13,14 @@
         <% messages.forEach(function(message) { %>
             <div id="message-<%= message.id %>" class="post scroll <%if(message.pid === pid) {%>my-post<%} else {%>other-post<%}%>">
                 <a href="/users/show?pid=<%= message.pid %>" data-pjax="#body" class="scroll-focus mii-icon-container">
-                    <img src="https://pretendo-cdn.b-cdn.net<%= message.mii_face_url.substring(message.mii_face_url.lastIndexOf('/mii')) %>" class="mii-icon">
+                    <img src="https://cdn.pretendo.cc<%= message.mii_face_url.substring(message.mii_face_url.lastIndexOf('/mii')) %>" class="mii-icon">
                 </a>
                 <div class="post-body">
                     <%if(message.screenshot) {%>
-                        <img class="message-viewer-bubble-sent-screenshot" src="https://pretendo-cdn.b-cdn.net<%= message.screenshot %>">
+                        <img class="message-viewer-bubble-sent-screenshot" src="https://cdn.pretendo.cc<%= message.screenshot %>">
                     <%}%>
                     <%if(message.painting) {%>
-                        <img class="message-viewer-bubble-sent-memo" src="https://pretendo-cdn.b-cdn.net/paintings/<%=message.pid%>/<%=message.id%>.png">
+                        <img class="message-viewer-bubble-sent-memo" src="https://cdn.pretendo.cc/paintings/<%=message.pid%>/<%=message.id%>.png">
                     <%}else {%>
                         <p class="post-content"><%= message.body %></p>
                     <%}%>

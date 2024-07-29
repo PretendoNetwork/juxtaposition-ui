@@ -4,7 +4,7 @@
 		<li id="<%= user.pid %>">
 			<div class="hover">
 				<a href="/users/<%= user.pid %>" data-pjax="#body" class="icon-container notify">
-				<img src="https://pretendo-cdn.b-cdn.net/mii/<%= user.pid %>/normal_face.png" class="icon">
+				<img src="https://cdn.pretendo.cc/mii/<%= user.pid %>/normal_face.png" class="icon">
 			</a>
 			<a class="body" href="/users/<%= user.pid %>">
 				<span class="text"><span class="nick-name"><%= user.screen_name %></span>
@@ -16,7 +16,7 @@
 		<li id="<%= community %>">
 			<div class="hover">
 				<a href="/titles/<%= community %>/new" data-pjax="#body" class="icon-container notify">
-					<img src="https://pretendo-cdn.b-cdn.net/icons/<%= community %>/128.png" class="icon">
+					<img src="https://cdn.pretendo.cc/icons/<%= community %>/128.png" class="icon">
 				</a>
 				<a class="body" href="/titles/<%= community %>/new">
 					<span class="text"><span class="nick-name"><%= bundle.communityMap.get(community) %></span>

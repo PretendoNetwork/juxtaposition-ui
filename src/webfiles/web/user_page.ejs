@@ -31,7 +31,7 @@
         <div class="community-top">
             <img class="banner" src="/images/banner.png" alt="">
             <div class="community-info">
-                <img class="user-icon <%if(pnid.accessLevel > 2) {%>verified<%}%>" src="<%if (pnid.deleted || banned) { %>/images/bandwidthlost.png<% } else { %>https://pretendo-cdn.b-cdn.net/mii/<%=pnid.pid%>/normal_face.png<%}%>">
+                <img class="user-icon <%if(pnid.accessLevel > 2) {%>verified<%}%>" src="<%if (pnid.deleted || banned) { %>/images/bandwidthlost.png<% } else { %>https://cdn.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png<%}%>">
                 <h2 class="community-title"><% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %> @<%= pnid.username %><%}%><%if(pnid.accessLevel >= 2) {%><span class="verified-badge">✓</span><%}%></h2>
                 <%if(pnid.pid !== pid && pid !== 1000000000 && !pnid.deleted && !banned) {%>
                 <% var following = parentUserContent.followed_users.indexOf(userContent.pid) !== -1; %>

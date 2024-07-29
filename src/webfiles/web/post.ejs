@@ -9,9 +9,9 @@
 
 <%= post.reply_count %> 🗨️  <%= post.empathy_count %> ❤️">
     <% if(post.screenshot !== '') { %>
-        <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net<%= post.screenshot %>">
+        <meta itemprop="image" content="https://cdn.pretendo.cc<%= post.screenshot %>">
     <%} else if(post.painting !== '') { %>
-        <meta itemprop="image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png">
+        <meta itemprop="image" content="https://cdn.pretendo.cc/paintings/<%= post.pid %>/<%= post.id %>.png">
     <%}%>
 
     <!-- Open Graph Meta Tags -->
@@ -21,9 +21,9 @@
 <%= post.reply_count %> 🗨️  <%= post.empathy_count %> ❤️"/>
     <meta property="og:url" content="https://juxt.pretendo.cc/posts/<%= post.id %>"/>
     <% if(post.screenshot !== '') { %>
-	<meta property="og:image" content="https://pretendo-cdn.b-cdn.net<%= post.screenshot %>"/>
+	<meta property="og:image" content="https://cdn.pretendo.cc<%= post.screenshot %>"/>
     <%} else if(post.painting !== '') { %>
-	<meta property="og:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
+	<meta property="og:image" content="https://cdn.pretendo.cc/paintings/<%= post.pid %>/<%= post.id %>.png"/>
     <%}%>
     <meta property="og:site_name" content="Juxtaposition - Pretendo Network" />
 
@@ -35,9 +35,9 @@
 <%= post.reply_count %> 🗨️  <%= post.empathy_count %> ❤️"/>
     <meta name="twitter:site" content="@PretendoNetwork"/>
     <% if(post.screenshot !== '') { %>
-	<meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net<%= post.screenshot %>"/>
+	<meta name="twitter:image" content="https://cdn.pretendo.cc<%= post.screenshot %>"/>
     <%} else if(post.painting !== '') { %>
-	<meta name="twitter:image" content="https://pretendo-cdn.b-cdn.net/paintings/<%= post.pid %>/<%= post.id %>.png"/>
+	<meta name="twitter:image" content="https://cdn.pretendo.cc/paintings/<%= post.pid %>/<%= post.id %>.png"/>
     <%}%>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
 <% } %>
