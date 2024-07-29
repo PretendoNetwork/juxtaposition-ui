@@ -11,6 +11,9 @@
 		<div class="buttons tabs">
 			<a id="post-reports" class="selected" href="/admin/posts">Posts</a>
 			<a id="account-reports" href="/admin/accounts">Accounts</a>
+			<% if (developer) { %>
+			<a id="communities" href="/admin/communities">Communities</a>
+			<% } %>
 		</div>
         <% if(reports.length === 0) {%>
             <p>No Reports found</p>

@@ -34,12 +34,24 @@ function verifyConnected() {
 	}
 }
 
-async function getCommunities(numberOfCommunities) {
+async function getCommunities(numberOfCommunities, offset) {
 	verifyConnected();
+	if (!offset) {
+		offset = 0;
+	}
 	if (numberOfCommunities === -1) {
-		return COMMUNITY.find({ parent: null, type: [0,2] });
+		return COMMUNITY.find({ parent: null, type: [0,2] }).skip(offset);
 	} else {
-		return COMMUNITY.find({ parent: null, type: [0,2] }).limit(numberOfCommunities);
+		return COMMUNITY.find({ parent: null, type: [0,2] }).skip(offset).limit(numberOfCommunities);
+	}
+}
+
+async function getCommunitiesFuzzySearch(search_key, limit, offset) {
+	verifyConnected();
+	if (limit === -1) {
+		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset);
+	} else {
+		return COMMUNITY.find(FuzzySearch(['name'], search_key)).skip(offset).limit(limit);
 	}
 }
 
@@ -492,6 +504,7 @@ async function getReportById(id) {
 module.exports = {
 	connect,
 	getCommunities,
+	getCommunitiesFuzzySearch,
 	getMostPopularCommunities,
 	getNewCommunities,
 	getSubCommunities,

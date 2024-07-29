@@ -41,6 +41,7 @@
     "mongoose-fuzzy-search-next": "^1.0.13",
     "mongoose-unique-validator": "^3.0.0",
     "morgan": "^1.10.0",
+	"multer": "^1.4.5-lts.1",
     "nice-grpc": "^2.1.4",
     "node-rsa": "^1.1.1",
     "node-snowflake": "0.0.1",
@@ -60,7 +61,6 @@
     "eslint": "^8.42.0",
     "express-slow-down": "^1.4.0",
     "express-subdomain": "^1.0.5",
-    "multer": "^1.4.2",
     "request": "^2.88.2",
     "tsc-alias": "^1.8.6",
     "typescript": "^5.1.3"

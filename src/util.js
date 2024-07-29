@@ -15,9 +15,11 @@ const { APIDefinition } = require('@pretendonetwork/grpc/api/api_service');
 const translations = require('./translations');
 const HashMap = require('hashmap');
 const TGA = require('tga');
+const imagePixels = require('image-pixels');
 const pako = require('pako');
 const PNG = require('pngjs').PNG;
 const bmp = require('bmp-js');
+const sharp = require('sharp');
 const aws = require('aws-sdk');
 const crc32 = require('crc/crc32');
 const communityMap = new HashMap();
@@ -225,14 +227,30 @@ function setName(pid, name) {
 	userMap.delete(pid);
 	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu,'').replace(/\u202e/g, ''));
 }
-function resizeImage(file, width, height) {
-	sharp(file)
-		.resize({ height: height, width: width })
-		.toBuffer()
-		.then(data => {
-			return data;
-		});
+async function resizeImage(file, width, height) {
+	return new Promise(function (resolve) {
+		const image = Buffer.from(file, 'base64');
+		sharp(image)
+			.resize({ height: height, width: width })
+			.toBuffer()
+			.then(data => {
+				resolve(data);
+			}).catch(err => console.log(err));
+	});
 }
+
+async function getTGAFromPNG(image) {
+	const pngData = await imagePixels(Buffer.from(image));
+	const tga = TGA.createTgaBuffer(pngData.width, pngData.height, pngData.data);
+	let output;
+	try {
+		output = pako.deflate(tga, {level: 6});
+	} catch (err) {
+		console.error(err);
+	}
+	return new Buffer(output).toString('base64').trim();
+}
+
 function createBMPTgaBuffer(width, height, pixels, dontFlipY) {
 	const buffer = Buffer.alloc(18 + pixels.length);
 	// write header
@@ -459,6 +477,7 @@ module.exports = {
 	refreshCache,
 	setName,
 	resizeImage,
+	getTGAFromPNG,
 	createBMPTgaBuffer,
 	processLanguage,
 	uploadCDNAsset,

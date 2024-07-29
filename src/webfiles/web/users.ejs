@@ -11,6 +11,9 @@
 		<div class="buttons tabs">
 			<a id="post-reports" href="/admin/posts">Posts</a>
 			<a id="account-reports" class="selected" href="/admin/accounts">Accounts</a>
+			<% if (developer) { %>
+			<a id="communities" href="/admin/communities">Communities</a>
+			<% } %>
 		</div>
 		<input type="string" id="search" placeholder="Search..." value="<%= search %>">
         <% if(users.length === 0) {%>

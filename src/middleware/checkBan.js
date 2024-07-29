@@ -24,6 +24,7 @@ async function checkBan(request, response, next) {
 	}
 	// Set moderator status
 	request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
+	request.developer = request.user.accessLevel == 3;
 	const user = await db.getUserSettings(request.pid);
 	if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
 		user.account_status = 0;
