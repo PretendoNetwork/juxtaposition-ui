@@ -27,7 +27,7 @@
     <h2 id="title" class="page-header"><%= lang.global.user_page %></h2>
     <%- include('partials/nav_bar', { selection: -1, pid: pid }); %>
     <div id="toast"></div>
-    <div id="wrapper">
+    <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
             <img class="banner" src="/images/banner.png" alt="">
             <div class="community-info">
@@ -43,7 +43,7 @@
             </div>
 			<% if (!pnid.deleted && !banned) { %>
             <h4 class="community-description">
-                <!--<%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%>
+                <%if(userSettings.profile_comment_visibility){%> <%= userSettings.profile_comment%> <%}else {%><%= lang.global.private %><%}%>
                     <%if(pnid.tierName) {%>
                     <%if(pnid.tierName === 'Mario') {%>
                         <span class="supporter-star mario">|
@@ -85,7 +85,7 @@
                         <span class="supporter-star tester">|
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" fill="none" stroke="currentColor"><path d="M104,32V93.8a8.4,8.4,0,0,1-1.1,4.1l-63.6,106A8,8,0,0,0,46.1,216H209.9a8,8,0,0,0,6.8-12.1l-63.6-106a8.4,8.4,0,0,1-1.1-4.1V32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="88" y1="32" x2="168" y2="32" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M62.6,165c11.8-8.7,32.1-13.6,65.4,3,35.7,17.9,56.5,10.8,67.9,1.1" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
                 </span>
-                    <%}%>-->
+                    <%}%>
             </h4>
             <div class="info-boxes-wrapper">
                 <div>
@@ -131,6 +131,13 @@
 				<% } %>
             </div>
         </div>
+		<div class="buttons tabs">
+			<a id="tab-header-post" class="<%if(selection === 0){ %>selected<%}%>" href="<%= link %>"><%= lang.user_page.posts %></a>
+			<a id="tab-header-friends" class="<%if(selection === 1){ %>selected<%}%>" href="<%= link %>friends"><%= lang.user_page.friends %></a>
+			<a id="tab-header-following" class="<%if(selection === 2){ %>selected<%}%>" href="<%= link %>following"><%= lang.user_page.following %></a>
+			<a id="tab-header-followers" class="<%if(selection === 3){ %>selected<%}%>" href="<%= link %>followers"><%= lang.user_page.followers %></a>
+			<a id="tab-header-yeahs" class="<%if(selection === 4){ %>selected<%}%>" href="<%= link %>yeahs"><%= lang.global.yeahs %></a>
+		</div>
         <%- include('partials/' + template, { bundle }); %>
 		<% } %>
     </div>

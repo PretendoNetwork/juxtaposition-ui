@@ -281,7 +281,7 @@ async function userRelations(req, res, userID) {
 	if (req.params.type === 'friends') {
 		followers = await SETTINGS.find({ pid: friends });
 		communities = [];
-		selection = 2;
+		selection = 1;
 	} else if (req.params.type === 'followers') {
 		followers = await database.getFollowingUsers(userContent);
 		communities = [];
@@ -371,13 +371,18 @@ async function morePosts(req, res, userID) {
 
 async function moreYeahPosts(req, res, userID) {
 	let offset = parseInt(req.query.offset);
-	const parentUserContent = await database.getUserContent(userID);
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}
-	const likesArray = await userContent.likes.slice().reverse();
+	let likesArray;
+	try {
+		likesArray = await userContent.likes.slice().reverse();
+	} catch (e) {
+		console.log(e);
+		likesArray = [];
+	}
 	const posts = await POST.aggregate([
 		{ $match: { id: { $in: likesArray }, removed: false } },
 		{$addFields: {
