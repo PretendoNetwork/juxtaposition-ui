@@ -64,6 +64,7 @@
                 <% }); %>
         </div>
     </div>
+	<% if (pid !== 1000000000) { %>
 	<div id="report-post-page" class="add-post-page official-user-post" style="display: none">
         <form method="post" action="/posts/<%=post.id%>/report" id="report-form" name="report" data-is-own-title="1" data-is-identified="1">
             <input type="hidden" name="post_id" id="report-post-id" value="<%= post.id %>"/>
@@ -98,8 +99,8 @@
             <input type="submit" class="post-button fixed-bottom-button" value="Submit">
 			</div>
         </form>
-
 	</div>
+	<% } %>
 </div>
 </body>
 </html>

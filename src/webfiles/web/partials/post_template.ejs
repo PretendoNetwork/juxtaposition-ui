@@ -46,7 +46,7 @@
 	</div>
 <%}%>
 </div>
-<%if(locals.mainPost && !post.removed) {%>
+<%if(locals.mainPost && !post.removed && pid !== 1000000000) {%>
 	<button id="header-communities-button" class="report" href="#" data-post="<%= post.id %>" onclick="reportPost(this)">Report Post</button>
 	<a id="report-launcher" style="display: none" data-module-hide="post" data-module-show="report-post-page" data-header="false" data-menu="false"></a>
 <%}%>
