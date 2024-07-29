@@ -45,7 +45,8 @@ app.use(session({
 	store: new RedisStore({ client: redisClient }),
 	secret: config.aes_key,
 	resave: false,
-	saveUninitialized: false
+	saveUninitialized: false,
+	ttl: 60
 }));
 
 // import the servers into one
