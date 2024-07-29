@@ -160,7 +160,7 @@ router.put('/:reportID', async function (req, res) {
 });
 
 router.get('/communities', async function (req, res) {
-	if (!req.moderator) {
+	if (!req.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -185,7 +185,7 @@ router.get('/communities', async function (req, res) {
 });
 
 router.get('/communities/new', async function (req, res) {
-	if (!req.moderator) {
+	if (!req.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -281,6 +281,9 @@ router.post('/communities/:id', upload.fields([{name: 'browserIcon', maxCount: 1
 	name: 'CTRbrowserHeader',
 	maxCount: 1
 }, {name: 'WiiUbrowserHeader', maxCount: 1}]), async (req, res) => {
+	if (!req.developer) {
+		return res.redirect('/titles/show');
+	}
 	JSON.parse(JSON.stringify(req.files));
 	const communityID = req.params.id;
 	let tgaIcon;
