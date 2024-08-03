@@ -394,8 +394,7 @@ header svg {
     white-space: nowrap;
     text-overflow: ellipsis;
     top: 8px;
-    position: absolute;
-    overflow: clip
+    position: absolute
 }
 
 .post .community-banner,
