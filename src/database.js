@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const mongoose = require('mongoose');
 const { FuzzySearch } = require('mongoose-fuzzy-search-next');
 const { mongoose: mongooseConfig } = require('../config.json');

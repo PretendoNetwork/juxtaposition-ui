@@ -23,6 +23,8 @@ async function setValue(key, value, expireTime) {
 	}
 
 	await redisClient.set(key, value, 'EX', expireTime);
+	// Seems to be a library bug, so we have to manually set the expire time
+	await redisClient.expire(key, expireTime);
 	return true;
 }
 
