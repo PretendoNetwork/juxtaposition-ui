@@ -3,3 +3,4 @@ config.json
 certs
 src/logs
 uploads
+.vscode

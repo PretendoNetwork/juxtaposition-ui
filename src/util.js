@@ -20,7 +20,7 @@ const pako = require('pako');
 const PNG = require('pngjs').PNG;
 const bmp = require('bmp-js');
 const sharp = require('sharp');
-const aws = require('aws-sdk');
+const { S3 } = require('@aws-sdk/client-s3');
 const crc32 = require('crc/crc32');
 const communityMap = new HashMap();
 const userMap = new HashMap();
@@ -36,11 +36,15 @@ const apiClient = grpc.createClient(APIDefinition, apiChannel);
 const accountChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
 const accountClient = grpc.createClient(AccountDefinition, accountChannel);
 
-const spacesEndpoint = new aws.Endpoint('nyc3.digitaloceanspaces.com');
-const s3 = new aws.S3({
+const spacesEndpoint = new URL(config.aws.endpoint);
+const s3 = new S3({
+	forcePathStyle: true,
 	endpoint: spacesEndpoint,
-	accessKeyId: config.aws.spaces.key,
-	secretAccessKey: config.aws.spaces.secret
+	region: config.aws.region,
+	credentials: {
+		accessKeyId: config.aws.spaces.key,
+		secretAccessKey: config.aws.spaces.secret,
+	},
 });
 
 nameCache();
@@ -321,7 +325,7 @@ async function uploadCDNAsset(bucket, key, data, acl) {
 		ACL: acl
 	};
 
-	await s3.putObject(awsPutParams).promise();
+	await s3.putObject(awsPutParams);
 }
 async function newNotification(notification) {
 	const now = new Date();

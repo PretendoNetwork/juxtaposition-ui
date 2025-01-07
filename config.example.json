@@ -13,14 +13,17 @@
         "database": "Database",
         "options": {
             "useNewUrlParser": true,
-            "useUnifiedTopology": true
+            "useUnifiedTopology": true,
+			"directConnection": true
         }
     },
     "aws": {
         "spaces": {
             "key": "",
             "secret": ""
-        }
+        },
+		"endpoint": "https://nyc3.digitaloceanspaces.com",
+		"region": "us-east-1"
     },
     "grpc": {
         "friends": {
