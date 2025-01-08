@@ -7,7 +7,7 @@ const { SETTINGS } = require('../../../../models/settings');
 const { COMMUNITY } = require('../../../../models/communities');
 const util = require('../../../../util');
 const moment = require('moment');
-const multer  = require('multer');
+const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const config = require('../../../../../config.json');
@@ -26,9 +26,11 @@ router.get('/posts', async function (req, res) {
 
 	const posts = await POST.aggregate([
 		{ $match: { id: { $in: postIDs } } },
-		{$addFields: {
-			'__order': { $indexOfArray: [ postIDs, '$id' ] }
-		}},
+		{
+			$addFields: {
+				'__order': { $indexOfArray: [postIDs, '$id'] }
+			}
+		},
 		{ $sort: { '__order': 1 } },
 		{ $project: { index: 0, _id: 0 } }
 	]);
@@ -113,7 +115,7 @@ router.post('/accounts/:pid', async (req, res) => {
 	}
 
 	const { pid } = req.params;
-	await SETTINGS.findOneAndUpdate({pid: pid}, {
+	await SETTINGS.findOneAndUpdate({ pid: pid }, {
 		account_status: req.body.account_status,
 		ban_lift_date: req.body.ban_lift_date,
 		ban_reason: `${req.user.username} (${req.pid}): ${req.body.ban_reason}`
@@ -200,7 +202,7 @@ router.get('/communities/new', async function (req, res) {
 	});
 });
 
-router.post('/communities/new', upload.fields([{name: 'browserIcon', maxCount: 1}, { name: 'CTRbrowserHeader', maxCount: 1}, { name: 'WiiUbrowserHeader', maxCount: 1}]), async (req, res) => {
+router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 1 }, { name: 'CTRbrowserHeader', maxCount: 1 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
 	if (!req.developer) {
 		return res.redirect('/titles/show');
 	}
@@ -258,7 +260,8 @@ router.get('/communities/:community_id', async function (req, res) {
 	if (!req.developer) {
 		return res.redirect('/titles/show');
 	}
-	const community = await COMMUNITY.findOne({olive_community_id: req.params.community_id}).exec();
+
+	const community = await COMMUNITY.findOne({ olive_community_id: req.params.community_id }).exec();
 
 	if (!community) {
 		return res.redirect('/titles/show');
@@ -277,13 +280,14 @@ router.get('/communities/:community_id', async function (req, res) {
 
 });
 
-router.post('/communities/:id', upload.fields([{name: 'browserIcon', maxCount: 1}, {
+router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 1 }, {
 	name: 'CTRbrowserHeader',
 	maxCount: 1
-}, {name: 'WiiUbrowserHeader', maxCount: 1}]), async (req, res) => {
+}, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
 	if (!req.developer) {
 		return res.redirect('/titles/show');
 	}
+
 	JSON.parse(JSON.stringify(req.files));
 	const communityID = req.params.id;
 	let tgaIcon;
@@ -325,12 +329,16 @@ router.post('/communities/:id', upload.fields([{name: 'browserIcon', maxCount: 1
 		name: req.body.name,
 		description: req.body.description,
 	};
-	await COMMUNITY.findOneAndUpdate({community_id: communityID}, {$set: document}, {upsert: true}).exec();
+	await COMMUNITY.findOneAndUpdate({ community_id: communityID }, { $set: document }, { upsert: true }).exec();
 
 	res.redirect(`/admin/communities/${communityID}`);
 });
 
 router.delete('/communities/:id', async (req, res) => {
+	if (!req.developer) {
+		return res.redirect('/titles/show');
+	}
+
 	const { id } = req.params;
 
 	await COMMUNITY.findByIdAndRemove(id).exec();
@@ -343,7 +351,7 @@ router.delete('/communities/:id', async (req, res) => {
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function generateCommunityUID(length) {
 	let id = crypto.getRandomValues(new Uint32Array(1)).toString().substring(0, length);
-	const inuse = await COMMUNITY.findOne({community_id: id});
+	const inuse = await COMMUNITY.findOne({ community_id: id });
 	id = (inuse ? await generateCommunityUID(length) : id);
 	return id;
 }
