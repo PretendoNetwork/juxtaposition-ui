@@ -20,7 +20,7 @@ const pako = require('pako');
 const PNG = require('pngjs').PNG;
 const bmp = require('bmp-js');
 const sharp = require('sharp');
-const { S3 } = require('@aws-sdk/client-s3');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const crc32 = require('crc/crc32');
 const communityMap = new HashMap();
 const userMap = new HashMap();
@@ -36,10 +36,9 @@ const apiClient = grpc.createClient(APIDefinition, apiChannel);
 const accountChannel = grpc.createChannel(`${apiIP}:${apiPort}`);
 const accountClient = grpc.createClient(AccountDefinition, accountChannel);
 
-const spacesEndpoint = new URL(config.aws.endpoint);
-const s3 = new S3({
+const s3 = new S3Client({
+	endpoint: config.aws.endpoint,
 	forcePathStyle: true,
-	endpoint: spacesEndpoint,
 	region: config.aws.region,
 	credentials: {
 		accessKeyId: config.aws.spaces.key,
@@ -318,14 +317,19 @@ function processLanguage(paramPackData) {
 	}
 }
 async function uploadCDNAsset(bucket, key, data, acl) {
-	const awsPutParams = {
+	const awsPutParams = new PutObjectCommand({
 		Body: data,
 		Key: key,
 		Bucket: bucket,
 		ACL: acl
-	};
-
-	await s3.putObject(awsPutParams);
+	});
+	try {
+		await s3.send(awsPutParams);
+		return true;
+	} catch (e) {
+		console.log(e);
+		return false;
+	}
 }
 async function newNotification(notification) {
 	const now = new Date();

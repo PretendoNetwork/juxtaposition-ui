@@ -69,11 +69,29 @@ router.post('/new', async function (req, res) {
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		painting = req.body.painting.replace(/\0/g, '').trim();
 		paintingURI = await util.processPainting(painting, true);
-		await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read');
+		if (!await util.uploadCDNAsset('pn-cdn', `paintings/${req.pid}/${postID}.png`, paintingURI, 'public-read')) {
+			res.status(422);
+			return res.render(req.directory + '/error.ejs', {
+				code: 422,
+				message: 'Upload failed. Please try again later.',
+				pid: req.pid,
+				lang: req.lang,
+				cdnURL: config.CDN_domain
+			});
+		}
 	}
 	if (req.body.screenshot) {
 		screenshot = req.body.screenshot.replace(/\0/g, '').trim();
-		await util.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read');
+		if (await util.uploadCDNAsset('pn-cdn', `screenshots/${req.pid}/${postID}.jpg`, Buffer.from(screenshot, 'base64'), 'public-read')) {
+			res.status(422);
+			return res.render(req.directory + '/error.ejs', {
+				code: 422,
+				message: 'Upload failed. Please try again later.',
+				pid: req.pid,
+				lang: req.lang,
+				cdnURL: config.CDN_domain
+			});
+		}
 	}
 
 	let miiFace;
