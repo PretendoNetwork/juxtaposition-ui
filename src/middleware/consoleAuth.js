@@ -35,7 +35,7 @@ async function auth(request, response, next) {
 				request.session.pid = null;
 			}
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 			request.user = null;
 			request.pid = null;
 		}

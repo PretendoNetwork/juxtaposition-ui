@@ -202,7 +202,7 @@ async function newPost(req, res) {
 	const community = await database.getCommunityByID(req.body.community_id);
 	if (!community || !userSettings || !req.user) {
 		res.status(403);
-		console.log('missing data');
+		console.error('missing data');
 		return res.redirect('/titles/show');
 	}
 	if (req.params.post_id && (req.body.body === '' && req.body.painting === '' && req.body.screenshot === '')) {

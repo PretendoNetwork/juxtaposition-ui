@@ -127,7 +127,7 @@ function processServiceToken(encryptedToken) {
 
 		return token.pid;
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 		return null;
 	}
 
@@ -179,7 +179,7 @@ async function processPainting(painting, isTGA) {
 		try {
 			tga = new TGA(Buffer.from(output));
 		} catch (e) {
-			console.log(e);
+			console.error(e);
 			return null;
 		}
 		const png = new PNG({
@@ -238,7 +238,7 @@ async function resizeImage(file, width, height) {
 			.toBuffer()
 			.then(data => {
 				resolve(data);
-			}).catch(err => console.log(err));
+			}).catch(err => console.error(err));
 	});
 }
 
@@ -327,7 +327,7 @@ async function uploadCDNAsset(bucket, key, data, acl) {
 		await s3.send(awsPutParams);
 		return true;
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 		return false;
 	}
 }

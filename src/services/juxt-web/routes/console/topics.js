@@ -10,7 +10,6 @@ router.get('/', async function (req, res) {
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
 	const tag = req.query.topic_tag;
-	console.log(tag);
 	if (!userContent || !tag) {
 		return res.redirect('/404');
 	}

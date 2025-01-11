@@ -142,7 +142,7 @@ async function userPage(req, res, userID) {
 		return res.redirect('/404');
 	}
 	const pnid = userID === req.pid ? req.user : await util.getUserDataFromPid(userID).catch((e) => {
-		console.log(e.details);
+		console.error(e.details);
 	});
 	const userContent = await database.getUserContent(userID);
 	if (isNaN(userID) || !pnid || !userContent) {
@@ -380,7 +380,7 @@ async function moreYeahPosts(req, res, userID) {
 	try {
 		likesArray = await userContent.likes.slice().reverse();
 	} catch (e) {
-		console.log(e);
+		console.error(e);
 		likesArray = [];
 	}
 	const posts = await POST.aggregate([

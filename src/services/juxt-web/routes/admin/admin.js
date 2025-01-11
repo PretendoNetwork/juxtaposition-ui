@@ -83,7 +83,7 @@ router.get('/accounts/:pid', async function (req, res) {
 		return res.redirect('/titles/show');
 	}
 	const pnid = await util.getUserDataFromPid(req.params.pid).catch((e) => {
-		console.log(e.details);
+		console.error(e.details);
 	});
 	const userContent = await database.getUserContent(req.params.pid);
 	if (isNaN(req.params.pid) || !pnid || !userContent) {
@@ -211,7 +211,6 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	if (!req.files || !req.files.browserIcon || !req.files.CTRbrowserHeader || !req.files.WiiUbrowserHeader) {
 		return res.sendStatus(422);
 	}
-	console.log(JSON.stringify(req.files));
 
 	// browser icon
 	const icon128 = await util.resizeImage(req.files.browserIcon[0].buffer.toString('base64'), 128, 128);

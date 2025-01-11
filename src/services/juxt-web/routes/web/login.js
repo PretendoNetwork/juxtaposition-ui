@@ -14,7 +14,7 @@ router.get('/', async function (req, res) {
 router.post('/', async (req, res) => {
 	const { username, password } = req.body;
 	const login = await util.login(username, password).catch((e) => {
-		console.log(e.details);
+		console.error(e.details);
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
 				res.render(req.directory + '/login.ejs', {toast: 'Username was invalid.', cdnURL: config.CDN_domain,});
