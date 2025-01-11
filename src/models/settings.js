@@ -8,6 +8,8 @@ const SettingsSchema = new Schema({
 		default: 0
 	},
 	ban_lift_date: Date,
+	// TODO: Move bans to their own collection. User settings should be scoped to older the user
+	banned_by: Number,
 	ban_reason: String,
 	profile_comment: {
 		type: String,

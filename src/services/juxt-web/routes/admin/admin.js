@@ -118,7 +118,8 @@ router.post('/accounts/:pid', async (req, res) => {
 	await SETTINGS.findOneAndUpdate({ pid: pid }, {
 		account_status: req.body.account_status,
 		ban_lift_date: req.body.ban_lift_date,
-		ban_reason: `${req.user.username} (${req.pid}): ${req.body.ban_reason}`
+		banned_by: req.pid,
+		ban_reason: req.body.ban_reason
 	});
 
 	res.json({
