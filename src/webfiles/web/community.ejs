@@ -5,13 +5,13 @@
     <!-- Google / Search Engine Tags -->
     <meta itemprop="name" content="Juxt - <%= community.name %>">
     <meta itemprop="description" content="<%= community.description %>">
-    <meta itemprop="image" content="https://cdn.pretendo.cc/icons/<%= community.olive_community_id %>/128.png">
+    <meta itemprop="image" content="<%= cdnURL %>/icons/<%= community.olive_community_id %>/128.png">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Juxt - <%= community.name %>"/>
     <meta property="og:description" content="<%= community.description %>"/>
     <meta property="og:url" content="https://juxt.pretendo.cc/communities/<%= community.olive_community_id %>/new"/>
-    <meta property="og:image" content="https://cdn.pretendo.cc/icons/<%= community.olive_community_id %>/128.png"/>
+    <meta property="og:image" content="<%= cdnURL %>/icons/<%= community.olive_community_id %>/128.png"/>
     <meta property="og:site_name" content="Juxtaposition" />
 
     <!-- Twitter Meta Tags -->
@@ -19,7 +19,7 @@
     <meta name="twitter:title" content="Juxt - <%= community.name %>"/>
     <meta name="twitter:description" content="<%= community.description %>"/>
     <meta name="twitter:site" content="@PretendoNetwork"/>
-    <meta name="twitter:image" content="https://cdn.pretendo.cc/icons/<%= community.olive_community_id %>/128.png"/>
+    <meta name="twitter:image" content="<%= cdnURL %>/icons/<%= community.olive_community_id %>/128.png"/>
     <meta name="twitter:creator" content="@PretendoNetwork"/>
 
 </head>
@@ -30,9 +30,9 @@
     <div id="toast"></div>
     <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
-            <img class="banner" src="https://cdn.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"/>
+            <img class="banner" src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"/>
             <div class="community-info">
-                <img class="user-icon" src="https://cdn.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"/>
+                <img class="user-icon" src="<%= cdnURL %>/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"/>
                 <h2 class="community-title"><%= community.name %></h2>
                 <%if(community.permissions.open){%>
                     <% var following = userContent.followed_communities.indexOf(community.olive_community_id) !== -1; %>

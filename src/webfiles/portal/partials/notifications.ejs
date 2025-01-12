@@ -5,7 +5,7 @@
     <% if(notification.type === 'follow') {%>
     <li>
         <a href="/users/<%= notification.objectID %>" data-pjax="#body" class="icon-container notify">
-            <img src="https://cdn.pretendo.cc/mii/<%= notification.objectID %>/normal_face.png" class="icon">
+            <img src="<%= cdnURL %>/mii/<%= notification.objectID %>/normal_face.png" class="icon">
         </a>
         <div class="body">
             <% if(notification.users.length === 1) {%>

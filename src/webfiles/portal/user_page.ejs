@@ -15,7 +15,7 @@
             <img src="<%= cdnURL %>/images/banner.png" class="header-banner with-top-button">
         </div>
         <div class="community-info info-content with-header-banner">
-            <span class="icon-container"><img src="<%if (banned || pnid.deleted) { %>/images/bandwidthlost.png<% } else { %>https://cdn.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon" alt=""></span>
+            <span class="icon-container"><img src="<%if (banned || pnid.deleted) { %>/images/bandwidthlost.png<% } else { %><%= cdnURL %>/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon" alt=""></span>
             <%if(pnid.pid !== pid && !pnid.deleted && !(banned)) {%>
                 <a href="#" class="favorite-button favorite-button-mini button <%if(parentUserContent.followed_users.indexOf(userContent.pid) !== -1){ %>checked<%}%>"  onclick="follow(this)" data-sound="SE_WAVE_CHECKBOX_UNCHECK" data-url="/users/follow" data-community-id="<%=pnid.pid%>"></a>
                 <%if(friends.indexOf(pid) !== -1) { /*Is mutual*/%>

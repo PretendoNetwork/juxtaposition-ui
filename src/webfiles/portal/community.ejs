@@ -19,13 +19,13 @@
 				</header>
 				<div class="body-content tab2-content" id="community-post-list">
 					<div class="header-banner-container">
-						<img src="https://cdn.pretendo.cc/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"
+						<img src="<%= cdnURL %>/headers/<%= community.parent ? community.parent : community.olive_community_id %>/WiiU.png"
 							class="header-banner with-top-button">
 					</div>
 
 					<div class="community-info info-content with-header-banner">
 						<span class="icon-container"><img
-								src="https://cdn.pretendo.cc/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"
+								src="<%= cdnURL %>/icons/<%= community.parent ? community.parent : community.olive_community_id %>/128.png"
 								class="icon"></span>
 						<%if(community.permissions.open){%>
 							<a href="#"

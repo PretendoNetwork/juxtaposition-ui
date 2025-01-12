@@ -8,7 +8,7 @@
         <h1 id="page-title" class="community">
             <span>
                 <span class="icon-container">
-                    <img src="<%if (banned || pnid.deleted) { %>/images/bandwidthlost.png<% } else { %>https://cdn.pretendo.cc/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon">
+                    <img src="<%if (banned || pnid.deleted) { %>/images/bandwidthlost.png<% } else { %><%= cdnURL %>/mii/<%=pnid.pid%>/normal_face.png<%}%>" class="icon">
                 </span>
                 <span class="community-name">
                     <% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %> @<%= pnid.username %><%}%>
