@@ -227,16 +227,7 @@ async function userRelations(req, res, userID) {
 	let followers; let communities; let communityMap; let selection;
 
 	if (req.params.type === 'yeahs') {
-		const posts = await POST.find({ yeahs: req.pid, removed: false }).sort({created_at: -1}).limit(config.post_limit);
-		/*let posts = await POST.aggregate([
-            { $match: { id: { $in: likesArray } } },
-            {$addFields: {
-                    "__order": { $indexOfArray: [ likesArray, "$id" ] }
-                }},
-            { $sort: { "__order": 1 } },
-            { $project: { index: 0, _id: 0 } },
-            { $limit: config.post_limit }
-        ]);*/
+		const posts = await POST.find({ yeahs: userID, removed: false }).sort({created_at: -1}).limit(config.post_limit);
 		const communityMap = await util.getCommunityHash();
 		const bundle = {
 			posts,
@@ -371,31 +362,15 @@ async function morePosts(req, res, userID) {
 
 async function moreYeahPosts(req, res, userID) {
 	let offset = parseInt(req.query.offset);
-	const userContent = await database.getUserContent(req.pid);
+	const userContent = await database.getUserContent(userID);
 	const communityMap = await util.getCommunityHash();
 	if (!offset) {
 		offset = 0;
 	}
-	let likesArray;
-	try {
-		likesArray = await userContent.likes.slice().reverse();
-	} catch (e) {
-		console.error(e);
-		likesArray = [];
-	}
-	const posts = await POST.aggregate([
-		{ $match: { id: { $in: likesArray }, removed: false } },
-		{$addFields: {
-			'__order': { $indexOfArray: [ likesArray, '$id' ] }
-		}},
-		{ $sort: { '__order': 1 } },
-		{ $project: { index: 0, _id: 0 } },
-		{ $skip : offset },
-		{ $limit: config.post_limit }
-	]);
+	const posts = await POST.find({ yeahs: userID, removed: false }).sort({created_at: -1}).skip(offset).limit(config.post_limit);
 
 	const bundle = {
-		posts: posts.reverse(),
+		posts: posts,
 		numPosts: posts.length,
 		open: true,
 		communityMap,
