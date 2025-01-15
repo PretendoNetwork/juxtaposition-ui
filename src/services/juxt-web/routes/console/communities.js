@@ -4,7 +4,7 @@ const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const multer = require('multer');
 const moment = require('moment');
-const upload = multer({dest: 'uploads/'});
+const upload = multer({ dest: 'uploads/' });
 const router = express.Router();
 const { POST } = require('../../../../models/post');
 const { COMMUNITY } = require('../../../../models/communities');
@@ -18,11 +18,13 @@ router.get('/', async function (req, res) {
 		const last24Hours = await calculateMostPopularCommunities();
 		popularCommunities = await COMMUNITY.aggregate([
 			{ $match: { olive_community_id: { $in: last24Hours }, parent: null } },
-			{$addFields: {
-				index: { $indexOfArray: [ last24Hours, '$olive_community_id' ] }
-			}},
+			{
+				$addFields: {
+					index: { $indexOfArray: [last24Hours, '$olive_community_id'] }
+				}
+			},
 			{ $sort: { index: 1 } },
-			{ $limit : 9 },
+			{ $limit: 9 },
 			{ $project: { index: 0, _id: 0 } }
 		]);
 		redis.setValue('popularCommunities', JSON.stringify(popularCommunities), 60 * 60);
@@ -72,7 +74,7 @@ router.get('/:communityID/related', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', {code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
 	}
 	const communityMap = await util.getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
@@ -102,7 +104,7 @@ router.get('/:communityID/:type', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', {code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
 	}
 
 	if (!community.permissions) {
@@ -239,7 +241,7 @@ router.post('/follow', upload.none(), async function (req, res) {
 		userContent.addToCommunities(community.olive_community_id);
 		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
 		updated = true;
-	} else if (userContent !== null  && userContent.followed_communities.indexOf(community.olive_community_id) !== -1) {
+	} else if (userContent !== null && userContent.followed_communities.indexOf(community.olive_community_id) !== -1) {
 		community.downFollower();
 		userContent.removeFromCommunities(community.olive_community_id);
 		res.send({ status: 200, id: community.olive_community_id, count: community.followers });
@@ -261,7 +263,7 @@ async function calculateMostPopularCommunities() {
 	const now = new Date();
 	const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
 
-	const posts = await POST.find({ created_at: { $gte: last24Hours },  message_to_pid: null }).lean();
+	const posts = await POST.find({ created_at: { $gte: last24Hours }, message_to_pid: null }).lean();
 
 	const communityIds = {};
 	for (const post of posts) {

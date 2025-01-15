@@ -2,11 +2,11 @@ const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const multer  = require('multer');
+const multer = require('multer');
 const moment = require('moment');
 const upload = multer({ dest: 'uploads/' });
 const { POST } = require('../../../../models/post');
-const {SETTINGS} = require('../../../../models/settings');
+const { SETTINGS } = require('../../../../models/settings');
 const redis = require('../../../../redisCache');
 const router = express.Router();
 
@@ -63,7 +63,7 @@ router.get('/me/settings', async function (req, res) {
 });
 
 router.get('/me/:type', async function (req, res) {
-	await userRelations(req, res, req.pid); 
+	await userRelations(req, res, req.pid);
 });
 
 router.post('/me/settings', upload.none(), async function (req, res) {
@@ -88,15 +88,15 @@ router.get('/show', async function (req, res) {
 });
 
 router.get('/:pid/more', async function (req, res) {
-	await morePosts(req, res, req.params.pid); 
+	await morePosts(req, res, req.params.pid);
 });
 
 router.get('/:pid/yeahs/more', async function (req, res) {
-	await moreYeahPosts(req, res, req.params.pid); 
+	await moreYeahPosts(req, res, req.params.pid);
 });
 
 router.get('/:pid/:type', async function (req, res) {
-	await userRelations(req, res, req.params.pid); 
+	await userRelations(req, res, req.params.pid);
 });
 
 // TODO: Remove the need for a parameter to toggle the following state
@@ -112,7 +112,7 @@ router.post('/follow', upload.none(), async function (req, res) {
 		if (picked === null) {
 			await util.newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
 		}
-	} else if (userContent !== null  && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1) {
+	} else if (userContent !== null && userContent.followed_users.indexOf(userToFollowContent.pid) !== -1) {
 		userToFollowContent.removeFromFollowers(userContent.pid);
 		userContent.removeFromUsers(userToFollowContent.pid);
 		res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
@@ -162,7 +162,7 @@ async function userPage(req, res, userID) {
 	let friends = [];
 	try {
 		friends = await util.getFriends(userID);
-	} catch (e) {}
+	} catch (e) { }
 
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
@@ -187,7 +187,6 @@ async function userPage(req, res, userID) {
 		});
 	}
 	const link = (pnid.pid === req.pid) ? '/users/me/' : `/users/${userID}/`;
-
 	res.render(req.directory + '/user_page.ejs', {
 		template: 'posts_list',
 		selection: 0,
@@ -228,7 +227,7 @@ async function userRelations(req, res, userID) {
 	let followers; let communities; let communityMap; let selection;
 
 	if (req.params.type === 'yeahs') {
-		const posts = await POST.find({ yeahs: userID, removed: false }).sort({created_at: -1}).limit(config.post_limit);
+		const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).limit(config.post_limit);
 		const communityMap = await util.getCommunityHash();
 		const bundle = {
 			posts,
@@ -370,7 +369,7 @@ async function moreYeahPosts(req, res, userID) {
 	if (!offset) {
 		offset = 0;
 	}
-	const posts = await POST.find({ yeahs: userID, removed: false }).sort({created_at: -1}).skip(offset).limit(config.post_limit);
+	const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).skip(offset).limit(config.post_limit);
 
 	const bundle = {
 		posts: posts,
@@ -408,6 +407,6 @@ function isDateInRange(date, minutes) {
 	//console.log('last active: ' + date);
 	//console.log('ten min ago: ' + tenMinutesAgo);
 	return date >= tenMinutesAgo && date <= now;
-  }
+}
 
 module.exports = router;

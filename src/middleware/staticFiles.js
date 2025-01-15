@@ -3,12 +3,12 @@ const util = require('../util');
 async function staticFiles(request, response, next) {
 	// Web files
 	if (isStartOfPath(request.path, '/css/') ||
-        isStartOfPath(request.path, '/fonts/') ||
-        isStartOfPath(request.path, '/js/') ||
-        request.path === '/favicon.ico' ||
-        isStartOfPath(request.path, '/web/')  ||
-        isStartOfPath(request.path, '/images/')  ||
-        isStartOfPath(request.path, '/image/')) {
+		isStartOfPath(request.path, '/fonts/') ||
+		isStartOfPath(request.path, '/js/') ||
+		request.path === '/favicon.ico' ||
+		isStartOfPath(request.path, '/web/') ||
+		isStartOfPath(request.path, '/images/') ||
+		isStartOfPath(request.path, '/image/')) {
 
 		request.lang = util.processLanguage();
 

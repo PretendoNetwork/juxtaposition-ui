@@ -17,9 +17,9 @@ async function webAuth(request, response, next) {
 			request.session.pid = request.pid;
 		} catch (e) {
 			const domain = request.get('host').replace('juxt-beta', '').replace('juxt', '');
-			response.clearCookie('access_token', {domain: domain, path: '/'});
-			response.clearCookie('refresh_token', {domain: domain, path: '/'});
-			response.clearCookie('token_type', {domain: domain, path: '/'});
+			response.clearCookie('access_token', { domain: domain, path: '/' });
+			response.clearCookie('refresh_token', { domain: domain, path: '/' });
+			response.clearCookie('token_type', { domain: domain, path: '/' });
 			if (request.path === '/login') {
 				request.lang = util.processLanguage();
 				request.token = request.cookies.access_token;

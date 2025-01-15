@@ -57,42 +57,42 @@ const SettingsSchema = new Schema({
 	}
 });
 
-SettingsSchema.methods.updateComment = async function(comment) {
+SettingsSchema.methods.updateComment = async function (comment) {
 	this.set('profile_comment', comment);
 	await this.save();
 };
 
-SettingsSchema.methods.updateSkill = async function(skill) {
+SettingsSchema.methods.updateSkill = async function (skill) {
 	this.set('game_skill', skill);
 	await this.save();
 };
 
-SettingsSchema.methods.commentVisible = async function(active) {
+SettingsSchema.methods.commentVisible = async function (active) {
 	this.set('profile_comment_visibility', active);
 	await this.save();
 };
 
-SettingsSchema.methods.skillVisible = async function(active) {
+SettingsSchema.methods.skillVisible = async function (active) {
 	this.set('game_skill_visibility', active);
 	await this.save();
 };
 
-SettingsSchema.methods.birthdayVisible = async function(active) {
+SettingsSchema.methods.birthdayVisible = async function (active) {
 	this.set('birthday_visibility', active);
 	await this.save();
 };
 
-SettingsSchema.methods.relationshipVisible = async function(active) {
+SettingsSchema.methods.relationshipVisible = async function (active) {
 	this.set('relationship_visibility', active);
 	await this.save();
 };
 
-SettingsSchema.methods.countryVisible = async function(active) {
+SettingsSchema.methods.countryVisible = async function (active) {
 	this.set('country_visibility', active);
 	await this.save();
 };
 
-SettingsSchema.methods.favCommunityVisible = async function(active) {
+SettingsSchema.methods.favCommunityVisible = async function (active) {
 	this.set('profile_favorite_community_visibility', active);
 	await this.save();
 };

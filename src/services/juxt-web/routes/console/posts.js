@@ -2,12 +2,12 @@ const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const {POST} = require('../../../../models/post');
+const { POST } = require('../../../../models/post');
 const multer = require('multer');
 const moment = require('moment');
 const rateLimit = require('express-rate-limit');
-const {REPORT} = require('../../../../models/report');
-const upload = multer({dest: 'uploads/'});
+const { REPORT } = require('../../../../models/report');
+const upload = multer({ dest: 'uploads/' });
 const crypto = require('crypto');
 const redis = require('../../../../redisCache');
 const router = express.Router();
@@ -63,15 +63,15 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 				$ne: req.pid
 			}
 		},
-		{
-			$inc: {
-				empathy_count: 1
-			},
-			$push: {
-				yeahs: req.pid
-			}
-		});
-		res.send({status: 200, id: post.id, count: post.empathy_count + 1});
+			{
+				$inc: {
+					empathy_count: 1
+				},
+				$push: {
+					yeahs: req.pid
+				}
+			});
+		res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
 		if (req.pid !== post.pid) {
 			await util.newNotification({
 				pid: post.pid,
@@ -88,17 +88,17 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 				$eq: req.pid
 			}
 		},
-		{
-			$inc: {
-				empathy_count: -1
-			},
-			$pull: {
-				yeahs: req.pid
-			}
-		});
-		res.send({status: 200, id: post.id, count: post.empathy_count - 1});
+			{
+				$inc: {
+					empathy_count: -1
+				},
+				$pull: {
+					yeahs: req.pid
+				}
+			});
+		res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
 	} else {
-		res.send({status: 423, id: post.id, count: post.empathy_count});
+		res.send({ status: 423, id: post.id, count: post.empathy_count });
 	}
 	await redis.removeValue(`${post.pid}_user_page_posts`);
 });
@@ -216,7 +216,7 @@ async function newPost(req, res) {
 		}
 	}
 	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0) && req.user.access_level >= community.permissions.minimum_new_post_access_level
-        && (community.type >= 2) && !(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
+		&& (community.type >= 2) && !(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
 		res.status(403);
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
@@ -341,7 +341,7 @@ async function newPost(req, res) {
 
 async function generatePostUID(length) {
 	let id = Buffer.from(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length * 2))), 'binary').toString('base64').replace(/[+/]/g, '').substring(0, length);
-	const inuse = await POST.findOne({id});
+	const inuse = await POST.findOne({ id });
 	id = (inuse ? await generatePostUID() : id);
 	return id;
 }

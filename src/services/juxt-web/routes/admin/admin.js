@@ -64,7 +64,7 @@ router.get('/accounts', async function (req, res) {
 	const userMap = await util.getUserHash();
 	const userCount = await SETTINGS.count();
 	const activeUsers = await SETTINGS.find({
-		last_active: { 
+		last_active: {
 			$gte: new Date(Date.now() - 10 * 60 * 1000)
 		}
 	}).count()

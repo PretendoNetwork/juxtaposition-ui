@@ -52,7 +52,7 @@ function nameCache() {
 	database.connect().then(async e => {
 		const communities = await COMMUNITY.find();
 		if (communities !== null) {
-			for (let i = 0; i < communities.length; i++ ) {
+			for (let i = 0; i < communities.length; i++) {
 				if (communities[i].title_id !== null) {
 					for (let j = 0; j < communities[i].title_id.length; j++) {
 						communityMap.set(communities[i].title_id[j], communities[i].name);
@@ -65,9 +65,9 @@ function nameCache() {
 		}
 		const users = await database.getUsersSettings(-1);
 		if (users !== null) {
-			for (let i = 0; i < users.length; i++ ) {
+			for (let i = 0; i < users.length; i++) {
 				if (users[i].pid !== null) {
-					userMap.set(users[i].pid, users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu,'').replace(/\u202e/g, ''));
+					userMap.set(users[i].pid, users[i].screen_name.replace(/[\u{0080}-\u{FFFF}]/gu, '').replace(/\u202e/g, ''));
 				}
 			}
 			logger.success('Created user index of ' + users.length + ' users');
@@ -196,7 +196,7 @@ async function processPainting(painting, isTGA) {
 
 		let output;
 		try {
-			output = pako.deflate(tga, {level: 6});
+			output = pako.deflate(tga, { level: 6 });
 		} catch (err) {
 			console.error(err);
 		}
@@ -228,7 +228,7 @@ function setName(pid, name) {
 		return;
 	}
 	userMap.delete(pid);
-	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu,'').replace(/\u202e/g, ''));
+	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu, '').replace(/\u202e/g, ''));
 }
 async function resizeImage(file, width, height) {
 	return new Promise(function (resolve) {
@@ -247,7 +247,7 @@ async function getTGAFromPNG(image) {
 	const tga = TGA.createTgaBuffer(pngData.width, pngData.height, pngData.data);
 	let output;
 	try {
-		output = pako.deflate(tga, {level: 6});
+		output = pako.deflate(tga, { level: 6 });
 	} catch (err) {
 		console.error(err);
 	}
@@ -406,7 +406,7 @@ async function newNotification(notification) {
 }
 async function getFriends(pid) {
 	try {
-		const pids =  await friendsClient.getUserFriendPIDs({
+		const pids = await friendsClient.getUserFriendPIDs({
 			pid: pid
 		}, {
 			metadata: grpc.Metadata({

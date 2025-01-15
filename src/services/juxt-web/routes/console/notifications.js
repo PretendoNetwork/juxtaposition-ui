@@ -31,7 +31,7 @@ router.get('/my_news', async function (req, res) {
 		template: 'notifications',
 		moderator: req.moderator
 	});
-	notifications.filter(noti => noti.read === false).forEach(function(notification) {
+	notifications.filter(noti => noti.read === false).forEach(function (notification) {
 		notification.markRead();
 	});
 });

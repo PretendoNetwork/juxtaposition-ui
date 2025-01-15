@@ -23,7 +23,7 @@ cave.toolbar_setCallback(5, function () {
 	cave.toolbar_setActiveButton(5);
 	pjax.loadUrl('/users/me');
 });
-cave.toolbar_setCallback(8, function () {});
+cave.toolbar_setCallback(8, function () { });
 
 function initPostModules() {
 	var els = document.querySelectorAll('[data-module-show]');
@@ -33,12 +33,12 @@ function initPostModules() {
 	}
 	function postModel(e) {
 		var el = e.currentTarget;
-		var	show = el.getAttribute('data-module-show');
-		var	hide = el.getAttribute('data-module-hide');
-		var	header = el.getAttribute('data-header');
-		var	sound = el.getAttribute('data-sound');
-		var	message = el.getAttribute('data-message');
-		var	screenshot = el.getAttribute('data-screenshot');
+		var show = el.getAttribute('data-module-show');
+		var hide = el.getAttribute('data-module-hide');
+		var header = el.getAttribute('data-header');
+		var sound = el.getAttribute('data-sound');
+		var message = el.getAttribute('data-message');
+		var screenshot = el.getAttribute('data-screenshot');
 
 		if (sound) cave.snd_playSe(sound);
 		if (!show || !hide) return;
@@ -258,10 +258,10 @@ var PostStorage = {
 	getAll: function () {
 		for (
 			var e = {},
-				t = cave.lls_getCount(),
-				i = new RegExp('^[0-9]+$'),
-				o = 0,
-				n = 0;
+			t = cave.lls_getCount(),
+			i = new RegExp('^[0-9]+$'),
+			o = 0,
+			n = 0;
 			n < t;
 			n++
 		) {
@@ -280,7 +280,7 @@ var PostStorage = {
 	removeItem: function (e) {
 		var t = JSON.parse(cave.lls_getItem(e));
 		t && t.screenShotKey && cave.lls_removeItem(t.screenShotKey),
-		cave.lls_removeItem(e);
+			cave.lls_removeItem(e);
 	},
 	hasKey: function (e) {
 		for (var t = cave.lls_getCount(), i = 0; i < t; i++)
@@ -321,7 +321,7 @@ function checkForUpdates() {
 	GET('/users/notifications.json', function updates(data) {
 		var notificationObj = JSON.parse(data.responseText);
 		var count =
-		notificationObj.message_count + notificationObj.notification_count;
+			notificationObj.message_count + notificationObj.notification_count;
 		cave.toolbar_setNotificationCount(count);
 	});
 }
@@ -342,7 +342,7 @@ function newPainting(reset) {
 	setTimeout(function () {
 		if (cave.memo_hasValidImage()) {
 			document.getElementById('memo').src =
-			'data:image/png;base64,' + cave.memo_getImageBmp();
+				'data:image/png;base64,' + cave.memo_getImageBmp();
 			document.getElementById('memo-value').value = cave.memo_getImageBmp();
 		}
 	}, 250);
@@ -370,8 +370,8 @@ function follow(el) {
 	POST(el.getAttribute('data-url'), params, function a(data) {
 		var element = JSON.parse(data.responseText);
 		if (!element || element.status !== 200) {
-		// Apparently there was an actual error code for not being able to yeah a post, who knew!
-		// TODO: Find more of these
+			// Apparently there was an actual error code for not being able to yeah a post, who knew!
+			// TODO: Find more of these
 			return cave.error_callErrorViewer(155927);
 		}
 		el.disabled = false;
@@ -405,7 +405,7 @@ function GET(url, callback) {
 function DELETE(url, callback) {
 	cave.transition_begin();
 	var xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
+	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			cave.transition_end();
 			return callback(this);

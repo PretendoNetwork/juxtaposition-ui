@@ -11,7 +11,7 @@ function initNavBar() {
 		return;
 	}
 	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function(e) {
+		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;
 			for (let i = 0; i < els.length; i++) {
 				if (els[i].classList.contains('selected')) {
@@ -85,7 +85,7 @@ function initTabs() {
 			const response = data.response;
 			if (response && data.status === 200) {
 				document.getElementsByClassName('tab-body')[0].innerHTML = data.response;
-				window.history.pushState({ url: child.href, title: '', scrollPos: [0, 0]}, '', child.href);
+				window.history.pushState({ url: child.href, title: '', scrollPos: [0, 0] }, '', child.href);
 				initPosts();
 				initMorePosts();
 			}
@@ -99,7 +99,7 @@ function initPosts() {
 		return;
 	}
 	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function(e) {
+		els[i].addEventListener('click', function (e) {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
 		});
 	}
@@ -112,7 +112,7 @@ function initMorePosts() {
 		return;
 	}
 	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function(e) {
+		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;
 			GET(el.getAttribute('data-href'), function a(data) {
 				const response = data.response;
@@ -135,7 +135,7 @@ function initPostModules() {
 		return;
 	}
 	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function(e) {
+		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;
 			const show = el.getAttribute('data-module-show');
 			const hide = el.getAttribute('data-module-hide');
@@ -166,7 +166,7 @@ function initPostEmotion() {
 		return;
 	}
 	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function(e) {
+		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;
 			document.getElementById('mii-face').src = el.getAttribute('data-mii-face-url');
 		});
@@ -181,7 +181,7 @@ function initSpoilers() {
 		return;
 	}
 	for (let i = 0; i < els.length; i++) {
-		els[i].addEventListener('click', function(e) {
+		els[i].addEventListener('click', function (e) {
 			const el = e.currentTarget;
 			document.getElementById('post-' + el.getAttribute('data-post-id')).classList.remove('spoiler');
 			el.remove();
@@ -199,26 +199,26 @@ function initAll() {
 }
 
 console.debug('Document initialized:' + window.location.href);
-document.addEventListener('pjax:send', function() {
+document.addEventListener('pjax:send', function () {
 	console.debug('Event: pjax:send', arguments);
 });
-document.addEventListener('pjax:complete', function() {
+document.addEventListener('pjax:complete', function () {
 	console.debug('Event: pjax:complete', arguments);
 });
-document.addEventListener('pjax:error', function(e) {
+document.addEventListener('pjax:error', function (e) {
 	Toast('Error: Unable to load element. \nPlease send the error code and what you were doing in #support');
 	console.debug(e);
 });
-document.addEventListener('pjax:success', function() {
+document.addEventListener('pjax:success', function () {
 	console.debug('Event: pjax:success', arguments);
 	initAll();
 });
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 	pjax = new Pjax({
 		elements: 'a[data-pjax]' +
-            '',
+			'',
 		selectors: ['title', '#body'],
-		switches: {'#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode}
+		switches: { '#nav-menu': Pjax.switches.replaceNode, '.tab-body': Pjax.switches.replaceNode }
 	});
 	console.debug('Pjax initialized.', pjax);
 	initAll();
@@ -250,13 +250,13 @@ function follow(el) {
 }
 function checkForUpdates() {
 	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
+	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4 && this.status === 200) {
 			const notificationObj = JSON.parse(this.responseText);
 			const messages = document.getElementById('message-badge');
 			const news = document.getElementById('news-badge');
 			/**/
-			if (notificationObj.message_count > 0  && notificationObj.message_count < 99) {
+			if (notificationObj.message_count > 0 && notificationObj.message_count < 99) {
 				messages.innerHTML = notificationObj.message_count;
 				messages.style.display = 'unset';
 			} else if (notificationObj.message_count >= 99) {
@@ -267,7 +267,7 @@ function checkForUpdates() {
 				messages.style.display = 'none';
 			}
 			/*Check for Notifications*/
-			if (notificationObj.notification_count > 0  && notificationObj.notification_count < 99) {
+			if (notificationObj.notification_count > 0 && notificationObj.notification_count < 99) {
 				news.innerHTML = notificationObj.notification_count;
 				news.style.display = 'unset';
 			} else if (notificationObj.notification_count >= 99) {
@@ -284,7 +284,7 @@ function checkForUpdates() {
 }
 function POST(url, data, callback) {
 	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
+	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			return callback(this);
 		}
@@ -295,7 +295,7 @@ function POST(url, data, callback) {
 }
 function GET(url, callback) {
 	const xhttp = new XMLHttpRequest();
-	xhttp.onreadystatechange = function() {
+	xhttp.onreadystatechange = function () {
 		if (this.readyState === 4) {
 			return callback(this);
 		}
@@ -304,7 +304,7 @@ function GET(url, callback) {
 	xhttp.send();
 }
 
-window.onscroll = function(ev) {
+window.onscroll = function (ev) {
 	if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && document.getElementById('load-more')) {
 		document.getElementById('load-more').click();
 	}
@@ -322,8 +322,8 @@ function Toast(text) {
 	const x = document.getElementById('toast');
 	x.innerText = text;
 	x.className = 'show';
-	setTimeout(function(){
-		x.className = x.className.replace('show', ''); 
+	setTimeout(function () {
+		x.className = x.className.replace('show', '');
 	}, 3000);
 }
 function downloadURI(uri, name) {
@@ -340,7 +340,7 @@ function reportPost(post) {
 	const button = document.getElementById('report-launcher');
 	const form = document.getElementById('report-form');
 	const formID = document.getElementById('report-post-id');
-	if(!id || !button || !form || !formID) return;
+	if (!id || !button || !form || !formID) return;
 
 	form.action = '/posts/' + id + '/report';
 	formID.value = id;

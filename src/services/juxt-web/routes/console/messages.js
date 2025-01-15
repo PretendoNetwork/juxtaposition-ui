@@ -4,7 +4,7 @@ const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
 const moment = require('moment');
-const {CONVERSATION} = require('../../../../models/conversation');
+const { CONVERSATION } = require('../../../../models/conversation');
 const crypto = require('crypto');
 const snowflake = require('node-snowflake').Snowflake;
 const router = express.Router();
@@ -61,7 +61,7 @@ router.post('/new', async function (req, res) {
 	if (!friends || friends.indexOf(req.pid) === -1) {
 		return res.sendStatus(422);
 	}
-	if (req.body.body === '' && req.body.painting === ''  && req.body.screenshot === '') {
+	if (req.body.body === '' && req.body.painting === '' && req.body.screenshot === '') {
 		res.status(422);
 		return res.redirect(`/friend_messages/${conversation.id}`);
 	}
@@ -131,7 +131,7 @@ router.post('/new', async function (req, res) {
 		screen_name: req.user.mii.name,
 		body: body,
 		painting: painting,
-		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg`: '',
+		screenshot: screenshot ? `/screenshots/${req.pid}/${postID}.jpg` : '',
 		country_id: req.paramPackData ? req.paramPackData.country_id : 49,
 		created_at: new Date(),
 		feeling_id: req.body.feeling_id,
