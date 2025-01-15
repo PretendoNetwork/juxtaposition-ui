@@ -51,6 +51,10 @@ const SettingsSchema = new Schema({
 		type: Date,
 		default: Date.now()
 	},
+	last_active: {
+		type: Date,
+		default: 0
+	}
 });
 
 SettingsSchema.methods.updateComment = async function(comment) {

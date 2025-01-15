@@ -62,6 +62,12 @@ router.get('/accounts', async function (req, res) {
 
 	const users = search ? await database.getUserSettingsFuzzySearch(search, limit, page * limit) : await database.getUsersContent(limit, page * limit);
 	const userMap = await util.getUserHash();
+	const userCount = await SETTINGS.count();
+	const activeUsers = await SETTINGS.find({
+		last_active: { 
+			$gte: new Date(Date.now() - 10 * 60 * 1000)
+		}
+	}).count()
 
 	res.render(req.directory + '/users.ejs', {
 		lang: req.lang,
@@ -74,7 +80,9 @@ router.get('/accounts', async function (req, res) {
 		userMap,
 		users,
 		page,
-		search
+		search,
+		userCount,
+		activeUsers
 	});
 });
 

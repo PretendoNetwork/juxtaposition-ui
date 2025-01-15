@@ -205,6 +205,7 @@ async function userPage(req, res, userID) {
 		link,
 		friends,
 		parentUserContent,
+		isActive: isDateInRange(userSettings.last_active, 10),
 		moderator: req.moderator
 	});
 }
@@ -264,6 +265,7 @@ async function userRelations(req, res, userID) {
 				link,
 				friends,
 				parentUserContent,
+				isActive: isDateInRange(userSettings.last_active, 10),
 				moderator: req.moderator
 			});
 		}
@@ -318,6 +320,7 @@ async function userRelations(req, res, userID) {
 		pid: req.pid,
 		link,
 		parentUserContent,
+		isActive: isDateInRange(userSettings.last_active, 10),
 		moderator: req.moderator
 	});
 }
@@ -397,4 +400,14 @@ async function moreYeahPosts(req, res, userID) {
 		res.sendStatus(204);
 	}
 }
+
+function isDateInRange(date, minutes) {
+	//return false;
+	const now = new Date();
+	const tenMinutesAgo = new Date(now.getTime() - minutes * 60 * 1000);
+	//console.log('last active: ' + date);
+	//console.log('ten min ago: ' + tenMinutesAgo);
+	return date >= tenMinutesAgo && date <= now;
+  }
+
 module.exports = router;

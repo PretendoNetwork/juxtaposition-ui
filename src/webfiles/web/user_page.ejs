@@ -30,7 +30,7 @@
     <div id="wrapper" class="community-page-post-box">
         <div class="community-top">
             <img class="banner" src="/images/banner.png" alt="">
-            <div class="community-info">
+            <div class="community-info <% if (isActive) {%>active<% } %>">
                 <img class="user-icon <%if(pnid.accessLevel > 2) {%>verified<%}%>" src="<%if (pnid.deleted || banned) { %>/images/bandwidthlost.png<% } else { %><%= cdnURL %>/mii/<%=pnid.pid%>/normal_face.png<%}%>">
                 <h2 class="community-title"><% if(banned) { %>Banned User<% } else if(pnid.deleted){%>Deleted User<%} else {%><%= pnid.mii.name %> @<%= pnid.username %><%}%><%if(pnid.accessLevel >= 2) {%><span class="verified-badge">✓</span><%}%></h2>
                 <%if(pnid.pid !== pid && pid !== 1000000000 && !pnid.deleted && !banned) {%>

@@ -16,6 +16,7 @@
 			<% } %>
 		</div>
 		<input type="string" id="search" placeholder="Search..." value="<%= search %>">
+		<span style="margin-top: 16px;"><%= userCount %> total user(s), <%= activeUsers %> online user(s)</span>
         <% if(users.length === 0) {%>
             <p>No Users found</p>
         <%} else { %>

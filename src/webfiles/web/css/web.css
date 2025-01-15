@@ -1291,6 +1291,19 @@ li.reports .button-spacer {
   margin-bottom: 1em;
 }
 
+.community-info.active::before {
+	content: "";
+	width: 15px;
+	height: 15px;
+	background: #23a55a;
+	display: block;
+	border-radius: 1em;
+	position: absolute;
+	margin-left: 53px;
+	margin-top: 53px;
+	border: 3px solid white;
+  }
+
 @media screen and (max-width: 1400px) {
   .communities-wrapper {
     max-width: 600px;
