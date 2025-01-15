@@ -23,7 +23,8 @@
             "secret": ""
         },
 		"endpoint": "https://nyc3.digitaloceanspaces.com",
-		"region": "us-east-1"
+		"region": "us-east-1",
+		"bucket": "bucket"
     },
     "grpc": {
         "friends": {

@@ -316,11 +316,11 @@ function processLanguage(paramPackData) {
 			return translations.EN;
 	}
 }
-async function uploadCDNAsset(bucket, key, data, acl) {
+async function uploadCDNAsset(key, data, acl) {
 	const awsPutParams = new PutObjectCommand({
 		Body: data,
 		Key: key,
-		Bucket: bucket,
+		Bucket: config.aws.bucket,
 		ACL: acl
 	});
 	try {
