@@ -1,6 +1,6 @@
 <div id="post-<%= post.id %>" class="post <%if(reply) {%>reply<%}%> <%if(post.is_spoiler) {%>spoiler<%}%>">
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
-        <img src="<%= post.mii_face_url.replace('https:', 'http:') %>" class="mii-icon">
+        <img src="<%= post.mii_face_url %>" class="mii-icon">
     </a>
     <div class="post-body-content">
         <div class="post-body <%if(userContent.likes && userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>" id="<%= post.id %>">

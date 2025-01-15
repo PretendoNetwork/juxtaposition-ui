@@ -6,7 +6,7 @@
         </div>
     <%} else {%>
     <a href="/users/show?pid=<%= post.pid %>" class="mii-icon-container" data-pjax="#body">
-        <img src="<%= post.mii_face_url.replace('http:', 'https:') %>" class="mii-icon">
+        <img src="<%= post.mii_face_url %>" class="mii-icon">
     </a>
     <div class="post-body-content <% if(post.removed) {%>removed<%}%>">
         <div class="post-body <%if(userContent.likes && userContent.likes.indexOf(post.id) !== -1){ %> yeah <%}%>" id="<%= post.id %>">
