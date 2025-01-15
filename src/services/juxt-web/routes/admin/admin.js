@@ -133,6 +133,16 @@ router.post('/accounts/:pid', async (req, res) => {
 	res.json({
 		error: false
 	});
+
+	if (req.body.account_status === 1) {
+		await util.newNotification({
+			pid: pid,
+			type: 'notice',
+			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: \"${req.body.ban_reason}\". If you have any questions contact the moderators in the Discord server or forum.`,
+			image: '/images/bandwidthalert.png',
+			link: '/titles/2551084080/new'
+		});
+	}
 });
 
 router.delete('/:reportID', async function (req, res) {

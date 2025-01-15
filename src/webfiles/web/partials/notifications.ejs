@@ -32,6 +32,20 @@
             </a>
         </div>
     </li>
-    <%}%>
-    <%}%>
+    <%} else if (notification.type === 'notice') {%>
+		<li>
+			<div class="hover">
+				<a href="<%= notification.link %>" data-pjax="#body" class="icon-container notify">
+					<img src="<%= notification.image %>" class="icon">
+				</a>
+				<a class="body" href="<%= notification.link %>">
+						<span class="text">
+							<span class="nick-name"><%= notification.text %></span>
+							<span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
+					</span>
+				</a>
+			</div>
+		</li>
+	<%}%>
+<%}%>
 </ul>

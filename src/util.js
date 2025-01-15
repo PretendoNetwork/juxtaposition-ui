@@ -368,6 +368,17 @@ async function newNotification(notification) {
 			});
 			await newNotification.save();
 		}
+	} else if (notification.type == 'notice') {
+		const newNotification = new NOTIFICATION({
+			pid: notification.pid,
+			type: notification.type,
+			text: notification.text,
+			image: notification.image,
+			link: notification.link,
+			read: false,
+			lastUpdated: now
+		});
+		await newNotification.save();
 	}
 	/*else if(notification.type === 'yeah') {
 		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
