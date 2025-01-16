@@ -145,7 +145,7 @@ if (typeof wiiuBOSS === 'undefined') {
 	window.wiiuBOSS = {
 		isRegisteredBossTask: function () {
 			console.debug('wiiuBOSS.isRegisteredBossTask');
-			const result = {
+			var result = {
 				isRegistered: true
 			};
 			return result;
@@ -162,7 +162,7 @@ if (typeof wiiuBOSS === 'undefined') {
 		},
 		isRegisteredDirectMessageTask: function () {
 			console.debug('wiiuBOSS.isRegisteredDirectMessageTask');
-			const result = {
+			var result = {
 				isRegistered: true
 			};
 			return result;
@@ -194,8 +194,8 @@ if (typeof wiiuMainApplication === 'undefined') {
 			null
 		],
 		_getImage: function () {
-			const images = this._images;
-			const index = Math.floor(Math.random() * images.length);
+			var images = this._images;
+			var index = Math.floor(Math.random() * images.length);
 
 			// テスト等でスクショの有無を固定したい場合にクッキーで指定できるようにする, 実機ではこの挙動は存在しない
 			// If you want to fix the presence or absence of screenshots in tests, etc., make it possible to specify with cookies, this behavior does not exist on the actual device
@@ -225,7 +225,7 @@ if (typeof wiiuMemo === 'undefined') {
 		open: function (reset) {
 			console.debug('wiiuMemo.open(reset = ' + reset + ')');
 			this._isFinish = false;
-			const self = this;
+			var self = this;
 			setTimeout(function () {
 				self._isFinish = true;
 			}, 100);
@@ -263,7 +263,7 @@ if (typeof wiiuPDM === 'undefined') {
 if (typeof wiiuErrorViewer === 'undefined') {
 	window.wiiuErrorViewer = {
 		openByCode: function (errorCode) {
-			const message = 'Message for error code ' + errorCode;
+			var message = 'Message for error code ' + errorCode;
 			this.openByCodeAndMessage(errorCode, message);
 		},
 		openByCodeAndMessage: function (errorCode, errorMessage) {
