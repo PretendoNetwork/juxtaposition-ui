@@ -51,7 +51,6 @@ router.post('/newUser', async function (req, res) {
 	} else {
 		res.sendStatus(504);
 	}
-
 });
 
 module.exports = router;

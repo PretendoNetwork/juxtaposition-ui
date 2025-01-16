@@ -1,6 +1,3 @@
-/*eslint-env browser*/
-/*eslint no-var: "off"*/
-/*eslint @typescript-eslint/explicit-function-return-type: "off"*/
 var pjax;
 setInterval(checkForUpdates, 30000);
 
@@ -75,6 +72,7 @@ function initPostModules() {
 			cave.toolbar_setCallback(99, back);
 		}
 		cave.transition_end();
+		/* global initNewPost -- Defined in juxt.min.js */
 		initNewPost();
 	}
 }
@@ -114,8 +112,8 @@ function initYeah() {
 		els[i].onclick = yeah;
 	}
 	function yeah(e) {
-		var el = e.currentTarget,
-			id = el.getAttribute('data-post');
+		var el = e.currentTarget;
+		var id = el.getAttribute('data-post');
 		var parent = document.getElementById(id);
 		var count = document.getElementById('count-' + id);
 		el.disabled = true;
@@ -258,10 +256,10 @@ var PostStorage = {
 	getAll: function () {
 		for (
 			var e = {},
-			t = cave.lls_getCount(),
-			i = new RegExp('^[0-9]+$'),
-			o = 0,
-			n = 0;
+				t = cave.lls_getCount(),
+				i = new RegExp('^[0-9]+$'),
+				o = 0,
+				n = 0;
 			n < t;
 			n++
 		) {
@@ -280,7 +278,7 @@ var PostStorage = {
 	removeItem: function (e) {
 		var t = JSON.parse(cave.lls_getItem(e));
 		t && t.screenShotKey && cave.lls_removeItem(t.screenShotKey),
-			cave.lls_removeItem(e);
+		cave.lls_removeItem(e);
 	},
 	hasKey: function (e) {
 		for (var t = cave.lls_getCount(), i = 0; i < t; i++)
@@ -288,14 +286,14 @@ var PostStorage = {
 		return !1;
 	},
 	sweep: function () {
-		var t = PostStorage.getAll(),
-			i = t[0];
+		var t = PostStorage.getAll();
+		var i = t[0];
 		if (t[1] > 0)
 			for (var o in i) {
 				var n = JSON.parse(cave.lls_getItem(o)).screenShotKey;
 				n && !PostStorage.hasKey(n) && cave.lls_removeItem(o);
 			}
-	},
+	}
 };
 
 var classList = {
@@ -307,7 +305,7 @@ var classList = {
 	},
 	remove: function (el, string) {
 		el.className = el.className.replace(string, '');
-	},
+	}
 };
 function testOffline() {
 	var posts = PostStorage.getAll();
@@ -418,7 +416,7 @@ function DELETE(url, callback) {
 document.addEventListener('DOMContentLoaded', function () {
 	pjax = Pjax.init({
 		elements: 'a[data-pjax]',
-		selectors: ['title', '#body'],
+		selectors: ['title', '#body']
 	});
 	console.debug('Pjax initialized.', pjax);
 	initAll();
@@ -431,7 +429,7 @@ document.addEventListener('PjaxRequest', function (e) {
 document.addEventListener('PjaxLoaded', function (e) {
 	console.log(e);
 });
-document.addEventListener('PjaxDone', function (e) {
+document.addEventListener('PjaxDone', function (_e) {
 	initAll();
 	cave.brw_scrollImmediately(0, 0);
 	if (pjax.canGoBack()) cave.toolbar_setButtonType(1);

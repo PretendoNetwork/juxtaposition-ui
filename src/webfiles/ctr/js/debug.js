@@ -1,5 +1,3 @@
-/*eslint-env browser*/
-/*eslint no-var: "off"*/
 if (typeof cave !== 'undefined') {
 	window.addEventListener('error', handleError, true);
 
@@ -465,8 +463,8 @@ if (typeof cave === 'undefined') {
          */
 		capture_getLowerImageDetail: function (width, height, quality, format) {
 			console.log('cave.capture_getLowerImageDetail(' +
-                [width, height, quality, format].join(', ')
-                + ')');
+				[width, height, quality, format].join(', ') +
+				')');
 		},
 		/**
          * More advanced version of capture_getUpperImageLeft that allows for customisation.
@@ -477,8 +475,8 @@ if (typeof cave === 'undefined') {
          */
 		capture_getUpperImageLeftDetail: function (width, height, quality, format) {
 			console.log('cave.capture_getUpperImageLeftDetail(' +
-                [width, height, quality, format].join(', ')
-                + ')');
+				[width, height, quality, format].join(', ') +
+				')');
 		},
 		/**
          * More advanced version of capture_getUpperImageRight that allows for customisation.
@@ -489,8 +487,8 @@ if (typeof cave === 'undefined') {
          */
 		capture_getUpperImageRightDetail: function (width, height, quality, format) {
 			console.log('cave.capture_getUpperImageRightDetail(' +
-                [width, height, quality, format].join(', ')
-                + ')');
+				[width, height, quality, format].join(', ') +
+				')');
 		},
 		/**
          * More advanced version of capture_getUpperImage3D that allows for customisation.
@@ -501,8 +499,8 @@ if (typeof cave === 'undefined') {
          */
 		capture_getUpperImage3DDetail: function (width, height, quality, format) {
 			console.log('cave.capture_getUpperImage3DDetail(' +
-                [width, height, quality, format].join(', ')
-                + ')');
+				[width, height, quality, format].join(', ') +
+				')');
 		},
 		/**
          * Unknown
@@ -689,8 +687,8 @@ if (typeof cave === 'undefined') {
 		convertTimeToString: function (unixTime) {
 			console.log('cave.convertTimeToString(' + unixTime + ')');
 			const date = new Date(unixTime * 1000);
-			return date.getFullYear() + '-' + this._toDoubleDigits(date.getMonth() + 1) + '-' + this._toDoubleDigits(date.getDate())
-                + ' ' + this._toDoubleDigits(date.getHours()) + ':' + this._toDoubleDigits(date.getMinutes()) + ':' + this._toDoubleDigits(date.getSeconds());
+			return date.getFullYear() + '-' + this._toDoubleDigits(date.getMonth() + 1) + '-' + this._toDoubleDigits(date.getDate()) +
+				' ' + this._toDoubleDigits(date.getHours()) + ':' + this._toDoubleDigits(date.getMinutes()) + ':' + this._toDoubleDigits(date.getSeconds());
 		},
 		_toDoubleDigits: function (num) {
 			num += '';
@@ -707,11 +705,11 @@ if (typeof cave === 'undefined') {
 			console.log('cave.effect_scrollGuide( ' + flag + ' )');
 		},
 		effect_setScrollGuideOffsetPos: function (x, y) {
-			console.log('effect_setScrollGuideOffsetPos( x = ' + x + ', y = ' + ' )');
+			console.log('effect_setScrollGuideOffsetPos( x = ' + x + ', y = ' + y + ' )');
 		},
 		// キーボードアプレットに入力した文字列が返り値になるので window.prompt でエミュレートする
 		// Since the string entered in the keyboard applet will be the return value, emulate it with window.prompt
-		swkbd_callFullKeyboard: function (text, maxLength, minLength, isMonospace, isMultiline, isConvertible) {
+		swkbd_callFullKeyboard: function (text, _maxLength, _minLength, _isMonospace, _isMultiline, _isConvertible) {
 			console.log('cave.callFullKeyboard( ' + Array.prototype.join.call(arguments, ', ') + ' )');
 			return window.prompt('cave.callFullKeyboard', text);
 		},
@@ -724,6 +722,6 @@ if (typeof cave === 'undefined') {
 		},
 		home_setEnabled: function (flag) {
 			console.log('cave.home_setEnabled', flag);
-		},
+		}
 	};
 }

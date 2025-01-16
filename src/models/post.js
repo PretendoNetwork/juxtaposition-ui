@@ -80,7 +80,7 @@ const PostSchema = new Schema({
 	yeahs: [Number]
 });
 
-PostSchema.methods.upReply = async function() {
+PostSchema.methods.upReply = async function () {
 	const replyCount = this.get('reply_count');
 	if (replyCount + 1 < 0) {
 		this.set('reply_count', 0);
@@ -91,7 +91,7 @@ PostSchema.methods.upReply = async function() {
 	await this.save();
 };
 
-PostSchema.methods.downReply = async function() {
+PostSchema.methods.downReply = async function () {
 	const replyCount = this.get('reply_count');
 	if (replyCount - 1 < 0) {
 		this.set('reply_count', 0);
@@ -102,7 +102,7 @@ PostSchema.methods.downReply = async function() {
 	await this.save();
 };
 
-PostSchema.methods.removePost = async function(reason, pid) {
+PostSchema.methods.removePost = async function (reason, pid) {
 	this.set('removed', true);
 	this.set('removed_reason', reason);
 	this.set('removed_by', pid);
@@ -110,7 +110,7 @@ PostSchema.methods.removePost = async function(reason, pid) {
 	await this.save();
 };
 
-PostSchema.methods.unRemove = async function(reason) {
+PostSchema.methods.unRemove = async function (reason) {
 	this.set('removed', false);
 	this.set('removed_reason', reason);
 	await this.save();

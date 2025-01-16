@@ -1,10 +1,6 @@
-/*eslint-env browser*/
-/*eslint no-var: "off"*/
-/*eslint @typescript-eslint/explicit-function-return-type: "off"*/
 let pjax;
 setInterval(checkForUpdates, 30000);
 
-/* global Pjax */
 function initNavBar() {
 	const els = document.querySelectorAll('#nav-menu > li');
 	if (!els) {
@@ -32,7 +28,8 @@ function initYeah() {
 		els[i].addEventListener('click', yeah);
 	}
 	function yeah(e) {
-		const el = e.currentTarget; const id = el.getAttribute('data-post');
+		const el = e.currentTarget;
+		const id = el.getAttribute('data-post');
 		const parent = document.getElementById(id);
 		const count = document.getElementById('count-' + id);
 		el.disabled = true;
@@ -41,7 +38,6 @@ function initYeah() {
 			el.classList.remove('selected');
 			parent.classList.remove('yeah');
 			count.innerText -= 1;
-
 		} else {
 			el.classList.add('selected');
 			parent.classList.add('yeah');
@@ -90,7 +86,6 @@ function initTabs() {
 				initMorePosts();
 			}
 		});
-
 	}
 }
 function initPosts() {
@@ -124,7 +119,6 @@ function initMorePosts() {
 					el.parentElement.remove();
 				}
 			});
-
 		});
 	}
 }
@@ -227,7 +221,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function follow(el) {
 	const id = el.getAttribute('data-community-id');
 	const count = document.getElementById('followers');
-	const oldtext = el.innerText; const newtext = el.getAttribute('data-text');
+	const oldtext = el.innerText;
+	const newtext = el.getAttribute('data-text');
 	el.disabled = true;
 	const params = 'id=' + id;
 	if (el.classList.contains('checked')) {
@@ -266,7 +261,7 @@ function checkForUpdates() {
 				messages.innerHTML = '';
 				messages.style.display = 'none';
 			}
-			/*Check for Notifications*/
+			/* Check for Notifications */
 			if (notificationObj.notification_count > 0 && notificationObj.notification_count < 99) {
 				news.innerHTML = notificationObj.notification_count;
 				news.style.display = 'unset';
@@ -304,7 +299,7 @@ function GET(url, callback) {
 	xhttp.send();
 }
 
-window.onscroll = function (ev) {
+window.onscroll = function (_ev) {
 	if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && document.getElementById('load-more')) {
 		document.getElementById('load-more').click();
 	}
@@ -333,7 +328,6 @@ function downloadURI(uri, name) {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
-	delete link;
 }
 function reportPost(post) {
 	const id = post.getAttribute('data-post');
@@ -344,7 +338,7 @@ function reportPost(post) {
 
 	form.action = '/posts/' + id + '/report';
 	formID.value = id;
-	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, "$1-$2-$3-$4-$5-$6"));
+	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, '$1-$2-$3-$4-$5-$6'));
 	button.click();
 }
 
@@ -373,6 +367,7 @@ function newPainting(clear) {
 	}
 
 	if (clear) {
+		/* global clearCanvas -- defined from painting.js */
 		clearCanvas();
 	}
 
@@ -380,7 +375,6 @@ function newPainting(clear) {
 	paintingArea.style.display = 'flex';
 	paintingOverlay.style.display = '';
 	scale = c.getBoundingClientRect().width / 320;
-
 }
 
 function closePainting(save) {
@@ -398,5 +392,4 @@ function closePainting(save) {
 	}
 
 	paintingOverlay.style.display = 'none';
-
 }

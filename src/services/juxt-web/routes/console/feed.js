@@ -1,9 +1,9 @@
 const express = require('express');
+const moment = require('moment');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
-const moment = require('moment');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -25,7 +25,7 @@ router.get('/', async function (req, res) {
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
-			moment,
+			moment
 		});
 	}
 
@@ -53,7 +53,7 @@ router.get('/all', async function (req, res) {
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).limit(config.post_limit).sort({ created_at: -1});
+	}).limit(config.post_limit).sort({ created_at: -1 });
 
 	const bundle = {
 		posts,
@@ -126,7 +126,7 @@ router.get('/all/more', async function (req, res) {
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).skip(offset).limit(config.post_limit).sort({ created_at: -1});
+	}).skip(offset).limit(config.post_limit).sort({ created_at: -1 });
 
 	const bundle = {
 		posts,
@@ -165,7 +165,7 @@ router.get('/all/more', async function (req, res) {
 		parent: null,
 		message_to_pid: null,
 		removed: false
-	}).skip(offset).limit(config.post_limit).sort({ created_at: -1});
+	}).skip(offset).limit(config.post_limit).sort({ created_at: -1 });
 
 	const bundle = {
 		posts,

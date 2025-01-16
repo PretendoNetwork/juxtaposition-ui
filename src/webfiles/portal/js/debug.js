@@ -1,4 +1,4 @@
-/*Debugging*/
+/* Debugging */
 if (typeof wiiu === 'undefined') {
 	window.wiiu = {
 		gamepad: {
@@ -35,7 +35,8 @@ if (typeof wiiuBrowser === 'undefined') {
 		setSwkbdDictionary: function (jsonString) {
 			console.debug('Set SWKBD dictionary', JSON.parse(jsonString));
 			return (Math.random() < 0.5)
-				? {} : { error: { code: 111222, message: 'Test Error Message' } };
+				? {}
+				: { error: { code: 111222, message: 'Test Error Message' } };
 		},
 		openTvAreaSetting: function () {
 			alert('Tv側の安全フレーム設定画面を開きました');
@@ -46,7 +47,7 @@ if (typeof wiiuBrowser === 'undefined') {
 		jumpToEshop: function (query) {
 			console.debug(query);
 		},
-		jumpToApplication: function(titleId, flags, communityId, appData, postId) {
+		jumpToApplication: function (titleId, _flags, _communityId, _appData, _postId) {
 			console.debug(titleId);
 		}
 	};
@@ -66,7 +67,7 @@ if (typeof wiiuSound === 'undefined') {
 		playSound: function (soundId, device) {
 			this.playSoundByName('id ' + soundId, device);
 		},
-		playSoundByName: function (name, device) {
+		playSoundByName: function (name, _device) {
 			console.debug('Play sound ' + name);
 		}
 	};
@@ -90,46 +91,54 @@ if (typeof wiiuSystemSetting === 'undefined') {
 	window.wiiuSystemSetting = {
 		checkParentalPinCode: function (code) {
 			console.debug(code);
-			return Math.random() < 0.5 ? {result: true} :{
-				error : {
-					code : 1112222,
-					message : 'Test Error Message'
-				}
-			};
+			return Math.random() < 0.5
+				? { result: true }
+				: {
+						error: {
+							code: 1112222,
+							message: 'Test Error Message'
+						}
+					};
 		},
 		getRegion: function () {
-			return Math.random() < 0.5 ? {
-				code: 'JPN'
-			} : {
-				error: {
-					code : 1112222,
-					message : 'Test Error Message'
-				}
-			};
+			return Math.random() < 0.5
+				? {
+						code: 'JPN'
+					}
+				: {
+						error: {
+							code: 1112222,
+							message: 'Test Error Message'
+						}
+					};
 		},
 		getCountry: function () {
-			return Math.random() < 0.5 ? {
-				code: 'JP'
-			} : {
-				error: {
-					code : 1112222,
-					message : 'Test Error Message'
-				}
-			};
+			return Math.random() < 0.5
+				? {
+						code: 'JP'
+					}
+				: {
+						error: {
+							code: 1112222,
+							message: 'Test Error Message'
+						}
+					};
 		},
 		getLanguage: function () {
-			return Math.random() < 0.5 ? {
-				code: 'ja'
-			} : {
-				error: {
-					code : 1112222,
-					message : 'Test Error Message'
-				}
-			};
+			return Math.random() < 0.5
+				? {
+						code: 'ja'
+					}
+				: {
+						error: {
+							code: 1112222,
+							message: 'Test Error Message'
+						}
+					};
 		},
 		getSpotPassUploadConsoleInfoState: function () {
 			return { enable: Math.random() < 0.5 };
-		},
+		}
 	};
 }
 if (typeof wiiuBOSS === 'undefined') {
@@ -137,42 +146,42 @@ if (typeof wiiuBOSS === 'undefined') {
 		isRegisteredBossTask: function () {
 			console.debug('wiiuBOSS.isRegisteredBossTask');
 			const result = {
-				'isRegistered' : true
+				isRegistered: true
 			};
 			return result;
 		},
-		registerBossTask: function (languageCode) {
+		registerBossTask: function (_languageCode) {
 			console.debug('wiiuBOSS.registerBossTask');
-			//return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
+			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
 		},
 		unregisterBossTask: function () {
 			console.debug('wiiuBOSS.unregisterBossTask');
-			//return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
+			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
 		},
 		isRegisteredDirectMessageTask: function () {
 			console.debug('wiiuBOSS.isRegisteredDirectMessageTask');
 			const result = {
-				'isRegistered' : true
+				isRegistered: true
 			};
 			return result;
 		},
-		registerDirectMessageTask: function (languageCode) {
+		registerDirectMessageTask: function (_languageCode) {
 			console.debug('wiiuBOSS.registerDirectMessageTask');
-			//return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
+			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
 		},
-		registerDirectMessageTaskEx: function (lifeTime, interval) {
+		registerDirectMessageTaskEx: function (_lifeTime, _interval) {
 			console.debug('wiiuBOSS.registerDirectMessageTaskEx');
-			//return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
+			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
 		},
 		unregisterDirectMessageTask: function () {
 			console.debug('wiiuBOSS.unregisterDirectMessageTask');
-			//return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
+			// return { "error" : { "code" : 1112222, "message" : "Test Error Message"} };
 			return {};
-		},
+		}
 	};
 }
 if (typeof wiiuMainApplication === 'undefined') {
@@ -190,38 +199,38 @@ if (typeof wiiuMainApplication === 'undefined') {
 
 			// テスト等でスクショの有無を固定したい場合にクッキーで指定できるようにする, 実機ではこの挙動は存在しない
 			// If you want to fix the presence or absence of screenshots in tests, etc., make it possible to specify with cookies, this behavior does not exist on the actual device
-			//var force = Olv.Cookie.get('force_screenshot_for_test');
-			//if (force === 'true')  index = 0;
-			//if (force === 'false') index = 2;
+			// var force = Olv.Cookie.get('force_screenshot_for_test');
+			// if (force === 'true')  index = 0;
+			// if (force === 'false') index = 2;
 
 			return images[index];
 		},
-		getScreenShot:         function (isTv) {
-			return this._getImage(); 
+		getScreenShot: function (_isTv) {
+			return this._getImage();
 		},
-		getAppData:            function () {
-			return null; 
+		getAppData: function () {
+			return null;
 		},
-		getExternalImageData:  function () {
-			return this._getImage(); 
+		getExternalImageData: function () {
+			return this._getImage();
 		},
 		getExternalBinaryData: function () {
-			return null; 
+			return null;
 		}
 	};
 }
 if (typeof wiiuMemo === 'undefined') {
 	window.wiiuMemo = {
 		_isFinish: true,
-		open: function(reset) {
+		open: function (reset) {
 			console.debug('wiiuMemo.open(reset = ' + reset + ')');
 			this._isFinish = false;
 			const self = this;
 			setTimeout(function () {
-				self._isFinish = true; 
+				self._isFinish = true;
 			}, 100);
 		},
-		isFinish: function() {
+		isFinish: function () {
 			console.debug('wiiuMemo.isFinish()');
 			console.debug(this._isFinish);
 			return this._isFinish;
@@ -241,13 +250,13 @@ if (typeof wiiuMemo === 'undefined') {
 }
 if (typeof wiiuPDM === 'undefined') {
 	window.wiiuPDM = {
-		getTotalPlayTime: function(titleID) {
+		getTotalPlayTime: function (titleID) {
 			console.debug('wiiuPDM.getTotalPlayTime(' + titleID + ')');
-			return { minutes : 0 };
+			return { minutes: 0 };
 		},
-		getTitlesFilteredByPlayTime: function(minutes) {
+		getTitlesFilteredByPlayTime: function (minutes) {
 			console.debug('wiiuPDM.getTitlesFilteredByPlayTime(' + minutes + ')');
-			return { IDs : [] };
+			return { IDs: [] };
 		}
 	};
 }
@@ -273,7 +282,7 @@ if (typeof wiiuFilter === 'undefined') {
 				return -2;
 			}
 			return 0;
-		},
+		}
 	};
 }
 if (typeof wiiuSessionStorage === 'undefined') {
@@ -296,7 +305,7 @@ if (typeof wiiuSessionStorage === 'undefined') {
 		},
 		length: function () {
 			return sessionStorage.length;
-		},
+		}
 	};
 }
 if (typeof wiiuLocalStorage === 'undefined') {
@@ -320,6 +329,6 @@ if (typeof wiiuLocalStorage === 'undefined') {
 		length: function () {
 			return localStorage.length;
 		},
-		write: function () {},
+		write: function () { }
 	};
 }

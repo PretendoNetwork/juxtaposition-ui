@@ -1,8 +1,8 @@
 const express = require('express');
+const moment = require('moment');
 const database = require('../../../../database');
 const config = require('../../../../../config.json');
 const util = require('../../../../util');
-const moment = require('moment');
 const router = express.Router();
 
 router.get('/my_news', async function (req, res) {
