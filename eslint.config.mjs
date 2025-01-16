@@ -100,6 +100,7 @@ export default tseslint.config(
 		}
 	},
 	{
+		// https://www.npmjs.com/package/eslint-plugin-import - but specifically for TypeScript
 		extends: [importPlugin.flatConfigs.typescript],
 		files: ['**/*.ts', '**/*.d.ts'],
 		settings: {
@@ -113,6 +114,7 @@ export default tseslint.config(
 		}
 	},
 	{
+		// Allow browser globals in webfiles
 		languageOptions: {
 			globals: {
 				...globals.browser,
@@ -143,6 +145,7 @@ export default tseslint.config(
 		}
 	},
 	{
+		// Add node.js globals to files outside of the webfiles directory
 		languageOptions: {
 			globals: {
 				...globals.node,
