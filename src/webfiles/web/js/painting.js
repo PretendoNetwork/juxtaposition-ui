@@ -1,7 +1,8 @@
 const c = document.getElementById('painting');
 const ctx = c.getContext('2d');
 
-const scale = c.getBoundingClientRect().width / 320;
+// eslint-disable-next-line prefer-const -- Modified in web.js
+let scale = c.getBoundingClientRect().width / 320;
 let isPainting = false;
 let currentPen = drawPen1;
 let oldCursorPosition = null;
@@ -35,10 +36,12 @@ function clearCanvas() {
 	ctx.fillRect(0, 0, 320, 120);
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function setPen(number) {
 	setTool(number, '#000');
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function setEraser(number) {
 	setTool(number, '#fff');
 }

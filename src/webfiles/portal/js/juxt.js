@@ -240,6 +240,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function hideScreenShots() {
 	document.getElementById('screenshot-toggle').checked = false;
 }
+
+// eslint-disable-next-line no-unused-vars -- Used by src/webfiles/portal/partials/new_post.ejs
 function chooseScreenShot(value) {
 	const screenshot = document.getElementById('screenshot-value');
 	switch (value) {
@@ -257,6 +259,8 @@ function chooseScreenShot(value) {
 	}
 	hideScreenShots();
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/community.ejs and src/webfiles/portal/user_page.ejs
 function follow(el) {
 	const id = el.getAttribute('data-community-id');
 	const count = document.getElementById('followers');
@@ -281,6 +285,8 @@ function follow(el) {
 		count.innerText = element.count;
 	});
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/new_post.ejs
 function newPainting(reset) {
 	wiiuMemo.open(reset);
 	setTimeout(function () {
@@ -302,6 +308,8 @@ function stopLoading() {
 		wiiuBrowser.lockUserOperation(false);
 	}
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/nav_bar.ejs
 function exit() {
 	wiiu.gamepad.update();
 
@@ -313,6 +321,7 @@ function exit() {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/post_template.ejs
 function deletePost(post) {
 	const id = post.getAttribute('data-post');
 	if (!id) return;
@@ -329,6 +338,7 @@ function deletePost(post) {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/post_template.ejs
 function reportPost(post) {
 	const id = post.getAttribute('data-post');
 	const button = document.getElementById('report-launcher');

@@ -218,6 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	initAll();
 });
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/community.ejs and src/webfiles/web/user_page.ejs
 function follow(el) {
 	const id = el.getAttribute('data-community-id');
 	const count = document.getElementById('followers');
@@ -304,6 +305,8 @@ window.onscroll = function (_ev) {
 		document.getElementById('load-more').click();
 	}
 };
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
 function copyToClipboard(text) {
 	const inputc = document.getElementsByTagName('header')[0].appendChild(document.createElement('input'));
 	inputc.value = text;
@@ -313,6 +316,7 @@ function copyToClipboard(text) {
 	inputc.parentNode.removeChild(inputc);
 	Toast('Copied to clipboard.');
 }
+
 function Toast(text) {
 	const x = document.getElementById('toast');
 	x.innerText = text;
@@ -321,6 +325,8 @@ function Toast(text) {
 		x.className = x.className.replace('show', '');
 	}, 3000);
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/me_page.ejs
 function downloadURI(uri, name) {
 	const link = document.createElement('a');
 	link.download = name;
@@ -329,6 +335,8 @@ function downloadURI(uri, name) {
 	link.click();
 	document.body.removeChild(link);
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
 function reportPost(post) {
 	const id = post.getAttribute('data-post');
 	const button = document.getElementById('report-launcher');
@@ -342,6 +350,7 @@ function reportPost(post) {
 	button.click();
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function openText() {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -356,6 +365,7 @@ function openText() {
 	paintingOverlay.style.display = 'none';
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function newPainting(clear) {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -374,9 +384,13 @@ function newPainting(clear) {
 	textArea.style.display = 'none';
 	paintingArea.style.display = 'flex';
 	paintingOverlay.style.display = '';
+
+	// eslint-disable-next-line no-unused-vars -- Modifies scale from painting.js
+	/* global scale:writeable -- defined from painting.js */
 	scale = c.getBoundingClientRect().width / 320;
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function closePainting(save) {
 	const paintingArea = document.getElementById('new-post-memo');
 	const paintingOverlay = document.getElementById('painting-wrapper');

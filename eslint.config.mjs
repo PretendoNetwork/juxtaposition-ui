@@ -132,15 +132,15 @@ export default tseslint.config(
 		languageOptions: {
 			globals: {
 				...globals.browser,
-				wiiuBrowser: false,
-				wiiuSound: false,
-				wiiuMainApplication: false,
-				wiiuErrorViewer: false,
-				wiiuMemo: false,
-				wiiuDialog: false,
-				wiiu: false,
-				cave: false,
-				Olv: false
+				wiiuBrowser: 'readonly',
+				wiiuSound: 'readonly',
+				wiiuMainApplication: 'readonly',
+				wiiuErrorViewer: 'readonly',
+				wiiuMemo: 'readonly',
+				wiiuDialog: 'readonly',
+				wiiu: 'readonly',
+				cave: 'readonly',
+				Olv: 'readonly'
 			}
 		}
 	},

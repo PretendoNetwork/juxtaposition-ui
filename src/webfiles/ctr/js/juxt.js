@@ -189,6 +189,7 @@ function initTabs() {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/post.ejs
 function deletePost(post) {
 	var id = post.getAttribute('data-post');
 	if (!id) return;
@@ -213,6 +214,7 @@ function deletePost(post) {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/post.ejs
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -307,6 +309,8 @@ var classList = {
 		el.className = el.className.replace(string, '');
 	}
 };
+
+// eslint-disable-next-line no-unused-vars -- Used for testing
 function testOffline() {
 	var posts = PostStorage.getAll();
 	var text = JSON.stringify(posts, null, '\t');
@@ -324,12 +328,15 @@ function checkForUpdates() {
 	});
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/partials/new_post.ejs
 function newText() {
 	classList.remove(document.getElementById('memo-sprite'), 'selected');
 	classList.remove(document.getElementById('post-memo'), 'selected');
 	classList.add(document.getElementById('text-sprite'), 'selected');
 	classList.add(document.getElementById('post-text'), 'selected');
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/partials/new_post.ejs
 function newPainting(reset) {
 	if (reset) cave.memo_clear();
 	classList.remove(document.getElementById('text-sprite'), 'selected');
@@ -346,12 +353,7 @@ function newPainting(reset) {
 	}, 250);
 }
 
-function newScreenshot(topScreen) {
-	var screenshot = topScreen
-		? cave.capture_getLowerImage()
-		: cave.capture_getUpperImage();
-}
-
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/community.ejs and src/webfiles/ctr/user_page.ejs
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
 	var count = document.getElementById('followers');
