@@ -76,8 +76,12 @@ async function checkBan(request, response, next) {
 			});
 		}
 	}
-	user.last_active = Date.now();
-	await user.save();
+
+	if (user) {
+		user.last_active = Date.now();
+		await user.save();
+	}
+
 	next();
 }
 
