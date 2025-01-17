@@ -43,22 +43,22 @@ async function checkBan(request, response, next) {
 			});
 		}
 	}
-	const user = await db.getUserSettings(request.pid);
-	if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
-		user.account_status = 0;
-		await user.save();
+	const userSettings = await db.getUserSettings(request.pid);
+	if (userSettings && moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
+		userSettings.account_status = 0;
+		await userSettings.save();
 	}
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
-	if (user && (user.account_status < 0 || user.account_status > 1 || request.user.accessLevel < 0)) {
+	if (userSettings && (userSettings.account_status < 0 || userSettings.account_status > 1 || request.user.accessLevel < 0)) {
 		if (request.directory === 'web') {
 			let banMessage = '';
-			switch (user.account_status) {
+			switch (userSettings.account_status) {
 				case 2:
-					banMessage = `${request.user.username} has been banned until: ${ moment(user.ban_lift_date) }. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
+					banMessage = `${request.user.username} has been banned until: ${ moment(userSettings.ban_lift_date) }. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
 					break;
 				case 3:
-					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
+					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the developers in the Discord server.`;
 					break;
 				default:
 					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the developers in the Discord server.`;
@@ -66,7 +66,7 @@ async function checkBan(request, response, next) {
 			return response.render('web/login.ejs', {toast: banMessage, cdnURL: config.CDN_domain,});
 		} else {
 			return response.render(request.directory + '/partials/ban_notification.ejs', {
-				user: user,
+				user: userSettings,
 				moment: moment,
 				cdnURL: config.CDN_domain,
 				lang: request.lang,
@@ -77,9 +77,9 @@ async function checkBan(request, response, next) {
 		}
 	}
 
-	if (user) {
-		user.last_active = Date.now();
-		await user.save();
+	if (userSettings) {
+		userSettings.last_active = Date.now();
+		await userSettings.save();
 	}
 
 	next();
