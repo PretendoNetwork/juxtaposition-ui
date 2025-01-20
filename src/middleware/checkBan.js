@@ -35,7 +35,7 @@ async function checkBan(request, response, next) {
 	if (!accessAllowed) {
 		response.status(500);
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev', cdnURL: config.CDN_domain,});
+			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev', });
 		} else {
 			return response.render('portal/partials/ban_notification.ejs', {
 				user: null,
@@ -63,13 +63,11 @@ async function checkBan(request, response, next) {
 				default:
 					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the developers in the Discord server.`;
 			}
-			return response.render('web/login.ejs', {toast: banMessage, cdnURL: config.CDN_domain,});
+			return response.render('web/login.ejs', {toast: banMessage, });
 		} else {
 			return response.render(request.directory + '/partials/ban_notification.ejs', {
 				user: userSettings,
 				moment: moment,
-				cdnURL: config.CDN_domain,
-				lang: request.lang,
 				pid: request.pid,
 				PNID: request.user.username,
 				networkBan: request.user.accessLevel < 0

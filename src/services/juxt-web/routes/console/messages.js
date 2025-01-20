@@ -16,10 +16,10 @@ router.get('/', async function (req, res) {
 		moment: moment,
 		pid: req.pid,
 		conversations: conversations,
-		cdnURL: config.CDN_domain,
+		
 		usersMap: usersMap,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
+
+		
 		moderator: req.moderator
 	});
 });
@@ -74,9 +74,7 @@ router.post('/new', async function (req, res) {
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
 				message: 'Upload failed. Please try again later.',
-				pid: req.pid,
-				lang: req.lang,
-				cdnURL: config.CDN_domain
+				pid: req.pid
 			});
 		}
 	}
@@ -87,9 +85,7 @@ router.post('/new', async function (req, res) {
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
 				message: 'Upload failed. Please try again later.',
-				pid: req.pid,
-				lang: req.lang,
-				cdnURL: config.CDN_domain
+				pid: req.pid
 			});
 		}
 	}
@@ -238,9 +234,9 @@ router.get('/:message_id', async function (req, res) {
 		conversation: conversation,
 		messages: messages,
 		userMap: userMap,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
+		
+
+		
 		pid: req.pid,
 		moderator: req.moderator
 	});

@@ -75,7 +75,7 @@
             <p class="no-posts-text"><%= lang.activity_feed.empty %></p>
         <%} else { %>
             <% newPosts.forEach(function(post) { %>
-                <%- include('post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false  }); %>
+                <%- include('post_template', { post: post, reply: false  }); %>
             <% }); %>
         <%}%>
     </div>

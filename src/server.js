@@ -59,8 +59,8 @@ app.use((req, res) => {
 	res.render(req.directory + '/error.ejs', {
 		code: 404,
 		message: 'Page not found',
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
+		
+
 		pid: req.pid
 	});
 });

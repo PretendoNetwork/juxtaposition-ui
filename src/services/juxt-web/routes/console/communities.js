@@ -35,9 +35,6 @@ router.get('/', async function (req, res) {
 		cache: true,
 		popularCommunities: popularCommunities,
 		newCommunities: newCommunities,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		moderator: req.moderator
 	});
@@ -47,9 +44,6 @@ router.get('/all', async function (req, res) {
 	const communities = await database.getCommunities(90);
 	res.render(req.directory + '/all_communities.ejs', {
 		communities: communities,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		moderator: req.moderator
 	});
@@ -74,7 +68,7 @@ router.get('/:communityID/related', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid });
 	}
 	const communityMap = await util.getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
@@ -87,9 +81,6 @@ router.get('/:communityID/related', async function (req, res) {
 		communityMap,
 		community,
 		children,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		moderator: req.moderator
 	});
@@ -104,7 +95,7 @@ router.get('/:communityID/:type', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, lang: req.lang, cdnURL: config.CDN_domain });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, });
 	}
 
 	if (!community.permissions) {
@@ -141,16 +132,13 @@ router.get('/:communityID/:type', async function (req, res) {
 		numPosts,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/titles/${req.params.communityID}/${req.params.type}/more?offset=${posts.length}&pjax=true`
 	};
 
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
-			moment,
-			lang: req.lang
+			moment
 		});
 	}
 
@@ -164,9 +152,6 @@ router.get('/:communityID/:type', async function (req, res) {
 		userSettings: userSettings,
 		userContent: userContent,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		pnid: req.user,
 		children,
@@ -207,8 +192,6 @@ router.get('/:communityID/:type/more', async function (req, res) {
 		numPosts: posts.length,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/titles/${req.params.communityID}/${req.params.type}/more?offset=${offset + posts.length}&pjax=true`
 	};
 
@@ -219,9 +202,6 @@ router.get('/:communityID/:type/more', async function (req, res) {
 			database: database,
 			bundle,
 			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
 			pid: req.pid,
 			moderator: req.moderator
 		});

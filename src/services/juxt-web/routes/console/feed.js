@@ -18,8 +18,6 @@ router.get('/', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/feed/more?offset=${posts.length}&pjax=true`
 	};
 
@@ -27,20 +25,16 @@ router.get('/', async function (req, res) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
 			moment,
-			lang: req.lang
 		});
 	}
 
 	res.render(req.directory + '/feed.ejs', {
 		moment: moment,
-		title: req.lang.global.activity_feed,
+		title: res.locals.lang.global.activity_feed,
 		userContent: userContent,
 		posts: posts,
 		communityMap: communityMap,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		bundle,
 		template: 'posts_list',
@@ -63,8 +57,6 @@ router.get('/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/feed/more?offset=${offset + posts.length}&pjax=true`,
 		moderator: req.moderator
 	};
@@ -76,9 +68,6 @@ router.get('/more', async function (req, res) {
 			database: database,
 			bundle,
 			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
 			pid: req.pid,
 			moderator: req.moderator
 		});

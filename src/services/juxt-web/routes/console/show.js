@@ -7,8 +7,6 @@ const router = express.Router();
 router.get('/', async function (req, res) {
 	if (req.pid === 1000000000) {
 		return res.render(req.directory + '/guest_notice.ejs', {
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
 			moderator: req.moderator
 		});
 	}
@@ -17,8 +15,6 @@ router.get('/', async function (req, res) {
 	const content = await database.getUserContent(req.pid);
 	if (!user || !content) {
 		return res.render(req.directory + '/first_run.ejs', {
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
 			pid: req.pid,
 			moderator: req.moderator
 		});
@@ -42,8 +38,6 @@ router.get('/', async function (req, res) {
 
 router.get('/first', async function (req, res) {
 	res.render(req.directory + '/first_run.ejs', {
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
 		moderator: req.moderator
 	});
 });

@@ -36,10 +36,10 @@ router.get('/posts', async function (req, res) {
 	]);
 
 	res.render(req.directory + '/reports.ejs', {
-		lang: req.lang,
+
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
+		
+		
 		pid: req.pid,
 		moderator: req.moderator,
 		developer: req.developer,
@@ -70,10 +70,10 @@ router.get('/accounts', async function (req, res) {
 	}).count()
 
 	res.render(req.directory + '/users.ejs', {
-		lang: req.lang,
+
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
+		
+		
 		pid: req.pid,
 		moderator: req.moderator,
 		developer: req.developer,
@@ -102,10 +102,10 @@ router.get('/accounts/:pid', async function (req, res) {
 	const communityMap = await util.getCommunityHash();
 
 	res.render(req.directory + '/moderate_user.ejs', {
-		lang: req.lang,
+
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
+		
+		
 		pid: req.pid,
 		moderator: req.moderator,
 		developer: req.developer,
@@ -192,10 +192,10 @@ router.get('/communities', async function (req, res) {
 	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
 
 	res.render(req.directory + '/manage_communities.ejs', {
-		lang: req.lang,
+
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
+		
+		
 		pid: req.pid,
 		moderator: req.moderator,
 		developer: req.developer,
@@ -211,10 +211,10 @@ router.get('/communities/new', async function (req, res) {
 	}
 
 	res.render(req.directory + '/new_community.ejs', {
-		lang: req.lang,
+
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
+		
+		
 		pid: req.pid,
 		moderator: req.moderator,
 		developer: req.developer
@@ -290,10 +290,10 @@ router.get('/communities/:community_id', async function (req, res) {
 	}
 
 	res.render(req.directory + '/edit_community.ejs', {
-		lang: req.lang,
+
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
+		
+		
 		pid: req.pid,
 		moderator: req.moderator,
 		developer: req.developer,

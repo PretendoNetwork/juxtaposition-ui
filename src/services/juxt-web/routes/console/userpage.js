@@ -54,9 +54,6 @@ router.get('/me/settings', async function (req, res) {
 		moment: moment,
 		userSettings: userSettings,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		moderator: req.moderator
 	});
@@ -156,7 +153,6 @@ async function userPage(req, res, userID) {
 		await redis.setValue(`${userID}_user_page_posts`, JSON.stringify(posts), 60 * 60 * 1);
 	}
 
-
 	const numPosts = await database.getTotalPostsByUserID(userID);
 	const communityMap = await util.getCommunityHash();
 	let friends = [];
@@ -175,14 +171,11 @@ async function userPage(req, res, userID) {
 		numPosts,
 		communityMap,
 		userContent: parentUserContent ? parentUserContent : userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/users/${userID}/more?offset=${posts.length}&pjax=true`
 	};
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
-			lang: req.lang,
 			moment
 		});
 	}
@@ -197,9 +190,6 @@ async function userPage(req, res, userID) {
 		userSettings,
 		bundle,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		link,
 		friends,
@@ -235,15 +225,12 @@ async function userRelations(req, res, userID) {
 			numPosts: posts.length,
 			communityMap,
 			userContent: parentUserContent ? parentUserContent : userContent,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
 			link: `/users/${userID}/yeahs/more?offset=${posts.length}&pjax=true`
 		};
 
 		if (req.query.pjax) {
 			return res.render(req.directory + '/partials/posts_list.ejs', {
 				bundle,
-				lang: req.lang,
 				moment
 			});
 		} else {
@@ -257,9 +244,6 @@ async function userRelations(req, res, userID) {
 				userSettings,
 				bundle,
 				account_server: config.account_server_domain.slice(8),
-				cdnURL: config.CDN_domain,
-				lang: req.lang,
-				mii_image_CDN: config.mii_image_CDN,
 				pid: req.pid,
 				link,
 				friends,
@@ -300,7 +284,7 @@ async function userRelations(req, res, userID) {
 
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/following_list.ejs', {
-			bundle,
+			bundle
 		});
 	}
 	res.render(req.directory + '/user_page.ejs', {
@@ -313,9 +297,6 @@ async function userRelations(req, res, userID) {
 		userSettings,
 		bundle,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		link,
 		parentUserContent,
@@ -339,8 +320,6 @@ async function morePosts(req, res, userID) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/users/${userID}/more?offset=${offset + posts.length}&pjax=true`
 	};
 
@@ -351,9 +330,6 @@ async function morePosts(req, res, userID) {
 			database: database,
 			bundle,
 			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
 			pid: req.pid,
 			moderator: req.moderator
 		});
@@ -377,8 +353,6 @@ async function moreYeahPosts(req, res, userID) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/users/${userID}/yeahs/more?offset=${offset + posts.length}&pjax=true`
 	};
 
@@ -389,9 +363,6 @@ async function moreYeahPosts(req, res, userID) {
 			database: database,
 			bundle,
 			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
 			pid: req.pid,
 			moderator: req.moderator
 		});

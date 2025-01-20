@@ -68,7 +68,7 @@ async function auth(request, response, next) {
 		});
 	}
 
-	request.lang = util.processLanguage(request.paramPackData);
+	response.locals.lang = util.processLanguage(request.paramPackData);
 	//console.timeEnd(`Time Request ${request.timerDate}`);
 	return next();
 }

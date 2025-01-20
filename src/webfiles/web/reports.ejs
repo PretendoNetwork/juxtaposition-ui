@@ -81,7 +81,7 @@
 									</span>
 								</div>
 							</summary>
-							<%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false }); %>
+							<%- include('partials/post_template', { post: post, reply: false }); %>
 							<div class="button-spacer">
 								<button onclick="remove(this)" data-id="<%=report._id%>">Remove Post</button>
 								<button onclick="ignore(this)" data-id="<%=report._id%>">Ignore Report</button>

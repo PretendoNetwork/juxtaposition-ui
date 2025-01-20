@@ -27,8 +27,6 @@ const postLimit = rateLimit({
 			res.render(req.directory + '/error.ejs', {
 				code: 429,
 				message: 'Too many new posts have been created.',
-				cdnURL: config.CDN_domain,
-				lang: req.lang,
 				pid: req.pid
 			});
 		}
@@ -63,14 +61,14 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 				$ne: req.pid
 			}
 		},
-			{
-				$inc: {
-					empathy_count: 1
-				},
-				$push: {
-					yeahs: req.pid
-				}
-			});
+		{
+			$inc: {
+				empathy_count: 1
+			},
+			$push: {
+				yeahs: req.pid
+			}
+		});
 		res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
 		if (req.pid !== post.pid) {
 			await util.newNotification({
@@ -88,14 +86,14 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 				$eq: req.pid
 			}
 		},
-			{
-				$inc: {
-					empathy_count: -1
-				},
-				$pull: {
-					yeahs: req.pid
-				}
-			});
+		{
+			$inc: {
+				empathy_count: -1
+			},
+			$pull: {
+				yeahs: req.pid
+			}
+		});
 		res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
 	} else {
 		res.send({ status: 423, id: post.id, count: post.empathy_count });
@@ -133,9 +131,6 @@ router.get('/:post_id', async function (req, res) {
 		replies: replies,
 		community: community,
 		communityMap: communityMap,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		pid: req.pid,
 		postPNID,
 		pnid: req.user,
@@ -234,9 +229,7 @@ async function newPost(req, res) {
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
 				message: 'Upload failed. Please try again later.',
-				pid: req.pid,
-				lang: req.lang,
-				cdnURL: config.CDN_domain
+				pid: req.pid
 			});
 		}
 	}
@@ -247,9 +240,7 @@ async function newPost(req, res) {
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
 				message: 'Upload failed. Please try again later.',
-				pid: req.pid,
-				lang: req.lang,
-				cdnURL: config.CDN_domain
+				pid: req.pid
 			});
 		}
 	}
