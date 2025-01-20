@@ -288,6 +288,7 @@ async function newPost(req, res) {
 		language_id: req.body.language_id,
 		mii: req.user.mii.data,
 		mii_face_url: `${config.CDN_domain}/mii/${req.user.pid}/${miiFace}`,
+		pid: req.pid,
 		platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
 		region_id: req.paramPackData ? req.paramPackData.region_id : 2,
 		verified: res.locals.moderator,
