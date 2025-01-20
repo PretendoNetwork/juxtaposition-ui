@@ -254,6 +254,12 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	const newCommunity = new COMMUNITY(document);
 	await newCommunity.save();
 	res.redirect(`/admin/communities/${communityID}`);
+
+	for (let i = 0; i < document.title_id.length; i++) {
+		util.communityMap.set(document.title_id[i], document.name);
+		util.communityMap.set(document.title_id[i] + '-id', document.olive_community_id);
+	}
+	util.communityMap.set(document.olive_community_id, document.name);
 });
 
 router.get('/communities/:community_id', async function (req, res) {
@@ -332,6 +338,12 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	await COMMUNITY.findOneAndUpdate({ community_id: communityID }, { $set: document }, { upsert: true }).exec();
 
 	res.redirect(`/admin/communities/${communityID}`);
+
+	for (let i = 0; i < document.title_id.length; i++) {
+		util.communityMap.set(document.title_id[i], document.name);
+		util.communityMap.set(document.title_id[i] + '-id', document.olive_community_id);
+	}
+	util.communityMap.set(document.olive_community_id, document.name);
 });
 
 router.delete('/communities/:id', async (req, res) => {
