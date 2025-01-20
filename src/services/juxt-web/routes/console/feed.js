@@ -73,15 +73,11 @@ router.get('/all', async function (req, res) {
 
 	res.render(req.directory + '/feed.ejs', {
 		moment: moment,
-		title: req.lang.global.activity_feed,
+		title: res.locals.lang.global.activity_feed,
 		userContent: userContent,
 		posts: posts,
 		communityMap: communityMap,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
 		bundle,
 		tab: 1,
 		template: 'posts_list'
