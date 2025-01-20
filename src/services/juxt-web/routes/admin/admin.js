@@ -120,7 +120,7 @@ router.post('/accounts/:pid', async (req, res) => {
 		await util.newNotification({
 			pid: pid,
 			type: 'notice',
-			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: \"${req.body.ban_reason}\". If you have any questions contact the moderators in the Discord server or forum.`,
+			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: "${req.body.ban_reason}". If you have any questions contact the moderators in the Discord server or forum.`,
 			image: '/images/bandwidthalert.png',
 			link: '/titles/2551084080/new'
 		});
@@ -140,9 +140,17 @@ router.delete('/:reportID', async function (req, res) {
 	if (!post) {
 		return res.sendStatus(404);
 	}
+	const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
+	await post.removePost(reason, req.pid);
+	await report.resolve(req.pid, reason);
 
-	await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
-	await report.resolve(req.pid, req.query.reason ? req.query.reason : 'Removed by moderator');
+	await util.newNotification({
+		pid: post.pid,
+		type: 'notice',
+		text: `Your post "${post.id}" has been removed for the following reason: "${reason}"`,
+		image: '/images/bandwidthalert.png',
+		link: '/titles/2551084080/new'
+	});
 
 	return res.sendStatus(200);
 });
