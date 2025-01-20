@@ -53,9 +53,7 @@ router.get('/me/settings', async function (req, res) {
 		communityMap: communityMap,
 		moment: moment,
 		userSettings: userSettings,
-		account_server: config.account_server_domain.slice(8),
-		pid: req.pid,
-		moderator: req.moderator
+		account_server: config.account_server_domain.slice(8)
 	});
 });
 
@@ -190,12 +188,10 @@ async function userPage(req, res, userID) {
 		userSettings,
 		bundle,
 		account_server: config.account_server_domain.slice(8),
-		pid: req.pid,
 		link,
 		friends,
 		parentUserContent,
-		isActive: isDateInRange(userSettings.last_active, 10),
-		moderator: req.moderator
+		isActive: isDateInRange(userSettings.last_active, 10)
 	});
 }
 
@@ -244,12 +240,10 @@ async function userRelations(req, res, userID) {
 				userSettings,
 				bundle,
 				account_server: config.account_server_domain.slice(8),
-				pid: req.pid,
 				link,
 				friends,
 				parentUserContent,
-				isActive: isDateInRange(userSettings.last_active, 10),
-				moderator: req.moderator
+				isActive: isDateInRange(userSettings.last_active, 10)
 			});
 		}
 	}
@@ -297,11 +291,9 @@ async function userRelations(req, res, userID) {
 		userSettings,
 		bundle,
 		account_server: config.account_server_domain.slice(8),
-		pid: req.pid,
 		link,
 		parentUserContent,
-		isActive: isDateInRange(userSettings.last_active, 10),
-		moderator: req.moderator
+		isActive: isDateInRange(userSettings.last_active, 10)
 	});
 }
 
@@ -329,9 +321,7 @@ async function morePosts(req, res, userID) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8),
-			pid: req.pid,
-			moderator: req.moderator
+			account_server: config.account_server_domain.slice(8)
 		});
 	} else {
 		res.sendStatus(204);
@@ -362,9 +352,7 @@ async function moreYeahPosts(req, res, userID) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8),
-			pid: req.pid,
-			moderator: req.moderator
+			account_server: config.account_server_domain.slice(8)
 		});
 	} else {
 		res.sendStatus(204);

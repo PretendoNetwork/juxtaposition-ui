@@ -26,8 +26,7 @@ const postLimit = rateLimit({
 		} else {
 			res.render(req.directory + '/error.ejs', {
 				code: 429,
-				message: 'Too many new posts have been created.',
-				pid: req.pid
+				message: 'Too many new posts have been created.'
 			});
 		}
 	},
@@ -131,10 +130,8 @@ router.get('/:post_id', async function (req, res) {
 		replies: replies,
 		community: community,
 		communityMap: communityMap,
-		pid: req.pid,
 		postPNID,
 		pnid: req.user,
-		moderator: req.moderator
 	});
 });
 
@@ -143,10 +140,10 @@ router.delete('/:post_id', async function (req, res) {
 	if (!post) {
 		return res.sendStatus(404);
 	}
-	if (req.pid !== post.pid && !req.moderator) {
+	if (req.pid !== post.pid && !res.locals.moderator) {
 		return res.sendStatus(401);
 	}
-	if (req.moderator && req.pid !== post.pid) {
+	if (res.locals.moderator && req.pid !== post.pid) {
 		await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
 	} else {
 		await post.removePost('User requested removal', req.pid);
@@ -228,8 +225,7 @@ async function newPost(req, res) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
-				message: 'Upload failed. Please try again later.',
-				pid: req.pid
+				message: 'Upload failed. Please try again later.'
 			});
 		}
 	}
@@ -239,8 +235,7 @@ async function newPost(req, res) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
-				message: 'Upload failed. Please try again later.',
-				pid: req.pid
+				message: 'Upload failed. Please try again later.'
 			});
 		}
 	}
@@ -293,12 +288,10 @@ async function newPost(req, res) {
 		language_id: req.body.language_id,
 		mii: req.user.mii.data,
 		mii_face_url: `${config.CDN_domain}/mii/${req.user.pid}/${miiFace}`,
-		pid: req.pid,
 		platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
 		region_id: req.paramPackData ? req.paramPackData.region_id : 2,
-		verified: req.moderator,
-		parent: parentPost ? parentPost.id : null,
-		moderator: req.moderator
+		verified: res.locals.moderator,
+		parent: parentPost ? parentPost.id : null
 	};
 	const duplicatePost = await database.getDuplicatePosts(req.pid, document);
 	if (duplicatePost && req.params.post_id) {

@@ -70,6 +70,7 @@ async function auth(request, response, next) {
 
 	response.locals.lang = util.processLanguage(request.paramPackData);
 	//console.timeEnd(`Time Request ${request.timerDate}`);
+	response.locals.pid = request.pid;
 	return next();
 }
 

@@ -58,10 +58,7 @@ app.use((req, res) => {
 	logger.warn(req.protocol + '://' + req.get('host') + req.originalUrl);
 	res.render(req.directory + '/error.ejs', {
 		code: 404,
-		message: 'Page not found',
-		
-
-		pid: req.pid
+		message: 'Page not found'
 	});
 });
 

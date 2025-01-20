@@ -34,18 +34,14 @@ router.get('/', async function (req, res) {
 	res.render(req.directory + '/communities.ejs', {
 		cache: true,
 		popularCommunities: popularCommunities,
-		newCommunities: newCommunities,
-		pid: req.pid,
-		moderator: req.moderator
+		newCommunities: newCommunities
 	});
 });
 
 router.get('/all', async function (req, res) {
 	const communities = await database.getCommunities(90);
 	res.render(req.directory + '/all_communities.ejs', {
-		communities: communities,
-		pid: req.pid,
-		moderator: req.moderator
+		communities: communities
 	});
 });
 
@@ -68,7 +64,7 @@ router.get('/:communityID/related', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
 	}
 	const communityMap = await util.getCommunityHash();
 	const children = await database.getSubCommunities(community.olive_community_id);
@@ -80,9 +76,7 @@ router.get('/:communityID/related', async function (req, res) {
 		selection: 2,
 		communityMap,
 		community,
-		children,
-		pid: req.pid,
-		moderator: req.moderator
+		children
 	});
 
 });
@@ -95,7 +89,7 @@ router.get('/:communityID/:type', async function (req, res) {
 	}
 	const community = await database.getCommunityByID(req.params.communityID.toString());
 	if (!community) {
-		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found', pid: req.pid, });
+		return res.render(req.directory + '/error.ejs', { code: 404, message: 'Community not Found' });
 	}
 
 	if (!community.permissions) {
@@ -152,13 +146,11 @@ router.get('/:communityID/:type', async function (req, res) {
 		userSettings: userSettings,
 		userContent: userContent,
 		account_server: config.account_server_domain.slice(8),
-		pid: req.pid,
 		pnid: req.user,
 		children,
 		type,
 		bundle,
-		template: 'posts_list',
-		moderator: req.moderator
+		template: 'posts_list'
 	});
 });
 
@@ -201,9 +193,7 @@ router.get('/:communityID/:type/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8),
-			pid: req.pid,
-			moderator: req.moderator
+			account_server: config.account_server_domain.slice(8)
 		});
 	} else {
 		res.sendStatus(204);

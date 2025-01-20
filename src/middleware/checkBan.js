@@ -12,9 +12,9 @@ async function checkBan(request, response, next) {
 	}
 
 	// Set access levels
-	request.tester = request.user.accessLevel >= 1 && request.user.accessLevel <= 3;
-	request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
-	request.developer = request.user.accessLevel == 3;
+	response.locals.tester = request.user.accessLevel >= 1 && request.user.accessLevel <= 3;
+	response.locals.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
+	response.locals.developer = request.user.accessLevel == 3;
 
 	// Check if user has access to the environment
 	let accessAllowed = false;
@@ -23,7 +23,7 @@ async function checkBan(request, response, next) {
 			accessAllowed = request.developer;
 			break;
 		case 'test':
-			accessAllowed = request.tester || request.moderator || request.developer;
+			accessAllowed = response.locals.tester || response.locals.moderator || response.locals.developer;
 			break;
 		case 'prod':
 			accessAllowed = true;
@@ -35,7 +35,7 @@ async function checkBan(request, response, next) {
 	if (!accessAllowed) {
 		response.status(500);
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev', });
+			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev' });
 		} else {
 			return response.render('portal/partials/ban_notification.ejs', {
 				user: null,
@@ -63,12 +63,11 @@ async function checkBan(request, response, next) {
 				default:
 					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the developers in the Discord server.`;
 			}
-			return response.render('web/login.ejs', {toast: banMessage, });
+			return response.render('web/login.ejs', {toast: banMessage });
 		} else {
 			return response.render(request.directory + '/partials/ban_notification.ejs', {
 				user: userSettings,
 				moment: moment,
-				pid: request.pid,
 				PNID: request.user.username,
 				networkBan: request.user.accessLevel < 0
 			});

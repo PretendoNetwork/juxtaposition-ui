@@ -6,18 +6,13 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
 	if (req.pid === 1000000000) {
-		return res.render(req.directory + '/guest_notice.ejs', {
-			moderator: req.moderator
-		});
+		return res.render(req.directory + '/guest_notice.ejs');
 	}
 
 	const user = await database.getUserSettings(req.pid);
 	const content = await database.getUserContent(req.pid);
 	if (!user || !content) {
-		return res.render(req.directory + '/first_run.ejs', {
-			pid: req.pid,
-			moderator: req.moderator
-		});
+		return res.render(req.directory + '/first_run.ejs');
 	}
 
 	if (req.query.topic_tag) {
@@ -37,9 +32,7 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/first', async function (req, res) {
-	res.render(req.directory + '/first_run.ejs', {
-		moderator: req.moderator
-	});
+	res.render(req.directory + '/first_run.ejs');
 });
 
 router.post('/newUser', async function (req, res) {

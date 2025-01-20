@@ -14,13 +14,8 @@ router.get('/', async function (req, res) {
 	const usersMap = await util.getUserHash();
 	res.render(req.directory + '/messages.ejs', {
 		moment: moment,
-		pid: req.pid,
 		conversations: conversations,
-		
-		usersMap: usersMap,
-
-		
-		moderator: req.moderator
+		usersMap: usersMap
 	});
 });
 
@@ -73,8 +68,7 @@ router.post('/new', async function (req, res) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
-				message: 'Upload failed. Please try again later.',
-				pid: req.pid
+				message: 'Upload failed. Please try again later.'
 			});
 		}
 	}
@@ -84,8 +78,7 @@ router.post('/new', async function (req, res) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
-				message: 'Upload failed. Please try again later.',
-				pid: req.pid
+				message: 'Upload failed. Please try again later.'
 			});
 		}
 	}
@@ -138,12 +131,10 @@ router.post('/new', async function (req, res) {
 		language_id: req.body.language_id,
 		mii: req.user.mii.data,
 		mii_face_url: `${config.CDN_domain}/mii/${req.pid}/${miiFace}`,
-		pid: req.pid,
 		platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
 		region_id: req.paramPackData ? req.paramPackData.region_id : 2,
 		verified: (req.user.accessLevel >= 2),
-		message_to_pid: req.body.message_to_pid,
-		moderator: req.moderator
+		message_to_pid: req.body.message_to_pid
 	};
 	const duplicatePost = await database.getDuplicatePosts(req.pid, document);
 	if (duplicatePost && req.params.post_id) {
@@ -233,12 +224,7 @@ router.get('/:message_id', async function (req, res) {
 		user2: user2,
 		conversation: conversation,
 		messages: messages,
-		userMap: userMap,
-		
-
-		
-		pid: req.pid,
-		moderator: req.moderator
+		userMap: userMap
 	});
 	await conversation.markAsRead(req.pid);
 });

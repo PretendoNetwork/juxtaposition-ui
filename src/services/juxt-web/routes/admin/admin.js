@@ -14,7 +14,7 @@ const config = require('../../../../../config.json');
 const router = express.Router();
 
 router.get('/posts', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
@@ -36,13 +36,7 @@ router.get('/posts', async function (req, res) {
 	]);
 
 	res.render(req.directory + '/reports.ejs', {
-
 		moment: moment,
-		
-		
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		userMap,
 		communityMap,
 		userContent,
@@ -52,7 +46,7 @@ router.get('/posts', async function (req, res) {
 });
 
 router.get('/accounts', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
@@ -67,16 +61,10 @@ router.get('/accounts', async function (req, res) {
 		last_active: {
 			$gte: new Date(Date.now() - 10 * 60 * 1000)
 		}
-	}).count()
+	}).count();
 
 	res.render(req.directory + '/users.ejs', {
-
 		moment: moment,
-		
-		
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		userMap,
 		users,
 		page,
@@ -87,7 +75,7 @@ router.get('/accounts', async function (req, res) {
 });
 
 router.get('/accounts/:pid', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 	const pnid = await util.getUserDataFromPid(req.params.pid).catch((e) => {
@@ -102,13 +90,7 @@ router.get('/accounts/:pid', async function (req, res) {
 	const communityMap = await util.getCommunityHash();
 
 	res.render(req.directory + '/moderate_user.ejs', {
-
 		moment: moment,
-		
-		
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		userSettings,
 		userContent,
 		posts,
@@ -118,7 +100,7 @@ router.get('/accounts/:pid', async function (req, res) {
 });
 
 router.post('/accounts/:pid', async (req, res) => {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
@@ -146,7 +128,7 @@ router.post('/accounts/:pid', async (req, res) => {
 });
 
 router.delete('/:reportID', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.sendStatus(401);
 	}
 
@@ -166,7 +148,7 @@ router.delete('/:reportID', async function (req, res) {
 });
 
 router.put('/:reportID', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.sendStatus(401);
 	}
 
@@ -181,7 +163,7 @@ router.put('/:reportID', async function (req, res) {
 });
 
 router.get('/communities', async function (req, res) {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -192,13 +174,7 @@ router.get('/communities', async function (req, res) {
 	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
 
 	res.render(req.directory + '/manage_communities.ejs', {
-
 		moment: moment,
-		
-		
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		communities,
 		page,
 		search
@@ -206,23 +182,17 @@ router.get('/communities', async function (req, res) {
 });
 
 router.get('/communities/new', async function (req, res) {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
 	res.render(req.directory + '/new_community.ejs', {
-
-		moment: moment,
-		
-		
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer
+		moment: moment
 	});
 });
 
 router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 1 }, { name: 'CTRbrowserHeader', maxCount: 1 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 	const communityID = await generateCommunityUID();
@@ -279,7 +249,7 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 });
 
 router.get('/communities/:community_id', async function (req, res) {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -290,13 +260,7 @@ router.get('/communities/:community_id', async function (req, res) {
 	}
 
 	res.render(req.directory + '/edit_community.ejs', {
-
 		moment: moment,
-		
-		
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		community,
 	});
 
@@ -306,7 +270,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	name: 'CTRbrowserHeader',
 	maxCount: 1
 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -363,7 +327,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 });
 
 router.delete('/communities/:id', async (req, res) => {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 

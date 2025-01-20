@@ -53,6 +53,7 @@ async function webAuth(request, response, next) {
 		return response.redirect('/login');
 	}
 
+	response.locals.pid = request.pid;
 	return next();
 }
 
