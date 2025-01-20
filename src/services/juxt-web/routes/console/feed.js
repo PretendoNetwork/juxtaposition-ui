@@ -66,8 +66,7 @@ router.get('/all', async function (req, res) {
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
-			moment,
-			lang: req.lang
+			moment
 		});
 	}
 
