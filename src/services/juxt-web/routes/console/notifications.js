@@ -1,7 +1,6 @@
 const express = require('express');
 const moment = require('moment');
 const database = require('../../../../database');
-const config = require('../../../../../config.json');
 const util = require('../../../../util');
 const router = express.Router();
 

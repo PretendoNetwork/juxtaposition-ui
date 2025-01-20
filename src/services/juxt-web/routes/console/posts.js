@@ -131,7 +131,7 @@ router.get('/:post_id', async function (req, res) {
 		community: community,
 		communityMap: communityMap,
 		postPNID,
-		pnid: req.user,
+		pnid: req.user
 	});
 });
 
