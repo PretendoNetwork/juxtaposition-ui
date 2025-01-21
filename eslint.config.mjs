@@ -43,12 +43,5 @@ export default [
 			}
 		},
 		ignores: ['src/webfiles/**/*.js']
-	},
-	{
-		ignores: [
-			'scripts/*',
-			'dist/*',
-			'**/*.min.js'
-		]
 	}
 ];
