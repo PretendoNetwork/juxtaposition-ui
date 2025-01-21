@@ -37,6 +37,7 @@ async function webAuth(request, response, next) {
 		(isStartOfPath(request.path, '/posts/') && !request.path.includes('/empathy'))) {
 		if (!request.pid && request.guest_access && !request.isWrite) {
 			request.pid = 1000000000;
+			response.locals.pid = request.pid;
 			return next();
 		} else if (!request.pid) {
 			return response.redirect('/login');
