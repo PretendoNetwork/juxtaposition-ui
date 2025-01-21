@@ -14,7 +14,7 @@ const config = require('../../../../../config.json');
 const router = express.Router();
 
 router.get('/posts', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
@@ -36,13 +36,7 @@ router.get('/posts', async function (req, res) {
 	]);
 
 	res.render(req.directory + '/reports.ejs', {
-		lang: req.lang,
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		userMap,
 		communityMap,
 		userContent,
@@ -52,7 +46,7 @@ router.get('/posts', async function (req, res) {
 });
 
 router.get('/accounts', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
@@ -67,16 +61,10 @@ router.get('/accounts', async function (req, res) {
 		last_active: {
 			$gte: new Date(Date.now() - 10 * 60 * 1000)
 		}
-	}).count()
+	}).count();
 
 	res.render(req.directory + '/users.ejs', {
-		lang: req.lang,
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		userMap,
 		users,
 		page,
@@ -87,7 +75,7 @@ router.get('/accounts', async function (req, res) {
 });
 
 router.get('/accounts/:pid', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 	const pnid = await util.getUserDataFromPid(req.params.pid).catch((e) => {
@@ -102,13 +90,7 @@ router.get('/accounts/:pid', async function (req, res) {
 	const communityMap = await util.getCommunityHash();
 
 	res.render(req.directory + '/moderate_user.ejs', {
-		lang: req.lang,
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		userSettings,
 		userContent,
 		posts,
@@ -118,7 +100,7 @@ router.get('/accounts/:pid', async function (req, res) {
 });
 
 router.post('/accounts/:pid', async (req, res) => {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.redirect('/titles/show');
 	}
 
@@ -138,7 +120,7 @@ router.post('/accounts/:pid', async (req, res) => {
 		await util.newNotification({
 			pid: pid,
 			type: 'notice',
-			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: \"${req.body.ban_reason}\". If you have any questions contact the moderators in the Discord server or forum.`,
+			text: `You have been limited from posting until ${moment(req.body.ban_lift_date)}. Reason: "${req.body.ban_reason}". If you have any questions contact the moderators in the Discord server or forum.`,
 			image: '/images/bandwidthalert.png',
 			link: '/titles/2551084080/new'
 		});
@@ -146,7 +128,7 @@ router.post('/accounts/:pid', async (req, res) => {
 });
 
 router.delete('/:reportID', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.sendStatus(401);
 	}
 
@@ -158,15 +140,23 @@ router.delete('/:reportID', async function (req, res) {
 	if (!post) {
 		return res.sendStatus(404);
 	}
+	const reason = req.query.reason ? req.query.reason : 'Removed by moderator';
+	await post.removePost(reason, req.pid);
+	await report.resolve(req.pid, reason);
 
-	await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
-	await report.resolve(req.pid, req.query.reason ? req.query.reason : 'Removed by moderator');
+	await util.newNotification({
+		pid: post.pid,
+		type: 'notice',
+		text: `Your post "${post.id}" has been removed for the following reason: "${reason}"`,
+		image: '/images/bandwidthalert.png',
+		link: '/titles/2551084080/new'
+	});
 
 	return res.sendStatus(200);
 });
 
 router.put('/:reportID', async function (req, res) {
-	if (!req.moderator) {
+	if (!res.locals.moderator) {
 		return res.sendStatus(401);
 	}
 
@@ -181,7 +171,7 @@ router.put('/:reportID', async function (req, res) {
 });
 
 router.get('/communities', async function (req, res) {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -192,13 +182,7 @@ router.get('/communities', async function (req, res) {
 	const communities = search ? await database.getCommunitiesFuzzySearch(search, limit, page * limit) : await database.getCommunities(limit, page * limit);
 
 	res.render(req.directory + '/manage_communities.ejs', {
-		lang: req.lang,
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		communities,
 		page,
 		search
@@ -206,23 +190,17 @@ router.get('/communities', async function (req, res) {
 });
 
 router.get('/communities/new', async function (req, res) {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
 	res.render(req.directory + '/new_community.ejs', {
-		lang: req.lang,
-		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer
+		moment: moment
 	});
 });
 
 router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 1 }, { name: 'CTRbrowserHeader', maxCount: 1 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 	const communityID = await generateCommunityUID();
@@ -260,7 +238,7 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 		open: true,
 		allows_comments: true,
 		type: req.body.type,
-		parent: req.body.parent === 'null' ? null : req.body.parent,
+		parent: req.body.parent === 'null' || req.body.parent.trim() === '' ? null : req.body.parent,
 		owner: req.pid,
 		created_at: moment(new Date()),
 		empathy_count: 0,
@@ -276,10 +254,12 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 	const newCommunity = new COMMUNITY(document);
 	await newCommunity.save();
 	res.redirect(`/admin/communities/${communityID}`);
+
+	util.updateCommunityHash(document);
 });
 
 router.get('/communities/:community_id', async function (req, res) {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -290,13 +270,7 @@ router.get('/communities/:community_id', async function (req, res) {
 	}
 
 	res.render(req.directory + '/edit_community.ejs', {
-		lang: req.lang,
 		moment: moment,
-		cdnURL: config.CDN_domain,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
-		moderator: req.moderator,
-		developer: req.developer,
 		community,
 	});
 
@@ -306,7 +280,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	name: 'CTRbrowserHeader',
 	maxCount: 1
 }, { name: 'WiiUbrowserHeader', maxCount: 1 }]), async (req, res) => {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 
@@ -351,7 +325,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		platform_id: req.body.platform,
 		icon: tgaIcon,
 		title_id: req.body.title_ids.replace(/ /g, '').split(','),
-		parent: req.body.parent === 'null' ? null : req.body.parent,
+		parent: req.body.parent === 'null' || req.body.parent.trim() === '' ? null : req.body.parent,
 		app_data: req.body.app_data,
 		is_recommended: req.body.is_recommended,
 		name: req.body.name,
@@ -360,10 +334,12 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 	await COMMUNITY.findOneAndUpdate({ community_id: communityID }, { $set: document }, { upsert: true }).exec();
 
 	res.redirect(`/admin/communities/${communityID}`);
+
+	util.updateCommunityHash(document);
 });
 
 router.delete('/communities/:id', async (req, res) => {
-	if (!req.developer) {
+	if (!res.locals.developer) {
 		return res.redirect('/titles/show');
 	}
 

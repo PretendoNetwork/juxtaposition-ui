@@ -12,9 +12,9 @@ async function checkBan(request, response, next) {
 	}
 
 	// Set access levels
-	request.tester = request.user.accessLevel >= 1 && request.user.accessLevel <= 3;
-	request.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
-	request.developer = request.user.accessLevel == 3;
+	response.locals.tester = request.user.accessLevel >= 1 && request.user.accessLevel <= 3;
+	response.locals.moderator = request.user.accessLevel == 2 || request.user.accessLevel == 3;
+	response.locals.developer = request.user.accessLevel == 3;
 
 	// Check if user has access to the environment
 	let accessAllowed = false;
@@ -23,7 +23,7 @@ async function checkBan(request, response, next) {
 			accessAllowed = request.developer;
 			break;
 		case 'test':
-			accessAllowed = request.tester || request.moderator || request.developer;
+			accessAllowed = response.locals.tester || response.locals.moderator || response.locals.developer;
 			break;
 		case 'prod':
 			accessAllowed = true;
@@ -35,7 +35,7 @@ async function checkBan(request, response, next) {
 	if (!accessAllowed) {
 		response.status(500);
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev', cdnURL: config.CDN_domain,});
+			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev' });
 		} else {
 			return response.render('portal/partials/ban_notification.ejs', {
 				user: null,
@@ -43,41 +43,42 @@ async function checkBan(request, response, next) {
 			});
 		}
 	}
-	const user = await db.getUserSettings(request.pid);
-	if (user && moment(user.ban_lift_date) <= moment() && user.account_status !== 3) {
-		user.account_status = 0;
-		await user.save();
+	const userSettings = await db.getUserSettings(request.pid);
+	if (userSettings && moment(userSettings.ban_lift_date) <= moment() && userSettings.account_status !== 3) {
+		userSettings.account_status = 0;
+		await userSettings.save();
 	}
 	// This includes ban checks for both Juxt specifically and the account server, ideally this should be squashed
 	// assuming we support more gradual bans on PNID's
-	if (user && (user.account_status < 0 || user.account_status > 1 || request.user.accessLevel < 0)) {
+	if (userSettings && (userSettings.account_status < 0 || userSettings.account_status > 1 || request.user.accessLevel < 0)) {
 		if (request.directory === 'web') {
 			let banMessage = '';
-			switch (user.account_status) {
+			switch (userSettings.account_status) {
 				case 2:
-					banMessage = `${request.user.username} has been banned until: ${ moment(user.ban_lift_date) }. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
+					banMessage = `${request.user.username} has been banned until: ${ moment(userSettings.ban_lift_date) }. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 					break;
 				case 3:
-					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${user.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
+					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 					break;
 				default:
 					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 			}
-			return response.render('web/login.ejs', {toast: banMessage, cdnURL: config.CDN_domain,});
+			return response.render('web/login.ejs', {toast: banMessage });
 		} else {
 			return response.render(request.directory + '/partials/ban_notification.ejs', {
-				user: user,
+				user: userSettings,
 				moment: moment,
-				cdnURL: config.CDN_domain,
-				lang: request.lang,
-				pid: request.pid,
 				PNID: request.user.username,
 				networkBan: request.user.accessLevel < 0
 			});
 		}
 	}
-	user.last_active = Date.now();
-	await user.save();
+
+	if (userSettings) {
+		userSettings.last_active = Date.now();
+		await userSettings.save();
+	}
+
 	next();
 }
 

@@ -16,7 +16,6 @@ router.get('/my_news', async function (req, res) {
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/notifications.ejs', {
 			bundle,
-			lang: req.lang,
 			moment
 		});
 	}
@@ -25,11 +24,7 @@ router.get('/my_news', async function (req, res) {
 		moment,
 		selection: 0,
 		bundle,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		pid: req.pid,
-		template: 'notifications',
-		moderator: req.moderator
+		template: 'notifications'
 	});
 	notifications.filter(noti => noti.read === false).forEach(function (notification) {
 		notification.markRead();
@@ -49,7 +44,6 @@ router.get('/friend_requests', async function (req, res) {
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/requests.ejs', {
 			bundle,
-			lang: req.lang,
 			moment
 		});
 	}
@@ -58,11 +52,7 @@ router.get('/friend_requests', async function (req, res) {
 		moment,
 		selection: 1,
 		bundle,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		pid: req.pid,
-		template: 'requests',
-		moderator: req.moderator
+		template: 'requests'
 	});
 });
 

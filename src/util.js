@@ -227,9 +227,21 @@ function setName(pid, name) {
 	if (!pid || !name) {
 		return;
 	}
-	userMap.delete(pid);
-	userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu, '').replace(/\u202e/g, ''));
+	this.userMap.delete(pid);
+	this.userMap.set(pid, name.replace(/[\u{0080}-\u{FFFF}]/gu, '').replace(/\u202e/g, ''));
 }
+
+function updateCommunityHash(community) {
+	if (!community) {
+		return;
+	}
+	for (let i = 0; i < community.title_id.length; i++) {
+		communityMap.set(community.title_id[i], community.name);
+		communityMap.set(community.title_id[i] + '-id', community.olive_community_id);
+	}
+	communityMap.set(community.olive_community_id, community.name);
+}
+
 async function resizeImage(file, width, height) {
 	return new Promise(function (resolve) {
 		const image = Buffer.from(file, 'base64');
@@ -495,6 +507,7 @@ module.exports = {
 	getUserHash,
 	refreshCache,
 	setName,
+	updateCommunityHash,
 	resizeImage,
 	getTGAFromPNG,
 	createBMPTgaBuffer,

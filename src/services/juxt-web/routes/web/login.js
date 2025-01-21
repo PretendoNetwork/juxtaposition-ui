@@ -8,7 +8,7 @@ const request = require('request');
 const logger = require('../../../../logger');
 
 router.get('/', async function (req, res) {
-	res.render(req.directory + '/login.ejs', { toast: null, cdnURL: config.CDN_domain, });
+	res.render(req.directory + '/login.ejs', { toast: null,  });
 });
 
 router.post('/', async (req, res) => {
@@ -17,13 +17,13 @@ router.post('/', async (req, res) => {
 		console.error(e.details);
 		switch (e.details) {
 			case 'INVALID_ARGUMENT: User not found':
-				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.', cdnURL: config.CDN_domain, });
+				res.render(req.directory + '/login.ejs', { toast: 'Username was invalid.' });
 				break;
 			case 'INVALID_ARGUMENT: Password is incorrect':
-				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.', cdnURL: config.CDN_domain, });
+				res.render(req.directory + '/login.ejs', { toast: 'Password was incorrect.' });
 				break;
 			default:
-				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain, });
+				res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.' });
 				break;
 		}
 	});
@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 
 	const PNID = await util.getUserDataFromToken(login.accessToken);
 	if (!PNID) {
-		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.', cdnURL: config.CDN_domain, });
+		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.' });
 	}
 
 	const pid = PNID.pid;
@@ -59,11 +59,7 @@ router.post('/', async (req, res) => {
 	if (discovery.status !== 0) {
 		return res.render(req.directory + '/error.ejs', {
 			code: 504,
-			message: message,
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			pid: pid,
-			moderator: req.moderator
+			message: message
 		});
 	}
 	const cookieDomain = (req.hostname.indexOf('miiverse') !== -1) ? '.miiverse.cc' : '.pretendo.network';

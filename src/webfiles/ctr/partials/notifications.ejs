@@ -2,8 +2,8 @@
 <%if(!bundle.notifications) {%><li><p><%= lang.notifications.none %></p></li><%}%>
 <%if(bundle.notifications){%>
 <% for(var notification of bundle.notifications) {%>
+	<li>
     <% if(notification.type === 'follow') {%>
-    <li>
         <a href="/users/<%= notification.objectID %>" data-pjax="#body" class="icon-container notify">
             <img src="<%= cdnURL %>/mii/<%= notification.objectID %>/normal_face.png" class="icon">
         </a>
@@ -30,20 +30,20 @@
                 </p>
             <%}%>
         </div>
-    </li>
     <%} else if (notification.type === 'notice') {%>
-	<li>
 		<a href="<%= notification.link %>" data-pjax="#body" class="icon-container notify">
 			<img src="<%= notification.image %>" class="icon">
 		</a>
-		<a class="body" href="<%= notification.link %>">
-				<span class="text">
-					<span class="nick-name"><%= notification.text %></span>
+		<div class="body">
+			<a class="body" href="<%= notification.link %>">
+				<p class="" style="color: black">
+					<span class=""><%= notification.text %></span>
 					<span class="timestamp"> <%= moment(notification.lastUpdated).fromNow() %></span>
-			</span>
-		</a>
-	</li>
+				</p>
+			</a>
+		</div>
 	<%}%>
+	</li>
 <%}%>
 <%}%>
 </ul>

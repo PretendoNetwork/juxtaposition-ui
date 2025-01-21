@@ -19,7 +19,7 @@ async function checkDiscovery(request, response, next) {
 				break;
 		}
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', {toast: message, cdnURL: config.CDN_domain,});
+			return response.render('web/login.ejs', {toast: message });
 		} else {
 			return response.render('portal/partials/ban_notification.ejs', {
 				user: null,
@@ -29,6 +29,7 @@ async function checkDiscovery(request, response, next) {
 	} else {
 		request.guest_access = discovery ? discovery.guest_access : false;
 		request.new_users = discovery ? discovery.new_users : false;
+		response.locals.cdnURL = config.CDN_domain;
 	}
 
 	next();

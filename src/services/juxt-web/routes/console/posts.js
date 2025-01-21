@@ -26,10 +26,7 @@ const postLimit = rateLimit({
 		} else {
 			res.render(req.directory + '/error.ejs', {
 				code: 429,
-				message: 'Too many new posts have been created.',
-				cdnURL: config.CDN_domain,
-				lang: req.lang,
-				pid: req.pid
+				message: 'Too many new posts have been created.'
 			});
 		}
 	},
@@ -63,14 +60,14 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 				$ne: req.pid
 			}
 		},
-			{
-				$inc: {
-					empathy_count: 1
-				},
-				$push: {
-					yeahs: req.pid
-				}
-			});
+		{
+			$inc: {
+				empathy_count: 1
+			},
+			$push: {
+				yeahs: req.pid
+			}
+		});
 		res.send({ status: 200, id: post.id, count: post.empathy_count + 1 });
 		if (req.pid !== post.pid) {
 			await util.newNotification({
@@ -88,14 +85,14 @@ router.post('/empathy', yeahLimit, async function (req, res) {
 				$eq: req.pid
 			}
 		},
-			{
-				$inc: {
-					empathy_count: -1
-				},
-				$pull: {
-					yeahs: req.pid
-				}
-			});
+		{
+			$inc: {
+				empathy_count: -1
+			},
+			$pull: {
+				yeahs: req.pid
+			}
+		});
 		res.send({ status: 200, id: post.id, count: post.empathy_count - 1 });
 	} else {
 		res.send({ status: 423, id: post.id, count: post.empathy_count });
@@ -133,13 +130,8 @@ router.get('/:post_id', async function (req, res) {
 		replies: replies,
 		community: community,
 		communityMap: communityMap,
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
 		postPNID,
 		pnid: req.user,
-		moderator: req.moderator
 	});
 });
 
@@ -148,10 +140,10 @@ router.delete('/:post_id', async function (req, res) {
 	if (!post) {
 		return res.sendStatus(404);
 	}
-	if (req.pid !== post.pid && !req.moderator) {
+	if (req.pid !== post.pid && !res.locals.moderator) {
 		return res.sendStatus(401);
 	}
-	if (req.moderator && req.pid !== post.pid) {
+	if (res.locals.moderator && req.pid !== post.pid) {
 		await post.removePost(req.query.reason ? req.query.reason : 'Removed by moderator', req.pid);
 	} else {
 		await post.removePost('User requested removal', req.pid);
@@ -233,10 +225,7 @@ async function newPost(req, res) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
-				message: 'Upload failed. Please try again later.',
-				pid: req.pid,
-				lang: req.lang,
-				cdnURL: config.CDN_domain
+				message: 'Upload failed. Please try again later.'
 			});
 		}
 	}
@@ -246,10 +235,7 @@ async function newPost(req, res) {
 			res.status(422);
 			return res.render(req.directory + '/error.ejs', {
 				code: 422,
-				message: 'Upload failed. Please try again later.',
-				pid: req.pid,
-				lang: req.lang,
-				cdnURL: config.CDN_domain
+				message: 'Upload failed. Please try again later.'
 			});
 		}
 	}
@@ -305,9 +291,8 @@ async function newPost(req, res) {
 		pid: req.pid,
 		platform_id: req.paramPackData ? req.paramPackData.platform_id : 0,
 		region_id: req.paramPackData ? req.paramPackData.region_id : 2,
-		verified: req.moderator,
-		parent: parentPost ? parentPost.id : null,
-		moderator: req.moderator
+		verified: res.locals.moderator,
+		parent: parentPost ? parentPost.id : null
 	};
 	const duplicatePost = await database.getDuplicatePosts(req.pid, document);
 	if (duplicatePost && req.params.post_id) {

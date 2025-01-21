@@ -20,16 +20,13 @@ router.get('/', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
 	};
 
 	if (req.query.pjax) {
 		return res.render(req.directory + '/partials/posts_list.ejs', {
 			bundle,
-			moment,
-			lang: req.lang
+			moment
 		});
 	}
 
@@ -40,13 +37,8 @@ router.get('/', async function (req, res) {
 		posts: posts,
 		communityMap: communityMap,
 		account_server: config.account_server_domain.slice(8),
-		cdnURL: config.CDN_domain,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
-		pid: req.pid,
 		bundle,
-		template: 'posts_list',
-		moderator: req.moderator
+		template: 'posts_list'
 	});
 });
 
@@ -66,8 +58,6 @@ router.get('/more', async function (req, res) {
 		open: true,
 		communityMap,
 		userContent,
-		lang: req.lang,
-		mii_image_CDN: config.mii_image_CDN,
 		link: `/topics/more?tag=${tag}&offset=${posts.length}&pjax=true`
 	};
 
@@ -77,12 +67,7 @@ router.get('/more', async function (req, res) {
 			moment: moment,
 			database: database,
 			bundle,
-			account_server: config.account_server_domain.slice(8),
-			cdnURL: config.CDN_domain,
-			lang: req.lang,
-			mii_image_CDN: config.mii_image_CDN,
-			pid: req.pid,
-			moderator: req.moderator
+			account_server: config.account_server_domain.slice(8)
 		});
 	} else {
 		res.sendStatus(204);

@@ -57,10 +57,10 @@
 				<!--<button id="header-post-button" class="header-button" href="#" data-module-hide="post" data-module-show="add-post-page" data-header="false" data-menu="false">+</button>-->
 				<%}%>
 			<%}%>
-                <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: false, mainPost: true }); %>
+                <%- include('partials/post_template', { post: post, reply: false, mainPost: true }); %>
                 <span class="replies-line"></span>
                 <% replies.forEach(function(post) { %>
-                    <%- include('partials/post_template', { post: post, mii_image_CDN: mii_image_CDN, lang: lang, reply: true }); %>
+                    <%- include('partials/post_template', { post: post, reply: true }); %>
                     <span class="replies-line"></span>
                 <% }); %>
         </div>

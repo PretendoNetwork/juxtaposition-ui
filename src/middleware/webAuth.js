@@ -21,7 +21,7 @@ async function webAuth(request, response, next) {
 			response.clearCookie('refresh_token', { domain: domain, path: '/' });
 			response.clearCookie('token_type', { domain: domain, path: '/' });
 			if (request.path === '/login') {
-				request.lang = util.processLanguage();
+				response.locals.lang = util.processLanguage();
 				request.token = request.cookies.access_token;
 				request.paramPackData = null;
 				return next();
@@ -37,6 +37,7 @@ async function webAuth(request, response, next) {
 		(isStartOfPath(request.path, '/posts/') && !request.path.includes('/empathy'))) {
 		if (!request.pid && request.guest_access && !request.isWrite) {
 			request.pid = 1000000000;
+			response.locals.pid = request.pid;
 			return next();
 		} else if (!request.pid) {
 			return response.redirect('/login');
@@ -53,6 +54,7 @@ async function webAuth(request, response, next) {
 		return response.redirect('/login');
 	}
 
+	response.locals.pid = request.pid;
 	return next();
 }
 
