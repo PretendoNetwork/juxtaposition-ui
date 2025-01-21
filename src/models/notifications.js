@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const  NotificationSchema = new Schema({
+const NotificationSchema = new Schema({
 	pid: String,
 	type: String,
 	link: String,
@@ -15,7 +15,7 @@ const  NotificationSchema = new Schema({
 	lastUpdated: Date
 });
 
-NotificationSchema.methods.markRead = async function() {
+NotificationSchema.methods.markRead = async function () {
 	this.set('read', true);
 	await this.save();
 };

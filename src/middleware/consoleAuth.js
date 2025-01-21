@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable require-atomic-updates */
 const config = require('../../config.json');
 const util = require('../util');
 

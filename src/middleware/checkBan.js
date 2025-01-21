@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
-const config = require('../../config.json');
 const moment = require('moment/moment');
+const config = require('../../config.json');
 const db = require('../database');
 
 async function checkBan(request, response, next) {
@@ -35,7 +33,7 @@ async function checkBan(request, response, next) {
 	if (!accessAllowed) {
 		response.status(500);
 		if (request.directory === 'web') {
-			return response.render('web/login.ejs', {toast: 'No access. Must be tester or dev' });
+			return response.render('web/login.ejs', { toast: 'No access. Must be tester or dev' });
 		} else {
 			return response.render('portal/partials/ban_notification.ejs', {
 				user: null,
@@ -55,7 +53,7 @@ async function checkBan(request, response, next) {
 			let banMessage = '';
 			switch (userSettings.account_status) {
 				case 2:
-					banMessage = `${request.user.username} has been banned until: ${ moment(userSettings.ban_lift_date) }. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
+					banMessage = `${request.user.username} has been banned until: ${moment(userSettings.ban_lift_date)}. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 					break;
 				case 3:
 					banMessage = `${request.user.username} has been banned forever. \n\nReason: ${userSettings.ban_reason}. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
@@ -63,7 +61,7 @@ async function checkBan(request, response, next) {
 				default:
 					banMessage = `${request.user.username} has been banned. \n\nIf you have any questions contact the moderators in the Discord server or forum.`;
 			}
-			return response.render('web/login.ejs', {toast: banMessage });
+			return response.render('web/login.ejs', { toast: banMessage });
 		} else {
 			return response.render(request.directory + '/partials/ban_notification.ejs', {
 				user: userSettings,

@@ -1,10 +1,6 @@
-/*eslint-env browser*/
-/*eslint no-var: "off"*/
-/*eslint @typescript-eslint/explicit-function-return-type: "off"*/
 let pjax;
 setInterval(checkForUpdates, 30000);
 
-/* global Pjax */
 function initNavBar() {
 	const els = document.querySelectorAll('#nav-menu > li');
 	if (!els) {
@@ -32,7 +28,8 @@ function initYeah() {
 		els[i].addEventListener('click', yeah);
 	}
 	function yeah(e) {
-		const el = e.currentTarget; const id = el.getAttribute('data-post');
+		const el = e.currentTarget;
+		const id = el.getAttribute('data-post');
 		const parent = document.getElementById(id);
 		const count = document.getElementById('count-' + id);
 		el.disabled = true;
@@ -41,7 +38,6 @@ function initYeah() {
 			el.classList.remove('selected');
 			parent.classList.remove('yeah');
 			count.innerText -= 1;
-
 		} else {
 			el.classList.add('selected');
 			parent.classList.add('yeah');
@@ -90,7 +86,6 @@ function initTabs() {
 				initMorePosts();
 			}
 		});
-
 	}
 }
 function initPosts() {
@@ -124,7 +119,6 @@ function initMorePosts() {
 					el.parentElement.remove();
 				}
 			});
-
 		});
 	}
 }
@@ -224,10 +218,12 @@ document.addEventListener('DOMContentLoaded', function () {
 	initAll();
 });
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/community.ejs and src/webfiles/web/user_page.ejs
 function follow(el) {
 	const id = el.getAttribute('data-community-id');
 	const count = document.getElementById('followers');
-	const oldtext = el.innerText; const newtext = el.getAttribute('data-text');
+	const oldtext = el.innerText;
+	const newtext = el.getAttribute('data-text');
 	el.disabled = true;
 	const params = 'id=' + id;
 	if (el.classList.contains('checked')) {
@@ -266,7 +262,7 @@ function checkForUpdates() {
 				messages.innerHTML = '';
 				messages.style.display = 'none';
 			}
-			/*Check for Notifications*/
+			/* Check for Notifications */
 			if (notificationObj.notification_count > 0 && notificationObj.notification_count < 99) {
 				news.innerHTML = notificationObj.notification_count;
 				news.style.display = 'unset';
@@ -304,11 +300,13 @@ function GET(url, callback) {
 	xhttp.send();
 }
 
-window.onscroll = function (ev) {
+window.onscroll = function (_ev) {
 	if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight && document.getElementById('load-more')) {
 		document.getElementById('load-more').click();
 	}
 };
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
 function copyToClipboard(text) {
 	const inputc = document.getElementsByTagName('header')[0].appendChild(document.createElement('input'));
 	inputc.value = text;
@@ -318,6 +316,7 @@ function copyToClipboard(text) {
 	inputc.parentNode.removeChild(inputc);
 	Toast('Copied to clipboard.');
 }
+
 function Toast(text) {
 	const x = document.getElementById('toast');
 	x.innerText = text;
@@ -326,6 +325,8 @@ function Toast(text) {
 		x.className = x.className.replace('show', '');
 	}, 3000);
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/me_page.ejs
 function downloadURI(uri, name) {
 	const link = document.createElement('a');
 	link.download = name;
@@ -333,8 +334,9 @@ function downloadURI(uri, name) {
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
-	delete link;
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/post_template.ejs
 function reportPost(post) {
 	const id = post.getAttribute('data-post');
 	const button = document.getElementById('report-launcher');
@@ -344,10 +346,11 @@ function reportPost(post) {
 
 	form.action = '/posts/' + id + '/report';
 	formID.value = id;
-	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, "$1-$2-$3-$4-$5-$6"));
+	console.log(id.replace(/(\d{3})(\d{4})(\d{3})(\d{4})(\d{3})(\d{4})/, '$1-$2-$3-$4-$5-$6'));
 	button.click();
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function openText() {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -362,6 +365,7 @@ function openText() {
 	paintingOverlay.style.display = 'none';
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/partials/new_post.ejs
 function newPainting(clear) {
 	const textArea = document.getElementById('new-post-text');
 	const paintingArea = document.getElementById('new-post-memo');
@@ -373,16 +377,20 @@ function newPainting(clear) {
 	}
 
 	if (clear) {
+		/* global clearCanvas -- defined from painting.js */
 		clearCanvas();
 	}
 
 	textArea.style.display = 'none';
 	paintingArea.style.display = 'flex';
 	paintingOverlay.style.display = '';
-	scale = c.getBoundingClientRect().width / 320;
 
+	// eslint-disable-next-line no-unused-vars -- Modifies scale from painting.js
+	/* global scale:writeable -- defined from painting.js */
+	scale = c.getBoundingClientRect().width / 320;
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function closePainting(save) {
 	const paintingArea = document.getElementById('new-post-memo');
 	const paintingOverlay = document.getElementById('painting-wrapper');
@@ -398,5 +406,4 @@ function closePainting(save) {
 	}
 
 	paintingOverlay.style.display = 'none';
-
 }

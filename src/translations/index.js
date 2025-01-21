@@ -9,6 +9,6 @@ module.exports = {
 	KO: require('./ko.json'),
 	NL: require('./nl.json'),
 	PT: require('./pt.json'),
-	RU: require('./ru.json'),
+	RU: require('./ru.json')
 
 };

@@ -1,9 +1,9 @@
 const express = require('express');
+const multer = require('multer');
+const moment = require('moment');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const multer = require('multer');
-const moment = require('moment');
 const upload = multer({ dest: 'uploads/' });
 const { POST } = require('../../../../models/post');
 const { SETTINGS } = require('../../../../models/settings');
@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/menu', async function (req, res) {
 	const user = await database.getUserSettings(req.pid);
 	res.render('ctr/user_menu.ejs', {
-		user: user,
+		user: user
 	});
 });
 
@@ -27,7 +27,7 @@ router.get('/notifications.json', async function (req, res) {
 	res.send(
 		{
 			message_count: messagesCount,
-			notification_count: notifications,
+			notification_count: notifications
 		}
 	);
 });
@@ -39,9 +39,9 @@ router.get('/downloadUserData.json', async function (req, res) {
 	const userContent = await database.getUserSettings(req.pid);
 	const userSettings = await database.getUserContent(req.pid);
 	const doc = {
-		'user_content': userContent,
-		'user_settings': userSettings,
-		'posts': posts,
+		user_content: userContent,
+		user_settings: userSettings,
+		posts: posts
 	};
 	res.send(doc);
 });
@@ -103,7 +103,7 @@ router.post('/follow', upload.none(), async function (req, res) {
 		userContent.addToUsers(userToFollowContent.pid);
 		res.send({ status: 200, id: userToFollowContent.pid, count: userToFollowContent.following_users.length - 1 });
 		const picked = await database.getNotification(userToFollowContent.pid, 2, userContent.pid);
-		//pid, type, reference_id, origin_pid, title, content
+		// pid, type, reference_id, origin_pid, title, content
 		if (picked === null) {
 			await util.newNotification({ pid: userToFollowContent.pid, type: 'follow', objectID: req.pid, link: `/users/${req.pid}` });
 		}
@@ -136,9 +136,11 @@ async function userPage(req, res, userID) {
 	if (!userID || isNaN(userID)) {
 		return res.redirect('/404');
 	}
-	const pnid = userID === req.pid ? req.user : await util.getUserDataFromPid(userID).catch((e) => {
-		console.error(e.details);
-	});
+	const pnid = userID === req.pid
+		? req.user
+		: await util.getUserDataFromPid(userID).catch((e) => {
+			console.error(e.details);
+		});
 	const userContent = await database.getUserContent(userID);
 	if (isNaN(userID) || !pnid || !userContent) {
 		return res.redirect('/404');
@@ -156,7 +158,9 @@ async function userPage(req, res, userID) {
 	let friends = [];
 	try {
 		friends = await util.getFriends(userID);
-	} catch (e) { }
+	} catch (ignored) {
+		// Do nothing
+	}
 
 	let parentUserContent;
 	if (pnid.pid !== req.pid) {
@@ -210,7 +214,10 @@ async function userRelations(req, res, userID) {
 		return res.redirect('/404');
 	}
 
-	let followers; let communities; let communityMap; let selection;
+	let followers;
+	let communities;
+	let communityMap;
+	let selection;
 
 	if (req.params.type === 'yeahs') {
 		const posts = await POST.find({ yeahs: userID, removed: false }).sort({ created_at: -1 }).limit(config.post_limit);
@@ -360,11 +367,11 @@ async function moreYeahPosts(req, res, userID) {
 }
 
 function isDateInRange(date, minutes) {
-	//return false;
+	// return false;
 	const now = new Date();
 	const tenMinutesAgo = new Date(now.getTime() - minutes * 60 * 1000);
-	//console.log('last active: ' + date);
-	//console.log('ten min ago: ' + tenMinutesAgo);
+	// console.log('last active: ' + date);
+	// console.log('ten min ago: ' + tenMinutesAgo);
 	return date >= tenMinutesAgo && date <= now;
 }
 

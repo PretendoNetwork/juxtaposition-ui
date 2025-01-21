@@ -1,7 +1,6 @@
 const express = require('express');
 const database = require('../../../../database');
 const util = require('../../../../util');
-const config = require('../../../../../config.json');
 const router = express.Router();
 
 router.get('/', async function (req, res) {
@@ -51,7 +50,6 @@ router.post('/newUser', async function (req, res) {
 	} else {
 		res.sendStatus(504);
 	}
-
 });
 
 module.exports = router;

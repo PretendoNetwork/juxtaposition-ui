@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-const express = require('express');
 const crypto = require('crypto');
+const express = require('express');
+const moment = require('moment');
+const multer = require('multer');
 const database = require('../../../../database');
 const { POST } = require('../../../../models/post');
 const { SETTINGS } = require('../../../../models/settings');
 const { COMMUNITY } = require('../../../../models/communities');
 const util = require('../../../../util');
-const moment = require('moment');
-const multer = require('multer');
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 const config = require('../../../../../config.json');
@@ -28,10 +27,10 @@ router.get('/posts', async function (req, res) {
 		{ $match: { id: { $in: postIDs } } },
 		{
 			$addFields: {
-				'__order': { $indexOfArray: [postIDs, '$id'] }
+				__order: { $indexOfArray: [postIDs, '$id'] }
 			}
 		},
-		{ $sort: { '__order': 1 } },
+		{ $sort: { __order: 1 } },
 		{ $project: { index: 0, _id: 0 } }
 	]);
 
@@ -249,7 +248,7 @@ router.post('/communities/new', upload.fields([{ name: 'browserIcon', maxCount: 
 		community_id: communityID,
 		olive_community_id: communityID,
 		is_recommended: req.body.is_recommended,
-		app_data: req.body.app_data,
+		app_data: req.body.app_data
 	};
 	const newCommunity = new COMMUNITY(document);
 	await newCommunity.save();
@@ -271,9 +270,8 @@ router.get('/communities/:community_id', async function (req, res) {
 
 	res.render(req.directory + '/edit_community.ejs', {
 		moment: moment,
-		community,
+		community
 	});
-
 });
 
 router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 1 }, {
@@ -329,7 +327,7 @@ router.post('/communities/:id', upload.fields([{ name: 'browserIcon', maxCount: 
 		app_data: req.body.app_data,
 		is_recommended: req.body.is_recommended,
 		name: req.body.name,
-		description: req.body.description,
+		description: req.body.description
 	};
 	await COMMUNITY.findOneAndUpdate({ community_id: communityID }, { $set: document }, { upsert: true }).exec();
 
@@ -352,7 +350,6 @@ router.delete('/communities/:id', async (req, res) => {
 	});
 });
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function generateCommunityUID(length) {
 	let id = crypto.getRandomValues(new Uint32Array(1)).toString().substring(0, length);
 	const inuse = await COMMUNITY.findOne({ community_id: id });

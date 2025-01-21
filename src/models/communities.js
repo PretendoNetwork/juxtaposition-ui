@@ -16,7 +16,7 @@ const PermissionsSchema = new Schema({
 	minimum_new_community_access_level: {
 		type: Number,
 		default: 0
-	},
+	}
 });
 
 const CommunitySchema = new Schema({
@@ -43,7 +43,7 @@ const CommunitySchema = new Schema({
 	},
 	created_at: {
 		type: Date,
-		default: new Date(),
+		default: new Date()
 	},
 	empathy_count: {
 		type: Number,
@@ -73,7 +73,7 @@ const CommunitySchema = new Schema({
 		default: 0
 	},
 	app_data: String,
-	permissions: PermissionsSchema,
+	permissions: PermissionsSchema
 });
 
 CommunitySchema.methods.upEmpathy = async function () {

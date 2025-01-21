@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const mongoose = require('mongoose');
 const { FuzzySearch } = require('mongoose-fuzzy-search-next');
 const { mongoose: mongooseConfig } = require('../config.json');
@@ -11,9 +9,9 @@ const { NOTIFICATION } = require('./models/notifications');
 const { POST } = require('./models/post');
 const { SETTINGS } = require('./models/settings');
 const { REPORT } = require('./models/report');
+const logger = require('./logger');
 
 const { uri, database, options } = mongooseConfig;
-const logger = require('./logger');
 
 let connection;
 mongoose.set('strictQuery', true);
@@ -345,7 +343,7 @@ async function getNewsFeed(content, numberOfPosts) {
 		$or: [
 			{ pid: content.followed_users },
 			{ pid: content.pid },
-			{ community_id: content.followed_communities },
+			{ community_id: content.followed_communities }
 		],
 		parent: null,
 		message_to_pid: null,
@@ -359,7 +357,7 @@ async function getNewsFeedAfterTimestamp(content, numberOfPosts, post) {
 		$or: [
 			{ pid: content.followed_users },
 			{ pid: content.pid },
-			{ community_id: content.followed_communities },
+			{ community_id: content.followed_communities }
 		],
 		created_at: { $lt: post.created_at },
 		parent: null,
@@ -374,7 +372,7 @@ async function getNewsFeedOffset(content, limit, offset) {
 		$or: [
 			{ pid: content.followed_users },
 			{ pid: content.pid },
-			{ community_id: content.followed_communities },
+			{ community_id: content.followed_communities }
 		],
 		parent: null,
 		message_to_pid: null,
@@ -392,10 +390,10 @@ async function getConversations(pid) {
 async function getUnreadConversationCount(pid) {
 	verifyConnected();
 	return CONVERSATION.find({
-		'users': {
+		users: {
 			$elemMatch: {
-				'pid': pid,
-				'read': false
+				pid: pid,
+				read: false
 			}
 		}
 
@@ -443,7 +441,7 @@ async function getLatestMessage(pid, pid2) {
 async function getNotifications(pid, limit, offset) {
 	verifyConnected();
 	return NOTIFICATION.find({
-		pid: pid,
+		pid: pid
 	}).sort({ lastUpdated: -1 }).skip(offset).limit(limit);
 }
 
@@ -503,7 +501,6 @@ async function getReportById(id) {
 	verifyConnected();
 	return REPORT.findById(id);
 }
-
 
 module.exports = {
 	connect,

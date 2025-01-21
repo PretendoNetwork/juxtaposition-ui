@@ -1,8 +1,8 @@
 const express = require('express');
+const moment = require('moment');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const moment = require('moment');
 const { POST } = require('../../../../models/post');
 const router = express.Router();
 
@@ -43,7 +43,6 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/more', async function (req, res) {
-	const offset = req.query.offset ? parseInt(req.query.offset) : 0;
 	const userContent = await database.getUserContent(req.pid);
 	const communityMap = await util.getCommunityHash();
 	const tag = req.query.topic_tag;

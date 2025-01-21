@@ -1,18 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 const crypto = require('crypto');
-const database = require('./database');
-const logger = require('./logger');
 const grpc = require('nice-grpc');
-const config = require('../config.json');
-const { SETTINGS } = require('./models/settings');
-const { CONTENT } = require('./models/content');
-const { NOTIFICATION } = require('./models/notifications');
-const { COMMUNITY } = require('./models/communities');
 const { AccountDefinition } = require('@pretendonetwork/grpc/account/account_service');
 const { FriendsDefinition } = require('@pretendonetwork/grpc/friends/friends_service');
 const { APIDefinition } = require('@pretendonetwork/grpc/api/api_service');
-const translations = require('./translations');
 const HashMap = require('hashmap');
 const TGA = require('tga');
 const imagePixels = require('image-pixels');
@@ -22,6 +12,14 @@ const bmp = require('bmp-js');
 const sharp = require('sharp');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const crc32 = require('crc/crc32');
+const config = require('../config.json');
+const database = require('./database');
+const translations = require('./translations');
+const { COMMUNITY } = require('./models/communities');
+const { NOTIFICATION } = require('./models/notifications');
+const logger = require('./logger');
+const { CONTENT } = require('./models/content');
+const { SETTINGS } = require('./models/settings');
 const communityMap = new HashMap();
 const userMap = new HashMap();
 
@@ -42,14 +40,14 @@ const s3 = new S3Client({
 	region: config.aws.region,
 	credentials: {
 		accessKeyId: config.aws.spaces.key,
-		secretAccessKey: config.aws.spaces.secret,
-	},
+		secretAccessKey: config.aws.spaces.secret
+	}
 });
 
 nameCache();
 
 function nameCache() {
-	database.connect().then(async e => {
+	database.connect().then(async () => {
 		const communities = await COMMUNITY.find();
 		if (communities !== null) {
 			for (let i = 0; i < communities.length; i++) {
@@ -72,8 +70,7 @@ function nameCache() {
 			}
 			logger.success('Created user index of ' + users.length + ' users');
 		}
-
-	}).catch(error => {
+	}).catch((error) => {
 		logger.error(error);
 	});
 }
@@ -89,7 +86,7 @@ async function create_user(pid, experience, notifications) {
 		pid: pid,
 		screen_name: pnid.mii.name,
 		game_skill: experience,
-		receive_notifications: notifications,
+		receive_notifications: notifications
 	};
 	const newContent = {
 		pid: pid
@@ -130,7 +127,6 @@ function processServiceToken(encryptedToken) {
 		console.error(e);
 		return null;
 	}
-
 }
 function decryptToken(token) {
 	if (!config.aes_key) {
@@ -188,7 +184,7 @@ async function processPainting(painting, isTGA) {
 		});
 		png.data = tga.pixels;
 		return PNG.sync.write(png);
-		//return `data:image/png;base64,${pngBuffer.toString('base64')}`;
+		// return `data:image/png;base64,${pngBuffer.toString('base64')}`;
 	} else {
 		const paintingBuffer = Buffer.from(painting, 'base64');
 		const bitmap = bmp.decode(paintingBuffer);
@@ -248,7 +244,7 @@ async function resizeImage(file, width, height) {
 		sharp(image)
 			.resize({ height: height, width: width })
 			.toBuffer()
-			.then(data => {
+			.then((data) => {
 				resolve(data);
 			}).catch(err => console.error(err));
 	});
@@ -286,10 +282,10 @@ function createBMPTgaBuffer(width, height, pixels, dontFlipY) {
 	for (let i = 0; i < height; i++) {
 		for (let j = 0; j < width; j++) {
 			const idx = ((dontFlipY ? i : height - i - 1) * width + j) * 4;
-			buffer.writeUInt8(pixels[idx + 1], offset++);    // b
-			buffer.writeUInt8(pixels[idx + 2], offset++);    // g
-			buffer.writeUInt8(pixels[idx + 3], offset++);    // r
-			buffer.writeUInt8(255, offset++);          // a
+			buffer.writeUInt8(pixels[idx + 1], offset++); // b
+			buffer.writeUInt8(pixels[idx + 2], offset++); // g
+			buffer.writeUInt8(pixels[idx + 3], offset++); // r
+			buffer.writeUInt8(255, offset++); // a
 		}
 	}
 
@@ -392,7 +388,7 @@ async function newNotification(notification) {
 		});
 		await newNotification.save();
 	}
-	/*else if(notification.type === 'yeah') {
+	/* else if(notification.type === 'yeah') {
 		// { pid: userToFollowContent.pid, type: "follow", objectID: req.pid, link: `/users/${req.pid}` }
 		let existingNotification = await NOTIFICATION.findOne({ pid: notification.pid, objectID: notification.objectID })
 		if(existingNotification) {
@@ -425,7 +421,7 @@ async function newNotification(notification) {
 			});
 			await newNotification.save();
 		}
-	}*/
+	} */
 }
 async function getFriends(pid) {
 	try {
@@ -437,7 +433,7 @@ async function getFriends(pid) {
 			})
 		});
 		return pids.pids;
-	} catch (e) {
+	} catch (ignored) {
 		return [];
 	}
 }
@@ -451,7 +447,7 @@ async function getFriendRequests(pid) {
 			})
 		});
 		return requests.friendRequests;
-	} catch (e) {
+	} catch (ignore) {
 		return [];
 	}
 }

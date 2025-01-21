@@ -1,14 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const parseString = require('xml2js').parseString;
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
-const request = require('request');
-const logger = require('../../../../logger');
 
 router.get('/', async function (req, res) {
-	res.render(req.directory + '/login.ejs', { toast: null,  });
+	res.render(req.directory + '/login.ejs', { toast: null });
 });
 
 router.post('/', async (req, res) => {
@@ -35,8 +32,6 @@ router.post('/', async (req, res) => {
 	if (!PNID) {
 		return res.render(req.directory + '/login.ejs', { toast: 'Invalid username or password.' });
 	}
-
-	const pid = PNID.pid;
 
 	let discovery = await database.getEndPoint(config.server_environment);
 	if (!discovery) {
@@ -69,6 +64,5 @@ router.post('/', async (req, res) => {
 	res.cookie('token_type', 'Bearer', { domain: cookieDomain });
 	res.redirect('/');
 });
-
 
 module.exports = router;

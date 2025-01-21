@@ -1,12 +1,12 @@
 const express = require('express');
 const subdomain = require('express-subdomain');
 const logger = require('../../logger');
-const routes = require('./routes');
 const webAuth = require('../../middleware/webAuth');
 const consoleAuth = require('../../middleware/consoleAuth');
 const checkBan = require('../../middleware/checkBan');
 const detectVersion = require('../../middleware/detectVersion');
 const checkDiscovery = require('../../middleware/discovery');
+const routes = require('./routes');
 
 const router = express.Router();
 const consoleRouter = express.Router();
@@ -30,7 +30,6 @@ logger.info('[JUXT-WEB] Creating \'Wii U\' subdomain');
 router.use(subdomain('portal.olv', consoleRouter));
 router.use(subdomain('portal-beta.olv', consoleRouter));
 router.use(subdomain('portal-dev.olv', consoleRouter));
-
 
 logger.info('[JUXT-WEB] Creating \'3DS\' subdomain');
 router.use(subdomain('ctr.olv', consoleRouter));

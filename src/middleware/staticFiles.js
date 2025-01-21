@@ -9,7 +9,6 @@ async function staticFiles(request, response, next) {
 		isStartOfPath(request.path, '/web/') ||
 		isStartOfPath(request.path, '/images/') ||
 		isStartOfPath(request.path, '/image/')) {
-
 		response.locals.lang = util.processLanguage();
 
 		if (request.subdomains.includes('juxt')) {
@@ -28,6 +27,5 @@ async function staticFiles(request, response, next) {
 function isStartOfPath(path, value) {
 	return path.indexOf(value) === 0;
 }
-
 
 module.exports = staticFiles;
