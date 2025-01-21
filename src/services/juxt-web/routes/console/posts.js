@@ -1,14 +1,14 @@
+const crypto = require('crypto');
 const express = require('express');
+const multer = require('multer');
+const moment = require('moment');
+const rateLimit = require('express-rate-limit');
 const database = require('../../../../database');
 const util = require('../../../../util');
 const config = require('../../../../../config.json');
 const { POST } = require('../../../../models/post');
-const multer = require('multer');
-const moment = require('moment');
-const rateLimit = require('express-rate-limit');
 const { REPORT } = require('../../../../models/report');
 const upload = multer({ dest: 'uploads/' });
-const crypto = require('crypto');
 const redis = require('../../../../redisCache');
 const router = express.Router();
 
@@ -29,21 +29,21 @@ const postLimit = rateLimit({
 				message: 'Too many new posts have been created.'
 			});
 		}
-	},
+	}
 });
 
 const yeahLimit = rateLimit({
 	windowMs: 60 * 1000, // 1 minute
 	max: 10, // Limit each IP to 60 requests per `window`
 	standardHeaders: true,
-	legacyHeaders: true,
+	legacyHeaders: true
 });
 
 router.get('/:post_id/oembed.json', async function (req, res) {
 	const post = await database.getPostByID(req.params.post_id.toString());
 	const doc = {
-		'author_name': post.screen_name,
-		'author_url': 'https://juxt.pretendo.network/users/show?pid=' + post.pid,
+		author_name: post.screen_name,
+		author_url: 'https://juxt.pretendo.network/users/show?pid=' + post.pid
 	};
 	res.send(doc);
 });
@@ -131,7 +131,7 @@ router.get('/:post_id', async function (req, res) {
 		community: community,
 		communityMap: communityMap,
 		postPNID,
-		pnid: req.user,
+		pnid: req.user
 	});
 });
 
@@ -190,7 +190,9 @@ router.post('/:post_id/report', upload.none(), async function (req, res) {
 });
 
 async function newPost(req, res) {
-	const userSettings = await database.getUserSettings(req.pid); let parentPost = null; const postID = await generatePostUID(21);
+	const userSettings = await database.getUserSettings(req.pid);
+	let parentPost = null;
+	const postID = await generatePostUID(21);
 	const community = await database.getCommunityByID(req.body.community_id);
 	if (!community || !userSettings || !req.user) {
 		res.status(403);
@@ -207,13 +209,15 @@ async function newPost(req, res) {
 			return res.sendStatus(403);
 		}
 	}
-	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0) && req.user.access_level >= community.permissions.minimum_new_post_access_level
-		&& (community.type >= 2) && !(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
+	if (!(community.admins && community.admins.indexOf(req.pid) !== -1 && userSettings.account_status === 0) && req.user.access_level >= community.permissions.minimum_new_post_access_level &&
+		(community.type >= 2) && !(parentPost && req.user.access_level >= community.permissions.minimum_new_comment_access_level && community.permissions.open)) {
 		res.status(403);
 		return res.redirect(`/titles/${community.olive_community_id}/new`);
 	}
 
-	let painting = ''; let paintingURI = ''; let screenshot = null;
+	let painting = '';
+	let paintingURI = '';
+	let screenshot = null;
 	if (req.body._post_type === 'painting' && req.body.painting) {
 		if (req.body.bmp === 'true') {
 			painting = await util.processPainting(req.body.painting.replace(/\0/g, '').trim(), false);
@@ -298,7 +302,7 @@ async function newPost(req, res) {
 	if (duplicatePost && req.params.post_id) {
 		return res.redirect('/posts/' + req.params.post_id.toString());
 	}
-	if (document.body === '' && document.painting === '' && document.screenshot === '' || duplicatePost) {
+	if ((document.body === '' && document.painting === '' && document.screenshot === '') || duplicatePost) {
 		return res.redirect('/titles/' + community.olive_community_id + '/new');
 	}
 	const newPost = new POST(document);
@@ -330,6 +334,5 @@ async function generatePostUID(length) {
 	id = (inuse ? await generatePostUID() : id);
 	return id;
 }
-
 
 module.exports = router;

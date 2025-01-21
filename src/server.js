@@ -1,25 +1,21 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
-process.title = 'Pretendo - Juxt-Web';
-process.on('SIGTERM', () => {
-	process.exit(0);
-});
-
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const RedisStore = require('connect-redis').default;
-
+const config = require('../config.json');
 const database = require('./database');
 const logger = require('./logger');
 const { redisClient } = require('./redisCache');
-const config = require('../config.json');
+const juxt_web = require('./services/juxt-web');
+
+process.title = 'Pretendo - Juxt-Web';
+process.on('SIGTERM', () => {
+	process.exit(0);
+});
 
 const { http: { port } } = config;
 const app = express();
-
-const juxt_web = require('./services/juxt-web');
 
 app.set('etag', false);
 app.disable('x-powered-by');
@@ -36,7 +32,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({
 	extended: true,
-	limit: '1mb',
+	limit: '1mb'
 }));
 
 app.use(cookieParser());

@@ -1,9 +1,7 @@
-/*eslint-env browser*/
-/*eslint no-var: 'off'*/
-/*eslint @typescript-eslint/explicit-function-return-type: 'off'*/
 const c = document.getElementById('painting');
 const ctx = c.getContext('2d');
 
+// eslint-disable-next-line prefer-const -- Modified in web.js
 let scale = c.getBoundingClientRect().width / 320;
 let isPainting = false;
 let currentPen = drawPen1;
@@ -38,10 +36,12 @@ function clearCanvas() {
 	ctx.fillRect(0, 0, 320, 120);
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function setPen(number) {
 	setTool(number, '#000');
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/web/message_thread.ejs
 function setEraser(number) {
 	setTool(number, '#fff');
 }
@@ -63,7 +63,7 @@ function setTool(number, color) {
 
 function getCursorPosition(e) {
 	const paintingBounds = c.getBoundingClientRect();
-	let currentPosition = { x: 0, y: 0 };
+	const currentPosition = { x: 0, y: 0 };
 
 	if (e.type.indexOf('touch') !== -1) {
 		currentPosition.x = e.touches[0].clientX;
@@ -75,7 +75,7 @@ function getCursorPosition(e) {
 
 	return {
 		x: Math.round((currentPosition.x - paintingBounds.left) / scale) - 2,
-		y: Math.round((currentPosition.y - paintingBounds.top) / scale) - 2,
+		y: Math.round((currentPosition.y - paintingBounds.top) / scale) - 2
 	};
 }
 
@@ -104,7 +104,7 @@ function draw(e) {
 }
 
 function calcStraightLine(startCoordinates, endCoordinates) {
-	const coordinatesArray = new Array();
+	const coordinatesArray = [];
 	// Translate coordinates
 	let x1 = startCoordinates.x;
 	let y1 = startCoordinates.y;
@@ -157,12 +157,12 @@ c.addEventListener(
 	{ passive: false }
 );
 
-c.addEventListener('mouseup', (e) => {
+c.addEventListener('mouseup', () => {
 	isPainting = false;
 	oldCursorPosition = null;
 });
 
-c.addEventListener('touchend', (e) => {
+c.addEventListener('touchend', () => {
 	isPainting = false;
 	oldCursorPosition = null;
 });

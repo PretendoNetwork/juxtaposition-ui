@@ -1,8 +1,6 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const redis = require('redis');
-const logger = require('./logger');
 const config = require('../config.json');
+const logger = require('./logger');
 const { host, port } = config.redis;
 
 const redisClient = redis.createClient({
@@ -45,7 +43,6 @@ async function removeValue(key) {
 	await redisClient.del(key);
 	return true;
 }
-
 
 module.exports = {
 	redisClient,

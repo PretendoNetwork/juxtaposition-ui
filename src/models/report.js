@@ -16,10 +16,10 @@ const ReportSchema = new Schema({
 	},
 	note: String,
 	resolved_by: Number,
-	resolved_at: Date,
+	resolved_at: Date
 });
 
-ReportSchema.methods.resolve = async function(pid, note) {
+ReportSchema.methods.resolve = async function (pid, note) {
 	this.set('resolved', true);
 	this.set('resolved_by', pid);
 	this.set('resolved_at', new Date());

@@ -7,17 +7,17 @@ const endpointSchema = new Schema({
 	guest_access: Boolean,
 	new_users: {
 		type: Boolean,
-		default: true,
+		default: true
 	},
 	host: String,
 	api_host: String,
 	portal_host: String,
-	n3ds_host: String,
+	n3ds_host: String
 });
 
 const ENDPOINT = model('ENDPOINT', endpointSchema);
 
 module.exports = {
 	endpointSchema,
-	ENDPOINT,
+	ENDPOINT
 };

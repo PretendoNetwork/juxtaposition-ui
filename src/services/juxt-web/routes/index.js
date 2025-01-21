@@ -11,5 +11,5 @@ module.exports = {
 	ROBOTS: require('./web/robots'),
 	PWA: require('./web/pwa'),
 	ADMIN: require('./admin/admin'),
-	WEB_FILES: require('./console/web'),
+	WEB_FILES: require('./console/web')
 };

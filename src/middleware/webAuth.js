@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable @typescript-eslint/no-var-requires */
 const util = require('../util');
 
 async function webAuth(request, response, next) {
@@ -15,7 +13,7 @@ async function webAuth(request, response, next) {
 
 			request.session.user = request.user;
 			request.session.pid = request.pid;
-		} catch (e) {
+		} catch (ignored) {
 			const domain = request.get('host').replace('juxt-beta', '').replace('juxt', '');
 			response.clearCookie('access_token', { domain: domain, path: '/' });
 			response.clearCookie('refresh_token', { domain: domain, path: '/' });
@@ -65,6 +63,5 @@ function isStartOfPath(path, value) {
 BigInt.prototype['toJSON'] = function () {
 	return this.toString();
 };
-
 
 module.exports = webAuth;

@@ -1,6 +1,6 @@
+const path = require('path');
 const express = require('express');
 const router = express.Router();
-const path = require('path');
 
 //* Keep the cache for 1 hour
 const maxAge = 60 * 60;

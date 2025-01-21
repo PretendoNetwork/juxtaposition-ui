@@ -1,6 +1,3 @@
-/*eslint-env browser*/
-/*eslint no-var: "off"*/
-/*eslint @typescript-eslint/explicit-function-return-type: "off"*/
 var pjax;
 setInterval(checkForUpdates, 30000);
 
@@ -75,6 +72,7 @@ function initPostModules() {
 			cave.toolbar_setCallback(99, back);
 		}
 		cave.transition_end();
+		/* global initNewPost -- Defined in juxt.min.js */
 		initNewPost();
 	}
 }
@@ -114,8 +112,8 @@ function initYeah() {
 		els[i].onclick = yeah;
 	}
 	function yeah(e) {
-		var el = e.currentTarget,
-			id = el.getAttribute('data-post');
+		var el = e.currentTarget;
+		var id = el.getAttribute('data-post');
 		var parent = document.getElementById(id);
 		var count = document.getElementById('count-' + id);
 		el.disabled = true;
@@ -191,6 +189,7 @@ function initTabs() {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/post.ejs
 function deletePost(post) {
 	var id = post.getAttribute('data-post');
 	if (!id) return;
@@ -215,6 +214,7 @@ function deletePost(post) {
 	}
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/post.ejs
 function reportPost(post) {
 	var id = post.getAttribute('data-post');
 	var button = document.getElementById('report-launcher');
@@ -258,10 +258,10 @@ var PostStorage = {
 	getAll: function () {
 		for (
 			var e = {},
-			t = cave.lls_getCount(),
-			i = new RegExp('^[0-9]+$'),
-			o = 0,
-			n = 0;
+				t = cave.lls_getCount(),
+				i = new RegExp('^[0-9]+$'),
+				o = 0,
+				n = 0;
 			n < t;
 			n++
 		) {
@@ -280,7 +280,7 @@ var PostStorage = {
 	removeItem: function (e) {
 		var t = JSON.parse(cave.lls_getItem(e));
 		t && t.screenShotKey && cave.lls_removeItem(t.screenShotKey),
-			cave.lls_removeItem(e);
+		cave.lls_removeItem(e);
 	},
 	hasKey: function (e) {
 		for (var t = cave.lls_getCount(), i = 0; i < t; i++)
@@ -288,14 +288,14 @@ var PostStorage = {
 		return !1;
 	},
 	sweep: function () {
-		var t = PostStorage.getAll(),
-			i = t[0];
+		var t = PostStorage.getAll();
+		var i = t[0];
 		if (t[1] > 0)
 			for (var o in i) {
 				var n = JSON.parse(cave.lls_getItem(o)).screenShotKey;
 				n && !PostStorage.hasKey(n) && cave.lls_removeItem(o);
 			}
-	},
+	}
 };
 
 var classList = {
@@ -307,8 +307,10 @@ var classList = {
 	},
 	remove: function (el, string) {
 		el.className = el.className.replace(string, '');
-	},
+	}
 };
+
+// eslint-disable-next-line no-unused-vars -- Used for testing
 function testOffline() {
 	var posts = PostStorage.getAll();
 	var text = JSON.stringify(posts, null, '\t');
@@ -326,12 +328,15 @@ function checkForUpdates() {
 	});
 }
 
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/partials/new_post.ejs
 function newText() {
 	classList.remove(document.getElementById('memo-sprite'), 'selected');
 	classList.remove(document.getElementById('post-memo'), 'selected');
 	classList.add(document.getElementById('text-sprite'), 'selected');
 	classList.add(document.getElementById('post-text'), 'selected');
 }
+
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/partials/new_post.ejs
 function newPainting(reset) {
 	if (reset) cave.memo_clear();
 	classList.remove(document.getElementById('text-sprite'), 'selected');
@@ -348,12 +353,7 @@ function newPainting(reset) {
 	}, 250);
 }
 
-function newScreenshot(topScreen) {
-	var screenshot = topScreen
-		? cave.capture_getLowerImage()
-		: cave.capture_getUpperImage();
-}
-
+// eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/community.ejs and src/webfiles/ctr/user_page.ejs
 function follow(el) {
 	var id = el.getAttribute('data-community-id');
 	var count = document.getElementById('followers');
@@ -418,7 +418,7 @@ function DELETE(url, callback) {
 document.addEventListener('DOMContentLoaded', function () {
 	pjax = Pjax.init({
 		elements: 'a[data-pjax]',
-		selectors: ['title', '#body'],
+		selectors: ['title', '#body']
 	});
 	console.debug('Pjax initialized.', pjax);
 	initAll();
@@ -431,7 +431,7 @@ document.addEventListener('PjaxRequest', function (e) {
 document.addEventListener('PjaxLoaded', function (e) {
 	console.log(e);
 });
-document.addEventListener('PjaxDone', function (e) {
+document.addEventListener('PjaxDone', function (_e) {
 	initAll();
 	cave.brw_scrollImmediately(0, 0);
 	if (pjax.canGoBack()) cave.toolbar_setButtonType(1);
