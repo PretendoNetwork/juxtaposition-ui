@@ -3,6 +3,11 @@ const config = require('../../config.json');
 const db = require('../database');
 
 async function checkBan(request, response, next) {
+	// Initialize access levels so the template engine can always access them
+	response.locals.tester = false;
+	response.locals.moderator = false;
+	response.locals.developer = false;
+
 	if (!request.user && !request.guest_access && request.path !== '/login') {
 		return response.status(401).send('Ban Check Failed: No user or guest access');
 	} else if (!request.user && (request.guest_access || request.path === '/login')) {
