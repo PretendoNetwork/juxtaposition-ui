@@ -24,7 +24,9 @@ cave.toolbar_setCallback(8, function () { });
 
 function initPostModules() {
 	var els = document.querySelectorAll('[data-module-show]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].onclick = postModel;
 	}
@@ -37,13 +39,19 @@ function initPostModules() {
 		var message = el.getAttribute('data-message');
 		var screenshot = el.getAttribute('data-screenshot');
 
-		if (sound) cave.snd_playSe(sound);
-		if (!show || !hide) return;
+		if (sound) {
+			cave.snd_playSe(sound);
+		}
+		if (!show || !hide) {
+			return;
+		}
 		document.getElementById(hide).style.display = 'none';
 		document.getElementById(show).style.display = 'block';
-		if (header === 'true')
+		if (header === 'true') {
 			document.getElementById('header').style.display = 'block';
-		else document.getElementById('header').style.display = 'none';
+		} else {
+			document.getElementById('header').style.display = 'none';
+		}
 		if (screenshot) {
 			var screenshotButton = document.getElementById('screenshot-button');
 			if (!cave.capture_isEnabled()) {
@@ -78,7 +86,9 @@ function initPostModules() {
 }
 function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
@@ -89,14 +99,18 @@ function initMorePosts() {
 					el.parentElement.outerHTML = response;
 					initPosts();
 					initMorePosts();
-				} else el.parentElement.outerHTML = '';
+				} else {
+					el.parentElement.outerHTML = '';
+				}
 			});
 		});
 	}
 }
 function initPosts() {
 	var els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
@@ -107,7 +121,9 @@ function initPosts() {
 }
 function initYeah() {
 	var els = document.querySelectorAll('button[data-post]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].onclick = yeah;
 	}
@@ -121,12 +137,16 @@ function initYeah() {
 		if (classList.contains(el, 'selected')) {
 			classList.remove(el, 'selected');
 			classList.remove(parent, 'yeah');
-			if (count) count.innerText -= 1;
+			if (count) {
+				count.innerText -= 1;
+			}
 			cave.snd_playSe('SE_OLV_CANCEL');
 		} else {
 			classList.add(el, 'selected');
 			classList.add(parent, 'yeah');
-			if (count) count.innerText = ++count.innerText;
+			if (count) {
+				count.innerText = ++count.innerText;
+			}
 			cave.snd_playSe('SE_OLV_MII_ADD');
 		}
 		POST('/posts/empathy', params, function a(data) {
@@ -137,13 +157,17 @@ function initYeah() {
 				return cave.error_callErrorViewer(155927);
 			}
 			el.disabled = false;
-			if (count) count.innerText = post.count;
+			if (count) {
+				count.innerText = post.count;
+			}
 		});
 	}
 }
 function initSpoilers() {
 	var els = document.querySelectorAll('button[data-post-id]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
@@ -160,7 +184,9 @@ function initSpoilers() {
 }
 function initTabs() {
 	var els = document.querySelectorAll('.tab-button');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].onclick = tabs;
 	}
@@ -171,8 +197,9 @@ function initTabs() {
 		var child = el.children[0];
 
 		for (var i = 0; i < els.length; i++) {
-			if (classList.contains(els[i], 'selected'))
+			if (classList.contains(els[i], 'selected')) {
 				classList.remove(els[i], 'selected');
+			}
 		}
 		classList.add(el, 'selected');
 
@@ -192,7 +219,9 @@ function initTabs() {
 // eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/post.ejs
 function deletePost(post) {
 	var id = post.getAttribute('data-post');
-	if (!id) return;
+	if (!id) {
+		return;
+	}
 	var confirm = cave.dialog_twoButton(
 		'Delete Post',
 		'Are you sure you want to delete your post? This cannot be undone.',
@@ -220,7 +249,9 @@ function reportPost(post) {
 	var button = document.getElementById('report-launcher');
 	var form = document.getElementById('report-form');
 	var formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) return;
+	if (!id || !button || !form || !formID) {
+		return;
+	}
 
 	form.action = '/posts/' + id + '/report';
 	formID.value = id;
@@ -228,12 +259,17 @@ function reportPost(post) {
 }
 
 function back() {
-	if (!pjax.canGoBack()) cave.toolbar_setButtonType(0);
-	else pjax.back();
+	if (!pjax.canGoBack()) {
+		cave.toolbar_setButtonType(0);
+	} else {
+		pjax.back();
+	}
 }
 
 function stopLoading() {
-	if (window.location.href.indexOf('/titles/show/first') !== -1) return;
+	if (window.location.href.indexOf('/titles/show/first') !== -1) {
+		return;
+	}
 	cave.transition_end();
 	cave.lls_setItem('agree_olv', '1');
 	cave.toolbar_setActiveButton(3);
@@ -283,18 +319,22 @@ var PostStorage = {
 		cave.lls_removeItem(e);
 	},
 	hasKey: function (e) {
-		for (var t = cave.lls_getCount(), i = 0; i < t; i++)
-			if (e === cave.lls_getKeyAt(i)) return !0;
+		for (var t = cave.lls_getCount(), i = 0; i < t; i++) {
+			if (e === cave.lls_getKeyAt(i)) {
+				return !0;
+			}
+		}
 		return !1;
 	},
 	sweep: function () {
 		var t = PostStorage.getAll();
 		var i = t[0];
-		if (t[1] > 0)
+		if (t[1] > 0) {
 			for (var o in i) {
 				var n = JSON.parse(cave.lls_getItem(o)).screenShotKey;
 				n && !PostStorage.hasKey(n) && cave.lls_removeItem(o);
 			}
+		}
 	}
 };
 
@@ -338,7 +378,9 @@ function newText() {
 
 // eslint-disable-next-line no-unused-vars -- Used in src/webfiles/ctr/partials/new_post.ejs
 function newPainting(reset) {
-	if (reset) cave.memo_clear();
+	if (reset) {
+		cave.memo_clear();
+	}
 	classList.remove(document.getElementById('text-sprite'), 'selected');
 	classList.remove(document.getElementById('post-text'), 'selected');
 	classList.add(document.getElementById('memo-sprite'), 'selected');
@@ -434,7 +476,10 @@ document.addEventListener('PjaxLoaded', function (e) {
 document.addEventListener('PjaxDone', function (_e) {
 	initAll();
 	cave.brw_scrollImmediately(0, 0);
-	if (pjax.canGoBack()) cave.toolbar_setButtonType(1);
-	else cave.toolbar_setButtonType(0);
+	if (pjax.canGoBack()) {
+		cave.toolbar_setButtonType(1);
+	} else {
+		cave.toolbar_setButtonType(0);
+	}
 	cave.transition_end();
 });

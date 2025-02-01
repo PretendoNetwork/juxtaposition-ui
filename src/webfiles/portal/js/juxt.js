@@ -4,13 +4,16 @@ setInterval(input, 100);
 
 function initNavBar() {
 	var els = document.querySelectorAll('#nav-menu > li[data-tab]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
 			for (var i = 0; i < els.length; i++) {
-				if (els[i].classList.contains('selected'))
+				if (els[i].classList.contains('selected')) {
 					els[i].classList.remove('selected');
+				}
 			}
 			el.classList.add('selected');
 		});
@@ -18,7 +21,9 @@ function initNavBar() {
 }
 function initYeah() {
 	var els = document.querySelectorAll('button[data-post].yeah-button');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].removeEventListener('click', yeah);
 		els[i].addEventListener('click', yeah);
@@ -33,12 +38,16 @@ function initYeah() {
 		if (el.classList.contains('selected')) {
 			el.classList.remove('selected');
 			parent.classList.remove('yeah');
-			if (count) count.innerText -= 1;
+			if (count) {
+				count.innerText -= 1;
+			}
 			wiiuSound.playSoundByName('SE_OLV_MII_CANCEL', 1);
 		} else {
 			el.classList.add('selected');
 			parent.classList.add('yeah');
-			if (count) count.innerText = ++count.innerText;
+			if (count) {
+				count.innerText = ++count.innerText;
+			}
 			wiiuSound.playSoundByName('SE_WAVE_MII_ADD', 1);
 		}
 
@@ -50,13 +59,17 @@ function initYeah() {
 				return wiiuErrorViewer.openByCode(1155927);
 			}
 			el.disabled = false;
-			if (count) count.innerText = post.count;
+			if (count) {
+				count.innerText = post.count;
+			}
 		});
 	}
 }
 function initTabs() {
 	var els = document.querySelectorAll('.tab-button');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].removeEventListener('click', tabs);
 		els[i].addEventListener('click', tabs);
@@ -67,8 +80,9 @@ function initTabs() {
 		var child = el.children[0];
 
 		for (var i = 0; i < els.length; i++) {
-			if (els[i].classList.contains('selected'))
+			if (els[i].classList.contains('selected')) {
 				els[i].classList.remove('selected');
+			}
 		}
 		el.classList.add('selected');
 
@@ -85,7 +99,9 @@ function initTabs() {
 }
 function initPosts() {
 	var els = document.querySelectorAll('.post-content[data-href]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			pjax.loadUrl(e.currentTarget.getAttribute('data-href'));
@@ -96,7 +112,9 @@ function initPosts() {
 }
 function initMorePosts() {
 	var els = document.querySelectorAll('.load-more[data-href]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
@@ -106,8 +124,9 @@ function initMorePosts() {
 					el.parentElement.outerHTML = data.response;
 					initPosts();
 					initMorePosts();
-				} else
+				} else {
 					el.parentElement.outerHTML = '';
+				}
 			});
 		});
 	}
@@ -115,29 +134,37 @@ function initMorePosts() {
 function initPostModules() {
 	var els = document.querySelectorAll('[data-module-show]');
 	console.log(els);
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
 			var show = el.getAttribute('data-module-show');
 			var hide = el.getAttribute('data-module-hide');
-			if (!show || !hide) return;
+			if (!show || !hide) {
+				return;
+			}
 			document.getElementById(hide).style.display = 'none';
 			document.getElementById(show).style.display = 'block';
 
 			var header = el.getAttribute('data-header');
 			var menu = el.getAttribute('data-menu');
 			var sound = el.getAttribute('data-sound');
-			if (sound) wiiuSound.playSoundByName(sound, 3);
+			if (sound) {
+				wiiuSound.playSoundByName(sound, 3);
+			}
 
-			if (header === 'true')
+			if (header === 'true') {
 				document.getElementById('header').style.display = 'block';
-			else
+			} else {
 				document.getElementById('header').style.display = 'none';
-			if (menu === 'true')
+			}
+			if (menu === 'true') {
 				document.getElementById('nav-menu').style.display = 'block';
-			else
+			} else {
 				document.getElementById('nav-menu').style.display = 'none';
+			}
 			wiiuBrowser.showLoadingIcon(false);
 			initNewPost();
 		});
@@ -145,7 +172,9 @@ function initPostModules() {
 }
 function initPostEmotion() {
 	var els = document.querySelectorAll('input[data-mii-face-url]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
@@ -156,7 +185,9 @@ function initPostEmotion() {
 }
 function initSounds() {
 	var els = document.querySelectorAll('[data-sound]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', playSound);
 	}
@@ -174,7 +205,9 @@ function initNewPost() {
 }
 function initSpoilers() {
 	var els = document.querySelectorAll('button[data-post-id]');
-	if (!els) return;
+	if (!els) {
+		return;
+	}
 	for (var i = 0; i < els.length; i++) {
 		els[i].addEventListener('click', function (e) {
 			var el = e.currentTarget;
@@ -313,9 +346,9 @@ function stopLoading() {
 function exit() {
 	wiiu.gamepad.update();
 
-	if (wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960)
+	if (wiiu.gamepad.hold === 8192 || wiiu.gamepad.hold === 40960) {
 		alert('Debug Menu');
-	else {
+	} else {
 		wiiuSound.playSoundByName('SE_WAVE_EXIT', 1);
 		wiiuBrowser.closeApplication();
 	}
@@ -324,7 +357,9 @@ function exit() {
 // eslint-disable-next-line no-unused-vars -- Used in src/webfiles/portal/partials/post_template.ejs
 function deletePost(post) {
 	var id = post.getAttribute('data-post');
-	if (!id) return;
+	if (!id) {
+		return;
+	}
 	var confirm = wiiuDialog.confirm('Are you sure you want to delete your post? This cannot be undone.', 'No', 'Yes');
 	if (confirm) {
 		DELETE('/posts/' + id, function a(data) {
@@ -344,7 +379,9 @@ function reportPost(post) {
 	var button = document.getElementById('report-launcher');
 	var form = document.getElementById('report-form');
 	var formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) return;
+	if (!id || !button || !form || !formID) {
+		return;
+	}
 
 	form.action = '/posts/' + id + '/report';
 	formID.value = id;
@@ -430,7 +467,9 @@ function back() {
 
 function input() {
 	wiiu.gamepad.update();
-	if (wiiu.gamepad.isDataValid === 0) return;
+	if (wiiu.gamepad.isDataValid === 0) {
+		return;
+	}
 	switch (wiiu.gamepad.hold) {
 		case 12:
 			return wiiuBrowser.lockUserOperation(false);

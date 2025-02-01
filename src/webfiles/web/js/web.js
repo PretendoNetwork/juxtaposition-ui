@@ -342,7 +342,9 @@ function reportPost(post) {
 	const button = document.getElementById('report-launcher');
 	const form = document.getElementById('report-form');
 	const formID = document.getElementById('report-post-id');
-	if (!id || !button || !form || !formID) return;
+	if (!id || !button || !form || !formID) {
+		return;
+	}
 
 	form.action = '/posts/' + id + '/report';
 	formID.value = id;
