@@ -1,6 +1,7 @@
 {
     "http": {
-        "port": 80
+        "port": 80,
+        "cookie_domain": ".pretendo.network"
     },
     "post_limit": 10,
     "account_server_domain": "account.pretendo.cc",
@@ -8,13 +9,13 @@
     "CDN_domain": "https://cdn.example.com",
     "whitelist": "1|http,example.http.domain,,2|1|https,example.https.domain,,2",
     "server_environment": "dev",
-	"mongoose": {
-		"uri": "mongodb://127.0.0.1:27017",
+    "mongoose": {
+        "uri": "mongodb://127.0.0.1:27017",
         "database": "Database",
         "options": {
             "useNewUrlParser": true,
             "useUnifiedTopology": true,
-			"directConnection": true
+            "directConnection": true
         }
     },
     "aws": {
@@ -22,9 +23,9 @@
             "key": "",
             "secret": ""
         },
-		"endpoint": "https://nyc3.digitaloceanspaces.com",
-		"region": "us-east-1",
-		"bucket": "bucket"
+        "endpoint": "https://nyc3.digitaloceanspaces.com",
+        "region": "us-east-1",
+        "bucket": "bucket"
     },
     "grpc": {
         "friends": {
@@ -39,8 +40,8 @@
         }
     },
     "aes_key": "",
-	"redis": {
-		"host": "localhost",
-		"port": 6379
-	}
+    "redis": {
+        "host": "localhost",
+        "port": 6379
+    }
 }
