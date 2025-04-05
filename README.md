@@ -1,3 +1,6 @@
+> [!IMPORTANT]  
+> ## DEPRECATED. NOW LIVES IN https://github.com/PretendoNetwork/juxtaposition
+
 # Juxt-Web
 
 <p align="left">
